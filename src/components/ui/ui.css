@@ -1,0 +1,141 @@
+/* ── Badges ─────────────────────────────────────── */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.05em;
+  text-transform: uppercase;
+  padding: 3px 8px;
+  border-radius: var(--radius-sm);
+  white-space: nowrap;
+}
+.badge--md { font-size: 13px; padding: 4px 10px; }
+.badge--accent  { background: var(--accent-dim);   color: var(--accent);   border: 1px solid var(--accent-border); }
+.badge--danger  { background: var(--danger-dim);   color: var(--danger);   border: 1px solid rgba(255,87,87,0.3); }
+.badge--warning { background: var(--warning-dim);  color: var(--warning);  border: 1px solid rgba(245,165,36,0.3); }
+.badge--success { background: var(--success-dim);  color: var(--success);  border: 1px solid rgba(74,222,128,0.3); }
+.badge--info    { background: var(--info-dim);     color: var(--info);     border: 1px solid rgba(96,165,250,0.3); }
+.badge--muted   { background: var(--bg-overlay);   color: var(--text-secondary); border: 1px solid var(--border-subtle); }
+
+/* ── Buttons ─────────────────────────────────────── */
+.btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-md);
+  transition: background 0.12s, transform 0.08s, opacity 0.12s;
+  cursor: pointer;
+  border: none;
+  white-space: nowrap;
+}
+.btn:active { transform: scale(0.97); }
+.btn:disabled { opacity: 0.4; cursor: not-allowed; }
+
+.btn--sm  { font-size: 12px; padding: 7px 14px; }
+.btn--md  { font-size: 13px; padding: 10px 18px; }
+.btn--lg  { font-size: 15px; padding: 14px 24px; }
+.btn--full { width: 100%; }
+
+.btn--primary   { background: var(--accent);   color: var(--text-inverse); }
+.btn--primary:hover   { background: #d4f547; }
+.btn--secondary { background: var(--bg-overlay); color: var(--text-primary); border: 1px solid var(--border-default); }
+.btn--secondary:hover { background: var(--bg-raised); border-color: var(--border-strong); }
+.btn--ghost     { background: transparent; color: var(--text-secondary); }
+.btn--ghost:hover     { background: var(--bg-raised); color: var(--text-primary); }
+.btn--danger    { background: var(--danger-dim); color: var(--danger); border: 1px solid rgba(255,87,87,0.3); }
+.btn--danger:hover    { background: rgba(255,87,87,0.2); }
+
+/* ── Cards ─────────────────────────────────────── */
+.card {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+}
+.card--p-none { padding: 0; }
+.card--p-sm   { padding: 12px; }
+.card--p-md   { padding: 16px; }
+.card--clickable { cursor: pointer; transition: border-color 0.12s, background 0.12s; }
+.card--clickable:hover  { border-color: var(--border-default); background: var(--bg-raised); }
+.card--clickable:active { transform: scale(0.99); }
+
+/* ── Tabs ─────────────────────────────────────── */
+.tabs {
+  display: flex;
+  gap: 4px;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-md);
+  padding: 4px;
+}
+
+.tab {
+  flex: 1;
+  padding: 8px 4px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  transition: background 0.12s, color 0.12s;
+}
+
+.tab--active {
+  background: var(--bg-overlay);
+  color: var(--text-primary);
+}
+
+/* ── Tab panel entrance ──────────────────────────── */
+@keyframes tabFadeIn {
+  from { opacity: 0; transform: translateY(3px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+
+[role="tabpanel"] {
+  animation: tabFadeIn 0.15s ease;
+}
+
+/* ── Focus visible ───────────────────────────────── */
+button:focus-visible,
+a:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+.card--clickable:focus-visible {
+  outline: 2px solid var(--accent);
+  outline-offset: 2px;
+}
+
+/* inputs use border-color feedback instead of outline */
+input:focus-visible,
+select:focus-visible,
+textarea:focus-visible {
+  outline: none;
+}
+
+/* ── Empty state ─────────────────────────────────── */
+.empty-state {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  padding: 48px 24px;
+  text-align: center;
+}
+.empty-state__icon { color: var(--text-tertiary); margin-bottom: 4px; }
+.empty-state__title { font-size: 15px; font-weight: 500; color: var(--text-secondary); }
+.empty-state__desc  { font-size: 13px; color: var(--text-tertiary); max-width: 260px; line-height: 1.6; }
+.empty-state__action { margin-top: 8px; }

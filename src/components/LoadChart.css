@@ -1,0 +1,25 @@
+.load-chart {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 12px;
+}
+.load-chart--empty {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 80px;
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+.load-chart__svg {
+  width: 100%;
+  height: auto;
+  display: block;
+}
+.load-chart__unit {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-align: right;
+  margin-top: 4px;
+}

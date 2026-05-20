@@ -1,0 +1,115 @@
+.progress-page {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.progress-page__title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+
+.progress-exercise-select {
+  margin-bottom: 4px;
+}
+
+.progress-stalls {
+  background: var(--danger-dim);
+  border: 1px solid rgba(255,87,87,0.2);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.progress-stalls__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--danger);
+}
+.progress-stall-item {
+  display: flex;
+  justify-content: space-between;
+  font-size: 13px;
+  color: var(--text-primary);
+}
+.progress-stall-item__type {
+  font-size: 12px;
+  color: var(--danger);
+}
+
+.progress-jump-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.progress-jump-header__count {
+  font-size: 13px;
+  color: var(--text-tertiary);
+}
+
+.jump-entry {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+.jump-entry__height {
+  font-family: var(--font-display);
+  font-size: 22px;
+  font-weight: 700;
+  color: var(--accent);
+  margin-right: 8px;
+}
+.jump-entry__condition {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  text-transform: capitalize;
+}
+.jump-entry__date {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+.jump-entry__notes {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+  line-height: 1.5;
+}
+
+.history-entry {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.history-entry__main {
+  display: flex;
+  justify-content: space-between;
+  align-items: baseline;
+}
+.history-entry__name {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  color: var(--text-primary);
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+.history-entry__date {
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+.history-entry__meta {
+  display: flex;
+  gap: 10px;
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.history-entry__fatigue {
+  color: var(--accent);
+  font-weight: 500;
+}

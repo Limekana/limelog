@@ -1,0 +1,91 @@
+.nexus-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+.nexus-card__signed-in {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 12px;
+}
+.nexus-card__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 10px;
+}
+.nexus-card__status {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 6px;
+}
+.nexus-card__meta {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+}
+.nexus-card__error {
+  font-size: 12px;
+  color: var(--accent-danger, #f87171);
+  margin-top: 8px;
+  word-break: break-word;
+}
+.nexus-card__hint {
+  font-size: 12px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+}
+.nexus-card__hint code {
+  font-size: 11px;
+  background: var(--bg-overlay);
+  padding: 1px 5px;
+  border-radius: 4px;
+}
+.nexus-card__form {
+  display: flex;
+  flex-direction: column;
+}
+.nexus-card__actions {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-top: 14px;
+}
+.nexus-card__toggle {
+  background: none;
+  border: none;
+  color: var(--text-tertiary);
+  font-size: 12px;
+  cursor: pointer;
+  padding: 4px;
+}
+.nexus-card__toggle:hover {
+  color: var(--text-secondary);
+}
+.nexus-card__signout {
+  margin-top: 12px;
+  align-self: flex-start;
+}
+.nexus-card__google {
+  margin-bottom: 8px;
+}
+.nexus-card__divider {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin: 10px 0 6px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+}
+.nexus-card__divider::before,
+.nexus-card__divider::after {
+  content: '';
+  flex: 1;
+  height: 1px;
+  background: var(--border-subtle);
+}

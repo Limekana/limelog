@@ -1,0 +1,59 @@
+.injury-form {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-lg);
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.injury-form__heading {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+}
+.injury-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+.injury-form__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+}
+.injury-form__row {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+}
+.injury-form__grid {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+.injury-form__chip {
+  padding: 5px 12px;
+  font-size: 12px;
+  font-weight: 500;
+  border-radius: 20px;
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  text-transform: capitalize;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+.injury-form__chip--active { font-weight: 600; }
+.injury-form__chip--avoid  { background: var(--danger-dim);  border-color: rgba(255,87,87,0.3);   color: var(--danger);  }
+.injury-form__chip--modify { background: var(--warning-dim); border-color: rgba(245,165,36,0.3);  color: var(--warning); }
+.injury-form__chip--monitor{ background: var(--info-dim);    border-color: rgba(96,165,250,0.3);  color: var(--info);    }
+.injury-form__actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+}

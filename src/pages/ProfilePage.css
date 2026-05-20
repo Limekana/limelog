@@ -1,0 +1,116 @@
+.profile-page {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+.profile-page__title {
+  font-family: var(--font-display);
+  font-size: 26px;
+  font-weight: 700;
+  letter-spacing: -0.01em;
+}
+.profile-page__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.profile-section {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+.profile-section__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.profile-section__label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+}
+.profile-section__sublabel {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  margin-top: 4px;
+}
+.restriction-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+}
+.restriction-row__left {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.restriction-row__label {
+  font-size: 14px;
+  font-weight: 500;
+  color: var(--text-primary);
+}
+.restriction-row__actions {
+  display: flex;
+  gap: 6px;
+}
+.restriction-row__patterns {
+  font-size: 12px;
+  color: var(--text-tertiary);
+  margin-top: 6px;
+}
+.restriction-row--resolved {
+  opacity: 0.5;
+}
+.settings-field {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.settings-field--mt { margin-top: 10px; }
+.settings-field__label {
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-tertiary);
+  margin-bottom: 8px;
+  display: block;
+}
+.settings-field__sublabel {
+  font-size: 12px;
+  color: var(--text-secondary);
+}
+.settings-field__row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.settings-toggle {
+  display: flex;
+  gap: 6px;
+  margin-top: 10px;
+}
+.settings-toggle__btn {
+  flex: 1;
+  padding: 10px;
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 600;
+  border-radius: var(--radius-md);
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 0.1s, color 0.1s, border-color 0.1s;
+}
+.settings-toggle__btn--active {
+  background: var(--accent-dim);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
