@@ -1,13 +1,14 @@
 {
   "name": "workout-tracker",
-  "version": "1.0.3",
+  "version": "1.1.0",
   "private": true,
   "type": "module",
   "scripts": {
     "dev": "vite",
     "build": "tsc && vite build",
     "preview": "vite preview",
-    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0"
+    "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
+    "cap:sync": "npm run build && cap sync android"
   },
   "dependencies": {
     "@capacitor/android": "^8.3.1",

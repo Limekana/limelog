@@ -91,4 +91,10 @@ export interface Program {
   phases: Phase[];
   sessions: SessionTemplate[];
   exerciseBestRecords?: Record<string, { maxWeightKg: number; maxReps: number }>;
+  /** v1.2 — current phase pointer. When undefined, the lowest-orderIndex
+   *  phase is treated as active (back-compat with v1.1 programs). Advanced
+   *  via programStore.advancePhase(). Manual phase-advance only — no
+   *  auto-progression by elapsed weeks (deferred until program start-date
+   *  tracking lands). */
+  activePhaseId?: string;
 }

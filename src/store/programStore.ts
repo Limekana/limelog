@@ -32,6 +32,10 @@ interface ProgramStore {
   addPhase: (programId: string, p: Omit<Phase, 'id' | 'programId'>) => void;
   updatePhase: (programId: string, phaseId: string, updates: Partial<Phase>) => void;
   deletePhase: (programId: string, phaseId: string) => void;
+  /** Advance the program's `activePhaseId` to the next phase by orderIndex.
+   *  No-ops if already on the last phase. Returns the new active phase or
+   *  null if no advance happened (useful for UI flash messaging). */
+  advancePhase: (programId: string) => Phase | null;
 
   // Session CRUD
   addSession: (s: Omit<SessionTemplate, 'id' | 'exercises'>) => void;
@@ -142,6 +146,25 @@ export const useProgramStore = create<ProgramStore>((set, get) => ({
     );
     storage.setPrograms(programs);
     set({ programs, activeProgram: programs.find((p) => p.status === 'active') ?? null });
+  },
+
+  advancePhase: (programId) => {
+    const prog = get().programs.find((p) => p.id === programId);
+    if (!prog || prog.phases.length === 0) return null;
+    // Sort by orderIndex for stable progression regardless of array order.
+    const sorted = [...prog.phases].sort((a, b) => a.orderIndex - b.orderIndex);
+    // Find current — explicit activePhaseId wins; otherwise fall back to first.
+    const currentIdx = prog.activePhaseId
+      ? sorted.findIndex((ph) => ph.id === prog.activePhaseId)
+      : 0;
+    if (currentIdx < 0 || currentIdx >= sorted.length - 1) return null;
+    const next = sorted[currentIdx + 1];
+    const programs = get().programs.map((p) =>
+      p.id === programId ? { ...p, activePhaseId: next.id } : p
+    );
+    storage.setPrograms(programs);
+    set({ programs, activeProgram: programs.find((p) => p.status === 'active') ?? null });
+    return next;
   },
 
   addSession: (s) => {

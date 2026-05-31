@@ -72,6 +72,35 @@
 .nexus-card__google {
   margin-bottom: 8px;
 }
+/* v1.4 — Nexus SSO affordance. Lime primary button per the industrial-
+   brutalist hierarchy: suite-native sign-in > Google > email. The glyph
+   marks it as a system action, not a social provider. */
+.nexus-card__nexus {
+  margin-bottom: 6px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+.nexus-card__nexus-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 16px;
+  height: 16px;
+  margin-right: 8px;
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 16px;
+  line-height: 1;
+}
+.nexus-card__nexus-note {
+  margin: 0 0 12px;
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  text-align: center;
+}
 .nexus-card__divider {
   display: flex;
   align-items: center;

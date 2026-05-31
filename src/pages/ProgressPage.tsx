@@ -6,10 +6,12 @@ import { formatDate } from '@/utils/helpers';
 import { EmptyState, Card, Button, Tabs, TabPanel } from '@/components/ui';
 import { JumpLogModal } from '@/components/JumpLogModal';
 import { LoadChart } from '@/components/LoadChart';
-import { BarChart2, Zap } from 'lucide-react';
+import { OneRMChart } from '@/components/OneRMChart';
+import { bestEstimateForExercise } from '@/utils/oneRepMax';
+import { BarChart2, TrendingUp, Zap } from 'lucide-react';
 import './ProgressPage.css';
 
-type ProgressTab = 'load' | 'jump' | 'history';
+type ProgressTab = 'load' | 'orm' | 'jump' | 'history';
 
 export function ProgressPage() {
   const { programs, exercises } = useProgramStore();
@@ -47,6 +49,7 @@ export function ProgressPage() {
       <Tabs
         tabs={[
           { key: 'load', label: 'Load Trends' },
+          { key: 'orm', label: 'Est. 1RM' },
           { key: 'jump', label: 'Vertical Jump' },
           { key: 'history', label: 'History' },
         ]}
@@ -86,6 +89,63 @@ export function ProgressPage() {
                 ))}
               </select>
               {selectedExId && <LoadChart exerciseId={selectedExId} sessionLogs={sessionLogs} unit={unit} />}
+            </>
+          )}
+        </>
+      </TabPanel>
+
+      <TabPanel tabKey="orm" activeKey={activeTab}>
+        <>
+          {/* Estimated 1RM = Brzycki for reps ≤ 10, Epley for 11-12, null
+              above 12 reps (formula reliability craters). Per-exercise
+              dropdown reuses the same logged-exercise list as the load
+              tab so empty exercises don't clutter. Below the chart, a
+              ranked list of every exercise's best e1RM gives an at-a-
+              glance leaderboard across the user's main lifts. */}
+          {exercisedLogged.length === 0 ? (
+            <EmptyState
+              icon={<TrendingUp size={36} />}
+              title="No 1RM data yet"
+              description="Complete a session with weight × reps logged to see an estimated 1RM trend."
+            />
+          ) : (
+            <>
+              <select
+                aria-label="Select exercise for 1RM trend"
+                className="progress-exercise-select"
+                value={selectedExId}
+                onChange={(e) => setSelectedExId(e.target.value)}
+              >
+                {exercisedLogged.map((e) => (
+                  <option key={e.id} value={e.id}>{e.name}</option>
+                ))}
+              </select>
+              {selectedExId && (
+                <OneRMChart exerciseId={selectedExId} sessionLogs={sessionLogs} unit={unit} />
+              )}
+
+              {/* Best-ever leaderboard — sorted by estimated 1RM descending.
+                  Useful for at-a-glance "where am I strongest" view without
+                  cycling the dropdown across every lift. */}
+              <div className="progress-orm-list">
+                <div className="progress-orm-list__header">Best estimates</div>
+                {exercisedLogged
+                  .map((e) => ({ ex: e, best: bestEstimateForExercise(sessionLogs, e.id) }))
+                  .filter((row) => row.best != null)
+                  .sort((a, b) => (b.best ?? 0) - (a.best ?? 0))
+                  .slice(0, 10)
+                  .map((row) => {
+                    const display = unit === 'lb'
+                      ? Math.round((row.best ?? 0) * 2.2046 * 10) / 10
+                      : Math.round((row.best ?? 0) * 10) / 10;
+                    return (
+                      <div key={row.ex.id} className="progress-orm-row">
+                        <span className="progress-orm-row__name">{row.ex.name}</span>
+                        <span className="progress-orm-row__value">{display} {unit}</span>
+                      </div>
+                    );
+                  })}
+              </div>
             </>
           )}
         </>

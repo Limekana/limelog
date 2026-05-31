@@ -142,3 +142,54 @@
   min-width: 56px;
   text-align: right;
 }
+
+/* v1.2 — deload variant of today-alert. Same shape as the stall-flag
+   alert, slightly different accent so the two can coexist visually. */
+.today-alert--warn {
+  border-left-color: var(--accent);
+}
+
+/* v1.2 — phase advance card. Compact horizontal row above today's
+   session list. "Next phase" label + name on the left, Advance button
+   on the right. Quiet styling so it doesn't compete with the session
+   cards. */
+.today-phase-advance {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding: 10px 14px;
+  background: var(--bg-elevated, #181c22);
+  border: 1px solid var(--surface-border, #2a2f37);
+  border-radius: 6px;
+}
+.today-phase-advance__copy {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+.today-phase-advance__label {
+  font-family: var(--font-display);
+  font-size: 10px;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.today-phase-advance__name {
+  font-size: 13px;
+  color: var(--text-primary);
+  font-weight: 500;
+}
+
+/* v1.2 — small e1RM chip below the session subtitle. Quiet text style
+   with the accent color on the value so the eye finds the number. */
+.today-session__orm {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-top: 4px;
+  font-size: 11px;
+  color: var(--text-tertiary);
+  font-variant-numeric: tabular-nums;
+}

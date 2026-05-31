@@ -1,0 +1,300 @@
+/* LimeLog FirstLaunchAuth — industrial-brutalist lime, matches the
+   in-app design language: Barlow Condensed wordmark, lime accent
+   (#c8f135), dark base with subtle 135° scanline texture (already
+   on body), tabular numerals. Stacked layout, generous breathing
+   room because this is the first surface every install sees.
+
+   v1.1 UI/UX review pass — replaced the fallback-only var() refs
+   (--lime, --text-base, --text-muted, --surface, --border) with the
+   real tokens defined in src/index.css (--accent, --text-primary,
+   --text-secondary, --bg-surface, --border-default, etc.). Error
+   and warning surfaces are now tokenized too (--danger / --warning
+   instead of raw rgba hexes). Touch targets raised to 44px min.
+   Dropped !important on .fla-nexus by winning on specificity. */
+
+.fla-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32px 20px;
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+
+.fla-stack {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.fla-header {
+  text-align: center;
+  margin-bottom: 4px;
+}
+
+.fla-wordmark {
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.fla-tagline {
+  margin-top: 8px;
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.fla-card {
+  width: 100%;
+}
+
+.fla-title {
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-weight: 600;
+  font-size: 22px;
+  line-height: 1.1;
+  margin-bottom: 4px;
+  text-transform: uppercase;
+  letter-spacing: 0.01em;
+}
+
+.fla-sub {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 18px;
+  line-height: 1.4;
+}
+
+.fla-actions {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+/* Inverted-lime treatment for the "Continue with Nexus" affordance. Distinct
+   from the standard primary button so the suite-native path reads as special
+   even when it's at the top of the stack.
+   v1.1 — UI/UX review #9: dropped !important. Specificity comes from
+   .fla-card .fla-nexus (depth 2) > .btn--primary (depth 1), so the variant
+   is overridden cleanly without the cascade hammer. */
+.fla-card .fla-nexus {
+  background: var(--accent);
+  color: var(--text-inverse);
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 10px;
+}
+
+.fla-nexus-glyph {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 18px;
+  height: 18px;
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 16px;
+  line-height: 1;
+}
+
+.fla-nexus-note {
+  margin: -2px 0 6px;
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  color: var(--text-tertiary);
+  text-align: center;
+  text-transform: uppercase;
+}
+
+/* v1.1 — UI/UX review #10: bumped padding from 8px 4px to 14px 12px and
+   added min-height: 44px so "Use email instead" / "Need an account?" /
+   "Back" tap targets meet WCAG 2.5.5 (44x44). */
+.fla-toggle {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: 14px 12px;
+  min-height: 44px;
+  margin-top: 2px;
+  align-self: center;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.fla-toggle:hover {
+  color: var(--text-primary);
+  background: var(--bg-raised);
+}
+
+.fla-toggle:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fla-form {
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fla-field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.fla-field-label {
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.fla-field input {
+  width: 100%;
+  background: var(--bg-surface);
+  color: var(--text-primary);
+  border: 1px solid var(--border-default);
+  border-radius: 4px;
+  padding: 10px 12px;
+  font-family: inherit;
+  font-size: 14px;
+  font-variant-numeric: tabular-nums;
+}
+
+.fla-field input:focus {
+  outline: none;
+  border-color: var(--accent);
+}
+
+.fla-form-footer {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-top: 4px;
+}
+
+/* Slightly tighter padding inside the form footer where the toggles sit
+   next to each other; the row still meets 44px via min-height. */
+.fla-form-footer .fla-toggle {
+  padding: 12px 8px;
+}
+
+/* v1.1 — UI/UX review #8: tokenized error palette. Was hardcoded
+   rgba(220,60,60,…) / #ff8a8a; now uses --danger / --danger-dim defined
+   in src/index.css alongside the rest of the destructive surfaces. */
+.fla-error {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  background: var(--danger-dim);
+  border: 1px solid var(--danger);
+  border-radius: 4px;
+  color: var(--danger);
+  font-size: 12px;
+}
+
+/* v1.1 — UI/UX review #8: tokenized warning palette. */
+.fla-warn {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  background: var(--warning-dim);
+  border: 1px solid var(--warning);
+  border-radius: 4px;
+  color: var(--warning);
+  font-size: 12px;
+}
+
+.fla-guest {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  padding-top: 14px;
+  border-top: 1px solid var(--border-subtle);
+  margin-top: 8px;
+}
+
+/* v1.1 — UI/UX review #11: bumped padding to 14px 18px + min-height: 44px.
+   Was ~22-24px tall, the most critical "I want to opt out" affordance on
+   the screen — must meet WCAG 2.5.5. */
+.fla-guest-btn {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: 14px 18px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  border-radius: 4px;
+}
+
+.fla-guest-btn:hover {
+  color: var(--text-primary);
+  background: var(--bg-raised);
+}
+
+.fla-guest-btn:disabled {
+  opacity: 0.5;
+  cursor: not-allowed;
+}
+
+.fla-guest-note {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin: 0 12px;
+  line-height: 1.4;
+  letter-spacing: 0.01em;
+}
+
+/* Splash shown while guest-mode flag + nexusStore session are resolving on
+   cold start. Same dark surface as the auth screen so there's no visual
+   pop when the splash is replaced with the auth or the main app. */
+.fla-splash {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  background: var(--bg-base);
+  color: var(--text-tertiary);
+}
+
+.fla-splash-text {
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-size: 12px;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}

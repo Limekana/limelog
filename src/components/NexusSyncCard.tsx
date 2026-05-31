@@ -1,8 +1,18 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
+import { Capacitor, registerPlugin } from '@capacitor/core';
 import { useNexusStore } from '@/store/nexusStore';
+import { inheritFromNexus } from '@/lib/suiteSso';
 import { Button, Card, Badge } from '@/components/ui';
 import { Cloud, CloudOff } from 'lucide-react';
 import './NexusSyncCard.css';
+
+// Inline plugin handle for the "is NCC session available?" probe. We can't
+// call inheritFromNexus to probe because that would actually set the
+// session; we want to check availability silently first to decide whether
+// to render the affordance.
+const SuiteSsoProbe = registerPlugin<{
+  getNexusSession(): Promise<{ available: boolean; reason?: string }>;
+}>('SuiteSso');
 
 export function NexusSyncCard() {
   const {
@@ -26,6 +36,38 @@ export function NexusSyncCard() {
   const [mode, setMode] = useState<'signin' | 'signup'>('signin');
   const [localError, setLocalError] = useState<string | null>(null);
   const [retryStatus, setRetryStatus] = useState<string | null>(null);
+  const [nexusAvailable, setNexusAvailable] = useState(false);
+
+  // v1.4 — probe NCC's SessionContentProvider on mount. Silent on failure:
+  // if NCC isn't installed or signing certs don't match, the affordance
+  // simply doesn't render and the user sees the Google/email flow alone.
+  useEffect(() => {
+    if (!Capacitor.isNativePlatform()) return;
+    if (userEmail) return; // already signed in; no probe needed
+    let cancelled = false;
+    void (async () => {
+      try {
+        const result = await SuiteSsoProbe.getNexusSession();
+        if (!cancelled && result.available) setNexusAvailable(true);
+      } catch {
+        // Plugin missing or errored — fall through to Google/email path.
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [userEmail]);
+
+  async function handleNexus() {
+    setLocalError(null);
+    try {
+      const result = await inheritFromNexus();
+      if (!result.ok) {
+        setLocalError(result.reason || 'Could not inherit Nexus session.');
+      }
+      // On success, nexusStore.init's auth listener takes over.
+    } catch (err) {
+      setLocalError(err instanceof Error ? err.message : String(err));
+    }
+  }
 
   async function handleSubmit(e: React.FormEvent) {
     e.preventDefault();
@@ -139,6 +181,26 @@ export function NexusSyncCard() {
         </>
       ) : (
         <form onSubmit={handleSubmit} className="nexus-card__form">
+          {nexusAvailable && (
+            <>
+              <Button
+                type="button"
+                variant="primary"
+                size="md"
+                fullWidth
+                onClick={handleNexus}
+                disabled={loading}
+                className="nexus-card__nexus"
+              >
+                <span className="nexus-card__nexus-glyph" aria-hidden="true">◈</span>
+                Continue with Nexus
+              </Button>
+              <p className="nexus-card__nexus-note">
+                Signed in to Nexus Command Center on this device
+              </p>
+            </>
+          )}
+
           <Button
             type="button"
             variant="secondary"

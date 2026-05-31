@@ -40,4 +40,15 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- v1.1.1 — Android 11+ package visibility for cross-app SSO. Apps
+         must explicitly declare which other packages / providers they
+         intend to interact with. Without this <queries> entry,
+         ContentResolver.query() returns null on API 30+. NCC's
+         SessionContentProvider validates the caller package internally
+         via an allowlist (see SessionContentProvider.ALLOWED_CALLERS) —
+         no custom permission needed. -->
+    <queries>
+        <provider android:authorities="com.limecore.nexus.session" />
+    </queries>
 </manifest>

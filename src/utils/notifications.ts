@@ -13,13 +13,23 @@ import { Capacitor } from '@capacitor/core';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
 // @ts-ignore — installed separately; see setup comment above
 import { LocalNotifications } from '@capacitor/local-notifications';
-import type { SessionTemplate } from '@/types/program';
+import type { Exercise, SessionTemplate } from '@/types/program';
 
 const CHANNEL_ID = 'workout-reminders';
 /** Notification IDs 100–106 are reserved for days 0 (Sun) – 6 (Sat). */
 const BASE_ID = 100;
 const SLOT_COUNT = 7;
 const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
+/**
+ * Action-type ID for the workout reminder. Registered once at app start via
+ * `registerWorkoutActionTypes()` and attached to every scheduled reminder
+ * via `actionTypeId`. The "start" action ID is what's compared in the
+ * `localNotificationActionPerformed` handler to know it was the button
+ * (vs a plain notification tap).
+ */
+const ACTION_TYPE_ID = 'workout-reminder';
+export const WORKOUT_ACTION_START = 'start';
 
 /**
  * Unconditional cancel of every reserved slot.
@@ -77,6 +87,19 @@ export async function setupNotificationChannel(): Promise<void> {
       sound: 'default',
       lights: true,
     });
+    // Register the action-type (idempotent — re-registering with the same
+    // id replaces the prior set). Must happen before any notification with
+    // `actionTypeId: 'workout-reminder'` fires, or the button won't render.
+    await LocalNotifications.registerActionTypes({
+      types: [
+        {
+          id: ACTION_TYPE_ID,
+          actions: [
+            { id: WORKOUT_ACTION_START, title: 'Start session' },
+          ],
+        },
+      ],
+    });
     // App-startup defensive sweep: blind-cancel every slot in case AlarmManager
     // is still holding phantom alarms from a previous install / data clear /
     // older program. `scheduleWorkoutReminders` will re-issue fresh schedules
@@ -88,8 +111,33 @@ export async function setupNotificationChannel(): Promise<void> {
   } catch (_) {}
 }
 
+/**
+ * Build the notification body for one session: session name + up to 3
+ * exercise names joined by arrows. Truncated to ~80 chars so the collapsed
+ * notification line doesn't get cropped mid-word.
+ *
+ * Why the library lookup: `SessionExercise` only carries `exerciseId` (FK
+ * into the library), not the display name. Without this lookup the only
+ * info on the notification is the session name itself.
+ */
+function buildSessionBody(
+  session: SessionTemplate,
+  exerciseLibrary: Exercise[],
+): string {
+  const byId = new Map(exerciseLibrary.map((e) => [e.id, e]));
+  const names = session.exercises
+    .slice(0, 3)
+    .map((se) => byId.get(se.exerciseId)?.name)
+    .filter((n): n is string => !!n);
+  if (names.length === 0) return session.name;
+  const preview = names.join(' → '); // "Bench → OHP → Pushdowns"
+  const full = `${session.name} · ${preview}`; // "Push Day A · ..."
+  return full.length > 80 ? full.slice(0, 77) + '…' : full;
+}
+
 export async function scheduleWorkoutReminders(
-  sessions: SessionTemplate[]
+  sessions: SessionTemplate[],
+  exerciseLibrary: Exercise[] = [],
 ): Promise<void> {
   if (!Capacitor.isNativePlatform()) return;
 
@@ -132,7 +180,7 @@ export async function scheduleWorkoutReminders(
         return {
           id: BASE_ID + s.dayOfWeek,
           title: `${DAY_NAMES[s.dayOfWeek]} session`,
-          body: s.name,
+          body: buildSessionBody(s, exerciseLibrary),
           schedule: {
             at: target,
             repeats: true,
@@ -140,7 +188,18 @@ export async function scheduleWorkoutReminders(
             allowWhileIdle: true,
           },
           channelId: CHANNEL_ID,
-          smallIcon: 'ic_stat_icon_config_sample',
+          // Custom small icon derived from launcher (see
+          // limecore/derive_notification_icons.py). Status-bar icons MUST be
+          // white-on-transparent or Android renders a fallback glyph.
+          smallIcon: 'ic_stat_limelog',
+          // Brand lime accent — applied by the OS as the channel/notif color
+          // (the small icon's tint and heads-up accent stripe). Matches the
+          // CSS --color-lime token (#c8f135) used throughout the app.
+          iconColor: '#c8f135',
+          // Surfaces the "Start session" action button (registered in
+          // setupNotificationChannel). Action click is observed in App.tsx
+          // via the localNotificationActionPerformed listener.
+          actionTypeId: ACTION_TYPE_ID,
           sound: 'default',
         };
       })
