@@ -1,8 +1,19 @@
+// LimeLog → Nexus push handler.
+//
+// v1.0–v1.1: this file owned BOTH the push (`pushWorkoutToNexus`) AND the
+// retry queue (`pushOrQueue`, `drainPendingQueue`, `wt_nexus_pending`
+// localStorage). v1.2 split the queue out to `lib/outbox.ts` — that's where
+// persistence, single-flight, attempt cap, and online/visibility re-triggers
+// now live. The legacy `wt_nexus_pending` key is auto-migrated by outbox.ts
+// on first load.
+//
+// This file is now just the handler + the payload mapper. Call sites use
+// `enqueue('upsert_workout_session', payload)` from outbox.ts instead of the
+// removed `pushOrQueue` wrapper.
+
 import { supabase, isNexusConfigured } from './supabase';
 import type { SessionLog } from '@/types/logging';
 import type { Exercise, SessionTemplate } from '@/types/program';
-
-const PENDING_KEY = 'wt_nexus_pending';
 
 export interface NexusSetPayload {
   exercise: string;
@@ -16,25 +27,6 @@ export interface NexusWorkoutPayload {
   date: string;
   notes?: string;
   sets: NexusSetPayload[];
-}
-
-interface PendingPush {
-  id: string;
-  payload: NexusWorkoutPayload;
-  createdAt: string;
-}
-
-function readPending(): PendingPush[] {
-  try {
-    const raw = localStorage.getItem(PENDING_KEY);
-    return raw ? (JSON.parse(raw) as PendingPush[]) : [];
-  } catch {
-    return [];
-  }
-}
-
-function writePending(items: PendingPush[]): void {
-  localStorage.setItem(PENDING_KEY, JSON.stringify(items));
 }
 
 export function mapSessionLogToNexus(
@@ -64,6 +56,15 @@ export function mapSessionLogToNexus(
   };
 }
 
+/**
+ * Push one workout payload to Supabase. Two-step write (session row, then
+ * sets) with rollback of the session if the sets insert fails. Throws on
+ * any failure — caller decides whether to enqueue for retry.
+ *
+ * Called by:
+ *   - outbox.ts dispatch for the `upsert_workout_session` kind (typical path)
+ *   - directly during dev/testing if needed
+ */
 export async function pushWorkoutToNexus(workout: NexusWorkoutPayload): Promise<string> {
   if (!isNexusConfigured) throw new Error('Nexus not configured');
 
@@ -107,58 +108,56 @@ export async function pushWorkoutToNexus(workout: NexusWorkoutPayload): Promise<
   return sessionId;
 }
 
-export async function pushOrQueue(workout: NexusWorkoutPayload): Promise<{ ok: boolean; queued: boolean; error?: unknown }> {
-  if (!isNexusConfigured) {
-    return { ok: false, queued: false, error: 'Nexus not configured' };
-  }
+// ── v1.2 Body Metrics push ────────────────────────────────────────────────
+//
+// Upsert by (user_id, date) — the UNIQUE constraint at the DB lets us write
+// a fresh row OR overwrite an existing one for the same day in a single
+// statement. Useful when the user weighs themselves in the morning, logs
+// it, then edits later that day to add measurements.
 
-  try {
-    await pushWorkoutToNexus(workout);
-    return { ok: true, queued: false };
-  } catch (err) {
-    const pending = readPending();
-    pending.push({
-      id: crypto.randomUUID(),
-      payload: workout,
-      createdAt: new Date().toISOString(),
-    });
-    writePending(pending);
-    // eslint-disable-next-line no-console
-    console.warn('[nexus] push failed, queued for retry:', err);
-    return { ok: false, queued: true, error: err };
-  }
+export interface NexusBodyMetricPayload {
+  id: string;
+  date: string;
+  weightKg?: number;
+  chestCm?: number;
+  waistCm?: number;
+  hipsCm?: number;
+  armsCm?: number;
+  legsCm?: number;
+  notes?: string;
 }
 
-export async function drainPendingQueue(): Promise<{ sent: number; remaining: number }> {
-  if (!isNexusConfigured) return { sent: 0, remaining: 0 };
+export async function pushBodyMetricToNexus(p: NexusBodyMetricPayload): Promise<void> {
+  if (!isNexusConfigured) throw new Error('Nexus not configured');
+  const { data: { user }, error: authErr } = await supabase.auth.getUser();
+  if (authErr) throw authErr;
+  if (!user) throw new Error('Not signed in to Nexus');
 
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { sent: 0, remaining: readPending().length };
+  const row = {
+    id: p.id,
+    user_id: user.id,
+    date: p.date,
+    weight_kg: p.weightKg ?? null,
+    chest_cm: p.chestCm ?? null,
+    waist_cm: p.waistCm ?? null,
+    hips_cm: p.hipsCm ?? null,
+    arms_cm: p.armsCm ?? null,
+    legs_cm: p.legsCm ?? null,
+    notes: p.notes ?? null,
+    updated_at: new Date().toISOString(),
+  };
 
-  let pending = readPending();
-  let sent = 0;
-  const failures: PendingPush[] = [];
-
-  for (const item of pending) {
-    try {
-      await pushWorkoutToNexus(item.payload);
-      sent++;
-    } catch (err) {
-      // eslint-disable-next-line no-console
-      console.warn('[nexus] retry failed for queued workout:', err);
-      failures.push(item);
-    }
-  }
-
-  pending = failures;
-  writePending(pending);
-  return { sent, remaining: pending.length };
+  // Conflict target is (user_id, date) — the natural primary identity for a
+  // single user's daily snapshot. Using `onConflict: 'user_id,date'` lets
+  // an "edit later that day" path overwrite without a separate read.
+  const { error } = await supabase
+    .from('body_metrics')
+    .upsert(row, { onConflict: 'user_id,date' });
+  if (error) throw error;
 }
 
-export function getPendingCount(): number {
-  return readPending().length;
-}
-
-export function clearPendingQueue(): void {
-  writePending([]);
+export async function deleteBodyMetricFromNexus(id: string): Promise<void> {
+  if (!isNexusConfigured) throw new Error('Nexus not configured');
+  const { error } = await supabase.from('body_metrics').delete().eq('id', id);
+  if (error) throw error;
 }

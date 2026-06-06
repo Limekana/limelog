@@ -22,6 +22,7 @@ export function NexusSyncCard() {
     loading,
     lastError,
     pendingCount,
+    outboxStatus,
     lastPushAt,
     signIn,
     signUp,
@@ -161,13 +162,28 @@ export function NexusSyncCard() {
 
           {retryStatus && <p className="nexus-card__status">{retryStatus}</p>}
 
-          {lastPushAt && (
+          {/* v1.2 — richer outbox status. lastPushAt is "intent time" (when the
+              user finalized the workout); outbox.lastSuccessAt is "ack time"
+              (when Supabase confirmed). Show whichever is most recent for the
+              "last push" line, and the stuck warning when items hit MAX_ATTEMPTS. */}
+          {(lastPushAt || outboxStatus.lastSuccessAt) && (
             <p className="nexus-card__meta">
-              Last push: {new Date(lastPushAt).toLocaleTimeString()}
+              Last push: {new Date(outboxStatus.lastSuccessAt ?? lastPushAt!).toLocaleTimeString()}
+            </p>
+          )}
+
+          {outboxStatus.stuck > 0 && (
+            <p className="nexus-card__error">
+              {outboxStatus.stuck} item{outboxStatus.stuck > 1 ? 's' : ''} stuck after retries — check connection or sign back in.
             </p>
           )}
 
           {lastError && <p className="nexus-card__error">{lastError}</p>}
+          {!lastError && outboxStatus.lastError && (
+            <p className="nexus-card__error">
+              Last error: {outboxStatus.lastError}
+            </p>
+          )}
 
           <Button
             size="sm"

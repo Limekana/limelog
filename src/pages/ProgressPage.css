@@ -155,3 +155,11 @@
   color: var(--accent);
   font-variant-numeric: tabular-nums;
 }
+/* v1.2 — strength-to-bodyweight ratio suffix on the leaderboard row. Renders
+   in a muted tone so the 1RM stays the row's hero metric. */
+.progress-orm-row__ratio {
+  color: var(--text-tertiary, var(--text-muted));
+  font-size: 12px;
+  font-weight: 500;
+  margin-left: 4px;
+}

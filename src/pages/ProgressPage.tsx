@@ -2,21 +2,28 @@ import { useState } from 'react';
 import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
+import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
 import { formatDate } from '@/utils/helpers';
 import { EmptyState, Card, Button, Tabs, TabPanel } from '@/components/ui';
 import { JumpLogModal } from '@/components/JumpLogModal';
 import { LoadChart } from '@/components/LoadChart';
 import { OneRMChart } from '@/components/OneRMChart';
+import { BodyMetricsPanel } from '@/components/BodyMetricsPanel';
 import { bestEstimateForExercise } from '@/utils/oneRepMax';
+import { strengthToBodyweight } from '@/lib/bodyMetricsAnalysis';
 import { BarChart2, TrendingUp, Zap } from 'lucide-react';
 import './ProgressPage.css';
 
-type ProgressTab = 'load' | 'orm' | 'jump' | 'history';
+// v1.2 — added 'body' tab for the body-metrics panel.
+type ProgressTab = 'load' | 'orm' | 'jump' | 'body' | 'history';
 
 export function ProgressPage() {
   const { programs, exercises } = useProgramStore();
   const { sessionLogs, jumpLogs, stallFlags, getSetsForExercise } = useLogStore();
   const { profile } = useUserStore();
+  // v1.2 — latest bodyweight for the strength-to-bodyweight ratio shown on
+  // the 1RM leaderboard. Selector reads the latest entry that has weight set.
+  const latestBodyweightKg = useBodyMetricsStore((s) => s.latestWeight());
   const [selectedExId, setSelectedExId] = useState<string>(exercises[0]?.id ?? '');
   const [showJumpModal, setShowJumpModal] = useState(false);
   const [activeTab, setActiveTab] = useState<ProgressTab>('load');
@@ -51,6 +58,7 @@ export function ProgressPage() {
           { key: 'load', label: 'Load Trends' },
           { key: 'orm', label: 'Est. 1RM' },
           { key: 'jump', label: 'Vertical Jump' },
+          { key: 'body', label: 'Body' },
           { key: 'history', label: 'History' },
         ]}
         activeKey={activeTab}
@@ -138,10 +146,24 @@ export function ProgressPage() {
                     const display = unit === 'lb'
                       ? Math.round((row.best ?? 0) * 2.2046 * 10) / 10
                       : Math.round((row.best ?? 0) * 10) / 10;
+                    // v1.2 — strength-to-bodyweight ratio (best 1RM / latest
+                    // logged weight). Only rendered when the user has weight
+                    // entries; staying quiet for weight-only-1RM users.
+                    const ratio = strengthToBodyweight(row.best, latestBodyweightKg);
                     return (
                       <div key={row.ex.id} className="progress-orm-row">
                         <span className="progress-orm-row__name">{row.ex.name}</span>
-                        <span className="progress-orm-row__value">{display} {unit}</span>
+                        <span className="progress-orm-row__value">
+                          {display} {unit}
+                          {ratio != null && (
+                            <span
+                              className="progress-orm-row__ratio"
+                              title="Strength-to-bodyweight ratio"
+                            >
+                              {' '}· {ratio.toFixed(2)}× BW
+                            </span>
+                          )}
+                        </span>
                       </div>
                     );
                   })}
@@ -180,6 +202,12 @@ export function ProgressPage() {
       </TabPanel>
 
       {showJumpModal && <JumpLogModal onClose={() => setShowJumpModal(false)} />}
+
+      {/* v1.2 — Body Metrics tab. The panel owns its own form, chart, photos
+          and prefs UI; ProgressPage just provides the tab slot. */}
+      <TabPanel tabKey="body" activeKey={activeTab}>
+        <BodyMetricsPanel />
+      </TabPanel>
 
       <TabPanel tabKey="history" activeKey={activeTab}>
         <>

@@ -1,0 +1,313 @@
+/* ── v1.2 Body Metrics Panel ────────────────────────────────────────── */
+
+.body-metrics-panel {
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+/* ── Prefs row ────────────────────────────────────────────────────────── */
+
+.body-metrics-prefs__row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+}
+
+.body-metrics-prefs__row + .body-metrics-prefs__row {
+  margin-top: 10px;
+}
+
+.body-metrics-prefs__label {
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  min-width: 56px;
+}
+
+.body-metrics-prefs__unit-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill, 999px);
+  overflow: hidden;
+}
+.body-metrics-prefs__unit-toggle button {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 14px;
+  background: transparent;
+  color: var(--text-muted);
+  border: none;
+  min-height: 44px;
+  cursor: pointer;
+}
+.body-metrics-prefs__unit-toggle button.is-on {
+  background: var(--accent, var(--lime));
+  color: var(--bg-base, #050505);
+}
+
+.body-metrics-prefs__chips {
+  display: flex;
+  gap: 6px;
+  flex-wrap: wrap;
+  flex: 1;
+}
+
+.body-chip {
+  font-size: 12px;
+  font-weight: 600;
+  padding: 8px 12px;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-pill, 999px);
+  background: transparent;
+  color: var(--text-muted);
+  cursor: pointer;
+  min-height: 44px;
+}
+.body-chip.is-on {
+  background: var(--accent, var(--lime));
+  color: var(--bg-base, #050505);
+  border-color: var(--accent, var(--lime));
+}
+
+/* ── Section header ──────────────────────────────────────────────────── */
+
+.body-metrics-section__title {
+  font-family: var(--font-display);
+  font-size: 16px;
+  font-weight: 700;
+  margin: 0 0 12px;
+}
+
+.body-metrics-section__header {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+.body-metrics-section__header .body-metrics-section__title {
+  margin: 0;
+}
+
+.body-metrics-section__subtle {
+  font-size: 10px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+/* ── Form ─────────────────────────────────────────────────────────────── */
+
+.body-metrics-form {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: 10px;
+  margin-bottom: 14px;
+}
+
+.body-metrics-form__field {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+.body-metrics-form__field span {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+}
+.body-metrics-form__field input,
+.body-metrics-form__field textarea {
+  background: var(--bg-surface, rgba(255,255,255,0.04));
+  border: 1px solid var(--border);
+  color: var(--text-primary);
+  padding: 10px 12px;
+  border-radius: var(--radius-sm, 6px);
+  font-family: inherit;
+  font-size: 14px;
+  min-height: 44px;
+}
+.body-metrics-form__field--full {
+  grid-column: 1 / -1;
+}
+
+/* ── Trend pill ──────────────────────────────────────────────────────── */
+
+.body-metrics-trend-pill {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 10px;
+  border-radius: var(--radius-pill, 999px);
+  border: 1px solid var(--border);
+}
+.body-metrics-trend-pill.is-down {
+  color: var(--success, #2bb673);
+  border-color: rgba(43,182,115,0.45);
+}
+.body-metrics-trend-pill.is-up {
+  color: var(--warning, #d29922);
+  border-color: rgba(210,153,34,0.45);
+}
+.body-metrics-trend-pill.is-flat {
+  color: var(--text-muted);
+}
+
+/* ── Chart ───────────────────────────────────────────────────────────── */
+
+.body-metrics-chart {
+  display: block;
+  margin-top: 6px;
+}
+.body-metrics-chart__line {
+  stroke: var(--accent, var(--lime));
+  stroke-width: 2;
+}
+.body-metrics-chart__ma {
+  stroke: var(--text-muted);
+  stroke-width: 1.5;
+  stroke-dasharray: 4 3;
+  opacity: 0.7;
+}
+.body-metrics-chart__axis {
+  fill: var(--text-muted);
+  font-size: 9px;
+  font-family: var(--font-mono, monospace);
+}
+
+/* ── List ────────────────────────────────────────────────────────────── */
+
+.body-metrics-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+.body-metrics-list__row {
+  display: grid;
+  grid-template-columns: 90px 1fr 44px;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 10px;
+  background: var(--bg-surface, rgba(255,255,255,0.04));
+  border-radius: var(--radius-sm, 6px);
+}
+.body-metrics-list__date {
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  color: var(--text-muted);
+}
+.body-metrics-list__values {
+  display: flex;
+  align-items: baseline;
+  gap: 10px;
+  flex-wrap: wrap;
+  font-size: 13px;
+}
+.body-metrics-list__meta {
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.body-metrics-list__delete {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  color: var(--text-muted);
+  min-width: 44px;
+  min-height: 44px;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+}
+
+/* ── Empty state copy ──────────────────────────────────────────────── */
+
+.body-metrics-empty {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-muted);
+  text-align: center;
+  padding: 16px 8px;
+}
+
+/* ── Photos ──────────────────────────────────────────────────────────── */
+
+.body-metrics-photo-capture {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  flex-wrap: wrap;
+  margin-bottom: 10px;
+}
+.body-metrics-photo-input {
+  /* Visually hidden but still keyboard-focusable via the linked <label>. */
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  opacity: 0;
+  pointer-events: none;
+}
+.body-metrics-photo-label {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  background: var(--accent, var(--lime));
+  color: var(--bg-base, #050505);
+  padding: 10px 16px;
+  border-radius: var(--radius-pill, 999px);
+  font-weight: 700;
+  font-size: 13px;
+  cursor: pointer;
+  min-height: 44px;
+}
+.body-metrics-photo-existing {
+  font-size: 11px;
+  color: var(--text-muted);
+  flex: 1;
+}
+.body-metrics-photo-notice {
+  font-size: 11px;
+  color: var(--text-muted);
+  padding: 6px 0 10px;
+}
+
+.body-metrics-photo-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(140px, 1fr));
+  gap: 8px;
+}
+.body-metrics-photo {
+  margin: 0;
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm, 6px);
+  overflow: hidden;
+  background: var(--bg-surface, rgba(255,255,255,0.04));
+}
+.body-metrics-photo img {
+  display: block;
+  width: 100%;
+  height: 140px;
+  object-fit: cover;
+}
+.body-metrics-photo__caption {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 6px 8px;
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  color: var(--text-muted);
+}
+.body-metrics-photo__delete {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  cursor: pointer;
+  min-width: 32px;
+  min-height: 32px;
+}

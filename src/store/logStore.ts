@@ -4,7 +4,8 @@ import { generateId } from '@/utils/helpers';
 import type { SessionLog, SetLog, VerticalJumpLog, StallFlag, StallFlagType } from '@/types/logging';
 import { useProgramStore } from '@/store/programStore';
 import { useNexusStore } from '@/store/nexusStore';
-import { mapSessionLogToNexus, pushOrQueue } from '@/lib/nexusSync';
+import { mapSessionLogToNexus } from '@/lib/nexusSync';
+import { enqueue as outboxEnqueue } from '@/lib/outbox';
 
 interface LogStore {
   sessionLogs: SessionLog[];
@@ -89,11 +90,19 @@ export const useLogStore = create<LogStore>((set, get) => ({
     const session = activeProgram?.sessions.find((s) => s.id === finalizedLog.sessionTemplateId);
     const payload = mapSessionLogToNexus(finalizedLog, session, exercises);
 
-    void pushOrQueue(payload).then((result) => {
-      const store = useNexusStore.getState();
-      store.refreshPendingCount();
-      if (result.ok) store.setLastPushAt(finalizedAt);
-    });
+    // v1.2 — route through outbox.enqueue instead of pushOrQueue. The
+    // outbox handles persistence, single-flight drain, attempt cap, and
+    // online/visibility re-triggering. nexusStore.refreshPendingCount reads
+    // from the outbox's getStatus, so the Settings card stays accurate. We
+    // optimistically stamp `lastPushAt` to the finalize time — the actual
+    // network round-trip happens on the outbox drain, which may be moments
+    // (online + signed in) or much later (offline / sign-in pending). The
+    // UI's "last push" stamp tracks user intent more usefully than the
+    // exact server-ack time.
+    outboxEnqueue('upsert_workout_session', payload);
+    const store = useNexusStore.getState();
+    store.refreshPendingCount();
+    store.setLastPushAt(finalizedAt);
   },
 
   unfinalizeSession: (logId) => {

@@ -1,10 +1,19 @@
 import { create } from 'zustand';
 import { Capacitor } from '@capacitor/core';
 import { supabase, isNexusConfigured } from '@/lib/supabase';
-import { drainPendingQueue, getPendingCount } from '@/lib/nexusSync';
 import { signInWithGoogle as oauthSignInWithGoogle, initOAuthDeepLinkListener } from '@/lib/oauth';
 import { setGuestMode, isGuestMode } from '@/lib/guestMode';
 import { inheritFromNexus } from '@/lib/suiteSso';
+// v1.2 — outbox replaces nexusSync's drainPendingQueue/getPendingCount as the
+// persistence + retry layer. The actual push handler (pushWorkoutToNexus) is
+// still in nexusSync.ts; the outbox dispatches to it via kind tables.
+import {
+  drain as outboxDrain,
+  getStatus as outboxStatus,
+  clear as outboxClear,
+  installDrainTriggers as outboxInstallTriggers,
+  type OutboxStatus,
+} from '@/lib/outbox';
 
 const SYNC_ENABLED_KEY = 'wt_nexus_sync_enabled';
 
@@ -25,6 +34,10 @@ interface NexusStore {
   lastError: string | null;
   pendingCount: number;
   lastPushAt: string | null;
+  /** v1.2 — full outbox snapshot for the Settings status panel. Includes
+   *  oldestEnqueuedAt, stuck count, lastError, lastSuccessAt — surfaced in
+   *  the NexusSyncCard for diagnostic visibility. */
+  outboxStatus: OutboxStatus;
 
   init: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
@@ -43,12 +56,17 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
   userEmail: null,
   loading: false,
   lastError: null,
-  pendingCount: getPendingCount(),
+  pendingCount: outboxStatus().pending,
+  outboxStatus: outboxStatus(),
   lastPushAt: null,
 
   init: async () => {
     if (!isNexusConfigured) return;
     initOAuthDeepLinkListener();
+    // v1.2 — install global drain triggers (window.online + visibilitychange).
+    // Idempotent — safe to call multiple times. Returns a teardown helper that
+    // we intentionally don't use; the listeners live for the app's lifetime.
+    outboxInstallTriggers();
     set({ loading: true });
     try {
       let user = (await supabase.auth.getUser()).data.user;
@@ -104,13 +122,16 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
           window.dispatchEvent(new CustomEvent('limelog:guest-mode-changed'));
         }
         if (!wasSignedIn && nowSignedIn && get().syncEnabled) {
-          void drainPendingQueue().then((result) => set({ pendingCount: result.remaining }));
+          void outboxDrain().then((result) => {
+            const status = outboxStatus();
+            set({ pendingCount: result.remaining, outboxStatus: status });
+          });
         }
       });
 
       if (user && get().syncEnabled) {
-        const result = await drainPendingQueue();
-        set({ pendingCount: result.remaining });
+        const result = await outboxDrain();
+        set({ pendingCount: result.remaining, outboxStatus: outboxStatus() });
       }
     } catch (err) {
       set({ loading: false, lastError: err instanceof Error ? err.message : String(err) });
@@ -127,8 +148,8 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
     set({ userEmail: data.user?.email ?? null, loading: false });
 
     if (get().syncEnabled) {
-      const result = await drainPendingQueue();
-      set({ pendingCount: result.remaining });
+      const result = await outboxDrain();
+      set({ pendingCount: result.remaining, outboxStatus: outboxStatus() });
     }
   },
 
@@ -156,6 +177,10 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
 
   signOut: async () => {
     set({ loading: true, lastError: null });
+    // v1.2 — clear the outbox BEFORE the auth round-trip. Anything not yet
+    // drained is forfeit vs. potentially leaking writes to the next signed-in
+    // user on a shared device. Matches StudyDesk's sign-out hygiene contract.
+    outboxClear();
     const { error } = await supabase.auth.signOut();
     if (error) {
       set({ loading: false, lastError: error.message });
@@ -183,7 +208,12 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
     // clear guestMode via their own success handlers.
     await setGuestMode(true);
     window.dispatchEvent(new CustomEvent('limelog:guest-mode-changed'));
-    set({ userEmail: null, loading: false });
+    set({
+      userEmail: null,
+      loading: false,
+      pendingCount: 0,
+      outboxStatus: outboxStatus(),
+    });
   },
 
   setSyncEnabled: (v) => {
@@ -192,13 +222,14 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
   },
 
   retryPending: async () => {
-    const result = await drainPendingQueue();
-    set({ pendingCount: result.remaining });
+    const result = await outboxDrain();
+    set({ pendingCount: result.remaining, outboxStatus: outboxStatus() });
     return result;
   },
 
   refreshPendingCount: () => {
-    set({ pendingCount: getPendingCount() });
+    const status = outboxStatus();
+    set({ pendingCount: status.pending, outboxStatus: status });
   },
 
   setLastPushAt: (iso) => {
