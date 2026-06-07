@@ -90,6 +90,25 @@ export async function savePhoto(
   file: File,
 ): Promise<{ photo: ProgressPhoto; evicted: number }> {
   const dataUrl = await fileToResizedJpeg(file);
+  return savePhotoFromDataUrl(date, dataUrl);
+}
+
+/** v1.2.1 — direct-data-URL save path for the @capacitor/camera plugin.
+ *
+ *  The @capacitor/camera plugin already applies width + quality at capture
+ *  time on the native side, so we skip the canvas re-encode. Used by the
+ *  native capture flow in BodyMetricsPanel — survives WebView process kill
+ *  during the camera intent because the plugin re-delivers the captured
+ *  image on Activity recreation, where `<input type="file">` would silently
+ *  drop the callback. Web build path keeps using `savePhoto(date, file)`
+ *  → canvas pipeline. */
+export async function savePhotoFromDataUrl(
+  date: string,
+  dataUrl: string,
+): Promise<{ photo: ProgressPhoto; evicted: number }> {
+  if (!dataUrl.startsWith('data:image/')) {
+    throw new Error('Invalid image data');
+  }
   const photo: ProgressPhoto = {
     date,
     dataUrl,

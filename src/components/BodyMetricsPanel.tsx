@@ -13,6 +13,12 @@
 // confronted with six empty inputs.
 
 import { useMemo, useRef, useState } from 'react';
+import { Capacitor } from '@capacitor/core';
+import {
+  Camera as CapacitorCamera,
+  CameraResultType,
+  CameraSource,
+} from '@capacitor/camera';
 import { Button, Card } from '@/components/ui';
 import { Camera, Trash2 } from 'lucide-react';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
@@ -30,6 +36,7 @@ import {
 } from '@/lib/bodyMetricsAnalysis';
 import {
   savePhoto,
+  savePhotoFromDataUrl,
   getPhoto,
   deletePhoto,
   listPhotos,
@@ -168,6 +175,64 @@ export function BodyMetricsPanel() {
     });
   }
 
+  // v1.2.1 — native capture via @capacitor/camera.
+  //
+  // Why this and not <input type="file" capture="environment">:
+  // the file-input path used `<input>` + WebChromeClient.onShowFileChooser
+  // to launch the camera intent. On low-memory Android devices the OS often
+  // kills LimeLog's process while the camera app is in the foreground —
+  // when the user finishes capturing, MainActivity is recreated, the
+  // WebView reloads index.html, the React tree mounts fresh, and the
+  // ValueCallback registered for the file picker is gone with the prior
+  // process. Net symptom: app appears to "reload to home" after capture
+  // and the photo is silently dropped.
+  //
+  // @capacitor/camera persists the capture URI on the native side and
+  // re-delivers the result on Activity recreation via a saved-instance
+  // bundle, so the Promise resolves correctly after process death. The
+  // plugin also applies width + quality at capture time, so we skip the
+  // canvas resize on this path (savePhotoFromDataUrl bypasses it).
+  //
+  // Web path keeps using <input type="file"> + canvas pipeline — no
+  // process-kill risk in a browser tab, and Capacitor.isNativePlatform()
+  // gates the plugin call so non-Android builds don't fail at import.
+  async function capturePhotoNative() {
+    setPhotoNotice(null);
+    try {
+      const photo = await CapacitorCamera.getPhoto({
+        quality: 72,
+        width: 600,
+        // Matches our existing canvas resize bounds. The plugin scales
+        // the long edge to `width` while preserving aspect, identical to
+        // the web canvas pipeline's `MAX_WIDTH=600`.
+        allowEditing: false,
+        resultType: CameraResultType.DataUrl,
+        source: CameraSource.Camera,
+        saveToGallery: false,
+        // promptLabelHeader is only shown when source is Prompt — we go
+        // straight to camera here, so it's unused but harmless to omit.
+      });
+      const dataUrl = photo.dataUrl;
+      if (!dataUrl) {
+        setPhotoNotice('Camera returned no image.');
+        return;
+      }
+      const { evicted } = await savePhotoFromDataUrl(form.date, dataUrl);
+      setPhotosNonce((n) => n + 1);
+      if (evicted > 0) {
+        setPhotoNotice(
+          `Saved. Oldest ${evicted} photo${evicted === 1 ? '' : 's'} removed to free space.`,
+        );
+      }
+    } catch (err) {
+      const msg = err instanceof Error ? err.message : String(err);
+      // User-cancelled is the plugin's standard "User cancelled photos
+      // app" error — silently no-op instead of flashing a scary message.
+      if (/cancel/i.test(msg)) return;
+      setPhotoNotice(msg || 'Could not save photo.');
+    }
+  }
+
   async function handlePhotoCapture(e: React.ChangeEvent<HTMLInputElement>) {
     const file = e.target.files?.[0];
     if (!file) return;
@@ -184,6 +249,8 @@ export function BodyMetricsPanel() {
     // Reset input so the same file path can be re-selected.
     if (fileInputRef.current) fileInputRef.current.value = '';
   }
+
+  const useNativeCapture = Capacitor.isNativePlatform();
 
   function handlePhotoDelete(p: ProgressPhoto) {
     if (!confirm(`Delete photo from ${p.date}?`)) return;
@@ -399,18 +466,34 @@ export function BodyMetricsPanel() {
           <span className="body-metrics-section__subtle">Local only · never synced</span>
         </div>
         <div className="body-metrics-photo-capture">
-          <input
-            ref={fileInputRef}
-            id="body-metrics-photo-input"
-            type="file"
-            accept="image/*"
-            capture="environment"
-            onChange={handlePhotoCapture}
-            className="body-metrics-photo-input"
-          />
-          <label htmlFor="body-metrics-photo-input" className="body-metrics-photo-label">
-            <Camera size={14} aria-hidden /> Capture for {form.date}
-          </label>
+          {useNativeCapture ? (
+            // v1.2.1 — native capture button. Uses @capacitor/camera so the
+            // capture survives process kill while the camera app is in the
+            // foreground (Android low-memory devices were silently losing
+            // photos via the <input type="file"> path).
+            <button
+              type="button"
+              className="body-metrics-photo-label"
+              onClick={capturePhotoNative}
+            >
+              <Camera size={14} aria-hidden /> Capture for {form.date}
+            </button>
+          ) : (
+            <>
+              <input
+                ref={fileInputRef}
+                id="body-metrics-photo-input"
+                type="file"
+                accept="image/*"
+                capture="environment"
+                onChange={handlePhotoCapture}
+                className="body-metrics-photo-input"
+              />
+              <label htmlFor="body-metrics-photo-input" className="body-metrics-photo-label">
+                <Camera size={14} aria-hidden /> Capture for {form.date}
+              </label>
+            </>
+          )}
           {photoForFormDate && (
             <span className="body-metrics-photo-existing">
               Photo already saved for this date — capturing will overwrite.

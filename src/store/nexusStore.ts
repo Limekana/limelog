@@ -14,6 +14,18 @@ import {
   installDrainTriggers as outboxInstallTriggers,
   type OutboxStatus,
 } from '@/lib/outbox';
+// v1.2.1 — AUDIT-LL-FSG-2: stores whose state we wipe on sign-out so
+// User A's workout history / body data / progress photos don't surface
+// under User B on a shared device. The cloud-side replay path is already
+// closed (outboxClear above), so this is the LOCAL view-only leak fix.
+// useProgramStore is intentionally NOT wiped — programs / exercises /
+// workout templates are tool configuration, not history, and a global
+// wipe would clobber the user's custom builtin overrides + force a
+// re-seed of BUILTIN_EXERCISES that would lose their tweaks. The
+// per-user scope of programs is tracked as a v1.3 design item.
+import { useLogStore } from '@/store/logStore';
+import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
+import { DEFAULT_PREFS as DEFAULT_BODY_METRICS_PREFS } from '@/types/bodyMetrics';
 
 const SYNC_ENABLED_KEY = 'wt_nexus_sync_enabled';
 
@@ -181,6 +193,37 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
     // drained is forfeit vs. potentially leaking writes to the next signed-in
     // user on a shared device. Matches StudyDesk's sign-out hygiene contract.
     outboxClear();
+    // v1.2.1 — AUDIT-LL-FSG-2: wipe the personal-data stores so the next
+    // signed-in user (on a shared device) doesn't inherit User A's
+    // workout history, bodyweight log, or progress photos in the UI.
+    // Cloud-side data stays scoped to A's user_id; this only addresses
+    // the on-device residue. Wipe order doesn't matter — each call
+    // both clears the in-memory zustand state and removes the underlying
+    // localStorage key so a refresh after sign-out doesn't re-hydrate.
+    try {
+      localStorage.removeItem('wt_session_logs');
+      localStorage.removeItem('wt_jump_logs');
+      localStorage.removeItem('wt_stall_flags');
+      useLogStore.setState({ sessionLogs: [], jumpLogs: [], stallFlags: [] });
+    } catch (e) {
+      console.warn('[nexus] log-store wipe failed:', e);
+    }
+    try {
+      localStorage.removeItem('limelog-body-metrics');
+      localStorage.removeItem('limelog-body-metrics-prefs');
+      // bodyMetricsStore reads DEFAULT_PREFS from types/bodyMetrics on the
+      // next mount; the setState below restores in-memory state to that
+      // baseline so an already-mounted BodyMetricsPanel re-renders empty
+      // immediately rather than holding A's last-seen values.
+      useBodyMetricsStore.setState({ metrics: [], prefs: DEFAULT_BODY_METRICS_PREFS });
+    } catch (e) {
+      console.warn('[nexus] body-metrics wipe failed:', e);
+    }
+    try {
+      localStorage.removeItem('limelog-progress-photos');
+    } catch (e) {
+      console.warn('[nexus] progress-photos wipe failed:', e);
+    }
     const { error } = await supabase.auth.signOut();
     if (error) {
       set({ loading: false, lastError: error.message });

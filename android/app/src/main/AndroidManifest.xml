@@ -1,12 +1,15 @@
 <?xml version="1.0" encoding="utf-8" ?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android">
     <application
-        android:allowBackup="true"
+        android:allowBackup="false"
+        android:fullBackupContent="@xml/backup_rules"
+        android:dataExtractionRules="@xml/data_extraction_rules"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
-        android:theme="@style/AppTheme">
+        android:theme="@style/AppTheme"
+        android:usesCleartextTraffic="false">
         <activity
             android:configChanges="orientation|keyboardHidden|keyboard|screenSize|locale|smallestScreenSize|screenLayout|uiMode|navigation|density"
             android:name=".MainActivity"
@@ -40,6 +43,18 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- v1.2.1 — required by @capacitor/camera for the Body Metrics
+         progress-photo capture flow. The plugin replaces the
+         <input type="file" capture="environment"> path, which silently
+         dropped photos on low-memory Android devices when the OS killed
+         LimeLog's WebView while the camera app was in the foreground.
+         The plugin persists the capture URI across Activity recreation,
+         so the photo is delivered correctly even after process death.
+         Permission scope is read-only at runtime — captured frames go
+         straight to LimeLog's WebView localStorage and never leave the
+         device (progress photos are explicitly local-only by design). -->
+    <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- v1.1.1 — Android 11+ package visibility for cross-app SSO. Apps
          must explicitly declare which other packages / providers they
