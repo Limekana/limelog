@@ -1,0 +1,81 @@
+.body-page {
+  padding: 20px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.body-page__title {
+  font-family: var(--font-display);
+  font-size: 28px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  line-height: 1;
+  margin: 0;
+}
+
+.body-page__subtitle {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary, #8a8a8a);
+  margin: -8px 0 0;
+}
+
+/* Journey card — all-time current-vs-starting weight */
+.body-journey__row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+}
+.body-journey__stat {
+  display: flex;
+  flex-direction: column;
+  gap: 3px;
+}
+.body-journey__stat--right {
+  align-items: flex-end;
+  text-align: right;
+}
+.body-journey__label {
+  font-size: 10px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary, #8a8a8a);
+}
+.body-journey__value {
+  font-family: var(--font-display);
+  font-size: 24px;
+  font-weight: 700;
+  line-height: 1;
+}
+.body-journey__date {
+  font-size: 10px;
+  color: var(--text-secondary, #8a8a8a);
+}
+.body-journey__arrow {
+  color: var(--accent);
+  font-size: 20px;
+  flex-shrink: 0;
+}
+.body-journey__delta {
+  margin-top: 12px;
+  text-align: center;
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+}
+.body-journey__delta.is-down {
+  color: var(--accent);
+}
+.body-journey__delta.is-up {
+  color: var(--warning, #d9a441);
+}
+.body-journey__delta.is-flat {
+  color: var(--text-secondary, #8a8a8a);
+}

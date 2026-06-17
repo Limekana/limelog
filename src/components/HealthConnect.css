@@ -1,0 +1,113 @@
+/* Health Connect strip + card (v1.3 BUG-20) */
+
+.hc-strip {
+  display: flex;
+  align-items: center;
+  gap: 24px;
+  padding: 12px 14px;
+  background: var(--surface, #16181a);
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.08));
+  border-radius: var(--radius-md, 8px);
+}
+
+.hc-strip--connect {
+  width: 100%;
+  justify-content: center;
+  gap: 8px;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+}
+
+.hc-metric {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+.hc-metric__icon {
+  color: var(--accent);
+  align-self: center;
+  display: inline-flex;
+}
+.hc-metric__value {
+  font-family: var(--font-display);
+  font-size: 20px;
+  font-weight: 700;
+  line-height: 1;
+}
+.hc-metric__label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-secondary, #8a8a8a);
+}
+
+/* Activity card on the Body page */
+.hc-card__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 12px;
+}
+.hc-card__title {
+  font-family: var(--font-display);
+  font-size: 15px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin: 0;
+}
+.hc-card__source {
+  font-size: 9px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  color: var(--text-secondary, #8a8a8a);
+}
+.hc-card__empty {
+  font-size: 13px;
+  color: var(--text-secondary, #8a8a8a);
+  margin: 0 0 12px;
+}
+.hc-card__today {
+  display: flex;
+  gap: 28px;
+  margin-bottom: 14px;
+}
+
+.hc-bars {
+  display: flex;
+  align-items: flex-end;
+  gap: 6px;
+  height: 72px;
+}
+.hc-bars__col {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 4px;
+  height: 100%;
+}
+.hc-bars__track {
+  width: 100%;
+  flex: 1;
+  display: flex;
+  align-items: flex-end;
+  background: var(--surface-2, rgba(255, 255, 255, 0.04));
+  border-radius: 2px;
+  overflow: hidden;
+}
+.hc-bars__fill {
+  width: 100%;
+  min-height: 2px;
+  background: var(--accent);
+  border-radius: 2px 2px 0 0;
+}
+.hc-bars__label {
+  font-size: 9px;
+  color: var(--text-secondary, #8a8a8a);
+}

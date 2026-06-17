@@ -1,5 +1,5 @@
 import { Outlet, NavLink } from 'react-router-dom';
-import { Calendar, BarChart2, Layers, User, BookOpen } from 'lucide-react';
+import { Calendar, BarChart2, Layers, User, BookOpen, Scale } from 'lucide-react';
 import './Layout.css';
 
 const NAV_ITEMS = [
@@ -7,6 +7,9 @@ const NAV_ITEMS = [
   { to: '/program',  icon: Layers,    label: 'Program'  },
   { to: '/library',  icon: BookOpen,  label: 'Library'  },
   { to: '/progress', icon: BarChart2, label: 'Progress' },
+  // v1.3 BUG-19 — body metrics promoted from a ProgressPage tab to its own
+  // first-class destination (LimeLog is the sole owner after NCC's cut).
+  { to: '/body',     icon: Scale,     label: 'Body'     },
   { to: '/profile',  icon: User,      label: 'Profile'  },
 ] as const;
 

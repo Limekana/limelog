@@ -17,8 +17,10 @@
   --text-inverse: #0d0f11;
 
   --accent: #c8f135;
+  --accent-hot: #d6ff3d;
   --accent-dim: rgba(200, 241, 53, 0.12);
   --accent-border: rgba(200, 241, 53, 0.30);
+  --accent-veil: rgba(200, 241, 53, 0.04);
 
   --danger: #ff5757;
   --danger-dim: rgba(255, 87, 87, 0.12);
@@ -32,10 +34,15 @@
   --info: #60a5fa;
   --info-dim: rgba(96, 165, 250, 0.12);
 
-  --radius-sm: 6px;
-  --radius-md: 10px;
-  --radius-lg: 14px;
-  --radius-xl: 20px;
+  --radius-pill: 2px;
+  --radius-sm: 4px;
+  --radius-md: 6px;
+  --radius-lg: 8px;
+  --radius-xl: 12px;
+
+  --ease-snap: cubic-bezier(0.2, 0.9, 0.2, 1);
+  --ease-strike: cubic-bezier(0.4, 0, 0.1, 1);
+  --ease-rise: cubic-bezier(0.16, 1, 0.3, 1);
 
   --nav-height: 64px;
   --header-height: 56px;
@@ -60,7 +67,22 @@ body {
   background: var(--bg-base);
   color: var(--text-primary);
   -webkit-font-smoothing: antialiased;
+  position: relative;
 }
+
+body::before {
+  content: '';
+  position: fixed;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  background:
+    radial-gradient(440px circle at 8% 4%, rgba(200, 241, 53, 0.08), transparent 55%),
+    radial-gradient(380px circle at 94% 20%, rgba(200, 241, 53, 0.05), transparent 55%),
+    radial-gradient(300px circle at 60% 78%, rgba(200, 241, 53, 0.03), transparent 60%);
+}
+
+#root { position: relative; z-index: 1; }
 
 button {
   font-family: var(--font-body);

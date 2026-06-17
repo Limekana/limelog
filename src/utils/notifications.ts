@@ -32,6 +32,27 @@ const ACTION_TYPE_ID = 'workout-reminder';
 export const WORKOUT_ACTION_START = 'start';
 
 /**
+ * v1.3.1 BUG-12 — wide ID range for the legacy phantom-alarm sweep. The
+ * v1.0.3 LL-1 fix only cancelled IDs 100–106 (the current BASE_ID + 0..6
+ * scheme). But the v1.0 release scheduled notifications with IDs derived
+ * from `session.id` hashes — arbitrary numbers that landed across the
+ * full int32 space. Those phantom alarms outlive the SharedPreferences
+ * entry the plugin uses to track them (see docstring on cancelAllSlots),
+ * so `getPending()` can't see them but they keep firing on the user's
+ * pre-v1.0.3 schedule whenever they pick up the wrong day-of-week. We
+ * sweep a generous 0–999 range every reschedule and at app start to
+ * vacuum the AlarmManager queue clean of historical entries. Cancel on
+ * a non-existent ID is a no-op on Android, so the sweep is cheap.
+ *
+ * The current scheme uses IDs 100–106 only; the 0–999 sweep is a
+ * defense-in-depth net for any LimeLog install that ever ran a pre-v1.3.1
+ * build. Future versions can shrink this once we're confident no v1.0/v1.1
+ * installs remain in the field.
+ */
+const LEGACY_SWEEP_LOW = 0;
+const LEGACY_SWEEP_HIGH = 999;
+
+/**
  * Unconditional cancel of every reserved slot.
  *
  * Why blind-cancel instead of `getPending() → filter → cancel`:
@@ -48,16 +69,25 @@ export const WORKOUT_ACTION_START = 'start';
  *   3. Switching active programs (Mon/Wed/Fri → Tue/Thu) used to leak the
  *      old day-slots: Mon/Wed/Fri alarms with the old session bodies kept
  *      firing because `getPending()` couldn't see them to cancel them.
+ *   4. v1.3.1 BUG-12: pre-v1.0.3 installs scheduled notifications with
+ *      arbitrary IDs (not yet pinned to BASE_ID + dayOfWeek). Those
+ *      phantom alarms survive the LL-1 v1.0.3 fix because cancelAllSlots
+ *      only swept the current 7-slot range. We now also sweep 0–999
+ *      defensively to catch any legacy ID — see LEGACY_SWEEP_LOW/HIGH.
  *
  * Cancelling each ID blindly always reaches the underlying alarm because
  * `AlarmManager.cancel(PendingIntent)` matches on intent action + ID, not
  * on SharedPreferences presence. Calling `cancel` on a non-existent ID is
- * a no-op on Android — safe to call all 7 every time.
+ * a no-op on Android — safe to sweep an entire range every time.
  */
 async function cancelAllSlots(): Promise<void> {
-  const allSlotIds = Array.from({ length: SLOT_COUNT }, (_, i) => ({
-    id: BASE_ID + i,
-  }));
+  // Build the union of current-scheme slot IDs + legacy sweep range. The
+  // overlap is harmless (the current 100–106 IDs sit inside 0–999) and the
+  // Set dedupe just keeps the request payload tidy.
+  const ids = new Set<number>();
+  for (let i = 0; i < SLOT_COUNT; i++) ids.add(BASE_ID + i);
+  for (let i = LEGACY_SWEEP_LOW; i <= LEGACY_SWEEP_HIGH; i++) ids.add(i);
+  const allSlotIds = Array.from(ids, (id) => ({ id }));
   try {
     // Diagnostic: log what SharedPreferences still thinks is pending so a
     // logcat sweep can confirm phantom alarms (those NOT in this list but
@@ -66,9 +96,19 @@ async function cancelAllSlots(): Promise<void> {
     const ours = pending.filter(
       (n: { id: number }) => n.id >= BASE_ID && n.id < BASE_ID + SLOT_COUNT,
     );
-    console.log(
-      `[notifications] cancelAllSlots: getPending reports ${ours.length} in our range — blind-cancelling all ${SLOT_COUNT} regardless`,
+    const legacy = pending.filter(
+      (n: { id: number }) =>
+        (n.id >= LEGACY_SWEEP_LOW && n.id <= LEGACY_SWEEP_HIGH) &&
+        !(n.id >= BASE_ID && n.id < BASE_ID + SLOT_COUNT),
     );
+    console.log(
+      `[notifications] cancelAllSlots: getPending reports ${ours.length} current-scheme + ${legacy.length} legacy IDs visible — blind-cancelling ${allSlotIds.length} slot IDs across 0–999 + ${BASE_ID}–${BASE_ID + SLOT_COUNT - 1}`,
+    );
+    if (legacy.length > 0) {
+      console.log(
+        `[notifications] legacy phantom IDs detected: ${legacy.map((n: { id: number }) => n.id).join(', ')}`,
+      );
+    }
   } catch {
     /* getPending failed — cancel anyway */
   }

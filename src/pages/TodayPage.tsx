@@ -7,6 +7,7 @@ import { getDayOfWeek } from '@/utils/helpers';
 import { bestEstimateForExercise, missedRepRatio } from '@/utils/oneRepMax';
 import { EmptyState, Button, Badge } from '@/components/ui';
 import { Dumbbell, AlertTriangle, CheckCircle2, TrendingUp, ChevronRight } from 'lucide-react';
+import { HealthTodayStrip } from '@/components/HealthConnect';
 import './TodayPage.css';
 
 function isSameLocalDay(iso: string, now: Date): boolean {
@@ -144,6 +145,10 @@ export function TodayPage() {
           />
         )}
       </div>
+
+      {/* v1.3 BUG-20 — Health Connect daily activity strip. Renders nothing
+          when Health Connect is unavailable (web / F-Droid / no HC app). */}
+      <HealthTodayStrip />
 
       {activeStalls.length > 0 && (
         <div className="today-alert">

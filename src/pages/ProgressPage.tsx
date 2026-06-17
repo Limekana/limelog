@@ -8,14 +8,14 @@ import { EmptyState, Card, Button, Tabs, TabPanel } from '@/components/ui';
 import { JumpLogModal } from '@/components/JumpLogModal';
 import { LoadChart } from '@/components/LoadChart';
 import { OneRMChart } from '@/components/OneRMChart';
-import { BodyMetricsPanel } from '@/components/BodyMetricsPanel';
 import { bestEstimateForExercise } from '@/utils/oneRepMax';
 import { strengthToBodyweight } from '@/lib/bodyMetricsAnalysis';
 import { BarChart2, TrendingUp, Zap } from 'lucide-react';
 import './ProgressPage.css';
 
-// v1.2 — added 'body' tab for the body-metrics panel.
-type ProgressTab = 'load' | 'orm' | 'jump' | 'body' | 'history';
+// v1.3 — the Body tab was promoted to its own /body page (BUG-19); ProgressPage
+// keeps the training-analytics tabs only.
+type ProgressTab = 'load' | 'orm' | 'jump' | 'history';
 
 export function ProgressPage() {
   const { programs, exercises } = useProgramStore();
@@ -58,7 +58,6 @@ export function ProgressPage() {
           { key: 'load', label: 'Load Trends' },
           { key: 'orm', label: 'Est. 1RM' },
           { key: 'jump', label: 'Vertical Jump' },
-          { key: 'body', label: 'Body' },
           { key: 'history', label: 'History' },
         ]}
         activeKey={activeTab}
@@ -202,12 +201,6 @@ export function ProgressPage() {
       </TabPanel>
 
       {showJumpModal && <JumpLogModal onClose={() => setShowJumpModal(false)} />}
-
-      {/* v1.2 — Body Metrics tab. The panel owns its own form, chart, photos
-          and prefs UI; ProgressPage just provides the tab slot. */}
-      <TabPanel tabKey="body" activeKey={activeTab}>
-        <BodyMetricsPanel />
-      </TabPanel>
 
       <TabPanel tabKey="history" activeKey={activeTab}>
         <>

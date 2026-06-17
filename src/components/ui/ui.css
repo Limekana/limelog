@@ -1,23 +1,24 @@
-/* ── Badges ─────────────────────────────────────── */
+/* ── Badges / Pills (v1.3 brutalist) ─────────────── */
 .badge {
   display: inline-flex;
   align-items: center;
   font-family: var(--font-display);
   font-size: 11px;
   font-weight: 600;
-  letter-spacing: 0.05em;
+  letter-spacing: 0.10em;
   text-transform: uppercase;
-  padding: 3px 8px;
-  border-radius: var(--radius-sm);
+  padding: 4px 9px;
+  border-radius: var(--radius-pill);
   white-space: nowrap;
+  line-height: 1;
 }
-.badge--md { font-size: 13px; padding: 4px 10px; }
+.badge--md { font-size: 13px; padding: 5px 11px; letter-spacing: 0.08em; }
 .badge--accent  { background: var(--accent-dim);   color: var(--accent);   border: 1px solid var(--accent-border); }
 .badge--danger  { background: var(--danger-dim);   color: var(--danger);   border: 1px solid rgba(255,87,87,0.3); }
 .badge--warning { background: var(--warning-dim);  color: var(--warning);  border: 1px solid rgba(245,165,36,0.3); }
 .badge--success { background: var(--success-dim);  color: var(--success);  border: 1px solid rgba(74,222,128,0.3); }
 .badge--info    { background: var(--info-dim);     color: var(--info);     border: 1px solid rgba(96,165,250,0.3); }
-.badge--muted   { background: var(--bg-overlay);   color: var(--text-secondary); border: 1px solid var(--border-subtle); }
+.badge--muted   { background: transparent;          color: var(--text-secondary); border: 1px solid var(--border-strong); }
 
 /* ── Buttons ─────────────────────────────────────── */
 .btn {

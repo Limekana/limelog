@@ -1,30 +1,58 @@
 .weight-up-modal__overlay {
   position: fixed;
   inset: 0;
-  background: rgba(0, 0, 0, 0.6);
+  background: rgba(0, 0, 0, 0.45);
   display: flex;
   align-items: flex-end;
   justify-content: center;
   z-index: 100;
-  padding: 16px;
+  padding: 0 0 env(safe-area-inset-bottom, 0px);
+  animation: weightModalFade 140ms var(--ease-strike);
+}
+
+@keyframes weightModalFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
 }
 
 .weight-up-modal {
-  background: var(--bg-surface);
-  border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-lg);
-  padding: 20px;
+  background: rgba(13, 15, 17, 0.68);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--accent-border);
+  border-radius: 0;
+  padding: 22px 20px 20px;
   width: 100%;
-  max-width: 420px;
+  max-width: 430px;
   display: flex;
   flex-direction: column;
   gap: 14px;
+  position: relative;
+  animation: weightModalRise 260ms var(--ease-rise);
+}
+
+@keyframes weightModalRise {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.weight-up-modal::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 4px;
+  background: rgba(200, 241, 53, 0.45);
 }
 
 .weight-up-modal__header {
   display: flex;
   align-items: center;
   gap: 10px;
+  margin-top: 4px;
 }
 
 .weight-up-modal__title {
@@ -32,7 +60,8 @@
   font-size: 17px;
   font-weight: 700;
   color: var(--text-primary);
-  letter-spacing: 0.01em;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
 }
 
 .weight-up-modal__body {
@@ -52,11 +81,12 @@
   display: flex;
   align-items: center;
   gap: 12px;
-  padding: 10px 12px;
-  background: var(--bg-overlay);
+  padding: 12px;
+  background: rgba(255, 255, 255, 0.04);
   border: 1px solid var(--border-subtle);
-  border-radius: var(--radius-md);
+  border-radius: var(--radius-pill);
   cursor: pointer;
+  min-height: 44px;
 }
 
 .weight-up-modal__checkbox {
@@ -75,15 +105,21 @@
 }
 
 .weight-up-modal__item-name {
-  font-size: 14px;
-  font-weight: 500;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
   color: var(--text-primary);
 }
 
 .weight-up-modal__item-increment {
+  font-family: var(--font-display);
   font-size: 13px;
-  font-weight: 600;
+  font-weight: 700;
   color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  letter-spacing: 0.02em;
 }
 
 .weight-up-modal__actions {

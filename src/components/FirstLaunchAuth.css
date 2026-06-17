@@ -62,12 +62,12 @@
 
 .fla-title {
   font-family: 'Barlow Condensed', system-ui, sans-serif;
-  font-weight: 600;
-  font-size: 22px;
-  line-height: 1.1;
-  margin-bottom: 4px;
+  font-weight: 700;
+  font-size: 24px;
+  line-height: 1;
+  margin-bottom: 6px;
   text-transform: uppercase;
-  letter-spacing: 0.01em;
+  letter-spacing: 0.04em;
 }
 
 .fla-sub {

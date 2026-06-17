@@ -29,7 +29,26 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="com.limecore.workouttracker" android:host="auth" />
             </intent-filter>
+
+            <!-- v1.3 BUG-20 — Health Connect privacy-rationale intent (required
+                 by Health Connect to surface its permissions UI). -->
+            <intent-filter>
+                <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+            </intent-filter>
         </activity>
+
+        <!-- v1.3 BUG-20 — alias Health Connect uses on Android < 14 to show the
+             permissions-usage screen. Mirrors NCC's proven Health Connect setup. -->
+        <activity-alias
+            android:name="ViewPermissionUsageActivity"
+            android:exported="true"
+            android:targetActivity=".MainActivity"
+            android:permission="android.permission.START_VIEW_PERMISSION_USAGE">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW_PERMISSION_USAGE" />
+                <category android:name="android.intent.category.HEALTH_PERMISSIONS" />
+            </intent-filter>
+        </activity-alias>
 
         <provider
             android:name="androidx.core.content.FileProvider"
@@ -56,6 +75,13 @@
          device (progress photos are explicitly local-only by design). -->
     <uses-permission android:name="android.permission.CAMERA" />
 
+    <!-- v1.3 BUG-20 — Health Connect read-only access to steps + active
+         calories. androidx.health.connect (Jetpack), NOT GMS — F-Droid clean.
+         (Declaring the Health Connect package under <queries> below is package
+         visibility, not a Play-Services dependency.) -->
+    <uses-permission android:name="android.permission.health.READ_STEPS" />
+    <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED" />
+
     <!-- v1.1.1 — Android 11+ package visibility for cross-app SSO. Apps
          must explicitly declare which other packages / providers they
          intend to interact with. Without this <queries> entry,
@@ -65,5 +91,10 @@
          no custom permission needed. -->
     <queries>
         <provider android:authorities="com.limecore.nexus.session" />
+        <!-- v1.3 BUG-20 — Health Connect app visibility (Android 11+). -->
+        <package android:name="com.google.android.apps.healthdata" />
+        <intent>
+            <action android:name="androidx.health.ACTION_SHOW_PERMISSIONS_RATIONALE" />
+        </intent>
     </queries>
 </manifest>

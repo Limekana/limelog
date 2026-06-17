@@ -8,6 +8,7 @@ import { Layout } from '@/components/Layout';
 import { TodayPage } from '@/pages/TodayPage';
 import { ProgramPage } from '@/pages/ProgramPage';
 import { ProgressPage } from '@/pages/ProgressPage';
+import { BodyMetricsPage } from '@/pages/BodyMetricsPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 import { LibraryPage } from '@/pages/LibraryPage';
 import { WorkoutPage } from '@/pages/WorkoutPage';
@@ -170,6 +171,7 @@ export default function App() {
           <Route path="/program" element={<ProgramPage />} />
           <Route path="/library" element={<LibraryPage />} />
           <Route path="/progress" element={<ProgressPage />} />
+          <Route path="/body" element={<BodyMetricsPage />} />
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Routes>

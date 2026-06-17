@@ -1,6 +1,6 @@
 {
   "name": "workout-tracker",
-  "version": "1.2.1",
+  "version": "1.4.0",
   "private": true,
   "type": "module",
   "scripts": {
@@ -18,6 +18,7 @@
     "@capacitor/cli": "^8.3.1",
     "@capacitor/core": "^8.3.1",
     "@capacitor/local-notifications": "^8.0.2",
+    "@devmaxime/capacitor-health-connect": "^1.1.0",
     "@supabase/supabase-js": "^2.105.4",
     "clsx": "^2.1.1",
     "date-fns": "^3.6.0",
