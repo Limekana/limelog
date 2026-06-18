@@ -82,7 +82,7 @@ const EMPTY_FORM: FormState = {
   notes: '',
 };
 
-export function BodyMetricsPanel() {
+export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } = {}) {
   const metrics = useBodyMetricsStore((s) => s.metrics);
   const prefs = useBodyMetricsStore((s) => s.prefs);
   const addOrUpdate = useBodyMetricsStore((s) => s.addOrUpdate);
@@ -394,7 +394,9 @@ export function BodyMetricsPanel() {
         </Button>
       </Card>
 
-      {/* Trend chart */}
+      {/* Trend chart — suppressed when the page renders its own summary card
+          (BodyMetricsSummaryCard) so we don't show two weight charts. */}
+      {showTrend && (
       <Card padding="md">
         <div className="body-metrics-section__header">
           <h3 className="body-metrics-section__title">Weight trend</h3>
@@ -424,6 +426,7 @@ export function BodyMetricsPanel() {
           <WeightChart series={series} isImperial={isImperial} />
         )}
       </Card>
+      )}
 
       {/* Recent entries */}
       {sorted.length > 0 && (

@@ -19,6 +19,46 @@
   100% { opacity: 0; }
 }
 
+/* v1.4.1 — slim top bar hosting the profile avatar (Profile/Settings moved
+   off the bottom nav). Transparent so the ambient lime mesh shows through. */
+.app-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  min-height: 48px;
+  padding: 8px 16px calc(8px) 16px;
+  padding-top: calc(env(safe-area-inset-top, 0px) + 8px);
+  flex-shrink: 0;
+}
+
+.app-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  border: 1px solid var(--accent-border);
+  background: var(--bg-surface);
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-decoration: none;
+  transition: background 160ms var(--ease-snap), color 160ms var(--ease-snap), border-color 160ms var(--ease-snap);
+  -webkit-tap-highlight-color: transparent;
+}
+
+.app-avatar:active { background: var(--accent-veil); }
+
+.app-avatar--active {
+  background: var(--accent);
+  color: var(--bg-base);
+  border-color: var(--accent);
+}
+
 .app-main {
   flex: 1;
   overflow-y: auto;

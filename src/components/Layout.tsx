@@ -1,5 +1,6 @@
 import { Outlet, NavLink } from 'react-router-dom';
-import { Calendar, BarChart2, Layers, User, BookOpen, Scale } from 'lucide-react';
+import { Calendar, BarChart2, Layers, BookOpen, Scale } from 'lucide-react';
+import { useUserStore } from '@/store/userStore';
 import './Layout.css';
 
 const NAV_ITEMS = [
@@ -10,12 +11,32 @@ const NAV_ITEMS = [
   // v1.3 BUG-19 — body metrics promoted from a ProgressPage tab to its own
   // first-class destination (LimeLog is the sole owner after NCC's cut).
   { to: '/body',     icon: Scale,     label: 'Body'     },
-  { to: '/profile',  icon: User,      label: 'Profile'  },
+  // v1.4.1 — Profile/Settings moved off the bottom bar to the top-right avatar
+  // (matches NCC + StudyDesk). The /profile route still exists.
 ] as const;
 
+// Initials for the top-right avatar, derived from the local profile name.
+function profileInitials(name: string): string {
+  const parts = (name || '').trim().split(/\s+/).filter(Boolean);
+  if (parts.length === 0) return '·';
+  if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
+  return (parts[0][0] + parts[1][0]).toUpperCase();
+}
+
 export function Layout() {
+  const name = useUserStore((s) => s.profile.name);
   return (
     <div className="app-shell">
+      <header className="app-topbar">
+        <NavLink
+          to="/profile"
+          className={({ isActive }) => `app-avatar${isActive ? ' app-avatar--active' : ''}`}
+          aria-label="Profile & settings"
+          title="Profile & settings"
+        >
+          {profileInitials(name)}
+        </NavLink>
+      </header>
       <main className="app-main">
         <Outlet />
       </main>
