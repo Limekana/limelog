@@ -73,6 +73,8 @@
          Permission scope is read-only at runtime — captured frames go
          straight to LimeLog's WebView localStorage and never leave the
          device (progress photos are explicitly local-only by design). -->
+    <!-- Declare camera hardware as optional for Chrome OS compatibility. -->
+    <uses-feature android:name="android.hardware.camera" android:required="false" />
     <uses-permission android:name="android.permission.CAMERA" />
 
     <!-- v1.3 BUG-20 — Health Connect read-only access to steps + active
