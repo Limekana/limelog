@@ -8,6 +8,7 @@ import { playRestComplete } from '@/utils/audio';
 import type { SetLog } from '@/types/logging';
 import { WeightUpModal, type QualifyingExercise } from '@/components/WeightUpModal';
 import { FatigueRating } from '@/components/FatigueRating';
+import { DebriefSection } from '@/components/DebriefSection';
 import { ChevronLeft, Plus, Trash2, X, Flag, Play, Timer } from 'lucide-react';
 import './WorkoutPage.css';
 
@@ -299,6 +300,8 @@ export function WorkoutPage() {
             value={log.perceivedFatigue}
             onChange={(v) => setPerceivedFatigue(log.id, v)}
           />
+
+          <DebriefSection logId={log.id} />
 
           <button className="workout-finish-btn" onClick={handleFinish}>
             <Flag size={16} />

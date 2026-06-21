@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { storage } from '@/utils/storage';
 import { generateId } from '@/utils/helpers';
-import type { SessionLog, SetLog, VerticalJumpLog, StallFlag, StallFlagType } from '@/types/logging';
+import type { SessionLog, SetLog, VerticalJumpLog, StallFlag, StallFlagType, SessionMood } from '@/types/logging';
 import { useProgramStore } from '@/store/programStore';
 import { useNexusStore } from '@/store/nexusStore';
 import { mapSessionLogToNexus } from '@/lib/nexusSync';
@@ -16,6 +16,16 @@ interface LogStore {
   startSession: (sessionTemplateId: string, programId: string) => SessionLog;
   updateSessionNote: (logId: string, notes: string) => void;
   setPerceivedFatigue: (logId: string, fatigue: number) => void;
+  setSessionDebrief: (
+    logId: string,
+    debrief: {
+      raw: string;
+      rpe: number | null;
+      painFlags: string[];
+      mood: SessionMood | null;
+      noteSummary: string;
+    } | null,
+  ) => void;
   finalizeSession: (logId: string) => void;
   unfinalizeSession: (logId: string) => void;
   discardSession: (logId: string) => void;
@@ -67,6 +77,25 @@ export const useLogStore = create<LogStore>((set, get) => ({
   setPerceivedFatigue: (logId, fatigue) => {
     const sessionLogs = get().sessionLogs.map((l) =>
       l.id === logId ? { ...l, perceivedFatigue: fatigue } : l
+    );
+    storage.setSessionLogs(sessionLogs);
+    set({ sessionLogs });
+  },
+
+  // v1.4 — store the analysed AI debrief on the session (before finalize, so
+  // finalizeSession's push picks it up). Passing null clears it.
+  setSessionDebrief: (logId, debrief) => {
+    const sessionLogs = get().sessionLogs.map((l) =>
+      l.id === logId
+        ? {
+            ...l,
+            aiDebriefRaw: debrief?.raw ?? null,
+            aiRpe: debrief?.rpe ?? null,
+            aiPainFlags: debrief?.painFlags ?? null,
+            aiMood: debrief?.mood ?? null,
+            aiNoteSummary: debrief?.noteSummary ?? null,
+          }
+        : l
     );
     storage.setSessionLogs(sessionLogs);
     set({ sessionLogs });

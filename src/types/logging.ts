@@ -10,6 +10,8 @@ export interface SetLog {
   notes?: string;
 }
 
+export type SessionMood = 'great' | 'good' | 'neutral' | 'bad' | 'terrible';
+
 export interface SessionLog {
   id: string;
   sessionTemplateId: string;
@@ -19,6 +21,15 @@ export interface SessionLog {
   perceivedFatigue: number | null;
   notes?: string;
   sets: SetLog[];
+  // v1.4 — optional post-workout AI debrief. The user types a free-text note
+  // and the cloud Gemini proxy extracts structured fields. All null when the
+  // user skips it or AI is unavailable (the FatigueRating dots remain the
+  // always-available fallback). Stored locally + pushed to workout_sessions.
+  aiDebriefRaw?: string | null;
+  aiRpe?: number | null;
+  aiPainFlags?: string[] | null;
+  aiMood?: SessionMood | null;
+  aiNoteSummary?: string | null;
 }
 
 export type JumpCondition = 'fresh' | 'post_session' | 'morning';

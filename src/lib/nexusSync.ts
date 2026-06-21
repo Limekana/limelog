@@ -27,6 +27,12 @@ export interface NexusWorkoutPayload {
   date: string;
   notes?: string;
   sets: NexusSetPayload[];
+  // v1.4 — optional AI debrief fields (null when not used).
+  aiDebriefRaw?: string | null;
+  aiRpe?: number | null;
+  aiPainFlags?: string[] | null;
+  aiMood?: string | null;
+  aiNoteSummary?: string | null;
 }
 
 export function mapSessionLogToNexus(
@@ -53,6 +59,11 @@ export function mapSessionLogToNexus(
     date: log.finalizedAt ?? log.loggedAt,
     notes: log.notes,
     sets,
+    aiDebriefRaw: log.aiDebriefRaw ?? null,
+    aiRpe: log.aiRpe ?? null,
+    aiPainFlags: log.aiPainFlags ?? null,
+    aiMood: log.aiMood ?? null,
+    aiNoteSummary: log.aiNoteSummary ?? null,
   };
 }
 
@@ -83,6 +94,11 @@ export async function pushWorkoutToNexus(workout: NexusWorkoutPayload): Promise<
       session_type: workout.sessionType,
       date: workout.date,
       notes: workout.notes ?? null,
+      ai_debrief_raw: workout.aiDebriefRaw ?? null,
+      ai_rpe: workout.aiRpe ?? null,
+      ai_pain_flags: workout.aiPainFlags ?? null,
+      ai_mood: workout.aiMood ?? null,
+      ai_note_summary: workout.aiNoteSummary ?? null,
       updated_at: now,
     });
   if (sessionErr) throw sessionErr;

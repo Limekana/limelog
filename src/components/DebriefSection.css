@@ -1,0 +1,109 @@
+.debrief {
+  padding: 14px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  border-top: 1px solid var(--border-subtle);
+}
+
+.debrief__label {
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--text-tertiary);
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.debrief__ai {
+  font-size: 9px;
+  font-weight: 700;
+  letter-spacing: 0.1em;
+  color: var(--accent);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  padding: 1px 4px;
+}
+
+.debrief__input {
+  width: 100%;
+  resize: vertical;
+  min-height: 48px;
+  padding: 10px 12px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-primary);
+  font-size: 13px;
+  font-family: inherit;
+  line-height: 1.4;
+}
+
+.debrief__input::placeholder {
+  color: var(--text-tertiary);
+}
+
+.debrief__analyse {
+  align-self: flex-start;
+  padding: 8px 16px;
+  border-radius: var(--radius-sm);
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  color: var(--accent);
+  font-size: 12px;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  cursor: pointer;
+  transition: background 0.1s, opacity 0.1s;
+}
+
+.debrief__analyse:disabled {
+  opacity: 0.45;
+  cursor: default;
+}
+
+.debrief__result {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.debrief__chip {
+  font-size: 11px;
+  font-weight: 600;
+  padding: 4px 8px;
+  border-radius: var(--radius-sm);
+  background: var(--bg-overlay);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+}
+
+.debrief__chip--rpe {
+  background: var(--accent-dim);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.debrief__chip--mood {
+  text-transform: capitalize;
+}
+
+.debrief__chip--pain {
+  color: var(--warning, #e0a83c);
+  border-color: var(--warning, #e0a83c);
+  text-transform: capitalize;
+}
+
+.debrief__summary {
+  font-size: 12px;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+
+.debrief__failed {
+  font-size: 11px;
+  color: var(--text-tertiary);
+}
