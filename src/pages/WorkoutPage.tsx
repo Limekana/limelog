@@ -5,7 +5,8 @@ import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
 import { formatWeight } from '@/utils/helpers';
 import { playRestComplete } from '@/utils/audio';
-import type { SetLog } from '@/types/logging';
+import { getLastSessionSets, type LastSessionRef } from '@/lib/lastSessionSets';
+import type { SetLog, ExercisePR } from '@/types/logging';
 import { WeightUpModal, type QualifyingExercise } from '@/components/WeightUpModal';
 import { FatigueRating } from '@/components/FatigueRating';
 import { DebriefSection } from '@/components/DebriefSection';
@@ -30,7 +31,7 @@ export function WorkoutPage() {
   const { logId = '' } = useParams();
   const navigate = useNavigate();
   const { activeProgram, exercises, updateSessionExercise } = useProgramStore();
-  const { sessionLogs, logSet, updateSet, deleteSet, checkAndFlagStalls, setPerceivedFatigue, finalizeSession, discardSession } = useLogStore();
+  const { sessionLogs, logSet, updateSet, deleteSet, checkAndFlagStalls, setPerceivedFatigue, finalizeSession, discardSession, currentPRFor } = useLogStore();
   const { profile } = useUserStore();
 
   const log = sessionLogs.find((l) => l.id === logId) ?? null;
@@ -261,6 +262,8 @@ export function WorkoutPage() {
             .sort((a, b) => a.setNumber - b.setNumber);
           const doneSets = mySets.filter((s) => s.completed).length;
           const allDone = doneSets >= se.targetSets;
+          const lastSession = getLastSessionSets(sessionLogs, exercise.id, log.id);
+          const pr = currentPRFor(exercise.id);
 
           return (
             <ExerciseSection
@@ -268,6 +271,8 @@ export function WorkoutPage() {
               index={idx + 1}
               exerciseName={exercise.name}
               exerciseId={exercise.id}
+              lastSession={lastSession}
+              pr={pr}
               targetSetsCount={se.targetSets}
               targetReps={se.targetReps}
               targetRpe={se.targetRpe}
@@ -325,6 +330,8 @@ interface ExerciseSectionProps {
   index: number;
   exerciseName: string;
   exerciseId: string;
+  lastSession?: LastSessionRef | null;
+  pr?: ExercisePR | null;
   targetSetsCount: number;
   targetReps: string;
   targetRpe?: number;
@@ -345,6 +352,8 @@ interface ExerciseSectionProps {
 function ExerciseSection({
   index,
   exerciseName,
+  lastSession,
+  pr,
   targetSetsCount,
   targetReps,
   targetRpe,
@@ -385,6 +394,11 @@ function ExerciseSection({
             {targetRpe !== undefined && <span>RPE {targetRpe}</span>}
             {targetWeight !== undefined && <span>{formatWeight(targetWeight, unit)}</span>}
             {restSeconds !== undefined && <span>{restSeconds}s rest</span>}
+            {pr && (
+              <span className="ex-section__pr" title="Current personal record">
+                PR {formatWeight(pr.weightKg, unit)}×{pr.reps}
+              </span>
+            )}
           </div>
         </div>
         <div className="ex-section__counter">
@@ -405,6 +419,24 @@ function ExerciseSection({
 
       {!restricted && (
         <div className="ex-section__sets">
+          {/* v1.6 — progressive overload reference: what you did last time. */}
+          {lastSession ? (
+            <div className="ex-section__last">
+              <span className="ex-section__last-label">Last · {lastSession.date.slice(5)}</span>
+              <div className="ex-section__last-sets">
+                {lastSession.sets.map((s) => (
+                  <span key={s.id} className="ex-section__last-set">
+                    {s.weightKg != null ? formatWeight(s.weightKg, unit) : '—'}
+                    <span className="ex-section__last-x">×</span>
+                    {s.reps ?? '—'}
+                  </span>
+                ))}
+              </div>
+            </div>
+          ) : (
+            <div className="ex-section__last ex-section__last--empty">First time — no history yet</div>
+          )}
+
           <div className="ex-section__set-grid ex-section__set-grid--head">
             <span>Done</span>
             <span>{unit}</span>

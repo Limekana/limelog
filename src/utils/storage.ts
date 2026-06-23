@@ -1,5 +1,5 @@
 import type { Program, Exercise, WorkoutTemplate } from '@/types/program';
-import type { SessionLog, VerticalJumpLog, StallFlag } from '@/types/logging';
+import type { SessionLog, VerticalJumpLog, StallFlag, ExercisePR } from '@/types/logging';
 import type { UserProfile, InjuryRestriction } from '@/types/user';
 
 const KEYS = {
@@ -8,6 +8,7 @@ const KEYS = {
   sessionLogs: 'wt_session_logs',
   jumpLogs: 'wt_jump_logs',
   stallFlags: 'wt_stall_flags',
+  exercisePRs: 'wt_exercise_prs',
   profile: 'wt_profile',
   workoutTemplates: 'wt_workout_templates',
 } as const;
@@ -40,6 +41,9 @@ export const storage = {
 
   getStallFlags: (): StallFlag[] => get<StallFlag[]>(KEYS.stallFlags) ?? [],
   setStallFlags: (v: StallFlag[]) => set(KEYS.stallFlags, v),
+
+  getExercisePRs: (): ExercisePR[] => get<ExercisePR[]>(KEYS.exercisePRs) ?? [],
+  setExercisePRs: (v: ExercisePR[]) => set(KEYS.exercisePRs, v),
 
   getProfile: (): UserProfile | null => get<UserProfile>(KEYS.profile),
   setProfile: (v: UserProfile) => set(KEYS.profile, v),

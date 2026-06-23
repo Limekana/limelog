@@ -32,6 +32,26 @@ export interface SessionLog {
   aiNoteSummary?: string | null;
 }
 
+// v1.6 — Personal Records. Append-only: one row per PR achievement, so the
+// per-exercise progression (sparkline) is just the rows for that exercise over
+// time. "Current PR" for an exercise = the row with the highest oneRepMaxKg.
+// Auto-detected on session finalize; never hand-entered. Pushed to the shared
+// Supabase `exercise_prs` table (push-only, like workouts) for durability +
+// cross-device, but the local copy is the on-device source of truth.
+export interface ExercisePR {
+  id: string;
+  exerciseId: string;
+  // Denormalised name at detection time — keeps the row meaningful even if the
+  // exercise is later renamed/deleted, and lets the cloud row stand alone.
+  exerciseName: string;
+  weightKg: number;        // 0 for bodyweight
+  reps: number;
+  oneRepMaxKg: number;     // Epley estimate — ranks PRs across rep ranges
+  sessionId: string;       // the SessionLog this PR was set in
+  date: string;            // 'YYYY-MM-DD'
+  createdAt: string;       // ISO
+}
+
 export type JumpCondition = 'fresh' | 'post_session' | 'morning';
 
 export interface VerticalJumpLog {

@@ -1,16 +1,22 @@
 import { create } from 'zustand';
 import { storage } from '@/utils/storage';
 import { generateId } from '@/utils/helpers';
-import type { SessionLog, SetLog, VerticalJumpLog, StallFlag, StallFlagType, SessionMood } from '@/types/logging';
+import type { SessionLog, SetLog, VerticalJumpLog, StallFlag, StallFlagType, SessionMood, ExercisePR } from '@/types/logging';
 import { useProgramStore } from '@/store/programStore';
 import { useNexusStore } from '@/store/nexusStore';
 import { mapSessionLogToNexus } from '@/lib/nexusSync';
 import { enqueue as outboxEnqueue } from '@/lib/outbox';
+import { detectNewPRs, currentPR } from '@/lib/prDetection';
 
 interface LogStore {
   sessionLogs: SessionLog[];
   jumpLogs: VerticalJumpLog[];
   stallFlags: StallFlag[];
+  // v1.6 — append-only Personal Records (one row per achievement).
+  exercisePRs: ExercisePR[];
+  // PRs detected on the most recent finalize, awaiting the celebration modal.
+  // null when there's nothing to celebrate. Cleared by clearCelebratedPRs.
+  lastCelebratedPRs: ExercisePR[] | null;
 
   // Session logging
   startSession: (sessionTemplateId: string, programId: string) => SessionLog;
@@ -43,6 +49,12 @@ interface LogStore {
   checkAndFlagStalls: (exerciseId: string) => void;
   resolveFlag: (flagId: string, action: StallFlag['resolutionAction']) => void;
 
+  // PRs
+  clearCelebratedPRs: () => void;
+  currentPRFor: (exerciseId: string) => ExercisePR | null;
+  prHistoryFor: (exerciseId: string) => ExercisePR[];
+  prsForSession: (sessionId: string) => ExercisePR[];
+
   // Selectors
   getSetsForExercise: (exerciseId: string) => SetLog[];
   getLastSessionLog: (sessionTemplateId: string) => SessionLog | null;
@@ -52,6 +64,8 @@ export const useLogStore = create<LogStore>((set, get) => ({
   sessionLogs: storage.getSessionLogs(),
   jumpLogs: storage.getJumpLogs(),
   stallFlags: storage.getStallFlags(),
+  exercisePRs: storage.getExercisePRs(),
+  lastCelebratedPRs: null,
 
   startSession: (sessionTemplateId, programId) => {
     const log: SessionLog = {
@@ -112,10 +126,23 @@ export const useLogStore = create<LogStore>((set, get) => ({
     const finalizedLog = sessionLogs.find((l) => l.id === logId);
     if (!finalizedLog) return;
 
+    const { exercises, activeProgram } = useProgramStore.getState();
+
+    // v1.6 — Personal Records. Detection is local-first and runs regardless of
+    // cloud config: a PR is a PR even offline / signed-out. The celebration
+    // modal reads lastCelebratedPRs; the cloud push (below) only fires when
+    // sync is on, mirroring the workout-session gate.
+    const nameOf = (id: string) => exercises.find((e) => e.id === id)?.name ?? 'Exercise';
+    const newPRs = detectNewPRs(finalizedLog, get().exercisePRs, nameOf, generateId);
+    if (newPRs.length > 0) {
+      const exercisePRs = [...newPRs, ...get().exercisePRs];
+      storage.setExercisePRs(exercisePRs);
+      set({ exercisePRs, lastCelebratedPRs: newPRs });
+    }
+
     const nexus = useNexusStore.getState();
     if (!nexus.configured || !nexus.syncEnabled) return;
 
-    const { exercises, activeProgram } = useProgramStore.getState();
     const session = activeProgram?.sessions.find((s) => s.id === finalizedLog.sessionTemplateId);
     const payload = mapSessionLogToNexus(finalizedLog, session, exercises);
 
@@ -129,6 +156,20 @@ export const useLogStore = create<LogStore>((set, get) => ({
     // UI's "last push" stamp tracks user intent more usefully than the
     // exact server-ack time.
     outboxEnqueue('upsert_workout_session', payload);
+    // Push each new PR (push-only, append-only). Derived purely from the sets
+    // just pushed — no new user input crosses the boundary.
+    for (const pr of newPRs) {
+      outboxEnqueue('upsert_exercise_pr', {
+        id: pr.id,
+        exerciseId: pr.exerciseId,
+        exerciseName: pr.exerciseName,
+        weightKg: pr.weightKg,
+        reps: pr.reps,
+        oneRepMaxKg: pr.oneRepMaxKg,
+        sessionId: pr.sessionId,
+        date: pr.date,
+      });
+    }
     const store = useNexusStore.getState();
     store.refreshPendingCount();
     store.setLastPushAt(finalizedAt);
@@ -233,6 +274,17 @@ export const useLogStore = create<LogStore>((set, get) => ({
     storage.setStallFlags(stallFlags);
     set({ stallFlags });
   },
+
+  clearCelebratedPRs: () => set({ lastCelebratedPRs: null }),
+
+  currentPRFor: (exerciseId) => currentPR(get().exercisePRs, exerciseId),
+
+  prHistoryFor: (exerciseId) =>
+    get()
+      .exercisePRs.filter((p) => p.exerciseId === exerciseId)
+      .sort((a, b) => a.date.localeCompare(b.date)),
+
+  prsForSession: (sessionId) => get().exercisePRs.filter((p) => p.sessionId === sessionId),
 
   getSetsForExercise: (exerciseId) =>
     get().sessionLogs.flatMap((l) => l.sets.filter((s) => s.exerciseId === exerciseId)),

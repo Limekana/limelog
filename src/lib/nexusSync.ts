@@ -177,3 +177,38 @@ export async function deleteBodyMetricFromNexus(id: string): Promise<void> {
   const { error } = await supabase.from('body_metrics').delete().eq('id', id);
   if (error) throw error;
 }
+
+// v1.6 — Personal Records. Push-only, append-only: each detected PR is one row.
+// Upsert by primary id keeps retries idempotent (the local PR keeps a stable
+// id). All derived from already-pushed workout sets — no new user input.
+export interface NexusExercisePRPayload {
+  id: string;
+  exerciseId: string;
+  exerciseName: string;
+  weightKg: number;
+  reps: number;
+  oneRepMaxKg: number;
+  sessionId: string;
+  date: string;
+}
+
+export async function pushExercisePRToNexus(p: NexusExercisePRPayload): Promise<void> {
+  if (!isNexusConfigured) throw new Error('Nexus not configured');
+  const { data: { user }, error: authErr } = await supabase.auth.getUser();
+  if (authErr) throw authErr;
+  if (!user) throw new Error('Not signed in to Nexus');
+
+  const row = {
+    id: p.id,
+    user_id: user.id,
+    exercise_id: p.exerciseId,
+    exercise_name: p.exerciseName,
+    weight_kg: p.weightKg,
+    reps: p.reps,
+    one_rep_max_kg: p.oneRepMaxKg,
+    session_id: p.sessionId,
+    pr_date: p.date,
+  };
+  const { error } = await supabase.from('exercise_prs').upsert(row);
+  if (error) throw error;
+}

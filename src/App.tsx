@@ -13,6 +13,7 @@ import { ProfilePage } from '@/pages/ProfilePage';
 import { LibraryPage } from '@/pages/LibraryPage';
 import { WorkoutPage } from '@/pages/WorkoutPage';
 import { FirstLaunchAuth } from '@/components/FirstLaunchAuth';
+import { PRCelebrationModal } from '@/components/PRCelebrationModal';
 import { useProgramStore } from '@/store/programStore';
 import { useNexusStore } from '@/store/nexusStore';
 import { isGuestMode } from '@/lib/guestMode';
@@ -175,6 +176,9 @@ export default function App() {
           <Route path="/profile" element={<ProfilePage />} />
         </Route>
       </Routes>
+      {/* v1.6 — global PR celebration; mounted outside Routes so it survives
+          the post-finish navigate('/today'). */}
+      <PRCelebrationModal />
     </BrowserRouter>
   );
 }

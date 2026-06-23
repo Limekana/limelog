@@ -579,3 +579,48 @@
   box-shadow: 0 0 24px 2px var(--accent-border);
 }
 .workout-finish-btn:active { transform: scale(0.99); }
+
+/* v1.6 — progressive overload reference strip + PR chip */
+.ex-section__pr {
+  color: #14160f;
+  background: var(--accent);
+  border-radius: 5px;
+  padding: 1px 6px;
+  font-weight: 700;
+  font-size: 11px;
+}
+.ex-section__last {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  padding: 7px 10px;
+  margin-bottom: 8px;
+  border-radius: 9px;
+  background: var(--accent-veil);
+  border: 1px solid var(--accent-border);
+}
+.ex-section__last-label {
+  font-size: 10px;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: var(--accent);
+  font-weight: 700;
+  white-space: nowrap;
+}
+.ex-section__last-sets {
+  display: flex;
+  gap: 8px;
+  flex-wrap: wrap;
+}
+.ex-section__last-set {
+  font-size: 12px;
+  font-variant-numeric: tabular-nums;
+  color: #cfd4c4;
+}
+.ex-section__last-x { opacity: 0.5; margin: 0 1px; }
+.ex-section__last--empty {
+  color: #8b9078;
+  font-size: 12px;
+  font-style: italic;
+}
