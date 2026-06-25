@@ -13,9 +13,17 @@
     "close": "Cerrar",
     "back": "Atrás",
     "confirm": "Confirmar",
+    "continue": "Continuar",
     "retry": "Reintentar",
     "loading": "Cargando…",
     "settings": "Ajustes"
+  },
+  "nav": {
+    "today": "Hoy",
+    "program": "Programa",
+    "library": "Biblioteca",
+    "progress": "Progreso",
+    "body": "Cuerpo"
   },
   "workout": {
     "workout": "Entrenamiento",
@@ -23,5 +31,56 @@
     "rep": "Repetición",
     "weight": "Peso",
     "personalRecord": "Récord personal"
+  },
+  "onboarding": {
+    "welcomeTitle": "Bienvenido a LimeLog",
+    "welcomeBody": "Registra tus levantamientos, ve cómo suben tus números y supera tus récords — un entrenamiento a la vez.",
+    "getStarted": "Empezar",
+    "goalTitle": "¿Para qué entrenas?",
+    "goalBody": "Esto enmarca tu progreso. Puedes cambiar el enfoque cuando quieras — no bloquea nada.",
+    "goalStrength": "Fuerza",
+    "goalHypertrophy": "Hipertrofia",
+    "goalSport": "Específico del deporte",
+    "goalGeneral": "Forma general",
+    "howTitle": "Cómo funciona el registro",
+    "howBody": "Cada entrenamiento se construye igual:",
+    "howStep1": "Elige los ejercicios de tu sesión",
+    "howStep2": "Registra cada serie sobre la marcha",
+    "howStep3": "Anota las repeticiones y el peso logrados",
+    "start": "Empezar a entrenar",
+    "skip": "Omitir por ahora"
+  },
+  "progress": {
+    "title": "Progreso",
+    "tabLoad": "Tendencias de carga",
+    "tabOrm": "1RM est.",
+    "tabJump": "Salto vertical",
+    "tabHistory": "Historial",
+    "prHistory": "Historial de récords",
+    "currentPr": "actual",
+    "bodyweight": "Peso corporal",
+    "bestEstimates": "Mejores estimaciones",
+    "noLoadTitle": "Aún no hay sesiones registradas",
+    "noLoadBody": "Completa una sesión para ver las tendencias de carga.",
+    "noOrmTitle": "Aún no hay datos de 1RM",
+    "noOrmBody": "Completa una sesión con peso × repeticiones para ver una estimación de 1RM.",
+    "noHistoryTitle": "No hay sesiones completadas",
+    "noHistoryBody": "Termina una sesión para verla aquí."
+  },
+  "today": {
+    "noProgramTitle": "Sin programa activo",
+    "noProgramBody": "Crea un programa en la pestaña Programa para empezar.",
+    "goToPrograms": "Ir a programas",
+    "restTitle": "Día de descanso",
+    "restBody": "No hay sesiones programadas hoy. La recuperación es entrenamiento.",
+    "start": "Empezar",
+    "resume": "Reanudar",
+    "discard": "Descartar",
+    "done": "Hecho",
+    "undo": "Deshacer",
+    "nextPhase": "Siguiente fase",
+    "advance": "Avanzar",
+    "exercises_one": "{{count}} ejercicio · {{sets}} series",
+    "exercises_other": "{{count}} ejercicios · {{sets}} series"
   }
 }

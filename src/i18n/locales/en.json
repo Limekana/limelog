@@ -13,9 +13,17 @@
     "close": "Close",
     "back": "Back",
     "confirm": "Confirm",
+    "continue": "Continue",
     "retry": "Retry",
     "loading": "Loading…",
     "settings": "Settings"
+  },
+  "nav": {
+    "today": "Today",
+    "program": "Program",
+    "library": "Library",
+    "progress": "Progress",
+    "body": "Body"
   },
   "workout": {
     "workout": "Workout",
@@ -23,5 +31,56 @@
     "rep": "Rep",
     "weight": "Weight",
     "personalRecord": "Personal record"
+  },
+  "onboarding": {
+    "welcomeTitle": "Welcome to LimeLog",
+    "welcomeBody": "Track your lifts, watch your numbers climb, and beat your records — one session at a time.",
+    "getStarted": "Get started",
+    "goalTitle": "What are you training for?",
+    "goalBody": "This frames your progress. You can shift focus anytime — it doesn't lock anything.",
+    "goalStrength": "Strength",
+    "goalHypertrophy": "Hypertrophy",
+    "goalSport": "Sport-specific",
+    "goalGeneral": "General fitness",
+    "howTitle": "How logging works",
+    "howBody": "Every workout is built the same way:",
+    "howStep1": "Pick the exercises in your session",
+    "howStep2": "Log each set as you go",
+    "howStep3": "Record the reps and weight you hit",
+    "start": "Start training",
+    "skip": "Skip for now"
+  },
+  "progress": {
+    "title": "Progress",
+    "tabLoad": "Load Trends",
+    "tabOrm": "Est. 1RM",
+    "tabJump": "Vertical Jump",
+    "tabHistory": "History",
+    "prHistory": "PR history",
+    "currentPr": "current",
+    "bodyweight": "Bodyweight",
+    "bestEstimates": "Best estimates",
+    "noLoadTitle": "No sessions logged yet",
+    "noLoadBody": "Complete a session to see load trends.",
+    "noOrmTitle": "No 1RM data yet",
+    "noOrmBody": "Complete a session with weight × reps logged to see an estimated 1RM trend.",
+    "noHistoryTitle": "No completed sessions",
+    "noHistoryBody": "Finish a session to see it here."
+  },
+  "today": {
+    "noProgramTitle": "No active program",
+    "noProgramBody": "Create a program in the Program tab to get started.",
+    "goToPrograms": "Go to Programs",
+    "restTitle": "Rest day",
+    "restBody": "No sessions scheduled today. Recovery is training.",
+    "start": "Start",
+    "resume": "Resume",
+    "discard": "Discard",
+    "done": "Done",
+    "undo": "Undo",
+    "nextPhase": "Next phase",
+    "advance": "Advance",
+    "exercises_one": "{{count}} exercise · {{sets}} sets",
+    "exercises_other": "{{count}} exercises · {{sets}} sets"
   }
 }

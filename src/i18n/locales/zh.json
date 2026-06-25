@@ -13,9 +13,17 @@
     "close": "关闭",
     "back": "返回",
     "confirm": "确认",
+    "continue": "继续",
     "retry": "重试",
     "loading": "加载中…",
     "settings": "设置"
+  },
+  "nav": {
+    "today": "今天",
+    "program": "计划",
+    "library": "动作库",
+    "progress": "进度",
+    "body": "身体"
   },
   "workout": {
     "workout": "训练",
@@ -23,5 +31,56 @@
     "rep": "次",
     "weight": "重量",
     "personalRecord": "个人纪录"
+  },
+  "onboarding": {
+    "welcomeTitle": "欢迎使用 LimeLog",
+    "welcomeBody": "记录你的训练，见证数字攀升，打破你的纪录——一次一组。",
+    "getStarted": "开始",
+    "goalTitle": "你为什么而训练？",
+    "goalBody": "这有助于呈现你的进度。你可以随时调整重点——不会锁定任何设置。",
+    "goalStrength": "力量",
+    "goalHypertrophy": "增肌",
+    "goalSport": "专项运动",
+    "goalGeneral": "综合体能",
+    "howTitle": "记录方式",
+    "howBody": "每次训练都按同样的方式构建：",
+    "howStep1": "选择本次训练的动作",
+    "howStep2": "随做随记每一组",
+    "howStep3": "记下完成的次数和重量",
+    "start": "开始训练",
+    "skip": "暂时跳过"
+  },
+  "progress": {
+    "title": "进度",
+    "tabLoad": "负荷趋势",
+    "tabOrm": "估算 1RM",
+    "tabJump": "垂直跳",
+    "tabHistory": "历史",
+    "prHistory": "纪录历史",
+    "currentPr": "当前",
+    "bodyweight": "体重",
+    "bestEstimates": "最佳估算",
+    "noLoadTitle": "尚无训练记录",
+    "noLoadBody": "完成一次训练即可查看负荷趋势。",
+    "noOrmTitle": "尚无 1RM 数据",
+    "noOrmBody": "完成一次记录了重量×次数的训练，即可查看估算 1RM 趋势。",
+    "noHistoryTitle": "没有已完成的训练",
+    "noHistoryBody": "完成一次训练后会显示在这里。"
+  },
+  "today": {
+    "noProgramTitle": "没有进行中的计划",
+    "noProgramBody": "在“计划”标签中创建一个计划即可开始。",
+    "goToPrograms": "前往计划",
+    "restTitle": "休息日",
+    "restBody": "今天没有安排训练。恢复也是训练的一部分。",
+    "start": "开始",
+    "resume": "继续",
+    "discard": "放弃",
+    "done": "完成",
+    "undo": "撤销",
+    "nextPhase": "下一阶段",
+    "advance": "推进",
+    "exercises_one": "{{count}} 个动作 · {{sets}} 组",
+    "exercises_other": "{{count}} 个动作 · {{sets}} 组"
   }
 }
