@@ -1,5 +1,6 @@
 import { useMemo } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
 import type { SessionTemplate } from '@/types/program';
@@ -20,6 +21,7 @@ function isSameLocalDay(iso: string, now: Date): boolean {
 }
 
 export function TodayPage() {
+  const { t } = useTranslation();
   const navigate = useNavigate();
   const { activeProgram, exercises, advancePhase } = useProgramStore();
   const { sessionLogs, startSession, unfinalizeSession, discardSession, stallFlags } = useLogStore();
@@ -117,9 +119,9 @@ export function TodayPage() {
         </div>
         <EmptyState
           icon={<Dumbbell size={36} />}
-          title="No active program"
-          description="Create a program in the Program tab to get started."
-          action={<Button variant="primary" onClick={() => navigate('/program')}>Go to Programs</Button>}
+          title={t('today.noProgramTitle')}
+          description={t('today.noProgramBody')}
+          action={<Button variant="primary" onClick={() => navigate('/program')}>{t('today.goToPrograms')}</Button>}
         />
       </div>
     );
@@ -181,11 +183,11 @@ export function TodayPage() {
       {nextPhase && (
         <div className="today-phase-advance">
           <div className="today-phase-advance__copy">
-            <span className="today-phase-advance__label">Next phase</span>
+            <span className="today-phase-advance__label">{t('today.nextPhase')}</span>
             <span className="today-phase-advance__name">{nextPhase.name}</span>
           </div>
           <Button variant="primary" size="md" onClick={handleAdvancePhase}>
-            Advance <ChevronRight size={14} aria-hidden="true" />
+            {t('today.advance')} <ChevronRight size={14} aria-hidden="true" />
           </Button>
         </div>
       )}
@@ -193,8 +195,8 @@ export function TodayPage() {
       {todaySessions.length === 0 ? (
         <EmptyState
           icon={<CheckCircle2 size={36} />}
-          title="Rest day"
-          description="No sessions scheduled today. Recovery is training."
+          title={t('today.restTitle')}
+          description={t('today.restBody')}
         />
       ) : (
         todaySessions.map((session) => {
@@ -221,7 +223,7 @@ export function TodayPage() {
                 <div className="today-session__title-block">
                   <span className="today-session__name">{session.name}</span>
                   <span className="today-session__sub">
-                    {session.exercises.length} exercise{session.exercises.length === 1 ? '' : 's'} · {plannedCount} sets
+                    {t('today.exercises', { count: session.exercises.length, sets: plannedCount })}
                   </span>
                   {firstExBest != null && firstExName && (
                     <span className="today-session__orm" title="Best estimated 1RM from your logs">
@@ -232,31 +234,31 @@ export function TodayPage() {
                 </div>
                 {!log && (
                   <Button variant="primary" size="md" onClick={() => handleStartSession(session)}>
-                    Start
+                    {t('today.start')}
                   </Button>
                 )}
                 {isActive && (
                   <div className="today-session__active-actions">
                     <Button variant="primary" size="md" onClick={() => handleResume(log!.id)}>
-                      Resume
+                      {t('today.resume')}
                     </Button>
                     <button
                       className="today-session__discard"
                       onClick={() => handleDiscard(log!.id)}
-                      aria-label="Discard workout"
+                      aria-label={t('today.discard')}
                     >
-                      Discard
+                      {t('today.discard')}
                     </button>
                   </div>
                 )}
                 {isDone && (
                   <div className="today-session__done-row">
-                    <Badge label="Done" variant="success" />
+                    <Badge label={t('today.done')} variant="success" />
                     <button
                       className="today-session__undo"
                       onClick={() => unfinalizeSession(log!.id)}
                     >
-                      Undo
+                      {t('today.undo')}
                     </button>
                   </div>
                 )}

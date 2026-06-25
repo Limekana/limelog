@@ -13,9 +13,17 @@
     "close": "Schließen",
     "back": "Zurück",
     "confirm": "Bestätigen",
+    "continue": "Weiter",
     "retry": "Erneut versuchen",
     "loading": "Wird geladen…",
     "settings": "Einstellungen"
+  },
+  "nav": {
+    "today": "Heute",
+    "program": "Programm",
+    "library": "Bibliothek",
+    "progress": "Fortschritt",
+    "body": "Körper"
   },
   "workout": {
     "workout": "Training",
@@ -23,5 +31,56 @@
     "rep": "Wiederholung",
     "weight": "Gewicht",
     "personalRecord": "Persönlicher Rekord"
+  },
+  "onboarding": {
+    "welcomeTitle": "Willkommen bei LimeLog",
+    "welcomeBody": "Tracke deine Sätze, sieh deine Zahlen steigen und brich deine Rekorde — ein Training nach dem anderen.",
+    "getStarted": "Loslegen",
+    "goalTitle": "Wofür trainierst du?",
+    "goalBody": "Das rahmt deinen Fortschritt ein. Du kannst den Fokus jederzeit ändern — nichts wird festgelegt.",
+    "goalStrength": "Kraft",
+    "goalHypertrophy": "Muskelaufbau",
+    "goalSport": "Sportspezifisch",
+    "goalGeneral": "Allgemeine Fitness",
+    "howTitle": "So funktioniert das Tracken",
+    "howBody": "Jedes Training ist gleich aufgebaut:",
+    "howStep1": "Wähle die Übungen deiner Einheit",
+    "howStep2": "Trage jeden Satz nach und nach ein",
+    "howStep3": "Notiere Wiederholungen und Gewicht",
+    "start": "Training starten",
+    "skip": "Vorerst überspringen"
+  },
+  "progress": {
+    "title": "Fortschritt",
+    "tabLoad": "Lasttrends",
+    "tabOrm": "Gesch. 1RM",
+    "tabJump": "Vertikalsprung",
+    "tabHistory": "Verlauf",
+    "prHistory": "Rekord-Verlauf",
+    "currentPr": "aktuell",
+    "bodyweight": "Körpergewicht",
+    "bestEstimates": "Beste Schätzungen",
+    "noLoadTitle": "Noch keine Einheiten erfasst",
+    "noLoadBody": "Schließe eine Einheit ab, um Lasttrends zu sehen.",
+    "noOrmTitle": "Noch keine 1RM-Daten",
+    "noOrmBody": "Schließe eine Einheit mit erfasstem Gewicht × Wiederholungen ab, um einen 1RM-Trend zu sehen.",
+    "noHistoryTitle": "Keine abgeschlossenen Einheiten",
+    "noHistoryBody": "Schließe eine Einheit ab, um sie hier zu sehen."
+  },
+  "today": {
+    "noProgramTitle": "Kein aktives Programm",
+    "noProgramBody": "Erstelle ein Programm im Tab Programm, um zu starten.",
+    "goToPrograms": "Zu den Programmen",
+    "restTitle": "Ruhetag",
+    "restBody": "Heute keine Einheiten geplant. Erholung ist Training.",
+    "start": "Starten",
+    "resume": "Fortsetzen",
+    "discard": "Verwerfen",
+    "done": "Fertig",
+    "undo": "Rückgängig",
+    "nextPhase": "Nächste Phase",
+    "advance": "Weiter",
+    "exercises_one": "{{count}} Übung · {{sets}} Sätze",
+    "exercises_other": "{{count}} Übungen · {{sets}} Sätze"
   }
 }

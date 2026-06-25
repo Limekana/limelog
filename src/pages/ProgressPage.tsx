@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
@@ -8,6 +9,7 @@ import { EmptyState, Card, Button, Tabs, TabPanel } from '@/components/ui';
 import { JumpLogModal } from '@/components/JumpLogModal';
 import { LoadChart } from '@/components/LoadChart';
 import { OneRMChart } from '@/components/OneRMChart';
+import { PRHistory } from '@/components/PRHistory';
 import { bestEstimateForExercise } from '@/utils/oneRepMax';
 import { strengthToBodyweight } from '@/lib/bodyMetricsAnalysis';
 import { BarChart2, TrendingUp, Zap } from 'lucide-react';
@@ -18,6 +20,7 @@ import './ProgressPage.css';
 type ProgressTab = 'load' | 'orm' | 'jump' | 'history';
 
 export function ProgressPage() {
+  const { t } = useTranslation();
   const { programs, exercises } = useProgramStore();
   const { sessionLogs, jumpLogs, stallFlags, getSetsForExercise } = useLogStore();
   const { profile } = useUserStore();
@@ -51,14 +54,14 @@ export function ProgressPage() {
 
   return (
     <div className="progress-page">
-      <h1 className="progress-page__title">Progress</h1>
+      <h1 className="progress-page__title">{t('progress.title')}</h1>
 
       <Tabs
         tabs={[
-          { key: 'load', label: 'Load Trends' },
-          { key: 'orm', label: 'Est. 1RM' },
-          { key: 'jump', label: 'Vertical Jump' },
-          { key: 'history', label: 'History' },
+          { key: 'load', label: t('progress.tabLoad') },
+          { key: 'orm', label: t('progress.tabOrm') },
+          { key: 'jump', label: t('progress.tabJump') },
+          { key: 'history', label: t('progress.tabHistory') },
         ]}
         activeKey={activeTab}
         onChange={(k) => setActiveTab(k as ProgressTab)}
@@ -82,7 +85,7 @@ export function ProgressPage() {
           )}
 
           {exercisedLogged.length === 0 ? (
-            <EmptyState icon={<BarChart2 size={36} />} title="No sessions logged yet" description="Complete a session to see load trends." />
+            <EmptyState icon={<BarChart2 size={36} />} title={t('progress.noLoadTitle')} description={t('progress.noLoadBody')} />
           ) : (
             <>
               <select
@@ -112,8 +115,8 @@ export function ProgressPage() {
           {exercisedLogged.length === 0 ? (
             <EmptyState
               icon={<TrendingUp size={36} />}
-              title="No 1RM data yet"
-              description="Complete a session with weight × reps logged to see an estimated 1RM trend."
+              title={t('progress.noOrmTitle')}
+              description={t('progress.noOrmBody')}
             />
           ) : (
             <>
@@ -135,7 +138,7 @@ export function ProgressPage() {
                   Useful for at-a-glance "where am I strongest" view without
                   cycling the dropdown across every lift. */}
               <div className="progress-orm-list">
-                <div className="progress-orm-list__header">Best estimates</div>
+                <div className="progress-orm-list__header">{t('progress.bestEstimates')}</div>
                 {exercisedLogged
                   .map((e) => ({ ex: e, best: bestEstimateForExercise(sessionLogs, e.id) }))
                   .filter((row) => row.best != null)
@@ -167,6 +170,11 @@ export function ProgressPage() {
                     );
                   })}
               </div>
+
+              {/* v1.7 — deferred-from-v1.6 PR history. Per-exercise estimated
+                  1RM progression sparkline + tap-through to the full PR list.
+                  Renders nothing until the first PR is detected. */}
+              <PRHistory unit={unit} />
             </>
           )}
         </>
@@ -205,7 +213,7 @@ export function ProgressPage() {
       <TabPanel tabKey="history" activeKey={activeTab}>
         <>
           {finalizedLogs.length === 0 ? (
-            <EmptyState icon={<BarChart2 size={36} />} title="No completed sessions" description="Finish a session to see it here." />
+            <EmptyState icon={<BarChart2 size={36} />} title={t('progress.noHistoryTitle')} description={t('progress.noHistoryBody')} />
           ) : (
             finalizedLogs.map((l) => {
               const totalSets = l.sets.filter((s) => s.completed).length;

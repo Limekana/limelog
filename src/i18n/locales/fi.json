@@ -13,9 +13,17 @@
     "close": "Sulje",
     "back": "Takaisin",
     "confirm": "Vahvista",
+    "continue": "Jatka",
     "retry": "Yritä uudelleen",
     "loading": "Ladataan…",
     "settings": "Asetukset"
+  },
+  "nav": {
+    "today": "Tänään",
+    "program": "Ohjelma",
+    "library": "Kirjasto",
+    "progress": "Edistyminen",
+    "body": "Keho"
   },
   "workout": {
     "workout": "Treeni",
@@ -23,5 +31,56 @@
     "rep": "Toisto",
     "weight": "Paino",
     "personalRecord": "Ennätys"
+  },
+  "onboarding": {
+    "welcomeTitle": "Tervetuloa LimeLogiin",
+    "welcomeBody": "Kirjaa treenisi, katso lukujen nousevan ja riko ennätyksesi — treeni kerrallaan.",
+    "getStarted": "Aloita",
+    "goalTitle": "Mitä varten treenaat?",
+    "goalBody": "Tämä kehystää edistymistäsi. Voit vaihtaa painopistettä milloin tahansa — se ei lukitse mitään.",
+    "goalStrength": "Voima",
+    "goalHypertrophy": "Lihasmassa",
+    "goalSport": "Lajikohtainen",
+    "goalGeneral": "Yleiskunto",
+    "howTitle": "Näin kirjaaminen toimii",
+    "howBody": "Jokainen treeni rakennetaan samalla tavalla:",
+    "howStep1": "Valitse treenisi liikkeet",
+    "howStep2": "Kirjaa jokainen sarja edetessäsi",
+    "howStep3": "Merkitse tekemäsi toistot ja paino",
+    "start": "Aloita treenaaminen",
+    "skip": "Ohita toistaiseksi"
+  },
+  "progress": {
+    "title": "Edistyminen",
+    "tabLoad": "Kuormatrendit",
+    "tabOrm": "Arv. 1RM",
+    "tabJump": "Vertikaalihyppy",
+    "tabHistory": "Historia",
+    "prHistory": "Ennätyshistoria",
+    "currentPr": "nykyinen",
+    "bodyweight": "Kehonpaino",
+    "bestEstimates": "Parhaat arviot",
+    "noLoadTitle": "Ei vielä kirjattuja treenejä",
+    "noLoadBody": "Suorita treeni nähdäksesi kuormatrendit.",
+    "noOrmTitle": "Ei vielä 1RM-tietoja",
+    "noOrmBody": "Suorita treeni, jossa on kirjattu paino × toistot, nähdäksesi arvioidun 1RM-trendin.",
+    "noHistoryTitle": "Ei valmiita treenejä",
+    "noHistoryBody": "Suorita treeni loppuun nähdäksesi sen täällä."
+  },
+  "today": {
+    "noProgramTitle": "Ei aktiivista ohjelmaa",
+    "noProgramBody": "Luo ohjelma Ohjelma-välilehdellä aloittaaksesi.",
+    "goToPrograms": "Siirry ohjelmiin",
+    "restTitle": "Lepopäivä",
+    "restBody": "Ei treenejä tänään. Palautuminen on osa harjoittelua.",
+    "start": "Aloita",
+    "resume": "Jatka",
+    "discard": "Hylkää",
+    "done": "Valmis",
+    "undo": "Kumoa",
+    "nextPhase": "Seuraava vaihe",
+    "advance": "Siirry",
+    "exercises_one": "{{count}} liike · {{sets}} sarjaa",
+    "exercises_other": "{{count}} liikettä · {{sets}} sarjaa"
   }
 }
