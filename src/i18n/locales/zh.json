@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "LimeLog",
+    "tagline": "记录你的训练，打破你的纪录。"
+  },
+  "common": {
+    "save": "保存",
+    "cancel": "取消",
+    "delete": "删除",
+    "edit": "编辑",
+    "add": "添加",
+    "done": "完成",
+    "close": "关闭",
+    "back": "返回",
+    "confirm": "确认",
+    "retry": "重试",
+    "loading": "加载中…",
+    "settings": "设置"
+  },
+  "workout": {
+    "workout": "训练",
+    "set": "组",
+    "rep": "次",
+    "weight": "重量",
+    "personalRecord": "个人纪录"
+  }
+}

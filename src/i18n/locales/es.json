@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "LimeLog",
+    "tagline": "Registra tus levantamientos. Supera tus récords."
+  },
+  "common": {
+    "save": "Guardar",
+    "cancel": "Cancelar",
+    "delete": "Eliminar",
+    "edit": "Editar",
+    "add": "Añadir",
+    "done": "Hecho",
+    "close": "Cerrar",
+    "back": "Atrás",
+    "confirm": "Confirmar",
+    "retry": "Reintentar",
+    "loading": "Cargando…",
+    "settings": "Ajustes"
+  },
+  "workout": {
+    "workout": "Entrenamiento",
+    "set": "Serie",
+    "rep": "Repetición",
+    "weight": "Peso",
+    "personalRecord": "Récord personal"
+  }
+}
