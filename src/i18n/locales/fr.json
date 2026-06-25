@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "LimeLog",
+    "tagline": "Enregistre tes séances. Bats tes records."
+  },
+  "common": {
+    "save": "Enregistrer",
+    "cancel": "Annuler",
+    "delete": "Supprimer",
+    "edit": "Modifier",
+    "add": "Ajouter",
+    "done": "Terminé",
+    "close": "Fermer",
+    "back": "Retour",
+    "confirm": "Confirmer",
+    "retry": "Réessayer",
+    "loading": "Chargement…",
+    "settings": "Paramètres"
+  },
+  "workout": {
+    "workout": "Séance",
+    "set": "Série",
+    "rep": "Répétition",
+    "weight": "Poids",
+    "personalRecord": "Record personnel"
+  }
+}

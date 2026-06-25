@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "LimeLog",
+    "tagline": "Tracke deine Sätze. Brich deine Rekorde."
+  },
+  "common": {
+    "save": "Speichern",
+    "cancel": "Abbrechen",
+    "delete": "Löschen",
+    "edit": "Bearbeiten",
+    "add": "Hinzufügen",
+    "done": "Fertig",
+    "close": "Schließen",
+    "back": "Zurück",
+    "confirm": "Bestätigen",
+    "retry": "Erneut versuchen",
+    "loading": "Wird geladen…",
+    "settings": "Einstellungen"
+  },
+  "workout": {
+    "workout": "Training",
+    "set": "Satz",
+    "rep": "Wiederholung",
+    "weight": "Gewicht",
+    "personalRecord": "Persönlicher Rekord"
+  }
+}

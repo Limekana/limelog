@@ -1,0 +1,27 @@
+{
+  "app": {
+    "name": "LimeLog",
+    "tagline": "Kirjaa treenit. Riko ennätyksesi."
+  },
+  "common": {
+    "save": "Tallenna",
+    "cancel": "Peruuta",
+    "delete": "Poista",
+    "edit": "Muokkaa",
+    "add": "Lisää",
+    "done": "Valmis",
+    "close": "Sulje",
+    "back": "Takaisin",
+    "confirm": "Vahvista",
+    "retry": "Yritä uudelleen",
+    "loading": "Ladataan…",
+    "settings": "Asetukset"
+  },
+  "workout": {
+    "workout": "Treeni",
+    "set": "Sarja",
+    "rep": "Toisto",
+    "weight": "Paino",
+    "personalRecord": "Ennätys"
+  }
+}
