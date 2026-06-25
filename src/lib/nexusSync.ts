@@ -23,6 +23,11 @@ export interface NexusSetPayload {
 }
 
 export interface NexusWorkoutPayload {
+  // v1.6.1 — the LOCAL SessionLog id. Threaded through so the push upserts a
+  // stable row instead of minting a fresh random id every dispatch. Without
+  // this, an outbox retry / double-dispatch inserted a NEW session each time —
+  // one workout became N duplicate cloud sessions (the "6 workouts" bug).
+  sessionId: string;
   sessionType: string;
   date: string;
   notes?: string;
@@ -55,6 +60,7 @@ export function mapSessionLogToNexus(
     });
 
   return {
+    sessionId: log.id,
     sessionType: session?.name ?? 'workout',
     date: log.finalizedAt ?? log.loggedAt,
     notes: log.notes,
@@ -83,12 +89,17 @@ export async function pushWorkoutToNexus(workout: NexusWorkoutPayload): Promise<
   if (authErr) throw authErr;
   if (!user) throw new Error('Not signed in to Nexus');
 
-  const sessionId = crypto.randomUUID();
+  // v1.6.1 — idempotent push, honouring the outbox's UPSERT-style contract.
+  // Use the STABLE local session id (not a fresh random one) and UPSERT, so a
+  // retry / double-dispatch converges on the same row instead of inserting a
+  // duplicate. Sets are replaced wholesale (delete-then-insert) so re-pushing
+  // an edited workout doesn't leave stale or duplicated set rows.
+  const sessionId = workout.sessionId;
   const now = new Date().toISOString();
 
   const { error: sessionErr } = await supabase
     .from('workout_sessions')
-    .insert({
+    .upsert({
       id: sessionId,
       user_id: user.id,
       session_type: workout.sessionType,
@@ -103,6 +114,14 @@ export async function pushWorkoutToNexus(workout: NexusWorkoutPayload): Promise<
     });
   if (sessionErr) throw sessionErr;
 
+  // Replace this session's sets atomically-enough: clear then re-insert. The
+  // clear is keyed on session_id so it only touches this workout's rows.
+  const { error: clearErr } = await supabase
+    .from('workout_sets')
+    .delete()
+    .eq('session_id', sessionId);
+  if (clearErr) throw clearErr;
+
   if (workout.sets.length > 0) {
     const setRows = workout.sets.map((s) => ({
       id: crypto.randomUUID(),
@@ -115,10 +134,7 @@ export async function pushWorkoutToNexus(workout: NexusWorkoutPayload): Promise<
     }));
 
     const { error: setsErr } = await supabase.from('workout_sets').insert(setRows);
-    if (setsErr) {
-      await supabase.from('workout_sessions').delete().eq('id', sessionId);
-      throw setsErr;
-    }
+    if (setsErr) throw setsErr;
   }
 
   return sessionId;
