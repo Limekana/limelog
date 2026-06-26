@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import { Button, Badge, Card, EmptyState } from '@/components/ui';
 import { ProgramEditor } from '@/components/ProgramEditor';
@@ -7,6 +8,7 @@ import { Plus, Layers } from 'lucide-react';
 import './ProgramPage.css';
 
 export function ProgramPage() {
+  const { t } = useTranslation();
   const { programs, activeProgram, createProgram, setActiveProgram } = useProgramStore();
   const [showNew, setShowNew] = useState(false);
   const [viewingProgramId, setViewingProgramId] = useState<string | null>(
@@ -26,15 +28,15 @@ export function ProgramPage() {
       <div className="program-page">
         <div className="program-page__header">
           <button className="program-page__back" onClick={() => setViewingProgramId(null)}>
-            ← Programs
+            ← {t('program.back')}
           </button>
           <div className="program-page__header-right">
             {viewingProgram.status !== 'active' && (
               <Button size="sm" variant="primary" onClick={() => setActiveProgram(viewingProgram.id)}>
-                Set active
+                {t('program.setActive')}
               </Button>
             )}
-            {viewingProgram.status === 'active' && <Badge label="Active" variant="accent" size="md" />}
+            {viewingProgram.status === 'active' && <Badge label={t('program.active')} variant="accent" size="md" />}
           </div>
         </div>
         <div className="program-page__title-row">
@@ -51,9 +53,9 @@ export function ProgramPage() {
   return (
     <div className="program-page">
       <div className="program-page__header">
-        <h1 className="program-page__title">Programs</h1>
+        <h1 className="program-page__title">{t('program.title')}</h1>
         <Button size="sm" variant="primary" onClick={() => setShowNew(true)}>
-          <Plus size={14} /> New
+          <Plus size={14} /> {t('program.new')}
         </Button>
       </div>
 
@@ -64,9 +66,9 @@ export function ProgramPage() {
       {programs.length === 0 && !showNew && (
         <EmptyState
           icon={<Layers size={36} />}
-          title="No programs yet"
-          description="Create your first training program to get started."
-          action={<Button variant="primary" onClick={() => setShowNew(true)}>Create program</Button>}
+          title={t('program.noProgramsTitle')}
+          description={t('program.noProgramsBody')}
+          action={<Button variant="primary" onClick={() => setShowNew(true)}>{t('program.createProgram')}</Button>}
         />
       )}
 
@@ -75,12 +77,12 @@ export function ProgramPage() {
           <div className="program-card__row">
             <span className="program-card__name">{p.name}</span>
             {p.status === 'active'
-              ? <Badge label="Active" variant="accent" />
-              : <Badge label="Archived" variant="muted" />}
+              ? <Badge label={t('program.active')} variant="accent" />
+              : <Badge label={t('program.archived')} variant="muted" />}
           </div>
           {p.description && <p className="program-card__desc">{p.description}</p>}
           <p className="program-card__meta">
-            {p.phases.length} phase{p.phases.length !== 1 ? 's' : ''} · {p.sessions.length} session{p.sessions.length !== 1 ? 's' : ''}
+            {t('program.phases', { count: p.phases.length })} · {t('program.sessions', { count: p.sessions.length })}
           </p>
         </Card>
       ))}

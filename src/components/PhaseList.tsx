@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import type { Program, PhaseType } from '@/types/program';
 import { Button, Badge } from '@/components/ui';
@@ -14,6 +15,7 @@ const PHASE_VARIANT: Record<PhaseType, 'muted' | 'warning' | 'accent' | 'info'> 
 interface Props { program: Program; }
 
 export function PhaseList({ program }: Props) {
+  const { t } = useTranslation();
   const { addPhase, deletePhase, addSession } = useProgramStore();
   const [openPhase, setOpenPhase] = useState<string | null>(program.phases[0]?.id ?? null);
   const [addingPhase, setAddingPhase] = useState(false);
@@ -41,11 +43,11 @@ export function PhaseList({ program }: Props) {
         <div key={phase.id} className="phase-list__item">
           <button className="phase-list__header" onClick={() => setOpenPhase(openPhase === phase.id ? null : phase.id)}>
             <div className="phase-list__header-left">
-              <Badge label={phase.type} variant={PHASE_VARIANT[phase.type]} />
+              <Badge label={t(`program.phaseType.${phase.type}`)} variant={PHASE_VARIANT[phase.type]} />
               <span className="phase-list__name">{phase.name}</span>
             </div>
             <div className="phase-list__header-right">
-              <span className="phase-list__weeks">Wk {phase.weekStart}–{phase.weekEnd}</span>
+              <span className="phase-list__weeks">{t('program.weekRange', { start: phase.weekStart, end: phase.weekEnd })}</span>
               <button className="phase-list__del" onClick={(e) => { e.stopPropagation(); deletePhase(program.id, phase.id); }}>
                 <Trash2 size={13} />
               </button>
@@ -60,11 +62,11 @@ export function PhaseList({ program }: Props) {
               ))}
               <Button size="sm" variant="ghost" onClick={() => addSession({
                 phaseId: phase.id,
-                name: 'New session',
+                name: t('program.newSession'),
                 dayOfWeek: 1,
                 orderIndex: phaseSessions(phase.id).length,
               })}>
-                <Plus size={13} /> Add session
+                <Plus size={13} /> {t('program.addSession')}
               </Button>
             </div>
           )}
@@ -73,25 +75,25 @@ export function PhaseList({ program }: Props) {
 
       {addingPhase ? (
         <div className="phase-form">
-          <input placeholder="Phase name" value={phaseForm.name}
+          <input placeholder={t('program.phaseNamePlaceholder')} value={phaseForm.name}
             onChange={(e) => setPhaseForm((f) => ({ ...f, name: e.target.value }))} autoFocus />
           <select value={phaseForm.type} onChange={(e) => setPhaseForm((f) => ({ ...f, type: e.target.value as PhaseType }))}>
-            {PHASE_TYPES.map((t) => <option key={t} value={t}>{t.charAt(0).toUpperCase() + t.slice(1)}</option>)}
+            {PHASE_TYPES.map((pt) => <option key={pt} value={pt}>{t(`program.phaseType.${pt}`)}</option>)}
           </select>
           <div className="phase-form__weeks">
-            <label>Week start<input type="number" min="1" value={phaseForm.weekStart}
+            <label>{t('program.weekStart')}<input type="number" min="1" value={phaseForm.weekStart}
               onChange={(e) => setPhaseForm((f) => ({ ...f, weekStart: Number(e.target.value) }))} /></label>
-            <label>Week end<input type="number" min="1" value={phaseForm.weekEnd}
+            <label>{t('program.weekEnd')}<input type="number" min="1" value={phaseForm.weekEnd}
               onChange={(e) => setPhaseForm((f) => ({ ...f, weekEnd: Number(e.target.value) }))} /></label>
           </div>
           <div className="phase-form__actions">
-            <Button size="sm" variant="ghost" onClick={() => setAddingPhase(false)}>Cancel</Button>
-            <Button size="sm" variant="primary" onClick={handleAddPhase} disabled={!phaseForm.name.trim()}>Add phase</Button>
+            <Button size="sm" variant="ghost" onClick={() => setAddingPhase(false)}>{t('common.cancel')}</Button>
+            <Button size="sm" variant="primary" onClick={handleAddPhase} disabled={!phaseForm.name.trim()}>{t('program.addPhase')}</Button>
           </div>
         </div>
       ) : (
         <Button variant="secondary" size="sm" onClick={() => setAddingPhase(true)}>
-          <Plus size={14} /> Add phase
+          <Plus size={14} /> {t('program.addPhase')}
         </Button>
       )}
     </div>

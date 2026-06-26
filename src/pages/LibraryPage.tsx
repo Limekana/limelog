@@ -1,4 +1,5 @@
 import { useState, useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import { BUILTIN_EXERCISES } from '@/data/builtinExercises';
 import type { MovementPattern, Equipment } from '@/types';
@@ -8,11 +9,6 @@ import './LibraryPage.css';
 
 const PATTERNS: MovementPattern[] = ['push', 'pull', 'hinge', 'squat', 'carry', 'jump', 'core', 'accessory'];
 const EQUIPMENT: Equipment[] = ['barbell', 'dumbbell', 'machine', 'cable', 'bodyweight', 'band', 'kettlebell', 'other'];
-
-const PATTERN_LABELS: Record<MovementPattern, string> = {
-  push: 'Push', pull: 'Pull', hinge: 'Hinge', squat: 'Squat',
-  carry: 'Carry', jump: 'Jump / Plyo', core: 'Core', accessory: 'Accessory',
-};
 
 type Tab = 'my' | 'browse';
 
@@ -34,7 +30,10 @@ function matchesFilter(
 }
 
 export function LibraryPage() {
+  const { t } = useTranslation();
   const { exercises, addExercise, deleteExercise } = useProgramStore();
+  const patternLabel = (p: MovementPattern) => t(`library.pattern.${p}`);
+  const equipLabel = (e: Equipment) => t(`library.equip.${e}`);
 
   const [tab, setTab] = useState<Tab>('my');
   const [search, setSearch] = useState('');
@@ -90,19 +89,19 @@ export function LibraryPage() {
       <div className="lib-page__header">
         <div className="lib-page__title-row">
           <Dumbbell size={20} aria-hidden="true" />
-          <h1 className="lib-page__title">Exercise Library</h1>
+          <h1 className="lib-page__title">{t('library.title')}</h1>
         </div>
         <p className="lib-page__subtitle">
-          {exercises.length} exercise{exercises.length !== 1 ? 's' : ''} in your library
-          {customCount > 0 && ` · ${customCount} custom`}
+          {t('library.inLibrary', { count: exercises.length })}
+          {customCount > 0 && ` · ${t('library.customCount', { count: customCount })}`}
         </p>
       </div>
 
       {/* ── Tabs ── */}
       <Tabs
         tabs={[
-          { key: 'my', label: 'My Library', count: exercises.length },
-          { key: 'browse', label: 'Browse & Add', count: browseTotalCount },
+          { key: 'my', label: t('library.tabMy'), count: exercises.length },
+          { key: 'browse', label: t('library.tabBrowse'), count: browseTotalCount },
         ]}
         activeKey={tab}
         onChange={(k) => setTab(k as Tab)}
@@ -114,35 +113,35 @@ export function LibraryPage() {
           <Search size={13} className="lib-page__search-icon" aria-hidden="true" />
           <input
             className="lib-page__search"
-            placeholder="Search by name or muscle…"
+            placeholder={t('library.searchPlaceholder')}
             value={search}
             onChange={(e) => setSearch(e.target.value)}
-            aria-label="Search exercises"
+            aria-label={t('library.searchAria')}
           />
         </div>
         <div className="lib-page__filters">
           <select
-            aria-label="Filter by movement pattern"
+            aria-label={t('library.filterPatternAria')}
             value={filterPattern}
             onChange={(e) => setFilterPattern(e.target.value as MovementPattern | 'all')}
           >
-            <option value="all">All patterns</option>
-            {PATTERNS.map((p) => <option key={p} value={p}>{PATTERN_LABELS[p]}</option>)}
+            <option value="all">{t('library.allPatterns')}</option>
+            {PATTERNS.map((p) => <option key={p} value={p}>{patternLabel(p)}</option>)}
           </select>
           <select
-            aria-label="Filter by equipment"
+            aria-label={t('library.filterEquipAria')}
             value={filterEquip}
             onChange={(e) => setFilterEquip(e.target.value as Equipment | 'all')}
           >
-            <option value="all">All equipment</option>
-            {EQUIPMENT.map((e) => <option key={e} value={e}>{e}</option>)}
+            <option value="all">{t('library.allEquipment')}</option>
+            {EQUIPMENT.map((e) => <option key={e} value={e}>{equipLabel(e)}</option>)}
           </select>
           {(search || filterPattern !== 'all' || filterEquip !== 'all') && (
             <button
               className="lib-page__reset"
               onClick={() => { setSearch(''); setFilterPattern('all'); setFilterEquip('all'); }}
             >
-              Clear
+              {t('library.clear')}
             </button>
           )}
         </div>
@@ -153,38 +152,38 @@ export function LibraryPage() {
         <div className="lib-page__list">
           <div className="lib-page__list-header">
             <Button size="sm" variant="primary" onClick={() => setShowForm((v) => !v)}>
-              <Plus size={13} aria-hidden="true" /> New custom exercise
+              <Plus size={13} aria-hidden="true" /> {t('library.newCustom')}
             </Button>
           </div>
 
           {showForm && (
             <div className="lib-page__form">
-              <input placeholder="Exercise name *" value={form.name} autoFocus
+              <input placeholder={t('library.namePlaceholder')} value={form.name} autoFocus
                 onChange={(e) => setForm((f) => ({ ...f, name: e.target.value }))} />
-              <input placeholder="Primary muscle" value={form.primaryMuscle}
+              <input placeholder={t('library.primaryMusclePlaceholder')} value={form.primaryMuscle}
                 onChange={(e) => setForm((f) => ({ ...f, primaryMuscle: e.target.value }))} />
               <select
-                aria-label="Movement pattern"
+                aria-label={t('library.filterPatternAria')}
                 value={form.movementPattern}
                 onChange={(e) => setForm((f) => ({ ...f, movementPattern: e.target.value as MovementPattern }))}
               >
-                {PATTERNS.map((p) => <option key={p} value={p}>{PATTERN_LABELS[p]}</option>)}
+                {PATTERNS.map((p) => <option key={p} value={p}>{patternLabel(p)}</option>)}
               </select>
               <select
-                aria-label="Equipment"
+                aria-label={t('library.filterEquipAria')}
                 value={form.equipment}
                 onChange={(e) => setForm((f) => ({ ...f, equipment: e.target.value as Equipment }))}
               >
-                {EQUIPMENT.map((e) => <option key={e} value={e}>{e}</option>)}
+                {EQUIPMENT.map((e) => <option key={e} value={e}>{equipLabel(e)}</option>)}
               </select>
               <label className="lib-page__bilateral">
                 <input type="checkbox" checked={form.isBilateral}
                   onChange={(e) => setForm((f) => ({ ...f, isBilateral: e.target.checked }))} />
-                Bilateral
+                {t('library.bilateral')}
               </label>
               <div className="lib-page__form-actions">
-                <Button size="sm" variant="ghost" onClick={() => setShowForm(false)}>Cancel</Button>
-                <Button size="sm" variant="primary" onClick={handleAddCustom} disabled={!form.name.trim()}>Add</Button>
+                <Button size="sm" variant="ghost" onClick={() => setShowForm(false)}>{t('common.cancel')}</Button>
+                <Button size="sm" variant="primary" onClick={handleAddCustom} disabled={!form.name.trim()}>{t('common.add')}</Button>
               </div>
             </div>
           )}
@@ -192,8 +191,8 @@ export function LibraryPage() {
           {myExercises.length === 0 && !showForm && (
             <p className="lib-page__empty">
               {exercises.length === 0
-                ? 'No exercises yet. Browse & Add to populate your library.'
-                : 'No exercises match your filters.'}
+                ? t('library.emptyNoneMy')
+                : t('library.emptyNoFilter')}
             </p>
           )}
 
@@ -204,17 +203,17 @@ export function LibraryPage() {
                 <div className="lib-page__item-left">
                   <div className="lib-page__item-name-row">
                     <span className="lib-page__item-name">{ex.name}</span>
-                    {isCustom && <span className="lib-page__item-badge">custom</span>}
+                    {isCustom && <span className="lib-page__item-badge">{t('library.custom')}</span>}
                   </div>
                   <span className="lib-page__item-meta">
-                    {PATTERN_LABELS[ex.movementPattern as MovementPattern]} · {ex.equipment}
+                    {patternLabel(ex.movementPattern as MovementPattern)} · {equipLabel(ex.equipment as Equipment)}
                     {ex.primaryMuscle && ` · ${ex.primaryMuscle}`}
                   </span>
                 </div>
                 <button
                   className="lib-page__item-del"
                   onClick={() => deleteExercise(ex.id)}
-                  aria-label={`Remove ${ex.name} from library`}
+                  aria-label={t('library.removeAria', { name: ex.name })}
                 >
                   <Trash2 size={14} aria-hidden="true" />
                 </button>
@@ -230,8 +229,8 @@ export function LibraryPage() {
           {browseExercises.length === 0 && (
             <p className="lib-page__empty">
               {BUILTIN_EXERCISES.every((e) => inStoreNames.has(e.name))
-                ? 'All built-in exercises are already in your library.'
-                : 'No exercises match your filters.'}
+                ? t('library.emptyAllAdded')
+                : t('library.emptyNoFilter')}
             </p>
           )}
           {browseExercises.map((ex) => (
@@ -239,14 +238,14 @@ export function LibraryPage() {
               <div className="lib-page__item-left">
                 <span className="lib-page__item-name">{ex.name}</span>
                 <span className="lib-page__item-meta">
-                  {PATTERN_LABELS[ex.movementPattern]} · {ex.equipment}
+                  {patternLabel(ex.movementPattern)} · {equipLabel(ex.equipment)}
                   {ex.primaryMuscle && ` · ${ex.primaryMuscle}`}
                 </span>
               </div>
               <button
                 className="lib-page__item-add"
                 onClick={() => handleAddBuiltin(ex)}
-                aria-label={`Add ${ex.name} to my library`}
+                aria-label={t('library.addAria', { name: ex.name })}
               >
                 <Plus size={14} aria-hidden="true" />
               </button>
