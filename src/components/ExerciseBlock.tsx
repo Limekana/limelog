@@ -1,4 +1,5 @@
 import { useState, useRef, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import './ExerciseBlock.css';
 import { useLogStore } from '@/store/logStore';
 import { formatWeight } from '@/utils/helpers';
@@ -26,6 +27,7 @@ const RING_RADIUS = 26;
 const RING_CIRC = 2 * Math.PI * RING_RADIUS;
 
 export function ExerciseBlock({ sessionExercise: se, exercise, log, restriction, unit }: Props) {
+  const { t } = useTranslation();
   const { logSet, updateSet, deleteSet, checkAndFlagStalls } = useLogStore();
   const [expanded, setExpanded] = useState(true);
   const [overrideRestriction, setOverrideRestriction] = useState(false);
@@ -104,7 +106,7 @@ export function ExerciseBlock({ sessionExercise: se, exercise, log, restriction,
           <span className="ex-block__name">{exercise.name}</span>
           {restriction && (
             <Badge
-              label={restriction.severity === 'avoid' ? 'Restricted' : restriction.severity}
+              label={restriction.severity === 'avoid' ? t('log.restricted') : t(`profile.severity.${restriction.severity}`, { defaultValue: restriction.severity })}
               variant={restriction.severity === 'avoid' ? 'danger' : 'warning'}
             />
           )}
@@ -113,7 +115,7 @@ export function ExerciseBlock({ sessionExercise: se, exercise, log, restriction,
           <span>{se.targetSets} × {se.targetReps}</span>
           {se.targetRpe && <span>RPE {se.targetRpe}</span>}
           {se.targetWeight && <span>{formatWeight(se.targetWeight, unit)}</span>}
-          {se.restSeconds && <span>{se.restSeconds}s rest</span>}
+          {se.restSeconds && <span>{t('log.restSuffix', { secs: se.restSeconds })}</span>}
         </div>
         {expanded
           ? <ChevronUp size={16} color="var(--text-tertiary)" />
@@ -125,16 +127,16 @@ export function ExerciseBlock({ sessionExercise: se, exercise, log, restriction,
           {restriction && restriction.severity === 'avoid' && !overrideRestriction && (
             <div className="ex-block__restriction">
               <AlertTriangle size={14} />
-              <span>{restriction.label} — flagged as avoid.</span>
+              <span>{t('log.flaggedAvoid', { label: restriction.label })}</span>
               <button className="ex-block__override" onClick={() => setOverrideRestriction(true)}>
-                Override
+                {t('log.override')}
               </button>
             </div>
           )}
           {restriction && restriction.severity === 'modify' && (
             <div className="ex-block__restriction ex-block__restriction--warn">
               <AlertTriangle size={14} />
-              <span>{restriction.label} — modify load/range as needed.</span>
+              <span>{t('log.modifyLoad', { label: restriction.label })}</span>
             </div>
           )}
 
@@ -160,10 +162,10 @@ export function ExerciseBlock({ sessionExercise: se, exercise, log, restriction,
               </svg>
               <div className="ex-block__rest-text">
                 <span className="ex-block__rest-seconds">{restState.remaining}</span>
-                <span className="ex-block__rest-label">rest</span>
+                <span className="ex-block__rest-label">{t('log.rest')}</span>
               </div>
               <button className="ex-block__rest-skip" onClick={skipRest}>
-                Skip
+                {t('log.skip')}
               </button>
             </div>
           )}
@@ -171,9 +173,9 @@ export function ExerciseBlock({ sessionExercise: se, exercise, log, restriction,
           {!isRestricted && (
             <>
               <div className="ex-block__set-header">
-                <span>Set</span>
+                <span>{t('log.colSet')}</span>
                 <span>{unit}</span>
-                <span>Reps</span>
+                <span>{t('log.colReps')}</span>
                 <span>RPE</span>
                 <span />
               </div>
@@ -194,14 +196,14 @@ export function ExerciseBlock({ sessionExercise: se, exercise, log, restriction,
                   <button
                     className="ex-block__delete"
                     onClick={() => deleteSet(log.id, s.id)}
-                    aria-label="Delete set"
+                    aria-label={t('log.deleteSet')}
                   >
                     <Trash2 size={13} aria-hidden="true" />
                   </button>
                 </div>
               ))}
-              <button className="ex-block__add-set" onClick={addSet} aria-label="Add set">
-                <Plus size={14} aria-hidden="true" /> Add set
+              <button className="ex-block__add-set" onClick={addSet} aria-label={t('log.addSet')}>
+                <Plus size={14} aria-hidden="true" /> {t('log.addSet')}
               </button>
             </>
           )}

@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useUserStore } from '@/store/userStore';
 import { useProgramStore } from '@/store/programStore';
 import type { MovementPattern, InjurySeverity } from '@/types';
@@ -11,6 +12,7 @@ const SEVERITIES: InjurySeverity[] = ['avoid', 'modify', 'monitor'];
 interface Props { onClose: () => void; }
 
 export function InjuryForm({ onClose }: Props) {
+  const { t } = useTranslation();
   const { addRestriction } = useUserStore();
   const { exercises } = useProgramStore();
   const [label, setLabel] = useState('');
@@ -39,31 +41,31 @@ export function InjuryForm({ onClose }: Props) {
 
   return (
     <div className="injury-form">
-      <p className="injury-form__heading">New restriction</p>
-      <input placeholder="Label (e.g. Lumbosacral stress)" value={label}
+      <p className="injury-form__heading">{t('injury.newRestriction')}</p>
+      <input placeholder={t('injury.labelPlaceholder')} value={label}
         onChange={(e) => setLabel(e.target.value)} autoFocus />
 
       <div className="injury-form__field">
-        <span className="injury-form__label">Severity</span>
+        <span className="injury-form__label">{t('injury.severity')}</span>
         <div className="injury-form__row">
           {SEVERITIES.map((s) => (
             <button key={s}
               className={`injury-form__chip${severity === s ? ' injury-form__chip--active injury-form__chip--' + s : ''}`}
               onClick={() => setSeverity(s)}>
-              {s}
+              {t(`profile.severity.${s}`, { defaultValue: s })}
             </button>
           ))}
         </div>
       </div>
 
       <div className="injury-form__field">
-        <span className="injury-form__label">Restrict movement patterns</span>
+        <span className="injury-form__label">{t('injury.restrictPatterns')}</span>
         <div className="injury-form__grid">
           {ALL_PATTERNS.map((p) => (
             <button key={p}
               className={`injury-form__chip${patterns.includes(p) ? ' injury-form__chip--active injury-form__chip--avoid' : ''}`}
               onClick={() => togglePattern(p)}>
-              {p}
+              {t(`library.pattern.${p}`, { defaultValue: p })}
             </button>
           ))}
         </div>
@@ -71,7 +73,7 @@ export function InjuryForm({ onClose }: Props) {
 
       {exercises.length > 0 && (
         <div className="injury-form__field">
-          <span className="injury-form__label">Restrict specific exercises</span>
+          <span className="injury-form__label">{t('injury.restrictExercises')}</span>
           <div className="injury-form__grid">
             {exercises.map((e) => (
               <button key={e.id}
@@ -85,8 +87,8 @@ export function InjuryForm({ onClose }: Props) {
       )}
 
       <div className="injury-form__actions">
-        <Button variant="ghost" size="sm" onClick={onClose}>Cancel</Button>
-        <Button variant="primary" size="sm" onClick={handleSave} disabled={!label.trim()}>Save</Button>
+        <Button variant="ghost" size="sm" onClick={onClose}>{t('common.cancel')}</Button>
+        <Button variant="primary" size="sm" onClick={handleSave} disabled={!label.trim()}>{t('common.save')}</Button>
       </div>
     </div>
   );

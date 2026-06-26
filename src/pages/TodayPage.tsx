@@ -21,15 +21,15 @@ function isSameLocalDay(iso: string, now: Date): boolean {
 }
 
 export function TodayPage() {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const navigate = useNavigate();
   const { activeProgram, exercises, advancePhase } = useProgramStore();
   const { sessionLogs, startSession, unfinalizeSession, discardSession, stallFlags } = useLogStore();
 
   const now = new Date();
   const today = getDayOfWeek();
-  const dayName = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'][today];
-  const dateStr = now.toLocaleDateString('en-GB', { day: 'numeric', month: 'long' });
+  const dayName = t(`today.dayFull.${(['sun','mon','tue','wed','thu','fri','sat'] as const)[today]}`);
+  const dateStr = now.toLocaleDateString(i18n.language || 'en', { day: 'numeric', month: 'long' });
 
   const todaySessions: SessionTemplate[] = activeProgram
     ? activeProgram.sessions.filter((s) => s.dayOfWeek === today)
