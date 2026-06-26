@@ -12,21 +12,23 @@
 // from useBodyMetricsStore via the existing analysis helpers — no new wiring.
 
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
 import { weightSeries, weightTrendOverDays } from '@/lib/bodyMetricsAnalysis';
 import { formatWeight, formatLength, kgToLb } from '@/types/bodyMetrics';
 import type { BodyMetric } from '@/types/bodyMetrics';
 import './BodyMetricsSummaryCard.css';
 
-const MEASURE_FIELDS: Array<{ key: keyof BodyMetric; label: string }> = [
-  { key: 'chestCm', label: 'Chest' },
-  { key: 'waistCm', label: 'Waist' },
-  { key: 'hipsCm', label: 'Hips' },
-  { key: 'armsCm', label: 'Arms' },
-  { key: 'legsCm', label: 'Legs' },
+const MEASURE_FIELDS: Array<{ key: keyof BodyMetric; labelKey: string }> = [
+  { key: 'chestCm', labelKey: 'body.chest' },
+  { key: 'waistCm', labelKey: 'body.waist' },
+  { key: 'hipsCm', labelKey: 'body.hips' },
+  { key: 'armsCm', labelKey: 'body.arms' },
+  { key: 'legsCm', labelKey: 'body.legs' },
 ];
 
 export function BodyMetricsSummaryCard() {
+  const { t } = useTranslation();
   const metrics = useBodyMetricsStore((s) => s.metrics);
   const prefs = useBodyMetricsStore((s) => s.prefs);
   const unit = prefs.unitSystem;
@@ -42,7 +44,7 @@ export function BodyMetricsSummaryCard() {
       const present = MEASURE_FIELDS.filter((f) => row[f.key] != null);
       if (present.length > 0) {
         return present.map((f) => ({
-          label: f.label,
+          label: t(f.labelKey),
           value: formatLength(row[f.key] as number, unit),
         }));
       }
@@ -66,10 +68,8 @@ export function BodyMetricsSummaryCard() {
   if (series.length === 0) {
     return (
       <div className="bm-summary bm-summary--empty">
-        <span className="bm-summary__eyebrow">Current weight</span>
-        <p className="bm-summary__empty-text">
-          Log your weight below and your trend will appear here.
-        </p>
+        <span className="bm-summary__eyebrow">{t('body.currentWeight')}</span>
+        <p className="bm-summary__empty-text">{t('body.emptyTrend')}</p>
       </div>
     );
   }
@@ -85,7 +85,7 @@ export function BodyMetricsSummaryCard() {
     <div className="bm-summary">
       <div className="bm-summary__head">
         <div>
-          <span className="bm-summary__eyebrow">Current weight</span>
+          <span className="bm-summary__eyebrow">{t('body.currentWeight')}</span>
           <div className="bm-summary__weight">{formatWeight(latest.weightKg, unit)}</div>
         </div>
         {trend30 && (
@@ -100,11 +100,11 @@ export function BodyMetricsSummaryCard() {
       <Sparkline series={series} />
 
       <div className="bm-summary__legend">
-        <span><i className="bm-summary__swatch bm-summary__swatch--line" aria-hidden /> Weight</span>
-        <span><i className="bm-summary__swatch bm-summary__swatch--ma" aria-hidden /> 7-day avg</span>
+        <span><i className="bm-summary__swatch bm-summary__swatch--line" aria-hidden /> {t('body.weight')}</span>
+        <span><i className="bm-summary__swatch bm-summary__swatch--ma" aria-hidden /> {t('body.sevenDayAvg')}</span>
         {journey && (
           <span className="bm-summary__journey">
-            From {formatWeight(journey.start.weightKg, unit)} · {journey.days}d
+            {t('body.fromWeight')} {formatWeight(journey.start.weightKg, unit)} · {journey.days}d
           </span>
         )}
       </div>
@@ -112,7 +112,7 @@ export function BodyMetricsSummaryCard() {
       {latestMeasurements.length > 0 && (
         <>
           <div className="bm-summary__divider">
-            <span>Latest measurements</span>
+            <span>{t('body.latestMeasurements')}</span>
           </div>
           <div className="bm-summary__measures">
             {latestMeasurements.map((m) => (

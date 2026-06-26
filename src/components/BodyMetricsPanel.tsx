@@ -13,6 +13,7 @@
 // confronted with six empty inputs.
 
 import { useMemo, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Capacitor } from '@capacitor/core';
 import {
   Camera as CapacitorCamera,
@@ -53,11 +54,11 @@ function todayLocalIso(): string {
 }
 
 const TRACK_OPTIONS = [
-  { key: 'trackChest' as const, label: 'Chest' },
-  { key: 'trackWaist' as const, label: 'Waist' },
-  { key: 'trackHips' as const, label: 'Hips' },
-  { key: 'trackArms' as const, label: 'Arms' },
-  { key: 'trackLegs' as const, label: 'Legs' },
+  { key: 'trackChest' as const, labelKey: 'body.chest' },
+  { key: 'trackWaist' as const, labelKey: 'body.waist' },
+  { key: 'trackHips' as const, labelKey: 'body.hips' },
+  { key: 'trackArms' as const, labelKey: 'body.arms' },
+  { key: 'trackLegs' as const, labelKey: 'body.legs' },
 ];
 
 interface FormState {
@@ -83,6 +84,7 @@ const EMPTY_FORM: FormState = {
 };
 
 export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } = {}) {
+  const { t } = useTranslation();
   const metrics = useBodyMetricsStore((s) => s.metrics);
   const prefs = useBodyMetricsStore((s) => s.prefs);
   const addOrUpdate = useBodyMetricsStore((s) => s.addOrUpdate);
@@ -253,7 +255,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
   const useNativeCapture = Capacitor.isNativePlatform();
 
   function handlePhotoDelete(p: ProgressPhoto) {
-    if (!confirm(`Delete photo from ${p.date}?`)) return;
+    if (!confirm(t('body.deletePhotoConfirm', { date: p.date }))) return;
     deletePhoto(p.date);
     setPhotosNonce((n) => n + 1);
   }
@@ -264,7 +266,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
       {/* Unit + tracked-fields prefs */}
       <Card padding="md" className="body-metrics-prefs">
         <div className="body-metrics-prefs__row">
-          <span className="body-metrics-prefs__label">Units</span>
+          <span className="body-metrics-prefs__label">{t('body.units')}</span>
           <div className="body-metrics-prefs__unit-toggle" role="radiogroup" aria-label="Unit system">
             <button
               type="button"
@@ -287,7 +289,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
           </div>
         </div>
         <div className="body-metrics-prefs__row">
-          <span className="body-metrics-prefs__label">Track</span>
+          <span className="body-metrics-prefs__label">{t('body.track')}</span>
           <div className="body-metrics-prefs__chips">
             {TRACK_OPTIONS.map((opt) => {
               const on = prefs[opt.key];
@@ -299,7 +301,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
                   className={`body-chip ${on ? 'is-on' : ''}`}
                   onClick={() => updatePrefs({ [opt.key]: !on })}
                 >
-                  {opt.label}
+                  {t(opt.labelKey)}
                 </button>
               );
             })}
@@ -309,10 +311,10 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
 
       {/* Log form */}
       <Card padding="md">
-        <h3 className="body-metrics-section__title">Log entry</h3>
+        <h3 className="body-metrics-section__title">{t('body.logEntry')}</h3>
         <div className="body-metrics-form">
           <label className="body-metrics-form__field">
-            <span>Date</span>
+            <span>{t('body.date')}</span>
             <input
               type="date"
               value={form.date}
@@ -324,7 +326,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
             />
           </label>
           <label className="body-metrics-form__field">
-            <span>Weight ({isImperial ? 'lb' : 'kg'})</span>
+            <span>{t('body.weight')} ({isImperial ? 'lb' : 'kg'})</span>
             <input
               type="number"
               inputMode="decimal"
@@ -336,7 +338,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
           </label>
           {prefs.trackChest && (
             <label className="body-metrics-form__field">
-              <span>Chest ({isImperial ? 'in' : 'cm'})</span>
+              <span>{t('body.chest')} ({isImperial ? 'in' : 'cm'})</span>
               <input type="number" inputMode="decimal" step="0.1"
                 value={form.chest}
                 onChange={(e) => setForm((f) => ({ ...f, chest: e.target.value }))}
@@ -345,7 +347,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
           )}
           {prefs.trackWaist && (
             <label className="body-metrics-form__field">
-              <span>Waist ({isImperial ? 'in' : 'cm'})</span>
+              <span>{t('body.waist')} ({isImperial ? 'in' : 'cm'})</span>
               <input type="number" inputMode="decimal" step="0.1"
                 value={form.waist}
                 onChange={(e) => setForm((f) => ({ ...f, waist: e.target.value }))}
@@ -354,7 +356,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
           )}
           {prefs.trackHips && (
             <label className="body-metrics-form__field">
-              <span>Hips ({isImperial ? 'in' : 'cm'})</span>
+              <span>{t('body.hips')} ({isImperial ? 'in' : 'cm'})</span>
               <input type="number" inputMode="decimal" step="0.1"
                 value={form.hips}
                 onChange={(e) => setForm((f) => ({ ...f, hips: e.target.value }))}
@@ -363,7 +365,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
           )}
           {prefs.trackArms && (
             <label className="body-metrics-form__field">
-              <span>Arms ({isImperial ? 'in' : 'cm'})</span>
+              <span>{t('body.arms')} ({isImperial ? 'in' : 'cm'})</span>
               <input type="number" inputMode="decimal" step="0.1"
                 value={form.arms}
                 onChange={(e) => setForm((f) => ({ ...f, arms: e.target.value }))}
@@ -372,7 +374,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
           )}
           {prefs.trackLegs && (
             <label className="body-metrics-form__field">
-              <span>Legs ({isImperial ? 'in' : 'cm'})</span>
+              <span>{t('body.legs')} ({isImperial ? 'in' : 'cm'})</span>
               <input type="number" inputMode="decimal" step="0.1"
                 value={form.legs}
                 onChange={(e) => setForm((f) => ({ ...f, legs: e.target.value }))}
@@ -380,17 +382,17 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
             </label>
           )}
           <label className="body-metrics-form__field body-metrics-form__field--full">
-            <span>Notes</span>
+            <span>{t('body.notes')}</span>
             <textarea
               rows={2}
-              placeholder="Optional context"
+              placeholder={t('body.notesPlaceholder')}
               value={form.notes}
               onChange={(e) => setForm((f) => ({ ...f, notes: e.target.value }))}
             />
           </label>
         </div>
         <Button variant="primary" fullWidth onClick={handleSave}>
-          Save entry
+          {t('body.saveEntry')}
         </Button>
       </Card>
 
@@ -399,7 +401,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
       {showTrend && (
       <Card padding="md">
         <div className="body-metrics-section__header">
-          <h3 className="body-metrics-section__title">Weight trend</h3>
+          <h3 className="body-metrics-section__title">{t('body.weightTrend')}</h3>
           {trend30 && (
             <span
               className={`body-metrics-trend-pill ${
@@ -414,13 +416,13 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
               {isImperial
                 ? `${kgToLb(trend30.deltaKg).toFixed(1)} lb`
                 : `${trend30.deltaKg.toFixed(1)} kg`}{' '}
-              over {trend30.days}d
+              {t('body.overDays', { days: trend30.days })}
             </span>
           )}
         </div>
         {series.length === 0 ? (
           <p className="body-metrics-empty">
-            Log your weight to see your trend.
+            {t('body.logToSeeTrend')}
           </p>
         ) : (
           <WeightChart series={series} isImperial={isImperial} />
@@ -431,7 +433,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
       {/* Recent entries */}
       {sorted.length > 0 && (
         <Card padding="md">
-          <h3 className="body-metrics-section__title">Recent entries</h3>
+          <h3 className="body-metrics-section__title">{t('body.recentEntries')}</h3>
           <div className="body-metrics-list">
             {sorted.slice(0, 10).map((row) => (
               <div key={row.id} className="body-metrics-list__row">
@@ -442,16 +444,16 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
                   )}
                   {row.waistCm != null && (
                     <span className="body-metrics-list__meta">
-                      Waist {formatLength(row.waistCm, unit)}
+                      {t('body.waist')} {formatLength(row.waistCm, unit)}
                     </span>
                   )}
                 </div>
                 <button
                   type="button"
                   className="body-metrics-list__delete"
-                  aria-label={`Delete entry for ${row.date}`}
+                  aria-label={t('body.deleteEntryConfirm', { date: row.date })}
                   onClick={() => {
-                    if (confirm(`Delete entry for ${row.date}?`)) remove(row.id);
+                    if (confirm(t('body.deleteEntryConfirm', { date: row.date }))) remove(row.id);
                   }}
                 >
                   <Trash2 size={14} aria-hidden />
@@ -465,8 +467,8 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
       {/* Photos */}
       <Card padding="md">
         <div className="body-metrics-section__header">
-          <h3 className="body-metrics-section__title">Progress photos</h3>
-          <span className="body-metrics-section__subtle">Local only · never synced</span>
+          <h3 className="body-metrics-section__title">{t('body.progressPhotos')}</h3>
+          <span className="body-metrics-section__subtle">{t('body.localOnly')}</span>
         </div>
         <div className="body-metrics-photo-capture">
           {useNativeCapture ? (
@@ -479,7 +481,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
               className="body-metrics-photo-label"
               onClick={capturePhotoNative}
             >
-              <Camera size={14} aria-hidden /> Capture for {form.date}
+              <Camera size={14} aria-hidden /> {t('body.captureFor', { date: form.date })}
             </button>
           ) : (
             <>
@@ -493,13 +495,13 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
                 className="body-metrics-photo-input"
               />
               <label htmlFor="body-metrics-photo-input" className="body-metrics-photo-label">
-                <Camera size={14} aria-hidden /> Capture for {form.date}
+                <Camera size={14} aria-hidden /> {t('body.captureFor', { date: form.date })}
               </label>
             </>
           )}
           {photoForFormDate && (
             <span className="body-metrics-photo-existing">
-              Photo already saved for this date — capturing will overwrite.
+              {t('body.photoOverwrite')}
             </span>
           )}
         </div>
@@ -510,7 +512,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
         )}
         {photos.length === 0 ? (
           <p className="body-metrics-empty">
-            No photos saved yet. They live on this device only — never uploaded.
+            {t('body.noPhotos')}
           </p>
         ) : (
           <div className="body-metrics-photo-grid">
@@ -522,7 +524,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
                   <button
                     type="button"
                     className="body-metrics-photo__delete"
-                    aria-label={`Delete photo from ${p.date}`}
+                    aria-label={t('body.deletePhotoConfirm', { date: p.date })}
                     onClick={() => handlePhotoDelete(p)}
                   >
                     <Trash2 size={12} aria-hidden />

@@ -12,16 +12,18 @@
 // renders with showTrend={false} to avoid a duplicate chart; the panel keeps
 // the log form, recent entries, and progress photos.
 
+import { useTranslation } from 'react-i18next';
 import { BodyMetricsPanel } from '@/components/BodyMetricsPanel';
 import { BodyMetricsSummaryCard } from '@/components/BodyMetricsSummaryCard';
 import { HealthWeekCard } from '@/components/HealthConnect';
 import './BodyMetricsPage.css';
 
 export function BodyMetricsPage() {
+  const { t } = useTranslation();
   return (
     <div className="body-page">
-      <h1 className="body-page__title">Body</h1>
-      <p className="body-page__subtitle">Weight, measurements &amp; progress photos</p>
+      <h1 className="body-page__title">{t('body.title')}</h1>
+      <p className="body-page__subtitle">{t('body.subtitle')}</p>
 
       {/* v1.4 — current weight + trend + measurements, NCC-style card. */}
       <BodyMetricsSummaryCard />
