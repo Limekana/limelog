@@ -55,7 +55,20 @@ export function OnboardingFlow({ onDone }: Props) {
           <span className="onb-tagline">{t('app.tagline')}</span>
         </div>
 
-        <div className="onb-card">
+        {/* Brutalist step counter + hard lime progress slab */}
+        <div className="onb-progress">
+          <span className="onb-count">
+            <b>{String(step + 1).padStart(2, '0')}</b>
+            <span className="onb-count-total">/ 04</span>
+          </span>
+          <div className="onb-bars">
+            {[0, 1, 2, 3].map((i) => (
+              <span key={i} className={`onb-bar${i <= step ? ' on' : ''}`} />
+            ))}
+          </div>
+        </div>
+
+        <div className="onb-card" key={step}>
           {step === 0 && (
             <div className="onb-step">
               <div className="onb-icon"><Globe size={28} aria-hidden="true" /></div>

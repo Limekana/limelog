@@ -174,3 +174,46 @@
   gap: 8px;
   width: 100%;
 }
+
+/* ── v1.7.1 design pass — sharper industrial brutalism ───────────────────── */
+.onb-wordmark { text-shadow: 0 0 24px rgba(200, 241, 53, 0.35); }
+.onb-card {
+  border-width: 2px;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35);
+  animation: onbSlam 0.34s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+@keyframes onbSlam {
+  from { opacity: 0; transform: translateX(10px); clip-path: inset(0 100% 0 0); }
+  to   { opacity: 1; transform: none;            clip-path: inset(0 0 0 0); }
+}
+/* step counter — big condensed numeral + total */
+.onb-progress {
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 2px; margin-top: -4px;
+}
+.onb-count {
+  display: flex; align-items: baseline; gap: 6px;
+  font-family: 'Barlow Condensed', system-ui, sans-serif; line-height: 0.9;
+}
+.onb-count b {
+  font-size: 40px; font-weight: 700; color: var(--accent);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.onb-count-total {
+  font-size: 14px; font-weight: 600; color: var(--text-tertiary);
+  letter-spacing: 0.06em;
+}
+/* hard lime slab segments */
+.onb-bars { display: flex; gap: 5px; flex: 1; }
+.onb-bar {
+  flex: 1; height: 8px; background: var(--bg-surface);
+  border: 1px solid var(--border-default, var(--border-subtle));
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.onb-bar.on {
+  background: var(--accent); border-color: var(--accent);
+  box-shadow: 0 0 12px -2px rgba(200, 241, 53, 0.6);
+}
+/* sharpen selectable chips (goals + langs) */
+.onb-goal { border-radius: 0; border-width: 1.5px; }
+.onb-goal.is-selected { box-shadow: 4px 4px 0 rgba(200, 241, 53, 0.25); }
