@@ -1,0 +1,13 @@
+LimeLog is a periodized strength-training tracker for serious lifters.
+
+Build training programs with phases, log every set and rep, and let LimeLog handle the analysis:
+
+* Automatic personal-record detection (Epley 1RM) after each session
+* Progressive-overload reference — last session's sets shown while you log
+* Estimated 1RM trends and a per-exercise personal-record history
+* Optional vertical-jump and body-metric tracking
+* Health Connect steps and active calories
+
+Your data stays on your device. Cloud sync is optional and account-gated. No ads, no trackers, no Google Play Services — LimeLog is built to be fully open and F-Droid friendly.
+
+Part of the Limecore Nexus suite.

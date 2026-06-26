@@ -1,0 +1,5 @@
+Première version multilingue (anglais, finnois, français, allemand, espagnol, chinois).
+
+Nouveautés :
+- Intégration guidée au premier lancement
+- Historique des records par exercice avec courbe de 1RM dans l'onglet Progrès

@@ -1,0 +1,13 @@
+LimeLog ist ein periodisierter Krafttraining-Tracker für ambitionierte Sportler.
+
+Erstelle Trainingsprogramme mit Phasen, protokolliere jeden Satz und jede Wiederholung — LimeLog übernimmt die Auswertung:
+
+* Automatische Rekorderkennung (Epley-1RM) nach jeder Einheit
+* Progressive-Overload-Referenz — die Sätze der letzten Einheit beim Eintragen sichtbar
+* Geschätzte 1RM-Trends und eine Rekord-Historie pro Übung
+* Optionales Tracking von Vertikalsprung und Körpermaßen
+* Schritte und aktive Kalorien über Health Connect
+
+Deine Daten bleiben auf deinem Gerät. Cloud-Sync ist optional und kontogebunden. Keine Werbung, kein Tracking, keine Google Play Services — LimeLog ist vollständig offen und F-Droid-tauglich.
+
+Teil der Limecore-Nexus-Suite.

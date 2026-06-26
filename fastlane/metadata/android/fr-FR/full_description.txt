@@ -1,0 +1,13 @@
+LimeLog est un tracker de musculation périodisée pour les pratiquants sérieux.
+
+Crée des programmes avec phases, enregistre chaque série et répétition, et laisse LimeLog faire l'analyse :
+
+* Détection automatique des records personnels (1RM Epley) après chaque séance
+* Référence de surcharge progressive — les séries de la séance précédente affichées pendant la saisie
+* Tendances de 1RM estimé et historique des records par exercice
+* Suivi optionnel du saut vertical et des mensurations
+* Pas, calories actives via Health Connect
+
+Tes données restent sur ton appareil. La synchronisation cloud est optionnelle et liée à un compte. Pas de publicité, pas de pisteurs, pas de Google Play Services — LimeLog est entièrement ouvert et compatible F-Droid.
+
+Fait partie de la suite Limecore Nexus.

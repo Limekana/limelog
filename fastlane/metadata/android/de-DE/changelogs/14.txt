@@ -1,0 +1,5 @@
+Erste mehrsprachige Version (Englisch, Finnisch, Französisch, Deutsch, Spanisch, Chinesisch).
+
+Neu:
+- Geführtes Onboarding beim ersten Start
+- Rekord-Historie pro Übung mit 1RM-Verlauf im Fortschritt-Tab

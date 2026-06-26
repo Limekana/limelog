@@ -1,0 +1,5 @@
+First multilingual release (English, Finnish, French, German, Spanish, Chinese).
+
+New:
+- Guided first-run onboarding
+- Per-exercise personal-record history with 1RM sparkline on the Progress tab

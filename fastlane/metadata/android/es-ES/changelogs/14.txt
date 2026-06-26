@@ -1,0 +1,5 @@
+Primera versión multilingüe (inglés, finés, francés, alemán, español, chino).
+
+Novedades:
+- Onboarding guiado en el primer inicio
+- Historial de récords por ejercicio con minigráfico de 1RM en la pestaña Progreso

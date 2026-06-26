@@ -1,0 +1,13 @@
+LimeLog es un registro de entrenamiento de fuerza periodizado para levantadores serios.
+
+Crea programas con fases, registra cada serie y repetición, y deja que LimeLog haga el análisis:
+
+* Detección automática de récords personales (1RM de Epley) tras cada sesión
+* Referencia de sobrecarga progresiva — las series de la sesión anterior mientras registras
+* Tendencias de 1RM estimado e historial de récords por ejercicio
+* Seguimiento opcional de salto vertical y medidas corporales
+* Pasos y calorías activas vía Health Connect
+
+Tus datos permanecen en tu dispositivo. La sincronización en la nube es opcional y requiere cuenta. Sin anuncios, sin rastreadores, sin Google Play Services — LimeLog es totalmente abierto y compatible con F-Droid.
+
+Parte de la suite Limecore Nexus.
