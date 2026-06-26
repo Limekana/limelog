@@ -48,7 +48,9 @@
     "howStep2": "Enregistre chaque série au fur et à mesure",
     "howStep3": "Note les répétitions et le poids réalisés",
     "start": "Commencer l'entraînement",
-    "skip": "Passer pour l'instant"
+    "skip": "Passer pour l'instant",
+    "languageTitle": "Choisis ta langue",
+    "languageBody": "Tu peux changer cela à tout moment dans les paramètres."
   },
   "progress": {
     "title": "Progrès",
@@ -82,5 +84,8 @@
     "advance": "Avancer",
     "exercises_one": "{{count}} exercice · {{sets}} séries",
     "exercises_other": "{{count}} exercices · {{sets}} séries"
+  },
+  "settings": {
+    "language": "Langue"
   }
 }

@@ -12,7 +12,8 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui';
-import { Dumbbell, Target, ListChecks } from 'lucide-react';
+import { Dumbbell, Target, ListChecks, Globe } from 'lucide-react';
+import { setLanguage, SUPPORTED_LANGS, LANGUAGE_NAMES, type Lang } from '@/i18n';
 import { setOnboarded, setTrainingGoal, type TrainingGoal } from '@/lib/onboarding';
 import './OnboardingFlow.css';
 
@@ -30,7 +31,8 @@ const GOALS: { key: TrainingGoal; labelKey: string }[] = [
 ];
 
 export function OnboardingFlow({ onDone }: Props) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
+  const currentLang = (i18n.language || 'en').split('-')[0] as Lang;
   const [step, setStep] = useState(0);
   const [goal, setGoal] = useState<TrainingGoal | null>(null);
 
@@ -56,16 +58,39 @@ export function OnboardingFlow({ onDone }: Props) {
         <div className="onb-card">
           {step === 0 && (
             <div className="onb-step">
-              <div className="onb-icon"><Dumbbell size={28} aria-hidden="true" /></div>
-              <h1 className="onb-title">{t('onboarding.welcomeTitle')}</h1>
-              <p className="onb-sub">{t('onboarding.welcomeBody')}</p>
+              <div className="onb-icon"><Globe size={28} aria-hidden="true" /></div>
+              <h1 className="onb-title">{t('onboarding.languageTitle')}</h1>
+              <p className="onb-sub">{t('onboarding.languageBody')}</p>
+              <div className="onb-langs">
+                {SUPPORTED_LANGS.map((code) => (
+                  <button
+                    key={code}
+                    className={`onb-goal${currentLang === code ? ' is-selected' : ''}`}
+                    onClick={() => setLanguage(code)}
+                    aria-pressed={currentLang === code}
+                  >
+                    {LANGUAGE_NAMES[code]}
+                  </button>
+                ))}
+              </div>
               <Button variant="primary" size="lg" onClick={() => setStep(1)}>
-                {t('onboarding.getStarted')}
+                {t('common.continue')}
               </Button>
             </div>
           )}
 
           {step === 1 && (
+            <div className="onb-step">
+              <div className="onb-icon"><Dumbbell size={28} aria-hidden="true" /></div>
+              <h1 className="onb-title">{t('onboarding.welcomeTitle')}</h1>
+              <p className="onb-sub">{t('onboarding.welcomeBody')}</p>
+              <Button variant="primary" size="lg" onClick={() => setStep(2)}>
+                {t('onboarding.getStarted')}
+              </Button>
+            </div>
+          )}
+
+          {step === 2 && (
             <div className="onb-step">
               <div className="onb-icon"><Target size={28} aria-hidden="true" /></div>
               <h1 className="onb-title">{t('onboarding.goalTitle')}</h1>
@@ -82,13 +107,13 @@ export function OnboardingFlow({ onDone }: Props) {
                   </button>
                 ))}
               </div>
-              <Button variant="primary" size="lg" onClick={() => setStep(2)} disabled={!goal}>
+              <Button variant="primary" size="lg" onClick={() => setStep(3)} disabled={!goal}>
                 {t('common.continue')}
               </Button>
             </div>
           )}
 
-          {step === 2 && (
+          {step === 3 && (
             <div className="onb-step">
               <div className="onb-icon"><ListChecks size={28} aria-hidden="true" /></div>
               <h1 className="onb-title">{t('onboarding.howTitle')}</h1>

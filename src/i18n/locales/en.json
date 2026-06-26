@@ -48,7 +48,9 @@
     "howStep2": "Log each set as you go",
     "howStep3": "Record the reps and weight you hit",
     "start": "Start training",
-    "skip": "Skip for now"
+    "skip": "Skip for now",
+    "languageTitle": "Choose your language",
+    "languageBody": "You can change this anytime in Settings."
   },
   "progress": {
     "title": "Progress",
@@ -82,5 +84,8 @@
     "advance": "Advance",
     "exercises_one": "{{count}} exercise · {{sets}} sets",
     "exercises_other": "{{count}} exercises · {{sets}} sets"
+  },
+  "settings": {
+    "language": "Language"
   }
 }

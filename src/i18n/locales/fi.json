@@ -48,7 +48,9 @@
     "howStep2": "Kirjaa jokainen sarja edetessäsi",
     "howStep3": "Merkitse tekemäsi toistot ja paino",
     "start": "Aloita treenaaminen",
-    "skip": "Ohita toistaiseksi"
+    "skip": "Ohita toistaiseksi",
+    "languageTitle": "Valitse kielesi",
+    "languageBody": "Voit vaihtaa tämän milloin tahansa asetuksissa."
   },
   "progress": {
     "title": "Edistyminen",
@@ -82,5 +84,8 @@
     "advance": "Siirry",
     "exercises_one": "{{count}} liike · {{sets}} sarjaa",
     "exercises_other": "{{count}} liikettä · {{sets}} sarjaa"
+  },
+  "settings": {
+    "language": "Kieli"
   }
 }

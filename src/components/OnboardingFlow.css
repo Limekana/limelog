@@ -166,3 +166,11 @@
   color: var(--text-primary);
   background: var(--bg-raised);
 }
+
+/* v1.7.1 — language grid (compact 2-col for 6 options) */
+.onb-langs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
