@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { setLanguage, SUPPORTED_LANGS, LANGUAGE_NAMES, type Lang } from '@/i18n';
 import { useUserStore } from '@/store/userStore';
 import { Button, Card, Badge, EmptyState, Tabs, TabPanel } from '@/components/ui';
 import { InjuryForm } from '@/components/InjuryForm';
@@ -11,6 +13,8 @@ type Tab = 'injuries' | 'exercises' | 'settings';
 
 export function ProfilePage() {
   const { profile, setName, setUnit, resolveRestriction, removeRestriction, updateDeloadThresholds } = useUserStore();
+  const { t, i18n } = useTranslation();
+  const currentLang = (i18n.language || 'en').split('-')[0] as Lang;
   const [tab, setTab] = useState<Tab>('injuries');
   const [showInjuryForm, setShowInjuryForm] = useState(false);
   const [nameVal, setNameVal] = useState(profile.name);
@@ -129,6 +133,22 @@ export function ProfilePage() {
           </Card>
 
           <NexusSyncCard />
+
+          <Card padding="md">
+            <span className="settings-field__label">{t('settings.language')}</span>
+            <div className="settings-lang-grid">
+              {SUPPORTED_LANGS.map((code) => (
+                <button
+                  key={code}
+                  className={`settings-toggle__btn${currentLang === code ? ' settings-toggle__btn--active' : ''}`}
+                  onClick={() => setLanguage(code)}
+                  aria-pressed={currentLang === code}
+                >
+                  {LANGUAGE_NAMES[code]}
+                </button>
+              ))}
+            </div>
+          </Card>
 
           <Card padding="md">
             <span className="settings-field__label">Deload thresholds</span>

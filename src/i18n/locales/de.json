@@ -48,7 +48,9 @@
     "howStep2": "Trage jeden Satz nach und nach ein",
     "howStep3": "Notiere Wiederholungen und Gewicht",
     "start": "Training starten",
-    "skip": "Vorerst überspringen"
+    "skip": "Vorerst überspringen",
+    "languageTitle": "Wähle deine Sprache",
+    "languageBody": "Du kannst dies jederzeit in den Einstellungen ändern."
   },
   "progress": {
     "title": "Fortschritt",
@@ -82,5 +84,8 @@
     "advance": "Weiter",
     "exercises_one": "{{count}} Übung · {{sets}} Sätze",
     "exercises_other": "{{count}} Übungen · {{sets}} Sätze"
+  },
+  "settings": {
+    "language": "Sprache"
   }
 }

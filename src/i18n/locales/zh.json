@@ -48,7 +48,9 @@
     "howStep2": "随做随记每一组",
     "howStep3": "记下完成的次数和重量",
     "start": "开始训练",
-    "skip": "暂时跳过"
+    "skip": "暂时跳过",
+    "languageTitle": "选择你的语言",
+    "languageBody": "你可以随时在设置中更改。"
   },
   "progress": {
     "title": "进度",
@@ -82,5 +84,8 @@
     "advance": "推进",
     "exercises_one": "{{count}} 个动作 · {{sets}} 组",
     "exercises_other": "{{count}} 个动作 · {{sets}} 组"
+  },
+  "settings": {
+    "language": "语言"
   }
 }
