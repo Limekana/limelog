@@ -1,0 +1,14 @@
+LimeLog on jaksotettu voimaharjoittelun seuranta.
+
+Ominaisuudet:
+* Rakenna ohjelmia vaiheilla
+* Kirjaa jokainen sarja ja toisto
+* Tunnista ennätykset automaattisesti (Epley 1RM)
+* Progressiivisen ylikuormituksen viite kirjattaessa
+* Arvioidut 1RM-trendit ja liikekohtainen ennätyshistoria
+* Valinnainen vertikaalihypyn ja kehon mittojen seuranta
+* Health Connect -askeleet ja aktiiviset kalorit
+
+Paikallinen ensin; valinnainen tiliin sidottu pilvisynkronointi. Ei Google Play -palveluita, ei Firebasea — Google-kirjautuminen on tavallinen web-OAuth.
+
+Osa Limecore Nexus -pakettia. Saatavilla englanniksi, suomeksi, ranskaksi, saksaksi, espanjaksi ja kiinaksi.

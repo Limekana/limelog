@@ -1,0 +1,1 @@
+Täysi kuuden kielen tuki (englanti, suomi, ranska, saksa, espanja, kiina) koko sovelluksessa, sekä ensikäynnistyksen perehdytys ja ennätyshistorian pikkukäyrä Edistyminen-näytöllä.

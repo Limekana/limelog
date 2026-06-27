@@ -1,0 +1,1 @@
+Prise en charge complète de six langues (anglais, finnois, français, allemand, espagnol, chinois) dans toute l'application, plus une intégration au premier lancement et un graphique d'historique des records sur l'écran Progression.
