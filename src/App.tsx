@@ -13,10 +13,13 @@ import { ProfilePage } from '@/pages/ProfilePage';
 import { LibraryPage } from '@/pages/LibraryPage';
 import { WorkoutPage } from '@/pages/WorkoutPage';
 import { FirstLaunchAuth } from '@/components/FirstLaunchAuth';
+import { OnboardingFlow } from '@/components/OnboardingFlow';
 import { PRCelebrationModal } from '@/components/PRCelebrationModal';
 import { useProgramStore } from '@/store/programStore';
 import { useNexusStore } from '@/store/nexusStore';
+import { useLogStore } from '@/store/logStore';
 import { isGuestMode } from '@/lib/guestMode';
+import { isOnboarded, setOnboarded } from '@/lib/onboarding';
 import {
   setupNotificationChannel,
   scheduleWorkoutReminders,
@@ -71,6 +74,13 @@ export default function App() {
   // returning users.
   const [guestMode, setGuestModeState] = useState<boolean | null>(null);
   const [nexusInitialized, setNexusInitialized] = useState(false);
+
+  // v1.7 — first-run onboarding. Shown after the auth gate when the user has
+  // no logged sessions yet and hasn't already completed/skipped onboarding.
+  // logStore hydrates synchronously from localStorage, so sessionLogs is
+  // populated on first render. `onboarded` flips when the wizard finishes.
+  const sessionCount = useLogStore((s) => s.sessionLogs.length);
+  const [onboarded, setOnboardedState] = useState<boolean>(() => isOnboarded());
 
   // One-time channel creation + nexusStore init. The init() call awaits
   // supabase.auth.getUser(), which is what sets userEmail to its restored
@@ -154,6 +164,19 @@ export default function App() {
             const guest = await isGuestMode();
             setGuestModeState(guest);
           })();
+        }}
+      />
+    );
+  }
+
+  // Onboarding gate — only after auth is satisfied, for a genuinely fresh
+  // user (no sessions logged). Skipping or finishing sets the persisted flag.
+  if (!onboarded && sessionCount === 0) {
+    return (
+      <OnboardingFlow
+        onDone={() => {
+          setOnboarded(); // belt-and-suspenders; the flow already persists it
+          setOnboardedState(true);
         }}
       />
     );

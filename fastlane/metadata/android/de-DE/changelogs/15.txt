@@ -1,0 +1,1 @@
+Vollständige Unterstützung für sechs Sprachen (Englisch, Finnisch, Französisch, Deutsch, Spanisch, Chinesisch) in der gesamten App, dazu ein Erststart-Onboarding und eine Rekordverlauf-Sparkline auf dem Fortschritt-Bildschirm.

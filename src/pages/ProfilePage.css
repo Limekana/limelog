@@ -116,3 +116,11 @@
   border-color: var(--accent-border);
   color: var(--accent);
 }
+
+/* v1.7.1 — language switcher grid in Settings */
+.settings-lang-grid {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-top: 8px;
+}

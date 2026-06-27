@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import type { Program, SessionTemplate, DayOfWeek } from '@/types/program';
 import { Button } from '@/components/ui';
@@ -6,7 +7,7 @@ import { SessionExerciseRow } from '@/components/SessionExerciseRow';
 import { ChevronDown, ChevronUp, Plus, Trash2, BookmarkPlus, FolderOpen } from 'lucide-react';
 import './SessionEditor.css';
 
-const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const;
 
 interface Props {
   session: SessionTemplate;
@@ -14,6 +15,7 @@ interface Props {
 }
 
 export function SessionEditor({ session, program }: Props) {
+  const { t } = useTranslation();
   const { updateSession, deleteSession, addSessionExercise, workoutTemplates, saveAsTemplate, applyTemplate, deleteWorkoutTemplate } = useProgramStore();
   const [open, setOpen] = useState(false);
   const [editingName, setEditingName] = useState(false);
@@ -80,7 +82,7 @@ export function SessionEditor({ session, program }: Props) {
               {session.name}
             </span>
           )}
-          <span className="session-editor__day">{DAY_NAMES[session.dayOfWeek]}</span>
+          <span className="session-editor__day">{t(`program.days.${DAY_KEYS[session.dayOfWeek]}`)}</span>
         </div>
         <div className="session-editor__header-right">
           <button className="session-editor__del" onClick={(e) => { e.stopPropagation(); deleteSession(session.id); }}>
@@ -93,13 +95,13 @@ export function SessionEditor({ session, program }: Props) {
       {open && (
         <div className="session-editor__body">
           <div className="session-editor__days">
-            {DAY_NAMES.map((d, i) => (
+            {DAY_KEYS.map((d, i) => (
               <button
                 key={d}
                 className={`session-editor__day-btn${session.dayOfWeek === i ? ' session-editor__day-btn--active' : ''}`}
                 onClick={() => handleDayChange(i as DayOfWeek)}
               >
-                {d}
+                {t(`program.days.${d}`)}
               </button>
             ))}
           </div>
@@ -109,16 +111,16 @@ export function SessionEditor({ session, program }: Props) {
             <button
               className="session-editor__tpl-btn"
               onClick={() => { setShowLoadTemplate((v) => !v); setShowSaveTemplate(false); }}
-              title="Load from template"
+              title={t('program.loadTemplate')}
             >
-              <FolderOpen size={13} /> Load template
+              <FolderOpen size={13} /> {t('program.loadTemplate')}
             </button>
             <button
               className="session-editor__tpl-btn"
               onClick={() => { setShowSaveTemplate((v) => !v); setShowLoadTemplate(false); setTemplateName(session.name); }}
-              title="Save as template"
+              title={t('program.saveAsTemplate')}
             >
-              <BookmarkPlus size={13} /> Save as template
+              <BookmarkPlus size={13} /> {t('program.saveAsTemplate')}
             </button>
           </div>
 
@@ -127,14 +129,14 @@ export function SessionEditor({ session, program }: Props) {
             <div className="session-editor__tpl-form">
               <input
                 autoFocus
-                placeholder="Template name…"
+                placeholder={t('program.templateNamePlaceholder')}
                 value={templateName}
                 onChange={(e) => setTemplateName(e.target.value)}
                 onKeyDown={(e) => e.key === 'Enter' && handleSaveTemplate()}
               />
               <div className="session-editor__tpl-form-actions">
-                <Button size="sm" variant="ghost" onClick={() => setShowSaveTemplate(false)}>Cancel</Button>
-                <Button size="sm" variant="primary" onClick={handleSaveTemplate} disabled={!templateName.trim()}>Save</Button>
+                <Button size="sm" variant="ghost" onClick={() => setShowSaveTemplate(false)}>{t('common.cancel')}</Button>
+                <Button size="sm" variant="primary" onClick={handleSaveTemplate} disabled={!templateName.trim()}>{t('common.save')}</Button>
               </div>
             </div>
           )}
@@ -143,26 +145,26 @@ export function SessionEditor({ session, program }: Props) {
           {showLoadTemplate && (
             <div className="session-editor__tpl-picker">
               {workoutTemplates.length === 0 ? (
-                <p className="session-editor__tpl-empty">No saved templates yet. Build a session and save it above.</p>
+                <p className="session-editor__tpl-empty">{t('program.noTemplates')}</p>
               ) : (
-                workoutTemplates.map((t) => (
-                  <div key={t.id} className="session-editor__tpl-item">
+                workoutTemplates.map((tpl) => (
+                  <div key={tpl.id} className="session-editor__tpl-item">
                     <div className="session-editor__tpl-item-info">
-                      <span className="session-editor__tpl-item-name">{t.name}</span>
-                      <span className="session-editor__tpl-item-meta">{t.exercises.length} exercise{t.exercises.length !== 1 ? 's' : ''}</span>
+                      <span className="session-editor__tpl-item-name">{tpl.name}</span>
+                      <span className="session-editor__tpl-item-meta">{t('program.exercises', { count: tpl.exercises.length })}</span>
                     </div>
                     <div className="session-editor__tpl-item-actions">
                       <button
                         className="session-editor__tpl-load"
-                        onClick={() => handleApplyTemplate(t.id)}
-                        title="Load into this session (replaces current exercises)"
+                        onClick={() => handleApplyTemplate(tpl.id)}
+                        title={t('program.loadTemplate')}
                       >
-                        Load
+                        {t('program.load')}
                       </button>
                       <button
                         className="session-editor__tpl-del"
-                        onClick={() => deleteWorkoutTemplate(t.id)}
-                        title="Delete template"
+                        onClick={() => deleteWorkoutTemplate(tpl.id)}
+                        title={t('common.delete')}
                       >
                         <Trash2 size={12} />
                       </button>
@@ -170,7 +172,7 @@ export function SessionEditor({ session, program }: Props) {
                   </div>
                 ))
               )}
-              <Button size="sm" variant="ghost" onClick={() => setShowLoadTemplate(false)}>Close</Button>
+              <Button size="sm" variant="ghost" onClick={() => setShowLoadTemplate(false)}>{t('common.close')}</Button>
             </div>
           )}
 
@@ -179,7 +181,7 @@ export function SessionEditor({ session, program }: Props) {
           ))}
 
           <Button size="sm" variant="ghost" onClick={handleAddExercise}>
-            <Plus size={13} /> Add exercise
+            <Plus size={13} /> {t('program.addExercise')}
           </Button>
         </div>
       )}

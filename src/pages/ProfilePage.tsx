@@ -1,4 +1,6 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
+import { setLanguage, SUPPORTED_LANGS, LANGUAGE_NAMES, type Lang } from '@/i18n';
 import { useUserStore } from '@/store/userStore';
 import { Button, Card, Badge, EmptyState, Tabs, TabPanel } from '@/components/ui';
 import { InjuryForm } from '@/components/InjuryForm';
@@ -11,6 +13,8 @@ type Tab = 'injuries' | 'exercises' | 'settings';
 
 export function ProfilePage() {
   const { profile, setName, setUnit, resolveRestriction, removeRestriction, updateDeloadThresholds } = useUserStore();
+  const { t, i18n } = useTranslation();
+  const currentLang = (i18n.language || 'en').split('-')[0] as Lang;
   const [tab, setTab] = useState<Tab>('injuries');
   const [showInjuryForm, setShowInjuryForm] = useState(false);
   const [nameVal, setNameVal] = useState(profile.name);
@@ -21,14 +25,14 @@ export function ProfilePage() {
   return (
     <div className="profile-page">
       <div className="profile-page__header">
-        <h1 className="profile-page__title">Profile</h1>
+        <h1 className="profile-page__title">{t('profile.title')}</h1>
       </div>
 
       <Tabs
         tabs={[
-          { key: 'injuries', label: 'Injuries' },
-          { key: 'exercises', label: 'Exercises' },
-          { key: 'settings', label: 'Settings' },
+          { key: 'injuries', label: t('profile.tabInjuries') },
+          { key: 'exercises', label: t('profile.tabExercises') },
+          { key: 'settings', label: t('profile.tabSettings') },
         ]}
         activeKey={tab}
         onChange={(k) => setTab(k as Tab)}
@@ -37,9 +41,9 @@ export function ProfilePage() {
       <TabPanel tabKey="injuries" activeKey={tab}>
         <div className="profile-section">
           <div className="profile-section__header">
-            <span className="profile-section__label">Active restrictions</span>
+            <span className="profile-section__label">{t('profile.activeRestrictions')}</span>
             <Button size="sm" variant="primary" onClick={() => setShowInjuryForm(true)}>
-              Add
+              {t('common.add')}
             </Button>
           </div>
 
@@ -50,8 +54,8 @@ export function ProfilePage() {
           {activeRestrictions.length === 0 && !showInjuryForm && (
             <EmptyState
               icon={<ShieldAlert size={32} />}
-              title="No active restrictions"
-              description="Add injury flags to gate restricted movements during logging."
+              title={t('profile.noRestrictionsTitle')}
+              description={t('profile.noRestrictionsBody')}
             />
           )}
 
@@ -61,18 +65,18 @@ export function ProfilePage() {
                 <div className="restriction-row__left">
                   <span className="restriction-row__label">{r.label}</span>
                   <Badge
-                    label={r.severity}
+                    label={t(`profile.severity.${r.severity}`, { defaultValue: r.severity })}
                     variant={r.severity === 'avoid' ? 'danger' : r.severity === 'modify' ? 'warning' : 'info'}
                   />
                 </div>
                 <div className="restriction-row__actions">
-                  <Button size="sm" variant="ghost" onClick={() => resolveRestriction(r.id)}>Resolve</Button>
-                  <Button size="sm" variant="danger" onClick={() => removeRestriction(r.id)}>Remove</Button>
+                  <Button size="sm" variant="ghost" onClick={() => resolveRestriction(r.id)}>{t('profile.resolve')}</Button>
+                  <Button size="sm" variant="danger" onClick={() => removeRestriction(r.id)}>{t('profile.remove')}</Button>
                 </div>
               </div>
               {r.restrictedPatterns.length > 0 && (
                 <p className="restriction-row__patterns">
-                  Patterns: {r.restrictedPatterns.join(', ')}
+                  {t('profile.patterns', { list: r.restrictedPatterns.map((p) => t(`library.pattern.${p}`, { defaultValue: p })).join(', ') })}
                 </p>
               )}
             </Card>
@@ -80,12 +84,12 @@ export function ProfilePage() {
 
           {resolvedRestrictions.length > 0 && (
             <>
-              <p className="profile-section__sublabel">Resolved</p>
+              <p className="profile-section__sublabel">{t('profile.resolved')}</p>
               {resolvedRestrictions.map((r) => (
                 <Card key={r.id} padding="sm" className="restriction-row--resolved">
                   <div className="restriction-row">
                     <span className="restriction-row__label">{r.label}</span>
-                    <Button size="sm" variant="danger" onClick={() => removeRestriction(r.id)}>Remove</Button>
+                    <Button size="sm" variant="danger" onClick={() => removeRestriction(r.id)}>{t('profile.remove')}</Button>
                   </div>
                 </Card>
               ))}
@@ -102,7 +106,7 @@ export function ProfilePage() {
         <div className="profile-section">
           <Card padding="md">
             <label className="settings-field">
-              <span className="settings-field__label">Name</span>
+              <span className="settings-field__label">{t('profile.name')}</span>
               <div className="settings-field__row">
                 <input
                   value={nameVal}
@@ -114,7 +118,7 @@ export function ProfilePage() {
           </Card>
 
           <Card padding="md">
-            <span className="settings-field__label">Weight unit</span>
+            <span className="settings-field__label">{t('profile.weightUnit')}</span>
             <div className="settings-toggle">
               {(['kg', 'lb'] as const).map((u) => (
                 <button
@@ -131,9 +135,25 @@ export function ProfilePage() {
           <NexusSyncCard />
 
           <Card padding="md">
-            <span className="settings-field__label">Deload thresholds</span>
+            <span className="settings-field__label">{t('settings.language')}</span>
+            <div className="settings-lang-grid">
+              {SUPPORTED_LANGS.map((code) => (
+                <button
+                  key={code}
+                  className={`settings-toggle__btn${currentLang === code ? ' settings-toggle__btn--active' : ''}`}
+                  onClick={() => setLanguage(code)}
+                  aria-pressed={currentLang === code}
+                >
+                  {LANGUAGE_NAMES[code]}
+                </button>
+              ))}
+            </div>
+          </Card>
+
+          <Card padding="md">
+            <span className="settings-field__label">{t('profile.deloadThresholds')}</span>
             <label className="settings-field">
-              <span className="settings-field__sublabel">Stall count trigger</span>
+              <span className="settings-field__sublabel">{t('profile.stallTrigger')}</span>
               <input
                 type="number"
                 min="1"
@@ -143,7 +163,7 @@ export function ProfilePage() {
               />
             </label>
             <label className="settings-field settings-field--mt">
-              <span className="settings-field__sublabel">Avg fatigue trigger (1–10)</span>
+              <span className="settings-field__sublabel">{t('profile.fatigueTrigger')}</span>
               <input
                 type="number"
                 min="1"

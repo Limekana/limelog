@@ -1,0 +1,219 @@
+/* LimeLog onboarding — same industrial-brutalist lime language as
+   FirstLaunchAuth (Barlow Condensed wordmark, lime accent, dark base). */
+
+.onb-wrap {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  min-height: 100vh;
+  padding: 32px 20px;
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+
+.onb-stack {
+  width: 100%;
+  max-width: 420px;
+  display: flex;
+  flex-direction: column;
+  gap: 20px;
+}
+
+.onb-header {
+  text-align: center;
+}
+
+.onb-wordmark {
+  display: block;
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 40px;
+  letter-spacing: -0.02em;
+  line-height: 1;
+  color: var(--accent);
+  text-transform: uppercase;
+}
+
+.onb-tagline {
+  display: block;
+  margin-top: 8px;
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-weight: 500;
+  font-size: 11px;
+  letter-spacing: 0.18em;
+  color: var(--text-secondary);
+  text-transform: uppercase;
+}
+
+.onb-card {
+  width: 100%;
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-lg);
+  padding: 28px 22px;
+}
+
+.onb-step {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  text-align: center;
+  gap: 14px;
+}
+
+.onb-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 52px;
+  height: 52px;
+  border-radius: 50%;
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
+.onb-title {
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-weight: 700;
+  font-size: 26px;
+  line-height: 1.05;
+  margin: 0;
+  text-transform: uppercase;
+  letter-spacing: 0.02em;
+}
+
+.onb-sub {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.5;
+  margin: 0;
+}
+
+.onb-step .btn {
+  width: 100%;
+  margin-top: 6px;
+}
+
+.onb-goals {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.onb-goal {
+  width: 100%;
+  background: var(--bg-base);
+  border: 1px solid var(--border-default, var(--border-subtle));
+  border-radius: var(--radius-md);
+  color: var(--text-primary);
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-size: 16px;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  padding: 14px 12px;
+  min-height: 48px;
+  cursor: pointer;
+  transition: border-color 0.15s ease, background 0.15s ease;
+}
+
+.onb-goal:hover {
+  border-color: var(--accent-border);
+}
+
+.onb-goal.is-selected {
+  background: var(--accent-dim);
+  border-color: var(--accent);
+  color: var(--accent);
+  font-weight: 700;
+}
+
+.onb-howlist {
+  text-align: left;
+  margin: 0;
+  padding-left: 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  width: 100%;
+}
+
+.onb-howlist li {
+  font-size: 14px;
+  color: var(--text-secondary);
+  line-height: 1.45;
+}
+
+.onb-skip {
+  align-self: center;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-family: 'Barlow Condensed', system-ui, sans-serif;
+  font-size: 14px;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  text-decoration: underline;
+  text-underline-offset: 3px;
+  cursor: pointer;
+  padding: 14px 18px;
+  min-height: 44px;
+  border-radius: 4px;
+}
+
+.onb-skip:hover {
+  color: var(--text-primary);
+  background: var(--bg-raised);
+}
+
+/* v1.7.1 — language grid (compact 2-col for 6 options) */
+.onb-langs {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  width: 100%;
+}
+
+/* ── v1.7.1 design pass — sharper industrial brutalism ───────────────────── */
+.onb-wordmark { text-shadow: 0 0 24px rgba(200, 241, 53, 0.35); }
+.onb-card {
+  border-width: 2px;
+  box-shadow: 6px 6px 0 rgba(0, 0, 0, 0.35);
+  animation: onbSlam 0.34s cubic-bezier(0.2, 0.9, 0.2, 1) both;
+}
+@keyframes onbSlam {
+  from { opacity: 0; transform: translateX(10px); clip-path: inset(0 100% 0 0); }
+  to   { opacity: 1; transform: none;            clip-path: inset(0 0 0 0); }
+}
+/* step counter — big condensed numeral + total */
+.onb-progress {
+  display: flex; align-items: center; gap: 14px;
+  padding: 0 2px; margin-top: -4px;
+}
+.onb-count {
+  display: flex; align-items: baseline; gap: 6px;
+  font-family: 'Barlow Condensed', system-ui, sans-serif; line-height: 0.9;
+}
+.onb-count b {
+  font-size: 40px; font-weight: 700; color: var(--accent);
+  font-variant-numeric: tabular-nums; letter-spacing: -0.02em;
+}
+.onb-count-total {
+  font-size: 14px; font-weight: 600; color: var(--text-tertiary);
+  letter-spacing: 0.06em;
+}
+/* hard lime slab segments */
+.onb-bars { display: flex; gap: 5px; flex: 1; }
+.onb-bar {
+  flex: 1; height: 8px; background: var(--bg-surface);
+  border: 1px solid var(--border-default, var(--border-subtle));
+  transition: background 0.3s ease, box-shadow 0.3s ease;
+}
+.onb-bar.on {
+  background: var(--accent); border-color: var(--accent);
+  box-shadow: 0 0 12px -2px rgba(200, 241, 53, 0.6);
+}
+/* sharpen selectable chips (goals + langs) */
+.onb-goal { border-radius: 0; border-width: 1.5px; }
+.onb-goal.is-selected { box-shadow: 4px 4px 0 rgba(200, 241, 53, 0.25); }
