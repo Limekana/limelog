@@ -1,0 +1,1 @@
+Full six-language support (English, Finnish, French, German, Spanish, Chinese) across the app, plus a first-run onboarding flow and a personal-record history sparkline on the Progress screen.

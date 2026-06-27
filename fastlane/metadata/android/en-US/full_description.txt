@@ -1,0 +1,14 @@
+LimeLog is a periodized strength-training tracker.
+
+Features:
+* Build programs with phases
+* Log every set and rep
+* Auto-detect personal records (Epley 1RM)
+* Progressive-overload reference while logging
+* Estimated 1RM trends with a per-exercise PR history
+* Optional vertical-jump and body-metric tracking
+* Health Connect steps and active calories
+
+Local-first; optional account-gated cloud sync. No Google Play Services, no Firebase — Google sign-in is a plain web OAuth flow.
+
+Part of the Limecore Nexus suite. Available in English, Finnish, French, German, Spanish and Chinese.

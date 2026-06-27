@@ -1,0 +1,1 @@
+Compatibilidad completa con seis idiomas (inglés, finlandés, francés, alemán, español, chino) en toda la app, además de una incorporación en el primer arranque y un minigráfico del historial de récords en la pantalla de Progreso.

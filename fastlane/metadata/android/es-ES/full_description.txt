@@ -1,0 +1,14 @@
+LimeLog es un registro de entrenamiento de fuerza periodizado.
+
+Funciones:
+* Crea programas con fases
+* Registra cada serie y repetición
+* Detección automática de récords personales (1RM de Epley)
+* Referencia de sobrecarga progresiva al registrar
+* Tendencias de 1RM estimado con historial de récords por ejercicio
+* Seguimiento opcional de salto vertical y medidas corporales
+* Pasos y calorías activas con Health Connect
+
+Local primero; sincronización en la nube opcional ligada a la cuenta. Sin Google Play Services, sin Firebase — el inicio de sesión de Google es un flujo web OAuth normal.
+
+Parte de la suite Limecore Nexus. Disponible en inglés, finlandés, francés, alemán, español y chino.
