@@ -108,7 +108,7 @@ function saveItems(items: OutboxItem[]): void {
   } catch (e) {
     // Quota-exceeded is unrecoverable for the outbox — log and continue.
     // The next mutation will overwrite + try again with whatever fits.
-    // eslint-disable-next-line no-console
+     
     console.error('[outbox] storage write failed:', e);
   }
   cachedStatus = null;
@@ -145,7 +145,7 @@ function makeId(): string {
  */
 export function enqueue<K extends OutboxKind>(kind: K, payload: KindPayload[K]): void {
   if (!KIND_DISPATCH[kind]) {
-    // eslint-disable-next-line no-console
+     
     console.error('[outbox] unknown kind:', kind);
     return;
   }
@@ -189,7 +189,7 @@ export async function drain(): Promise<{ sent: number; remaining: number }> {
   draining = true;
   let sent = 0;
   try {
-    while (true) {
+    for (;;) {
       const items = loadItems();
       if (items.length === 0) break;
       const item = items[0];
@@ -197,7 +197,7 @@ export async function drain(): Promise<{ sent: number; remaining: number }> {
       if (!handler) {
         // Unknown kind — came from an older app version or a typo. Log + drop
         // so we notice in dev but the queue stays healthy.
-        // eslint-disable-next-line no-console
+         
         console.error('[outbox] dropping item with unknown kind:', item.kind);
         saveItems(items.slice(1));
         continue;
@@ -331,10 +331,10 @@ function migrateLegacyQueue(): void {
     }
     saveItems(items);
     localStorage.removeItem(LEGACY_KEY);
-    // eslint-disable-next-line no-console
+     
     console.log(`[outbox] migrated ${arr.length} legacy items from ${LEGACY_KEY}`);
   } catch (e) {
-    // eslint-disable-next-line no-console
+     
     console.warn('[outbox] legacy migration failed:', e);
   }
 }

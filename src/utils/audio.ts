@@ -6,7 +6,7 @@ export function playRestComplete(): void {
   // Vibrate: short-pause-short
   try {
     if ('vibrate' in navigator) navigator.vibrate([180, 80, 180]);
-  } catch (_) {}
+  } catch { /* vibration is best-effort — ignore if unsupported/blocked */ }
 
   // Web Audio ding: 880 Hz → 660 Hz, ~1 s decay
   try {
@@ -24,5 +24,5 @@ export function playRestComplete(): void {
     osc.stop(ctx.currentTime + 1.0);
     // Close context after sound finishes to free resources
     setTimeout(() => ctx.close(), 1200);
-  } catch (_) {}
+  } catch { /* Web Audio is best-effort — ignore if unavailable */ }
 }

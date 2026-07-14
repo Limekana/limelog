@@ -148,7 +148,7 @@ export async function setupNotificationChannel(): Promise<void> {
     // where a phantom alarm could fire between app launch and the program
     // effect running. This sweep closes that window.
     await cancelAllSlots();
-  } catch (_) {}
+  } catch { /* best-effort cleanup — ignore if the plugin call fails */ }
 }
 
 /**
@@ -256,5 +256,5 @@ export async function cancelWorkoutReminders(): Promise<void> {
   if (!Capacitor.isNativePlatform()) return;
   try {
     await cancelAllSlots();
-  } catch (_) {}
+  } catch { /* best-effort cleanup — ignore if the plugin call fails */ }
 }
