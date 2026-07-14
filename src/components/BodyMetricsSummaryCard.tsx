@@ -50,7 +50,7 @@ export function BodyMetricsSummaryCard() {
       }
     }
     return [];
-  }, [metrics, unit]);
+  }, [metrics, unit, t]);
 
   // All-time journey (first → latest weighed entry).
   const journey = useMemo(() => {

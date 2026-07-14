@@ -5,13 +5,20 @@ package com.limecore.workouttracker;
 // Queries NCC's SessionContentProvider via ContentResolver to inherit NCC's
 // Supabase session without a separate sign-in. The provider is at:
 //   content://com.limecore.nexus.session/current
-// and is read-protected by the signature-level permission
-//   com.limecore.nexus.permission.READ_SESSION
 //
-// This app declares <uses-permission> + <queries> in its AndroidManifest so
-// it can both ask for the permission AND see the provider in Android 11+'s
-// restricted query model. Both sides must be signed with the same
-// developer cert; otherwise the OS rejects the query at permission check.
+// ACCESS MODEL (corrected in the v1.7 audit — see the SECURITY MODEL header
+// in NCC's SessionContentProvider.java for the authoritative version):
+// The provider is guarded by an APPLICATION-LAYER package allowlist, NOT an
+// OS permission. NCC's v1.1 BUG-1 fix REMOVED the original signature-level
+// permission (com.limecore.nexus.permission.READ_SESSION) because debug
+// builds across the three separate Studio projects didn't reliably share a
+// signing cert, so the OS permission check failed and SSO silently broke.
+// NCC now checks getCallingPackage() against a hardcoded suite allowlist and
+// returns an EMPTY cursor to any caller not on it. Accordingly this app
+// declares ONLY a <queries><provider authorities="com.limecore.nexus.session"/>
+// entry (for Android 11+ package visibility) in its manifest — there is NO
+// <uses-permission> and none is required. Package-name uniqueness on the
+// store / F-Droid / sideload is the practical trust anchor.
 //
 // Returned data is the JSON bundle NCC published — see ssoPublisher.ts on
 // the NCC side for the shape:
@@ -19,8 +26,8 @@ package com.limecore.workouttracker;
 //
 // This plugin is purely a one-shot read. The JS side decides what to do
 // with the bundle (typically: supabase.auth.setSession to inherit the
-// session). On Android < 23 or when NCC isn't installed, query() returns
-// null and the JS side falls back to the normal sign-in UI.
+// session). When NCC isn't installed, or the caller isn't allowlisted,
+// query() returns null/empty and the JS side falls back to normal sign-in.
 
 import android.content.ContentResolver;
 import android.database.Cursor;
@@ -66,10 +73,11 @@ public class SuiteSsoPlugin extends Plugin {
             cursor = resolver.query(SESSION_URI, null, null, null, null);
             if (cursor == null) {
                 // Null cursor means the provider wasn't reachable — NCC not
-                // installed, OR the permission grant failed (different signing
-                // cert), OR the provider explicitly rejected the query.
+                // installed, or the provider crashed/was unavailable. (A caller
+                // that isn't on NCC's package allowlist gets an EMPTY cursor,
+                // handled by the moveToFirst() branch below — not null.)
                 result.put("available", false);
-                result.put("reason", "Nexus Command Center not reachable (not installed, or different signing cert).");
+                result.put("reason", "Nexus Command Center not reachable (not installed).");
                 call.resolve(result);
                 return;
             }

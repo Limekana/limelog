@@ -42,7 +42,11 @@ export function weightTrendOverDays(
   const latest = series[series.length - 1];
   const since = new Date(now);
   since.setDate(since.getDate() - windowDays);
-  const sinceKey = since.toISOString().slice(0, 10);
+  // Format from LOCAL components — BodyMetric.date values are local YYYY-MM-DD.
+  // toISOString() would convert to the UTC day and shift the window boundary
+  // by up to a day for users east/west of UTC.
+  const sinceKey =
+    `${since.getFullYear()}-${String(since.getMonth() + 1).padStart(2, '0')}-${String(since.getDate()).padStart(2, '0')}`;
   // Find the earliest series point still within the window — that's our
   // baseline. Using the MA when available smooths the day-to-day jitter.
   const candidates = series.filter((p) => p.date >= sinceKey);

@@ -11,6 +11,11 @@ const KEYS = {
   exercisePRs: 'wt_exercise_prs',
   profile: 'wt_profile',
   workoutTemplates: 'wt_workout_templates',
+  // v1.7 (BUG-6) — ids of sessions the user discarded locally. Recovery-hydrate
+  // consults this so a workout the user intentionally deleted is never
+  // resurrected from the still-present cloud row (push-only means discards don't
+  // propagate a cloud delete).
+  sessionTombstones: 'wt_session_tombstones',
 } as const;
 
 function get<T>(key: string): T | null {
@@ -23,7 +28,32 @@ function get<T>(key: string): T | null {
 }
 
 function set<T>(key: string, value: T): void {
-  localStorage.setItem(key, JSON.stringify(value));
+  try {
+    localStorage.setItem(key, JSON.stringify(value));
+  } catch (e) {
+    // A failed write must never be silent. The most likely cause is quota
+    // exhaustion (progress photos store multi-MB base64 in this same origin);
+    // once quota is hit, an unguarded setItem throws synchronously and — since
+    // store actions call storage.set() BEFORE their Zustand set() — aborts the
+    // whole action, so "Finish workout" would silently lose the session.
+    console.error('[storage] write failed for', key, e);
+    const quota =
+      e instanceof DOMException &&
+      (e.name === 'QuotaExceededError' || e.name === 'NS_ERROR_DOM_QUOTA_REACHED' || e.code === 22);
+    if (quota) {
+      // Surface it so the user learns their data didn't persist (rather than
+      // discovering a lost workout later). Progress photos are the usual
+      // culprit — deleting some frees room for logs.
+      try {
+        alert(
+          'Storage is full, so this change could not be saved. Free up space (e.g. delete some progress photos) and try again.',
+        );
+      } catch {
+        /* alert unavailable (non-UI context) — the console.error above still fires */
+      }
+    }
+    throw e;
+  }
 }
 
 export const storage = {
@@ -55,4 +85,7 @@ export const storage = {
     const profile = get<UserProfile>(KEYS.profile);
     return profile?.activeRestrictions ?? [];
   },
+
+  getSessionTombstones: (): string[] => get<string[]>(KEYS.sessionTombstones) ?? [],
+  setSessionTombstones: (v: string[]) => set(KEYS.sessionTombstones, v),
 };

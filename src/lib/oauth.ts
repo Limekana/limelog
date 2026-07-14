@@ -49,17 +49,15 @@ export function initOAuthDeepLinkListener(): void {
       if (code) {
         const { error } = await supabase.auth.exchangeCodeForSession(code);
         if (error) throw error;
-      } else if (parsed.hash) {
-        // Implicit-flow fallback (shouldn't happen with PKCE)
-        const params = new URLSearchParams(parsed.hash.replace(/^#/, ''));
-        const access_token = params.get('access_token');
-        const refresh_token = params.get('refresh_token');
-        if (access_token && refresh_token) {
-          await supabase.auth.setSession({ access_token, refresh_token });
-        }
       }
+      // No implicit-flow (URL-fragment token) fallback: the app is PKCE-only
+      // (supabase.ts flowType: 'pkce'), and MainActivity is an exported,
+      // BROWSABLE deep-link target — so trusting access_token/refresh_token
+      // straight out of the hash would let any app or crafted link fixate a
+      // session with attacker-controlled tokens. Only the verified ?code=
+      // exchange (PKCE code_verifier bound) is accepted.
     } catch (err) {
-      // eslint-disable-next-line no-console
+       
       console.warn('[nexus] OAuth callback failed:', err);
     } finally {
       await Browser.close().catch(() => undefined);
