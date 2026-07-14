@@ -36,6 +36,11 @@ interface LogStore {
   unfinalizeSession: (logId: string) => void;
   discardSession: (logId: string) => void;
 
+  // v1.7 (BUG-6) — recovery hydrate. Insert reconstructed cloud sessions whose
+  // id is neither present locally nor tombstoned by a prior discard. Never
+  // overwrites or deletes a local session. Returns the count actually inserted.
+  recoverSessions: (incoming: SessionLog[]) => number;
+
   // Set logging
   logSet: (logId: string, set: Omit<SetLog, 'id' | 'sessionLogId'>) => void;
   updateSet: (logId: string, setId: string, updates: Partial<SetLog>) => void;
@@ -187,6 +192,28 @@ export const useLogStore = create<LogStore>((set, get) => ({
     const sessionLogs = get().sessionLogs.filter((l) => l.id !== logId);
     storage.setSessionLogs(sessionLogs);
     set({ sessionLogs });
+    // v1.7 (BUG-6) — tombstone the discard so recovery-hydrate never resurrects
+    // this workout from its still-present cloud row (push-only = no cloud
+    // delete). Deduped; the list only grows with intentional discards.
+    const tombstones = storage.getSessionTombstones();
+    if (!tombstones.includes(logId)) {
+      storage.setSessionTombstones([...tombstones, logId]);
+    }
+  },
+
+  recoverSessions: (incoming) => {
+    const existingIds = new Set(get().sessionLogs.map((l) => l.id));
+    const tombstoned = new Set(storage.getSessionTombstones());
+    const toAdd = incoming.filter((l) => !existingIds.has(l.id) && !tombstoned.has(l.id));
+    if (toAdd.length === 0) return 0;
+    // Prepend recovered sessions, then sort the whole set newest-first so the
+    // history/list views stay ordered (recovered rows slot in by date).
+    const sessionLogs = [...toAdd, ...get().sessionLogs].sort(
+      (a, b) => new Date(b.loggedAt).getTime() - new Date(a.loggedAt).getTime(),
+    );
+    storage.setSessionLogs(sessionLogs);
+    set({ sessionLogs });
+    return toAdd.length;
   },
 
   logSet: (logId, s) => {

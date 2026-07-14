@@ -83,6 +83,11 @@
          visibility, not a Play-Services dependency.) -->
     <uses-permission android:name="android.permission.health.READ_STEPS" />
     <uses-permission android:name="android.permission.health.READ_ACTIVE_CALORIES_BURNED" />
+    <!-- v1.7 BUG-7 — Samsung Health writes TotalCaloriesBurned, not
+         ActiveCaloriesBurned, so the active read was empty. Read total as a
+         fallback (declared here so the runtime permission request isn't
+         silently denied). -->
+    <uses-permission android:name="android.permission.health.READ_TOTAL_CALORIES_BURNED" />
 
     <!-- v1.1.1 — Android 11+ package visibility for cross-app SSO. Apps
          must explicitly declare which other packages / providers they

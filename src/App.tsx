@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -20,6 +20,7 @@ import { useNexusStore } from '@/store/nexusStore';
 import { useLogStore } from '@/store/logStore';
 import { isGuestMode } from '@/lib/guestMode';
 import { isOnboarded, setOnboarded } from '@/lib/onboarding';
+import { pullWorkoutsFromCloud } from '@/lib/nexusRecovery';
 import {
   setupNotificationChannel,
   scheduleWorkoutReminders,
@@ -121,6 +122,31 @@ export default function App() {
     window.addEventListener('online', onOnline);
     return () => window.removeEventListener('online', onOnline);
   }, []);
+
+  // v1.7 (BUG-6) — recovery hydrate. Once, after Nexus init resolves with a
+  // signed-in user, pull cloud workouts and reinstate any whose id is missing
+  // locally (skipping tombstoned discards). This is the ONLY read of workout
+  // data LimeLog performs, and it only refills genuine gaps — a reinstall / new
+  // device / lost-data situation gets its pushed history back instead of it
+  // being stranded in the cloud. Fire-and-forget; never blocks the UI.
+  const recoveryRan = useRef(false);
+  useEffect(() => {
+    if (recoveryRan.current) return;
+    if (!nexusInitialized || !isNexusConfigured || !userEmail) return;
+    recoveryRan.current = true;
+    void (async () => {
+      try {
+        const exercises = useProgramStore.getState().exercises;
+        const cloudSessions = await pullWorkoutsFromCloud(exercises);
+        const restored = useLogStore.getState().recoverSessions(cloudSessions);
+        if (restored > 0) {
+          console.log(`[recovery] reinstated ${restored} workout(s) from cloud`);
+        }
+      } catch (e) {
+        console.warn('[recovery] workout hydrate failed:', (e as Error).message);
+      }
+    })();
+  }, [nexusInitialized, isNexusConfigured, userEmail]);
 
   // Re-schedule whenever the active program changes. Pass the exercise
   // library so the notification body can preview the first few exercises

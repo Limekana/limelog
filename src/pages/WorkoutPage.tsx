@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useMemo, useRef, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
 import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
@@ -21,10 +21,58 @@ function parseRepCeiling(targetReps: string): number {
   return parseInt(parts[parts.length - 1], 10);
 }
 
+// v1.7 (BUG-9) — the rest timer is now WALL-CLOCK based, not a decrementing
+// in-memory counter. The old model ran `setInterval` subtracting 1 each tick
+// and held the count only in React state — so backgrounding the app (Android
+// freezes WebView JS timers) made it drift/appear to "reset," and a process
+// kill wiped it entirely, dumping the user out of the workout with no timer.
+// Now we persist the ABSOLUTE end time to localStorage and always derive the
+// remaining seconds from `Date.now()`. Backgrounding no longer matters (on
+// resume we just recompute from wall-clock), and a kill-then-resume rehydrates
+// the live timer from storage. The persisted record is scoped to the workout's
+// logId so a stale timer never bleeds into a different session.
 interface RestState {
-  remaining: number;
+  /** Absolute epoch ms when the rest ends. */
+  endsAt: number;
   total: number;
   exerciseName: string;
+}
+
+interface PersistedRest extends RestState {
+  logId: string;
+}
+
+const ACTIVE_REST_KEY = 'wt_active_rest';
+
+function loadActiveRest(): PersistedRest | null {
+  try {
+    const raw = localStorage.getItem(ACTIVE_REST_KEY);
+    if (!raw) return null;
+    const p = JSON.parse(raw) as PersistedRest;
+    return typeof p?.endsAt === 'number' && typeof p?.logId === 'string' ? p : null;
+  } catch {
+    return null;
+  }
+}
+
+function saveActiveRest(r: RestState, logId: string): void {
+  try {
+    localStorage.setItem(ACTIVE_REST_KEY, JSON.stringify({ ...r, logId }));
+  } catch {
+    /* non-fatal — the in-memory timer still works this session */
+  }
+}
+
+function clearActiveRest(): void {
+  try {
+    localStorage.removeItem(ACTIVE_REST_KEY);
+  } catch {
+    /* ignore */
+  }
+}
+
+function remainingSecs(rest: RestState | null, now: number): number {
+  return rest ? Math.max(0, Math.ceil((rest.endsAt - now) / 1000)) : 0;
 }
 
 export function WorkoutPage() {
@@ -41,47 +89,68 @@ export function WorkoutPage() {
   );
 
   const [rest, setRest] = useState<RestState | null>(null);
-  const restTickRef = useRef<ReturnType<typeof setInterval> | null>(null);
+  // Bumped once a second while a rest is active, purely to re-render the
+  // wall-clock-derived countdown. Not the source of truth — `rest.endsAt` is.
+  const [, setTick] = useState(0);
   const [modal, setModal] = useState<{ qualifying: QualifyingExercise[] } | null>(null);
 
-  const cleanupTimer = useCallback(() => {
-    if (restTickRef.current !== null) {
-      clearInterval(restTickRef.current);
-      restTickRef.current = null;
+  // Rehydrate a still-running rest on mount (covers process-death + resume, and
+  // a plain remount). Only adopt it if it belongs to THIS workout and hasn't
+  // already elapsed; otherwise clear the stale record.
+  useEffect(() => {
+    const saved = loadActiveRest();
+    if (saved && saved.logId === logId && saved.endsAt > Date.now()) {
+      setRest({ endsAt: saved.endsAt, total: saved.total, exerciseName: saved.exerciseName });
+    } else if (saved) {
+      clearActiveRest();
     }
-  }, []);
+  }, [logId]);
 
-  useEffect(() => cleanupTimer, [cleanupTimer]);
+  // The single interval: while a rest is active, tick once a second to refresh
+  // the countdown, and fire completion the moment wall-clock passes endsAt.
+  // Re-created whenever `rest` changes (start / adjust / skip), so there's never
+  // a dangling timer. Because remaining is derived from Date.now(), a resume
+  // after backgrounding is automatically correct — no drift, no reset.
+  useEffect(() => {
+    if (!rest) return;
+    const check = () => {
+      if (Date.now() >= rest.endsAt) {
+        playRestComplete();
+        clearActiveRest();
+        setRest(null);
+      } else {
+        setTick((t) => t + 1);
+      }
+    };
+    const id = setInterval(check, 1000);
+    return () => clearInterval(id);
+  }, [rest]);
 
   const startRest = useCallback((secs: number, exerciseName: string) => {
     if (!secs || secs <= 0) return;
-    cleanupTimer();
-    setRest({ remaining: secs, total: secs, exerciseName });
-    restTickRef.current = setInterval(() => {
-      setRest((prev) => {
-        if (!prev) return null;
-        if (prev.remaining <= 1) {
-          cleanupTimer();
-          playRestComplete();
-          return null;
-        }
-        return { ...prev, remaining: prev.remaining - 1 };
-      });
-    }, 1000);
-  }, [cleanupTimer]);
+    const next: RestState = { endsAt: Date.now() + secs * 1000, total: secs, exerciseName };
+    saveActiveRest(next, logId);
+    setRest(next);
+  }, [logId]);
 
   const skipRest = useCallback(() => {
-    cleanupTimer();
+    clearActiveRest();
     setRest(null);
-  }, [cleanupTimer]);
+  }, []);
 
   const adjustRest = useCallback((delta: number) => {
     setRest((prev) => {
       if (!prev) return null;
-      const next = Math.max(1, prev.remaining + delta);
-      return { ...prev, remaining: next, total: Math.max(prev.total, next) };
+      const nextRemaining = Math.max(1, remainingSecs(prev, Date.now()) + delta);
+      const next: RestState = {
+        ...prev,
+        endsAt: Date.now() + nextRemaining * 1000,
+        total: Math.max(prev.total, nextRemaining),
+      };
+      saveActiveRest(next, logId);
+      return next;
     });
-  }, []);
+  }, [logId]);
 
   if (!log || !session || !activeProgram) {
     return (
@@ -137,6 +206,7 @@ export function WorkoutPage() {
       setModal({ qualifying });
     } else {
       finalizeSession(log!.id);
+      clearActiveRest();
       navigate('/today');
     }
   }
@@ -150,12 +220,14 @@ export function WorkoutPage() {
       }
     }
     finalizeSession(log!.id);
+    clearActiveRest();
     setModal(null);
     navigate('/today');
   }
 
   function handleModalSkip() {
     finalizeSession(log!.id);
+    clearActiveRest();
     setModal(null);
     navigate('/today');
   }
@@ -163,6 +235,7 @@ export function WorkoutPage() {
   function handleDiscard() {
     if (confirm('Discard this workout? All logged sets will be lost.')) {
       discardSession(log!.id);
+      clearActiveRest();
       navigate('/today');
     }
   }
@@ -178,8 +251,9 @@ export function WorkoutPage() {
     ) ?? null;
   }
 
-  const restPct = rest ? (rest.remaining / rest.total) * 100 : 0;
-  const restUrgent = rest !== null && rest.remaining <= 5;
+  const restRemaining = remainingSecs(rest, Date.now());
+  const restPct = rest ? (restRemaining / rest.total) * 100 : 0;
+  const restUrgent = rest !== null && restRemaining <= 5;
 
   return (
     <div className="workout-page" style={{ '--workout-progress': `${pct}%` } as React.CSSProperties}>
@@ -220,7 +294,7 @@ export function WorkoutPage() {
                   <span className="rest-bar__label-ex">{rest.exerciseName}</span>
                 </div>
                 <div className="rest-bar__seconds">
-                  <span className="rest-bar__seconds-num">{rest.remaining}</span>
+                  <span className="rest-bar__seconds-num">{restRemaining}</span>
                   <span className="rest-bar__seconds-unit">s</span>
                 </div>
                 <div className="rest-bar__actions">
@@ -460,12 +534,12 @@ function ExerciseSection({
               <input
                 type="number" inputMode="decimal" min="0" step="0.5"
                 value={s.weightKg ?? ''} placeholder={targetWeight !== undefined ? String(targetWeight) : '—'}
-                onChange={(e) => onUpdateSet(s.id, { weightKg: e.target.value === '' ? null : Number(e.target.value) })}
+                onChange={(e) => onUpdateSet(s.id, { weightKg: e.target.value === '' ? null : Math.max(0, Number(e.target.value)) })}
               />
               <input
                 type="number" inputMode="numeric" min="0" step="1"
                 value={s.reps ?? ''} placeholder={targetReps}
-                onChange={(e) => onUpdateSet(s.id, { reps: e.target.value === '' ? null : Number(e.target.value) })}
+                onChange={(e) => onUpdateSet(s.id, { reps: e.target.value === '' ? null : Math.max(0, Number(e.target.value)) })}
               />
               <input
                 type="number" inputMode="decimal" min="6" max="10" step="0.5"

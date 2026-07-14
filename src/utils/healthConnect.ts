@@ -21,8 +21,8 @@ export interface HealthCapability {
   needsInstall?: boolean;
 }
 
-type RecordType = 'Steps' | 'ActiveCaloriesBurned';
-type AggregateRecordType = 'Steps' | 'ActiveCaloriesBurned';
+type RecordType = 'Steps' | 'ActiveCaloriesBurned' | 'TotalCaloriesBurned';
+type AggregateRecordType = 'Steps' | 'ActiveCaloriesBurned' | 'TotalCaloriesBurned';
 
 interface PermissionsResponse {
   read: RecordType[];
@@ -98,7 +98,12 @@ export async function healthCapability(): Promise<HealthCapability> {
   }
 }
 
-const READ_PERMS: RecordType[] = ['Steps', 'ActiveCaloriesBurned'];
+// v1.7 (BUG-7) — also request TotalCaloriesBurned. Samsung Health (the primary
+// writer on the target S24) records TotalCaloriesBurned but frequently does NOT
+// write ActiveCaloriesBurned, so an active-only read came back empty and the
+// "kcal" figure never appeared. We keep Active as the preferred (exercise-only)
+// figure and fall back to Total when Active has no data — see readTodayCalories.
+const READ_PERMS: RecordType[] = ['Steps', 'ActiveCaloriesBurned', 'TotalCaloriesBurned'];
 
 export async function requestHealthPermissions(): Promise<{ ok: boolean; reason?: string }> {
   const mod = await loadPlugin();
@@ -155,10 +160,24 @@ export async function readTodaySteps(): Promise<number | null> {
   return total == null ? null : Math.round(total);
 }
 
-/** Active calories burned today, in kcal (rounded). */
+/**
+ * Calories burned today, in kcal (rounded). Prefers ActiveCaloriesBurned
+ * (exercise-only), but many sources — notably Samsung Health on the S24 —
+ * populate only TotalCaloriesBurned, so an active read returns 0/empty. When
+ * Active has no data we fall back to Total (which includes BMR) rather than
+ * showing nothing: a slightly higher "kcal" figure is far more useful than a
+ * permanently blank one, and the UI labels it generically as "kcal".
+ *
+ * Kept as `readTodayActiveCalories` for call-site compatibility.
+ */
 export async function readTodayActiveCalories(): Promise<number | null> {
-  const total = await aggregateToday('ActiveCaloriesBurned');
-  return total == null ? null : Math.round(total);
+  const active = await aggregateToday('ActiveCaloriesBurned');
+  if (active != null && active > 0) return Math.round(active);
+  const total = await aggregateToday('TotalCaloriesBurned');
+  if (total != null && total > 0) return Math.round(total);
+  // Neither source had data — preserve the null-vs-zero distinction: return the
+  // active reading (0 or null) so "connected but no data yet" still renders 0.
+  return active == null ? null : Math.round(active);
 }
 
 export async function readWeeklySteps(): Promise<number[] | null> {

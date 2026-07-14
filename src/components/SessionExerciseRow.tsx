@@ -44,7 +44,7 @@ export function SessionExerciseRow({ sessionExercise: se, sessionId, program: _ 
           <div className="se-row__fields">
             <label>{t('log.sets')}
               <input type="number" min="1" value={se.targetSets}
-                onChange={(e) => updateSessionExercise(sessionId, se.id, { targetSets: Number(e.target.value) })} />
+                onChange={(e) => updateSessionExercise(sessionId, se.id, { targetSets: Math.max(0, Number(e.target.value)) })} />
             </label>
             <label>{t('log.colReps')}
               <input type="text" value={se.targetReps} placeholder={t('log.repsPlaceholder')}

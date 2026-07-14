@@ -40,3 +40,8 @@ Workout Tracker is a gym/workout logging app. React 18 + Vite + Capacitor 8 + Su
 - Pages live in `src/pages/`, shared components in `src/components/`
 - Custom hooks in `src/hooks/`
 - Don't read `node_modules/` or `dist/`
+
+## Data Contract (shared Supabase — binding)
+- Owns `workout_sessions`, `workout_sets`. PUSH-ONLY for normal operation: LimeLog writes, NCC reads. Local + offline retry queue is the source of truth; never bidirectionally merge remote workout data into local state.
+- **Recovery-only exception (v1.7, BUG-6):** on cold start a signed-in user may PULL cloud workouts to reinstate sessions whose id is missing locally (reinstall / new device / lost data). This never overwrites or deletes a local session, and skips ids tombstoned by an intentional discard (`wt_session_tombstones`). It is recovery, not sync — see `src/lib/nexusRecovery.ts`. Reconstruction is best-effort: the cloud lacks `exerciseId` / `programId` / `sessionTemplateId`, so recovered sessions link exercises by name and carry empty template/program refs.
+- Schema changes → stop and confirm first (see `D:\emilh\Projects\CLAUDE.md`).

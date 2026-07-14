@@ -107,7 +107,10 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
   const series = useMemo(() => weightSeries(metrics), [metrics]);
   const trend30 = useMemo(() => weightTrendOverDays(series, 30), [series]);
 
-  // Photo list driven by nonce so save/delete refreshes synchronously.
+  // Photo list driven by nonce so save/delete refreshes synchronously. The
+  // nonce is the intentional trigger — listPhotos() reads localStorage, which
+  // has no reactive dep, so we bump photosNonce to force a re-read.
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const photos = useMemo(() => listPhotos(), [photosNonce]);
   const photoForFormDate = getPhoto(form.date);
 
@@ -208,17 +211,27 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
         // the long edge to `width` while preserving aspect, identical to
         // the web canvas pipeline's `MAX_WIDTH=600`.
         allowEditing: false,
-        resultType: CameraResultType.DataUrl,
+        // v1.7 (BUG-8) — Uri, NOT DataUrl. A DataUrl result keeps the full
+        // base64 image alive in the WebView across the whole camera intent,
+        // inflating our memory footprint exactly while the camera app is
+        // foreground — which is what tips a low-memory Android device into
+        // killing LimeLog's process (symptom: app "reopens to home" and the
+        // flow is lost after capture). With Uri the plugin writes the resized
+        // JPEG to a cache file and hands back a lightweight path, so the
+        // WebView holds almost nothing during that window. We read the file
+        // into a data URL only at save time, after we're safely back.
+        resultType: CameraResultType.Uri,
         source: CameraSource.Camera,
         saveToGallery: false,
         // promptLabelHeader is only shown when source is Prompt — we go
         // straight to camera here, so it's unused but harmless to omit.
       });
-      const dataUrl = photo.dataUrl;
-      if (!dataUrl) {
+      const webPath = photo.webPath;
+      if (!webPath) {
         setPhotoNotice('Camera returned no image.');
         return;
       }
+      const dataUrl = await uriToDataUrl(webPath);
       const { evicted } = await savePhotoFromDataUrl(form.date, dataUrl);
       setPhotosNonce((n) => n + 1);
       if (evicted > 0) {
@@ -233,6 +246,20 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
       if (/cancel/i.test(msg)) return;
       setPhotoNotice(msg || 'Could not save photo.');
     }
+  }
+
+  // Read a captured-file URI (capacitor://… / file://…) into a JPEG data URL
+  // for local storage. Runs after we're back from the camera, so the heavy
+  // base64 only exists momentarily at save time — not across the camera intent.
+  async function uriToDataUrl(webPath: string): Promise<string> {
+    const res = await fetch(webPath);
+    const blob = await res.blob();
+    return await new Promise<string>((resolve, reject) => {
+      const reader = new FileReader();
+      reader.onloadend = () => resolve(reader.result as string);
+      reader.onerror = () => reject(new Error('Could not read captured image'));
+      reader.readAsDataURL(blob);
+    });
   }
 
   async function handlePhotoCapture(e: React.ChangeEvent<HTMLInputElement>) {
