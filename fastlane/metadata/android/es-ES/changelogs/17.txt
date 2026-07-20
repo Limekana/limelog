@@ -1,0 +1,1 @@
+Corrige la falta de los datos de conexión de Supabase en las compilaciones hechas desde un código fuente limpio, que impedía iniciar sesión y sincronizar. Además hace la compilación reproducible, para que el APK publicado pueda verificarse frente a este código fuente.

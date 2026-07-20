@@ -1,5 +1,21 @@
 apply plugin: 'com.android.application'
 
+// ── Release signing ──────────────────────────────────────────────────────
+// Loads keystore credentials from android/key.properties (gitignored). If
+// the file is absent (fresh clone, CI without secrets, debug-only build)
+// we fall through to no signing config on release — `assembleRelease` will
+// then produce an unsigned APK and `bundleRelease` will fail loudly, which
+// is the correct signal that release signing isn't configured yet.
+// Mirrors nexus-command-center's android/app/build.gradle so both apps sign
+// with the same shared Limecore Studio key (matches AllowedAPKSigningKeys in
+// the fdroiddata metadata for both apps).
+def keystorePropertiesFile = rootProject.file("key.properties")
+def keystoreProperties = new Properties()
+def hasReleaseKeystore = keystorePropertiesFile.exists()
+if (hasReleaseKeystore) {
+    keystoreProperties.load(new FileInputStream(keystorePropertiesFile))
+}
+
 android {
     namespace = "com.limecore.workouttracker"
     compileSdk = rootProject.ext.compileSdkVersion
@@ -7,8 +23,8 @@ android {
         applicationId "com.limecore.workouttracker"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 16
-        versionName "1.8.0"
+        versionCode 17
+        versionName "1.8.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -16,10 +32,27 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+
+    signingConfigs {
+        if (hasReleaseKeystore) {
+            release {
+                keyAlias keystoreProperties['keyAlias']
+                keyPassword keystoreProperties['keyPassword']
+                storeFile file(keystoreProperties['storeFile'])
+                storePassword keystoreProperties['storePassword']
+                v1SigningEnabled true
+                v2SigningEnabled true
+            }
+        }
+    }
+
     buildTypes {
         release {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            if (hasReleaseKeystore) {
+                signingConfig signingConfigs.release
+            }
         }
     }
 }

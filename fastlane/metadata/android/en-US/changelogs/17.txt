@@ -1,0 +1,1 @@
+Fixes the Supabase connection details being missing from builds made from a clean source checkout, which left the app unable to sign in or sync. Also makes the build reproducible, so the published APK can be verified against this source.

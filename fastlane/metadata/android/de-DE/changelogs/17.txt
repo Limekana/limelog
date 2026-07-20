@@ -1,0 +1,1 @@
+Behebt das Fehlen der Supabase-Verbindungsdaten in Builds aus einem sauberen Quellcode-Checkout, wodurch Anmeldung und Synchronisierung nicht möglich waren. Macht den Build außerdem reproduzierbar, sodass das veröffentlichte APK gegen diesen Quellcode verifiziert werden kann.
