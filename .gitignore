@@ -22,3 +22,10 @@ android/build
 android/app/build
 android/local.properties
 android/captures
+
+# Release signing secrets — keystore passwords.
+# Lives in android/key.properties at runtime, never committed.
+android/key.properties
+key.properties
+*.jks
+*.keystore

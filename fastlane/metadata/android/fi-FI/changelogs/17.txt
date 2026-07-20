@@ -1,0 +1,1 @@
+Korjaa Supabase-yhteystiedot, jotka puuttuivat puhtaasta lähdekoodista tehdyistä käännöksistä ja estivät kirjautumisen ja synkronoinnin. Tekee käännöksestä myös toistettavan, joten julkaistu APK voidaan varmentaa tätä lähdekoodia vastaan.
