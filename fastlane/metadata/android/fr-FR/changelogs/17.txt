@@ -1,0 +1,1 @@
+Corrige l'absence des paramètres de connexion Supabase dans les versions compilées depuis des sources vierges, qui empêchait la connexion et la synchronisation. Rend également la compilation reproductible, afin que l'APK publié puisse être vérifié par rapport à ces sources.
