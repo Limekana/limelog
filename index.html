@@ -7,9 +7,13 @@
     <title>Limecore — Workout Tracker</title>
     <link rel="icon" type="image/png" href="/favicon.png" />
     <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link href="https://fonts.googleapis.com/css2?family=Barlow+Condensed:wght@400;500;600;700&family=Barlow:wght@400;500&display=swap" rel="stylesheet" />
+    <!-- Fonts are self-hosted (see @font-face in src/index.css). We used to
+         pull Barlow / Barlow Condensed from fonts.googleapis.com, but that
+         <link rel="stylesheet"> is render-blocking: on a device that can't
+         reach Google (offline, or F-Droid users who firewall Google), the
+         WebView's first paint stalled on the request and the app hung on the
+         native gradient splash with no content. Self-hosting also removes the
+         third-party Google call, which F-Droid requires. -->
   </head>
   <body>
     <div id="root"></div>
