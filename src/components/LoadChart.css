@@ -20,6 +20,6 @@
 .load-chart__unit {
   font-size: 11px;
   color: var(--text-tertiary);
-  text-align: right;
+  text-align: end;
   margin-top: 4px;
 }

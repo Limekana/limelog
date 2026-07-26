@@ -32,7 +32,7 @@
   border: none;
   color: inherit;
   cursor: pointer;
-  text-align: left;
+  text-align: start;
 }
 .pr-history__row-main {
   flex: 1;

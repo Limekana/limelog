@@ -19,7 +19,7 @@
   padding: 12px 14px;
   background: none;
   cursor: pointer;
-  text-align: left;
+  text-align: start;
   transition: background 0.1s;
 }
 .phase-list__header:hover { background: var(--bg-raised); }

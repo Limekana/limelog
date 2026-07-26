@@ -28,7 +28,7 @@ export function ProgramPage() {
       <div className="program-page">
         <div className="program-page__header">
           <button className="program-page__back" onClick={() => setViewingProgramId(null)}>
-            ← {t('program.back')}
+            <span className="rtl-mirror" aria-hidden>←</span> {t('program.back')}
           </button>
           <div className="program-page__header-right">
             {viewingProgram.status !== 'active' && (
