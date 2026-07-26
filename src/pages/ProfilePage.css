@@ -123,4 +123,8 @@
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: 8px;
+  /* v1.8 — see .onb-langs; same cap so Settings doesn't grow unboundedly. */
+  max-height: 184px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }

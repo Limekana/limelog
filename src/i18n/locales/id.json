@@ -1,0 +1,32 @@
+{
+  "auth": {
+    "tagline": "KEKUATAN TERPERIODISASI · FOKUS",
+    "titleGetStarted": "Mulai",
+    "titleSignInEmail": "Masuk dengan email",
+    "titleCreateAccount": "Buat akun",
+    "subGetStarted": "Masuk untuk menyinkronkan latihan ke Nexus, atau lanjutkan secara lokal.",
+    "subEmail": "Sinkronkan latihan antar perangkat.",
+    "nexus": "Lanjutkan dengan Nexus",
+    "nexusNote": "SUDAH MASUK KE NEXUS COMMAND CENTER DI PERANGKAT INI",
+    "google": "Lanjutkan dengan Google",
+    "useEmail": "Gunakan email saja",
+    "emailLabel": "Email",
+    "passwordLabel": "Kata sandi",
+    "signIn": "Masuk",
+    "createAccount": "Buat akun",
+    "needAccount": "Butuh akun?",
+    "haveAccount": "Sudah punya akun?",
+    "back": "Kembali",
+    "guest": "Lanjutkan sebagai tamu",
+    "guestNote": "Hanya lokal — latihan tetap di perangkat ini. Kamu bisa masuk nanti lewat Profil → Pengaturan.",
+    "notConfigured": "Supabase belum dikonfigurasi — proses masuk tidak tersedia. Ketuk Lanjutkan sebagai tamu untuk memakai aplikasi secara lokal.",
+    "errNexus": "Tidak dapat mewarisi sesi Nexus.",
+    "errInvalidCredentials": "Email atau kata sandi salah.",
+    "errAlreadyRegistered": "Email itu sudah punya akun. Coba masuk saja.",
+    "errWeakPassword": "Pilih kata sandi yang lebih kuat.",
+    "errEmailNotConfirmed": "Konfirmasi emailmu dulu — tautannya ada di kotak masuk.",
+    "errRateLimited": "Terlalu banyak percobaan. Tunggu sebentar, lalu coba lagi.",
+    "errNetwork": "Tidak dapat menghubungi server. Periksa koneksimu dan coba lagi.",
+    "errGeneric": "Gagal masuk."
+  }
+}

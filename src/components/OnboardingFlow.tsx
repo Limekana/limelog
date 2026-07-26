@@ -14,6 +14,7 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui';
 import { Dumbbell, Target, ListChecks, Globe } from 'lucide-react';
 import { setLanguage, SUPPORTED_LANGS, LANGUAGE_NAMES, type Lang } from '@/i18n';
+import { useScrollSelectedIntoView } from '@/utils/useScrollSelectedIntoView';
 import { setOnboarded, setTrainingGoal, type TrainingGoal } from '@/lib/onboarding';
 import './OnboardingFlow.css';
 
@@ -33,6 +34,7 @@ const GOALS: { key: TrainingGoal; labelKey: string }[] = [
 export function OnboardingFlow({ onDone }: Props) {
   const { t, i18n } = useTranslation();
   const currentLang = (i18n.language || 'en').split('-')[0] as Lang;
+  const langRef = useScrollSelectedIntoView<HTMLDivElement>();
   const [step, setStep] = useState(0);
   const [goal, setGoal] = useState<TrainingGoal | null>(null);
 
@@ -74,7 +76,7 @@ export function OnboardingFlow({ onDone }: Props) {
               <div className="onb-icon"><Globe size={28} aria-hidden="true" /></div>
               <h1 className="onb-title">{t('onboarding.languageTitle')}</h1>
               <p className="onb-sub">{t('onboarding.languageBody')}</p>
-              <div className="onb-langs">
+              <div className="onb-langs" ref={langRef}>
                 {SUPPORTED_LANGS.map((code) => (
                   <button
                     key={code}

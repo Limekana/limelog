@@ -1,0 +1,32 @@
+{
+  "auth": {
+    "tagline": "FORÇA PERIODIZADA · FOCO",
+    "titleGetStarted": "Começar",
+    "titleSignInEmail": "Entrar com e-mail",
+    "titleCreateAccount": "Criar conta",
+    "subGetStarted": "Entre para sincronizar seus treinos com o Nexus, ou continue localmente.",
+    "subEmail": "Sincronize os treinos entre aparelhos.",
+    "nexus": "Continuar com o Nexus",
+    "nexusNote": "CONECTADO AO NEXUS COMMAND CENTER NESTE APARELHO",
+    "google": "Continuar com o Google",
+    "useEmail": "Usar e-mail",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Senha",
+    "signIn": "Entrar",
+    "createAccount": "Criar conta",
+    "needAccount": "Precisa de uma conta?",
+    "haveAccount": "Já tem conta?",
+    "back": "Voltar",
+    "guest": "Continuar como convidado",
+    "guestNote": "Somente local — os treinos ficam neste aparelho. Você pode entrar depois em Perfil → Configurações.",
+    "notConfigured": "Supabase não configurado — login indisponível. Toque em Continuar como convidado para usar o app localmente.",
+    "errNexus": "Não foi possível herdar a sessão do Nexus.",
+    "errInvalidCredentials": "E-mail ou senha incorretos.",
+    "errAlreadyRegistered": "Já existe uma conta com esse e-mail. Tente entrar.",
+    "errWeakPassword": "Escolha uma senha mais forte.",
+    "errEmailNotConfirmed": "Confirme seu e-mail primeiro — o link está na sua caixa de entrada.",
+    "errRateLimited": "Muitas tentativas. Aguarde um momento e tente de novo.",
+    "errNetwork": "Não foi possível conectar ao servidor. Verifique sua conexão e tente de novo.",
+    "errGeneric": "Falha no login."
+  }
+}

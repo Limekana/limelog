@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { setLanguage, SUPPORTED_LANGS, LANGUAGE_NAMES, type Lang } from '@/i18n';
+import { useScrollSelectedIntoView } from '@/utils/useScrollSelectedIntoView';
 import { useUserStore } from '@/store/userStore';
 import { Button, Card, Badge, EmptyState, Tabs, TabPanel } from '@/components/ui';
 import { InjuryForm } from '@/components/InjuryForm';
@@ -15,6 +16,7 @@ export function ProfilePage() {
   const { profile, setName, setUnit, resolveRestriction, removeRestriction, updateDeloadThresholds } = useUserStore();
   const { t, i18n } = useTranslation();
   const currentLang = (i18n.language || 'en').split('-')[0] as Lang;
+  const langRef = useScrollSelectedIntoView<HTMLDivElement>();
   const [tab, setTab] = useState<Tab>('injuries');
   const [showInjuryForm, setShowInjuryForm] = useState(false);
   const [nameVal, setNameVal] = useState(profile.name);
@@ -136,7 +138,7 @@ export function ProfilePage() {
 
           <Card padding="md">
             <span className="settings-field__label">{t('settings.language')}</span>
-            <div className="settings-lang-grid">
+            <div className="settings-lang-grid" ref={langRef}>
               {SUPPORTED_LANGS.map((code) => (
                 <button
                   key={code}
