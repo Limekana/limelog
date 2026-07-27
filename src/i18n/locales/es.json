@@ -23,7 +23,8 @@
     "program": "Programa",
     "library": "Biblioteca",
     "progress": "Progreso",
-    "body": "Cuerpo"
+    "body": "Cuerpo",
+    "profileSettings": "Perfil y ajustes"
   },
   "workout": {
     "workout": "Entrenamiento",
@@ -97,7 +98,31 @@
     "noOrmTitle": "Aún no hay datos de 1RM",
     "noOrmBody": "Completa una sesión con peso × repeticiones para ver una estimación de 1RM.",
     "noHistoryTitle": "No hay sesiones completadas",
-    "noHistoryBody": "Termina una sesión para verla aquí."
+    "noHistoryBody": "Termina una sesión para verla aquí.",
+    "readyToProgress": "Listo para progresar",
+    "applyFinish": "Aplicar y terminar",
+    "sessionFatigue": "Fatiga de la sesión",
+    "newPr": "Nuevo récord personal",
+    "nice": "Genial",
+    "loadTrend": "Gráfico de tendencia de carga",
+    "ormTrend": "Tendencia del 1RM estimado",
+    "needTwo": "Registra al menos 2 sesiones para ver una tendencia.",
+    "weightUpBody": "Alcanzaste el tope del rango de repeticiones en todas las series de los ejercicios de abajo. Confirma que la técnica fue sólida para aplicar el aumento de peso.",
+    "fatigueRating": "Fatiga {{n}}",
+    "newPrTitle_other": "{{count}} nuevos récords personales",
+    "newPrTitle_one": "Nuevo récord personal",
+    "newPrTitle_many": "{{count}} nuevos récords personales",
+    "repsOnly_other": "{{count}} reps",
+    "repsOnly_one": "{{count}} rep",
+    "repsOnly_many": "{{count}} reps",
+    "stallFlags": "Señales de estancamiento",
+    "selectExercise": "Seleccionar ejercicio",
+    "selectExerciseOrm": "Seleccionar ejercicio para la tendencia de 1RM",
+    "strengthRatio": "Relación fuerza/peso corporal",
+    "logJump": "Registrar salto",
+    "logFirstJump": "Registrar el primer salto",
+    "noJumpsTitle": "Sin saltos registrados",
+    "noJumpsBody": "Registra tu salto vertical para seguir tu progreso atlético."
   },
   "today": {
     "noProgramTitle": "Sin programa activo",
@@ -124,7 +149,8 @@
       "sat": "Sábado"
     },
     "topE1rm": "Mejor e1RM",
-    "e1rmTitle": "Mejor 1RM estimado según tus registros"
+    "e1rmTitle": "Mejor 1RM estimado según tus registros",
+    "exercises_many": "{{count}} ejercicios · {{sets}} series"
   },
   "settings": {
     "language": "Idioma"
@@ -161,7 +187,10 @@
     "photoOverwrite": "Ya hay una foto guardada para esta fecha — capturar la sobrescribirá.",
     "noPhotos": "Aún no hay fotos. Viven solo en este dispositivo — nunca se suben.",
     "deleteEntryConfirm": "¿Eliminar la entrada del {{date}}?",
-    "deletePhotoConfirm": "¿Eliminar la foto del {{date}}?"
+    "deletePhotoConfirm": "¿Eliminar la foto del {{date}}?",
+    "unitSystem": "Sistema de unidades",
+    "weightChart": "Gráfico de tendencia del peso",
+    "weightChartAvg": "Tendencia del peso con media móvil de 7 días"
   },
   "program": {
     "title": "Programas",
@@ -209,7 +238,10 @@
       "thu": "Jue",
       "fri": "Vie",
       "sat": "Sáb"
-    }
+    },
+    "phases_many": "{{count}} fases",
+    "sessions_many": "{{count}} sesiones",
+    "exercises_many": "{{count}} ejercicios"
   },
   "library": {
     "title": "Biblioteca de ejercicios",
@@ -254,7 +286,8 @@
       "band": "Banda",
       "kettlebell": "Pesa rusa",
       "other": "Otro"
-    }
+    },
+    "inLibrary_many": "{{count}} ejercicios en tu biblioteca"
   },
   "profile": {
     "title": "Perfil",
@@ -316,12 +349,66 @@
     "sets": "Series",
     "targetKg": "Objetivo kg",
     "restSecs": "Descanso (s)",
-    "repsPlaceholder": "p. ej. 6–8"
+    "repsPlaceholder": "p. ej. 6–8",
+    "restingEyebrow": "Descanso",
+    "restTimer": "Temporizador de descanso",
+    "startRest": "Iniciar",
+    "startRestAria": "Iniciar descanso de {{secs}} segundos",
+    "skipRest": "Omitir descanso",
+    "addSeconds": "Añadir 15 segundos",
+    "subSeconds": "Restar 15 segundos",
+    "finishWorkout": "Terminar entrenamiento",
+    "discardWorkout": "Descartar entrenamiento",
+    "missing": "Este entrenamiento ya no existe.",
+    "noHistoryYet": "Primera vez — aún sin historial",
+    "colRpe": "RPE",
+    "colDone": "Hecho",
+    "colReps2": "Reps",
+    "setDone": "Serie {{n}} hecha",
+    "markSetDone": "Marcar serie {{n}} como hecha",
+    "deleteSetN": "Eliminar serie {{n}}",
+    "currentPr": "Récord personal actual",
+    "setsProgress": "{{done}}/{{total}} series"
   },
   "notif": {
     "sessionTitle": "Sesión del {{day}}"
   },
   "health": {
-    "stepsWeekLabel": "Pasos de los últimos 7 días"
+    "stepsWeekLabel": "Pasos de los últimos 7 días",
+    "activity": "Actividad",
+    "connect": "Conectar Health Connect",
+    "connectPrompt": "Conecta Health Connect para pasos y calorías",
+    "connectBody": "Conecta Health Connect para ver aquí tus pasos y calorías activas.",
+    "viaHealthConnect": "vía Health Connect",
+    "steps": "pasos",
+    "stepsToday": "pasos hoy",
+    "kcal": "kcal",
+    "kcalToday": "kcal hoy"
+  },
+  "sync": {
+    "title": "Sincronización con Nexus",
+    "connected": "Conectado",
+    "signedInAs": "Sesión iniciada como",
+    "signOut": "Cerrar sesión",
+    "autoPush": "Enviar automáticamente al terminar",
+    "retryNow": "Reintentar ahora",
+    "orUseEmail": "o usa el correo"
+  },
+  "jump": {
+    "title": "Registrar salto vertical",
+    "height": "Altura (cm)",
+    "heightPh": "p. ej. 65,5",
+    "condition": "Condiciones",
+    "notes": "Notas (opcional)",
+    "notesPh": "Superficie, calentamiento, contexto...",
+    "condFresh": "Fresco",
+    "condMorning": "Mañana",
+    "condPost": "Post-sesión"
+  },
+  "debrief": {
+    "title": "Balance",
+    "placeholder": "¿Cómo te sentiste? Anota energía, técnica, molestias…",
+    "saved": "Guardado",
+    "failed": "No se pudo analizar — tu nota se guardó tal cual."
   }
 }

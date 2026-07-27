@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
 // eslint-disable-next-line @typescript-eslint/ban-ts-comment
@@ -65,6 +66,7 @@ function NotificationActionBridge() {
 }
 
 export default function App() {
+  const { t } = useTranslation();
   const { activeProgram } = useProgramStore();
   const userEmail = useNexusStore((s) => s.userEmail);
   const isNexusConfigured = useNexusStore((s) => s.configured);
@@ -171,7 +173,7 @@ export default function App() {
   if (isResolving) {
     return (
       <div className="fla-splash">
-        <div className="fla-splash-text">LOADING</div>
+        <div className="fla-splash-text">{t('common.loading')}</div>
       </div>
     );
   }

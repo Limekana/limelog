@@ -23,7 +23,8 @@
     "program": "Programm",
     "library": "Bibliothek",
     "progress": "Fortschritt",
-    "body": "Körper"
+    "body": "Körper",
+    "profileSettings": "Profil & Einstellungen"
   },
   "workout": {
     "workout": "Training",
@@ -97,7 +98,29 @@
     "noOrmTitle": "Noch keine 1RM-Daten",
     "noOrmBody": "Schließe eine Einheit mit erfasstem Gewicht × Wiederholungen ab, um einen 1RM-Trend zu sehen.",
     "noHistoryTitle": "Keine abgeschlossenen Einheiten",
-    "noHistoryBody": "Schließe eine Einheit ab, um sie hier zu sehen."
+    "noHistoryBody": "Schließe eine Einheit ab, um sie hier zu sehen.",
+    "readyToProgress": "Bereit für mehr",
+    "applyFinish": "Übernehmen & beenden",
+    "sessionFatigue": "Ermüdung der Einheit",
+    "newPr": "Neuer persönlicher Rekord",
+    "nice": "Stark",
+    "loadTrend": "Diagramm der Lastentwicklung",
+    "ormTrend": "Trend des geschätzten 1RM",
+    "needTwo": "Erfasse mindestens 2 Einheiten, um einen Trend zu sehen.",
+    "weightUpBody": "Du hast bei allen Sätzen der unten stehenden Übungen das obere Ende des Wiederholungsbereichs erreicht. Bestätige eine saubere Technik, um die Gewichtssteigerung zu übernehmen.",
+    "fatigueRating": "Ermüdung {{n}}",
+    "newPrTitle_other": "{{count}} neue persönliche Rekorde",
+    "newPrTitle_one": "Neuer persönlicher Rekord",
+    "repsOnly_other": "{{count}} Wdh.",
+    "repsOnly_one": "{{count}} Wdh.",
+    "stallFlags": "Stagnations-Marker",
+    "selectExercise": "Übung wählen",
+    "selectExerciseOrm": "Übung für den 1RM-Trend wählen",
+    "strengthRatio": "Kraft-Körpergewicht-Verhältnis",
+    "logJump": "Sprung erfassen",
+    "logFirstJump": "Ersten Sprung erfassen",
+    "noJumpsTitle": "Keine Sprünge erfasst",
+    "noJumpsBody": "Verfolge deinen Vertikalsprung, um athletische Fortschritte zu sehen."
   },
   "today": {
     "noProgramTitle": "Kein aktives Programm",
@@ -161,7 +184,10 @@
     "photoOverwrite": "Für dieses Datum ist bereits ein Foto gespeichert — Aufnahme überschreibt es.",
     "noPhotos": "Noch keine Fotos. Sie bleiben nur auf diesem Gerät — nie hochgeladen.",
     "deleteEntryConfirm": "Eintrag vom {{date}} löschen?",
-    "deletePhotoConfirm": "Foto vom {{date}} löschen?"
+    "deletePhotoConfirm": "Foto vom {{date}} löschen?",
+    "unitSystem": "Einheitensystem",
+    "weightChart": "Diagramm des Gewichtsverlaufs",
+    "weightChartAvg": "Gewichtsverlauf mit gleitendem 7-Tage-Durchschnitt"
   },
   "program": {
     "title": "Programme",
@@ -316,12 +342,66 @@
     "sets": "Sätze",
     "targetKg": "Ziel kg",
     "restSecs": "Pause (s)",
-    "repsPlaceholder": "z. B. 6–8"
+    "repsPlaceholder": "z. B. 6–8",
+    "restingEyebrow": "Pause",
+    "restTimer": "Pausen-Timer",
+    "startRest": "Starten",
+    "startRestAria": "{{secs}} Sekunden Pause starten",
+    "skipRest": "Pause überspringen",
+    "addSeconds": "15 Sekunden hinzufügen",
+    "subSeconds": "15 Sekunden abziehen",
+    "finishWorkout": "Training beenden",
+    "discardWorkout": "Training verwerfen",
+    "missing": "Dieses Training existiert nicht mehr.",
+    "noHistoryYet": "Zum ersten Mal — noch kein Verlauf",
+    "colRpe": "RPE",
+    "colDone": "Fertig",
+    "colReps2": "Wdh.",
+    "setDone": "Satz {{n}} erledigt",
+    "markSetDone": "Satz {{n}} als erledigt markieren",
+    "deleteSetN": "Satz {{n}} löschen",
+    "currentPr": "Aktueller persönlicher Rekord",
+    "setsProgress": "{{done}}/{{total}} Sätze"
   },
   "notif": {
     "sessionTitle": "Training am {{day}}"
   },
   "health": {
-    "stepsWeekLabel": "Schritte der letzten 7 Tage"
+    "stepsWeekLabel": "Schritte der letzten 7 Tage",
+    "activity": "Aktivität",
+    "connect": "Health Connect verbinden",
+    "connectPrompt": "Health Connect für Schritte & Kalorien verbinden",
+    "connectBody": "Verbinde Health Connect, um hier Schritte und aktive Kalorien zu sehen.",
+    "viaHealthConnect": "über Health Connect",
+    "steps": "Schritte",
+    "stepsToday": "Schritte heute",
+    "kcal": "kcal",
+    "kcalToday": "kcal heute"
+  },
+  "sync": {
+    "title": "Nexus-Sync",
+    "connected": "Verbunden",
+    "signedInAs": "Angemeldet als",
+    "signOut": "Abmelden",
+    "autoPush": "Automatisch senden am Ende",
+    "retryNow": "Jetzt erneut versuchen",
+    "orUseEmail": "oder E-Mail verwenden"
+  },
+  "jump": {
+    "title": "Vertikalsprung erfassen",
+    "height": "Höhe (cm)",
+    "heightPh": "z. B. 65,5",
+    "condition": "Bedingungen",
+    "notes": "Notizen (optional)",
+    "notesPh": "Untergrund, Aufwärmen, Kontext...",
+    "condFresh": "Ausgeruht",
+    "condMorning": "Morgens",
+    "condPost": "Nach dem Training"
+  },
+  "debrief": {
+    "title": "Nachbesprechung",
+    "placeholder": "Wie war es? Notiere Energie, Technik, Beschwerden…",
+    "saved": "Gespeichert",
+    "failed": "Analyse fehlgeschlagen — deine Notiz wurde unverändert gespeichert."
   }
 }

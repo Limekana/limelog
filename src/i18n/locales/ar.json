@@ -53,7 +53,8 @@
     "program": "البرنامج",
     "library": "المكتبة",
     "progress": "التقدّم",
-    "body": "الجسم"
+    "body": "الجسم",
+    "profileSettings": "الملف الشخصي والإعدادات"
   },
   "workout": {
     "workout": "تمرين",
@@ -97,7 +98,37 @@
     "noOrmTitle": "لا توجد بيانات 1RM بعد",
     "noOrmBody": "أكمل جلسة مع تسجيل الوزن × التكرارات لرؤية اتجاه 1RM التقديري.",
     "noHistoryTitle": "لا توجد جلسات مكتملة",
-    "noHistoryBody": "أنهِ جلسة لتظهر هنا."
+    "noHistoryBody": "أنهِ جلسة لتظهر هنا.",
+    "readyToProgress": "جاهز للتقدّم",
+    "applyFinish": "تطبيق وإنهاء",
+    "sessionFatigue": "إجهاد الجلسة",
+    "newPr": "رقم شخصي جديد",
+    "nice": "رائع",
+    "loadTrend": "مخطط اتجاه الحمل",
+    "ormTrend": "اتجاه 1RM المقدّر",
+    "needTwo": "سجّل جلستين على الأقل لرؤية الاتجاه.",
+    "weightUpBody": "وصلت إلى أعلى نطاق التكرارات في كل مجموعة للتمارين أدناه. أكّد سلامة الأداء لتطبيق زيادة الوزن.",
+    "fatigueRating": "الإجهاد {{n}}",
+    "newPrTitle_zero": "لا أرقام شخصية جديدة",
+    "newPrTitle_one": "رقم شخصي جديد",
+    "newPrTitle_two": "رقمان شخصيان جديدان",
+    "newPrTitle_few": "{{count}} أرقام شخصية جديدة",
+    "newPrTitle_many": "{{count}} رقمًا شخصيًا جديدًا",
+    "newPrTitle_other": "{{count}} رقم شخصي جديد",
+    "repsOnly_zero": "{{count}} تكرار",
+    "repsOnly_one": "تكرار واحد",
+    "repsOnly_two": "تكراران",
+    "repsOnly_few": "{{count}} تكرارات",
+    "repsOnly_many": "{{count}} تكرارًا",
+    "repsOnly_other": "{{count}} تكرار",
+    "stallFlags": "مؤشرات الركود",
+    "selectExercise": "اختر التمرين",
+    "selectExerciseOrm": "اختر تمرينًا لاتجاه 1RM",
+    "strengthRatio": "نسبة القوة إلى وزن الجسم",
+    "logJump": "تسجيل قفزة",
+    "logFirstJump": "سجّل أول قفزة",
+    "noJumpsTitle": "لا توجد قفزات مسجَّلة",
+    "noJumpsBody": "تتبّع قفزتك العمودية لمراقبة تقدّمك الرياضي."
   },
   "today": {
     "noProgramTitle": "لا يوجد برنامج نشط",
@@ -185,7 +216,10 @@
     "photoOverwrite": "توجد صورة محفوظة لهذا التاريخ — الالتقاط سيستبدلها.",
     "noPhotos": "لا توجد صور محفوظة بعد. تبقى على هذا الجهاز فقط — ولا تُرفع أبدًا.",
     "deleteEntryConfirm": "حذف إدخال {{date}}؟",
-    "deletePhotoConfirm": "حذف صورة {{date}}؟"
+    "deletePhotoConfirm": "حذف صورة {{date}}؟",
+    "unitSystem": "نظام الوحدات",
+    "weightChart": "مخطط اتجاه الوزن",
+    "weightChartAvg": "اتجاه الوزن مع المتوسط المتحرك لسبعة أيام"
   },
   "profile": {
     "title": "الملف الشخصي",
@@ -227,7 +261,26 @@
     "sets": "المجموعات",
     "targetKg": "الهدف بالكجم",
     "restSecs": "الراحة (ثانية)",
-    "repsPlaceholder": "مثال: ٦–٨"
+    "repsPlaceholder": "مثال: ٦–٨",
+    "restingEyebrow": "راحة",
+    "restTimer": "مؤقّت الراحة",
+    "startRest": "ابدأ",
+    "startRestAria": "ابدأ راحة {{secs}} ثانية",
+    "skipRest": "تخطّي الراحة",
+    "addSeconds": "أضف 15 ثانية",
+    "subSeconds": "اطرح 15 ثانية",
+    "finishWorkout": "إنهاء التمرين",
+    "discardWorkout": "تجاهل التمرين",
+    "missing": "هذا التمرين لم يعد موجودًا.",
+    "noHistoryYet": "المرة الأولى — لا يوجد سجل بعد",
+    "colRpe": "RPE",
+    "colDone": "تم",
+    "colReps2": "التكرارات",
+    "setDone": "المجموعة {{n}} تمت",
+    "markSetDone": "وضع علامة على المجموعة {{n}} كمكتملة",
+    "deleteSetN": "حذف المجموعة {{n}}",
+    "currentPr": "الرقم الشخصي الحالي",
+    "setsProgress": "{{done}}/{{total}} مجموعة"
   },
   "program": {
     "title": "البرامج",
@@ -342,6 +395,41 @@
     "sessionTitle": "تمرين {{day}}"
   },
   "health": {
-    "stepsWeekLabel": "الخطوات خلال آخر 7 أيام"
+    "stepsWeekLabel": "الخطوات خلال آخر 7 أيام",
+    "activity": "النشاط",
+    "connect": "ربط Health Connect",
+    "connectPrompt": "اربط Health Connect لعرض الخطوات والسعرات",
+    "connectBody": "اربط Health Connect لعرض خطواتك وسعراتك النشطة هنا.",
+    "viaHealthConnect": "عبر Health Connect",
+    "steps": "خطوة",
+    "stepsToday": "خطوات اليوم",
+    "kcal": "سعرة",
+    "kcalToday": "سعرة اليوم"
+  },
+  "sync": {
+    "title": "مزامنة Nexus",
+    "connected": "متصل",
+    "signedInAs": "مسجَّل الدخول باسم",
+    "signOut": "تسجيل الخروج",
+    "autoPush": "إرسال تلقائي عند الإنهاء",
+    "retryNow": "أعد المحاولة الآن",
+    "orUseEmail": "أو استخدم البريد الإلكتروني"
+  },
+  "jump": {
+    "title": "تسجيل القفز العمودي",
+    "height": "الارتفاع (سم)",
+    "heightPh": "مثال: 65.5",
+    "condition": "الظروف",
+    "notes": "ملاحظات (اختياري)",
+    "notesPh": "الأرضية، الإحماء، السياق...",
+    "condFresh": "مرتاح",
+    "condMorning": "صباحًا",
+    "condPost": "بعد التمرين"
+  },
+  "debrief": {
+    "title": "مراجعة",
+    "placeholder": "كيف كان الشعور؟ دوّن الطاقة والأداء وأي انزعاج…",
+    "saved": "تم الحفظ",
+    "failed": "تعذّر التحليل — تم حفظ ملاحظتك كما هي."
   }
 }

@@ -23,7 +23,8 @@
     "program": "Program",
     "library": "Library",
     "progress": "Progress",
-    "body": "Body"
+    "body": "Body",
+    "profileSettings": "Profile & settings"
   },
   "workout": {
     "workout": "Workout",
@@ -97,7 +98,29 @@
     "noOrmTitle": "No 1RM data yet",
     "noOrmBody": "Complete a session with weight × reps logged to see an estimated 1RM trend.",
     "noHistoryTitle": "No completed sessions",
-    "noHistoryBody": "Finish a session to see it here."
+    "noHistoryBody": "Finish a session to see it here.",
+    "readyToProgress": "Ready to progress",
+    "applyFinish": "Apply & Finish",
+    "sessionFatigue": "Session fatigue",
+    "newPr": "New personal record",
+    "nice": "Nice",
+    "loadTrend": "Load trend chart",
+    "ormTrend": "Estimated 1RM trend",
+    "needTwo": "Log at least 2 sessions to see a trend.",
+    "weightUpBody": "You hit the top of the rep range on every set for the exercises below. Confirm form was solid to apply the weight increase.",
+    "fatigueRating": "Fatigue {{n}}",
+    "newPrTitle_other": "{{count}} new personal records",
+    "newPrTitle_one": "New personal record",
+    "repsOnly_other": "{{count}} reps",
+    "repsOnly_one": "{{count}} rep",
+    "stallFlags": "Stall flags",
+    "selectExercise": "Select exercise",
+    "selectExerciseOrm": "Select exercise for 1RM trend",
+    "strengthRatio": "Strength-to-bodyweight ratio",
+    "logJump": "Log jump",
+    "logFirstJump": "Log first jump",
+    "noJumpsTitle": "No jumps logged",
+    "noJumpsBody": "Track your vertical jump to monitor athletic progress."
   },
   "today": {
     "noProgramTitle": "No active program",
@@ -161,7 +184,10 @@
     "photoOverwrite": "Photo already saved for this date — capturing will overwrite.",
     "noPhotos": "No photos saved yet. They live on this device only — never uploaded.",
     "deleteEntryConfirm": "Delete entry for {{date}}?",
-    "deletePhotoConfirm": "Delete photo from {{date}}?"
+    "deletePhotoConfirm": "Delete photo from {{date}}?",
+    "unitSystem": "Unit system",
+    "weightChart": "Weight trend chart",
+    "weightChartAvg": "Weight trend with 7-day moving average"
   },
   "program": {
     "title": "Programs",
@@ -316,12 +342,66 @@
     "sets": "Sets",
     "targetKg": "Target kg",
     "restSecs": "Rest (s)",
-    "repsPlaceholder": "e.g. 6–8"
+    "repsPlaceholder": "e.g. 6–8",
+    "restingEyebrow": "Resting",
+    "restTimer": "Rest timer",
+    "startRest": "Start",
+    "startRestAria": "Start {{secs}} second rest",
+    "skipRest": "Skip rest",
+    "addSeconds": "Add 15 seconds",
+    "subSeconds": "Subtract 15 seconds",
+    "finishWorkout": "Finish workout",
+    "discardWorkout": "Discard workout",
+    "missing": "This workout no longer exists.",
+    "noHistoryYet": "First time — no history yet",
+    "colRpe": "RPE",
+    "colDone": "Done",
+    "colReps2": "Reps",
+    "setDone": "Set {{n}} done",
+    "markSetDone": "Mark set {{n}} done",
+    "deleteSetN": "Delete set {{n}}",
+    "currentPr": "Current personal record",
+    "setsProgress": "{{done}}/{{total}} sets"
   },
   "notif": {
     "sessionTitle": "{{day}} session"
   },
   "health": {
-    "stepsWeekLabel": "Steps over the last 7 days"
+    "stepsWeekLabel": "Steps over the last 7 days",
+    "activity": "Activity",
+    "connect": "Connect Health Connect",
+    "connectPrompt": "Connect Health Connect for steps & calories",
+    "connectBody": "Connect Health Connect to see your steps & active calories here.",
+    "viaHealthConnect": "via Health Connect",
+    "steps": "steps",
+    "stepsToday": "steps today",
+    "kcal": "kcal",
+    "kcalToday": "kcal today"
+  },
+  "sync": {
+    "title": "Nexus sync",
+    "connected": "Connected",
+    "signedInAs": "Signed in as",
+    "signOut": "Sign out",
+    "autoPush": "Auto-push on finish",
+    "retryNow": "Retry now",
+    "orUseEmail": "or use email"
+  },
+  "jump": {
+    "title": "Log vertical jump",
+    "height": "Height (cm)",
+    "heightPh": "e.g. 65.5",
+    "condition": "Condition",
+    "notes": "Notes (optional)",
+    "notesPh": "Surface, warm-up, context...",
+    "condFresh": "Fresh",
+    "condMorning": "Morning",
+    "condPost": "Post-session"
+  },
+  "debrief": {
+    "title": "Debrief",
+    "placeholder": "How did it feel? Note energy, form, any discomfort…",
+    "saved": "Saved",
+    "failed": "Couldn't analyse — your note was saved as-is."
   }
 }

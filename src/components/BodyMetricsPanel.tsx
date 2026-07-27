@@ -294,7 +294,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
       <Card padding="md" className="body-metrics-prefs">
         <div className="body-metrics-prefs__row">
           <span className="body-metrics-prefs__label">{t('body.units')}</span>
-          <div className="body-metrics-prefs__unit-toggle" role="radiogroup" aria-label="Unit system">
+          <div className="body-metrics-prefs__unit-toggle" role="radiogroup" aria-label={t('body.unitSystem')}>
             <button
               type="button"
               role="radio"
@@ -578,6 +578,7 @@ interface WeightChartProps {
 }
 
 function WeightChart({ series, isImperial }: WeightChartProps) {
+  const { t } = useTranslation();
   const w = 320;
   const h = 140;
   const padL = 24;
@@ -618,7 +619,7 @@ function WeightChart({ series, isImperial }: WeightChartProps) {
       width="100%"
       className="body-metrics-chart"
       role="img"
-      aria-label="Weight trend chart"
+      aria-label={t('body.weightChart')}
     >
       <text x={padL - 4} y={padT + 4} className="body-metrics-chart__axis" textAnchor="end">
         {displayMax}

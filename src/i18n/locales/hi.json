@@ -53,7 +53,8 @@
     "program": "प्रोग्राम",
     "library": "लाइब्रेरी",
     "progress": "प्रगति",
-    "body": "शरीर"
+    "body": "शरीर",
+    "profileSettings": "प्रोफ़ाइल और सेटिंग्स"
   },
   "workout": {
     "workout": "वर्कआउट",
@@ -97,7 +98,29 @@
     "noOrmTitle": "अभी 1RM का डेटा नहीं",
     "noOrmBody": "अनुमानित 1RM का रुझान देखने के लिए वज़न × दोहराव सहित कोई सत्र पूरा करें।",
     "noHistoryTitle": "कोई पूरा हुआ सत्र नहीं",
-    "noHistoryBody": "कोई सत्र पूरा करें, वह यहाँ दिखेगा।"
+    "noHistoryBody": "कोई सत्र पूरा करें, वह यहाँ दिखेगा।",
+    "readyToProgress": "आगे बढ़ने के लिए तैयार",
+    "applyFinish": "लागू करें और समाप्त करें",
+    "sessionFatigue": "सत्र की थकान",
+    "newPr": "नया व्यक्तिगत रिकॉर्ड",
+    "nice": "शाबाश",
+    "loadTrend": "लोड ट्रेंड चार्ट",
+    "ormTrend": "अनुमानित 1RM रुझान",
+    "needTwo": "रुझान देखने के लिए कम से कम 2 सत्र दर्ज करें।",
+    "weightUpBody": "नीचे दिए गए व्यायामों के हर सेट में आपने रेप रेंज की ऊपरी सीमा छू ली। वज़न बढ़ाने के लिए पुष्टि करें कि फ़ॉर्म सही था।",
+    "fatigueRating": "थकान {{n}}",
+    "newPrTitle_one": "नया व्यक्तिगत रिकॉर्ड",
+    "newPrTitle_other": "{{count}} नए व्यक्तिगत रिकॉर्ड",
+    "repsOnly_one": "{{count}} दोहराव",
+    "repsOnly_other": "{{count}} दोहराव",
+    "stallFlags": "ठहराव फ़्लैग",
+    "selectExercise": "व्यायाम चुनें",
+    "selectExerciseOrm": "1RM रुझान के लिए व्यायाम चुनें",
+    "strengthRatio": "शक्ति-से-शरीर-भार अनुपात",
+    "logJump": "जंप दर्ज करें",
+    "logFirstJump": "पहली जंप दर्ज करें",
+    "noJumpsTitle": "कोई जंप दर्ज नहीं",
+    "noJumpsBody": "एथलेटिक प्रगति देखने के लिए अपनी वर्टिकल जंप ट्रैक करें।"
   },
   "today": {
     "noProgramTitle": "कोई सक्रिय प्रोग्राम नहीं",
@@ -181,7 +204,10 @@
     "photoOverwrite": "इस तारीख़ की तस्वीर पहले से सहेजी है — नई लेने पर वह बदल जाएगी।",
     "noPhotos": "अभी कोई तस्वीर सहेजी नहीं गई। ये केवल इसी डिवाइस पर रहती हैं — कभी अपलोड नहीं होतीं।",
     "deleteEntryConfirm": "{{date}} की प्रविष्टि मिटाएँ?",
-    "deletePhotoConfirm": "{{date}} की तस्वीर मिटाएँ?"
+    "deletePhotoConfirm": "{{date}} की तस्वीर मिटाएँ?",
+    "unitSystem": "इकाई प्रणाली",
+    "weightChart": "वज़न रुझान चार्ट",
+    "weightChartAvg": "7-दिन के मूविंग औसत के साथ वज़न रुझान"
   },
   "profile": {
     "title": "प्रोफ़ाइल",
@@ -223,7 +249,26 @@
     "sets": "सेट",
     "targetKg": "लक्ष्य किग्रा",
     "restSecs": "आराम (सेकंड)",
-    "repsPlaceholder": "जैसे 6–8"
+    "repsPlaceholder": "जैसे 6–8",
+    "restingEyebrow": "आराम",
+    "restTimer": "आराम टाइमर",
+    "startRest": "शुरू करें",
+    "startRestAria": "{{secs}} सेकंड का आराम शुरू करें",
+    "skipRest": "आराम छोड़ें",
+    "addSeconds": "15 सेकंड जोड़ें",
+    "subSeconds": "15 सेकंड घटाएँ",
+    "finishWorkout": "वर्कआउट समाप्त करें",
+    "discardWorkout": "वर्कआउट रद्द करें",
+    "missing": "यह वर्कआउट अब मौजूद नहीं है।",
+    "noHistoryYet": "पहली बार — अभी कोई इतिहास नहीं",
+    "colRpe": "RPE",
+    "colDone": "पूर्ण",
+    "colReps2": "दोहराव",
+    "setDone": "सेट {{n}} पूर्ण",
+    "markSetDone": "सेट {{n}} को पूर्ण चिह्नित करें",
+    "deleteSetN": "सेट {{n}} हटाएँ",
+    "currentPr": "वर्तमान व्यक्तिगत रिकॉर्ड",
+    "setsProgress": "{{done}}/{{total}} सेट"
   },
   "program": {
     "title": "प्रोग्राम",
@@ -322,6 +367,41 @@
     "sessionTitle": "{{day}} का सत्र"
   },
   "health": {
-    "stepsWeekLabel": "पिछले 7 दिनों के कदम"
+    "stepsWeekLabel": "पिछले 7 दिनों के कदम",
+    "activity": "गतिविधि",
+    "connect": "Health Connect कनेक्ट करें",
+    "connectPrompt": "कदम और कैलोरी के लिए Health Connect कनेक्ट करें",
+    "connectBody": "यहाँ अपने कदम और सक्रिय कैलोरी देखने के लिए Health Connect कनेक्ट करें।",
+    "viaHealthConnect": "Health Connect के माध्यम से",
+    "steps": "कदम",
+    "stepsToday": "आज के कदम",
+    "kcal": "कैलोरी",
+    "kcalToday": "आज की कैलोरी"
+  },
+  "sync": {
+    "title": "Nexus सिंक",
+    "connected": "कनेक्टेड",
+    "signedInAs": "इस रूप में साइन इन",
+    "signOut": "साइन आउट",
+    "autoPush": "समाप्त होने पर स्वतः भेजें",
+    "retryNow": "अभी पुनः प्रयास करें",
+    "orUseEmail": "या ईमेल का उपयोग करें"
+  },
+  "jump": {
+    "title": "वर्टिकल जंप दर्ज करें",
+    "height": "ऊँचाई (सेमी)",
+    "heightPh": "उदा. 65.5",
+    "condition": "स्थिति",
+    "notes": "नोट्स (वैकल्पिक)",
+    "notesPh": "सतह, वार्म-अप, संदर्भ...",
+    "condFresh": "तरोताज़ा",
+    "condMorning": "सुबह",
+    "condPost": "सत्र के बाद"
+  },
+  "debrief": {
+    "title": "समीक्षा",
+    "placeholder": "कैसा लगा? ऊर्जा, फ़ॉर्म, कोई परेशानी नोट करें…",
+    "saved": "सहेजा गया",
+    "failed": "विश्लेषण नहीं हो सका — आपका नोट जैसा था वैसा सहेजा गया।"
   }
 }

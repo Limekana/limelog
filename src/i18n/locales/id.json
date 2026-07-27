@@ -53,7 +53,8 @@
     "program": "Program",
     "library": "Pustaka",
     "progress": "Progres",
-    "body": "Tubuh"
+    "body": "Tubuh",
+    "profileSettings": "Profil & pengaturan"
   },
   "workout": {
     "workout": "Latihan",
@@ -97,7 +98,27 @@
     "noOrmTitle": "Belum ada data 1RM",
     "noOrmBody": "Selesaikan sesi dengan beban × repetisi tercatat untuk melihat tren perkiraan 1RM.",
     "noHistoryTitle": "Belum ada sesi yang selesai",
-    "noHistoryBody": "Selesaikan satu sesi untuk melihatnya di sini."
+    "noHistoryBody": "Selesaikan satu sesi untuk melihatnya di sini.",
+    "readyToProgress": "Siap naik level",
+    "applyFinish": "Terapkan & selesai",
+    "sessionFatigue": "Kelelahan sesi",
+    "newPr": "Rekor pribadi baru",
+    "nice": "Mantap",
+    "loadTrend": "Grafik tren beban",
+    "ormTrend": "Tren estimasi 1RM",
+    "needTwo": "Catat minimal 2 sesi untuk melihat tren.",
+    "weightUpBody": "Kamu mencapai batas atas rentang repetisi di setiap set untuk latihan di bawah. Konfirmasi teknikmu sudah benar untuk menerapkan penambahan beban.",
+    "fatigueRating": "Kelelahan {{n}}",
+    "newPrTitle_other": "{{count}} rekor pribadi baru",
+    "repsOnly_other": "{{count}} repetisi",
+    "stallFlags": "Tanda stagnasi",
+    "selectExercise": "Pilih latihan",
+    "selectExerciseOrm": "Pilih latihan untuk tren 1RM",
+    "strengthRatio": "Rasio kekuatan terhadap berat badan",
+    "logJump": "Catat lompatan",
+    "logFirstJump": "Catat lompatan pertama",
+    "noJumpsTitle": "Belum ada lompatan",
+    "noJumpsBody": "Lacak lompatan vertikalmu untuk memantau kemajuan atletik."
   },
   "today": {
     "noProgramTitle": "Tidak ada program aktif",
@@ -180,7 +201,10 @@
     "photoOverwrite": "Sudah ada foto untuk tanggal ini — mengambil foto baru akan menimpanya.",
     "noPhotos": "Belum ada foto tersimpan. Foto hanya ada di perangkat ini — tidak pernah diunggah.",
     "deleteEntryConfirm": "Hapus entri tanggal {{date}}?",
-    "deletePhotoConfirm": "Hapus foto tanggal {{date}}?"
+    "deletePhotoConfirm": "Hapus foto tanggal {{date}}?",
+    "unitSystem": "Sistem satuan",
+    "weightChart": "Grafik tren berat badan",
+    "weightChartAvg": "Tren berat badan dengan rata-rata bergerak 7 hari"
   },
   "profile": {
     "title": "Profil",
@@ -222,7 +246,26 @@
     "sets": "Set",
     "targetKg": "Target kg",
     "restSecs": "Istirahat (dtk)",
-    "repsPlaceholder": "mis. 6–8"
+    "repsPlaceholder": "mis. 6–8",
+    "restingEyebrow": "Istirahat",
+    "restTimer": "Pengatur waktu istirahat",
+    "startRest": "Mulai",
+    "startRestAria": "Mulai istirahat {{secs}} detik",
+    "skipRest": "Lewati istirahat",
+    "addSeconds": "Tambah 15 detik",
+    "subSeconds": "Kurangi 15 detik",
+    "finishWorkout": "Selesaikan latihan",
+    "discardWorkout": "Buang latihan",
+    "missing": "Latihan ini sudah tidak ada.",
+    "noHistoryYet": "Pertama kali — belum ada riwayat",
+    "colRpe": "RPE",
+    "colDone": "Selesai",
+    "colReps2": "Repetisi",
+    "setDone": "Set {{n}} selesai",
+    "markSetDone": "Tandai set {{n}} selesai",
+    "deleteSetN": "Hapus set {{n}}",
+    "currentPr": "Rekor pribadi saat ini",
+    "setsProgress": "{{done}}/{{total}} set"
   },
   "program": {
     "title": "Program",
@@ -317,6 +360,41 @@
     "sessionTitle": "Latihan {{day}}"
   },
   "health": {
-    "stepsWeekLabel": "Langkah selama 7 hari terakhir"
+    "stepsWeekLabel": "Langkah selama 7 hari terakhir",
+    "activity": "Aktivitas",
+    "connect": "Hubungkan Health Connect",
+    "connectPrompt": "Hubungkan Health Connect untuk langkah & kalori",
+    "connectBody": "Hubungkan Health Connect untuk melihat langkah & kalori aktif di sini.",
+    "viaHealthConnect": "via Health Connect",
+    "steps": "langkah",
+    "stepsToday": "langkah hari ini",
+    "kcal": "kkal",
+    "kcalToday": "kkal hari ini"
+  },
+  "sync": {
+    "title": "Sinkronisasi Nexus",
+    "connected": "Terhubung",
+    "signedInAs": "Masuk sebagai",
+    "signOut": "Keluar",
+    "autoPush": "Kirim otomatis saat selesai",
+    "retryNow": "Coba lagi sekarang",
+    "orUseEmail": "atau gunakan email"
+  },
+  "jump": {
+    "title": "Catat lompatan vertikal",
+    "height": "Tinggi (cm)",
+    "heightPh": "mis. 65,5",
+    "condition": "Kondisi",
+    "notes": "Catatan (opsional)",
+    "notesPh": "Permukaan, pemanasan, konteks...",
+    "condFresh": "Segar",
+    "condMorning": "Pagi",
+    "condPost": "Setelah latihan"
+  },
+  "debrief": {
+    "title": "Evaluasi",
+    "placeholder": "Bagaimana rasanya? Catat energi, teknik, keluhan…",
+    "saved": "Tersimpan",
+    "failed": "Tidak dapat menganalisis — catatanmu tersimpan apa adanya."
   }
 }

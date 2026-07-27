@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import './LoadChart.css';
 import type { SessionLog } from '@/types/logging';
 import { toDisplayWeight } from '@/utils/helpers';
@@ -15,6 +16,7 @@ interface DataPoint {
 }
 
 export function LoadChart({ exerciseId, sessionLogs, unit }: Props) {
+  const { t } = useTranslation();
   const data: DataPoint[] = useMemo(() => {
     return sessionLogs
       .filter((l) => l.sets.some((s) => s.exerciseId === exerciseId && s.weightKg !== null))
@@ -33,7 +35,7 @@ export function LoadChart({ exerciseId, sessionLogs, unit }: Props) {
   if (data.length < 2) {
     return (
       <div className="load-chart load-chart--empty">
-        <p>Log at least 2 sessions to see a trend.</p>
+        <p>{t('progress.needTwo')}</p>
       </div>
     );
   }
@@ -74,7 +76,7 @@ export function LoadChart({ exerciseId, sessionLogs, unit }: Props) {
         viewBox={`0 0 ${W} ${H}`}
         className="load-chart__svg"
         role="img"
-        aria-label="Load trend chart"
+        aria-label={t('progress.loadTrend')}
       >
         <defs>
           <linearGradient id="lc-grad" x1="0" y1="0" x2="0" y2="1">

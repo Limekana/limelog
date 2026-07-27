@@ -23,7 +23,8 @@
     "program": "计划",
     "library": "动作库",
     "progress": "进度",
-    "body": "身体"
+    "body": "身体",
+    "profileSettings": "个人资料与设置"
   },
   "workout": {
     "workout": "训练",
@@ -97,7 +98,27 @@
     "noOrmTitle": "尚无 1RM 数据",
     "noOrmBody": "完成一次记录了重量×次数的训练，即可查看估算 1RM 趋势。",
     "noHistoryTitle": "没有已完成的训练",
-    "noHistoryBody": "完成一次训练后会显示在这里。"
+    "noHistoryBody": "完成一次训练后会显示在这里。",
+    "readyToProgress": "可以加重了",
+    "applyFinish": "应用并结束",
+    "sessionFatigue": "训练疲劳度",
+    "newPr": "新的个人纪录",
+    "nice": "很棒",
+    "loadTrend": "负荷趋势图",
+    "ormTrend": "估算 1RM 趋势",
+    "needTwo": "至少记录 2 次训练才能看到趋势。",
+    "weightUpBody": "下列动作的每一组你都达到了次数区间的上限。确认动作标准后即可加重。",
+    "fatigueRating": "疲劳度 {{n}}",
+    "newPrTitle_other": "{{count}} 项新的个人纪录",
+    "repsOnly_other": "{{count}} 次",
+    "stallFlags": "停滞标记",
+    "selectExercise": "选择动作",
+    "selectExerciseOrm": "选择用于 1RM 趋势的动作",
+    "strengthRatio": "力量体重比",
+    "logJump": "记录跳跃",
+    "logFirstJump": "记录第一次跳跃",
+    "noJumpsTitle": "尚无跳跃记录",
+    "noJumpsBody": "记录垂直跳以追踪运动能力的进展。"
   },
   "today": {
     "noProgramTitle": "没有进行中的计划",
@@ -161,7 +182,10 @@
     "photoOverwrite": "该日期已保存照片——拍摄将覆盖它。",
     "noPhotos": "尚未保存照片。它们仅存于本机——绝不上传。",
     "deleteEntryConfirm": "删除 {{date}} 的记录？",
-    "deletePhotoConfirm": "删除 {{date}} 的照片？"
+    "deletePhotoConfirm": "删除 {{date}} 的照片？",
+    "unitSystem": "单位制",
+    "weightChart": "体重趋势图",
+    "weightChartAvg": "带 7 天移动平均的体重趋势"
   },
   "program": {
     "title": "训练计划",
@@ -316,12 +340,66 @@
     "sets": "组数",
     "targetKg": "目标 kg",
     "restSecs": "休息 (秒)",
-    "repsPlaceholder": "如 6–8"
+    "repsPlaceholder": "如 6–8",
+    "restingEyebrow": "休息中",
+    "restTimer": "休息计时器",
+    "startRest": "开始",
+    "startRestAria": "开始 {{secs}} 秒休息",
+    "skipRest": "跳过休息",
+    "addSeconds": "增加 15 秒",
+    "subSeconds": "减少 15 秒",
+    "finishWorkout": "结束训练",
+    "discardWorkout": "放弃训练",
+    "missing": "该训练已不存在。",
+    "noHistoryYet": "第一次 —— 尚无历史记录",
+    "colRpe": "RPE",
+    "colDone": "完成",
+    "colReps2": "次数",
+    "setDone": "第 {{n}} 组已完成",
+    "markSetDone": "将第 {{n}} 组标记为完成",
+    "deleteSetN": "删除第 {{n}} 组",
+    "currentPr": "当前个人纪录",
+    "setsProgress": "{{done}}/{{total}} 组"
   },
   "notif": {
     "sessionTitle": "{{day}}的训练"
   },
   "health": {
-    "stepsWeekLabel": "最近 7 天的步数"
+    "stepsWeekLabel": "最近 7 天的步数",
+    "activity": "活动",
+    "connect": "连接 Health Connect",
+    "connectPrompt": "连接 Health Connect 查看步数与卡路里",
+    "connectBody": "连接 Health Connect 以在此查看步数与活动卡路里。",
+    "viaHealthConnect": "来自 Health Connect",
+    "steps": "步",
+    "stepsToday": "今日步数",
+    "kcal": "千卡",
+    "kcalToday": "今日千卡"
+  },
+  "sync": {
+    "title": "Nexus 同步",
+    "connected": "已连接",
+    "signedInAs": "已登录为",
+    "signOut": "退出登录",
+    "autoPush": "结束时自动上传",
+    "retryNow": "立即重试",
+    "orUseEmail": "或使用电子邮件"
+  },
+  "jump": {
+    "title": "记录垂直跳",
+    "height": "高度（厘米）",
+    "heightPh": "例如 65.5",
+    "condition": "条件",
+    "notes": "备注（可选）",
+    "notesPh": "场地、热身、情境……",
+    "condFresh": "状态良好",
+    "condMorning": "早晨",
+    "condPost": "训练后"
+  },
+  "debrief": {
+    "title": "复盘",
+    "placeholder": "感觉如何？记录状态、动作、任何不适……",
+    "saved": "已保存",
+    "failed": "无法分析 —— 你的记录已按原样保存。"
   }
 }

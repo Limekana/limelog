@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { SessionLog } from '@/types/logging';
 import { oneRMHistoryForExercise } from '@/utils/oneRepMax';
 import { toDisplayWeight } from '@/utils/helpers';
@@ -25,6 +26,7 @@ interface Props {
  * data the helper returns.
  */
 export function OneRMChart({ exerciseId, sessionLogs, unit }: Props) {
+  const { t } = useTranslation();
   const data = useMemo(() => {
     const points = oneRMHistoryForExercise([], sessionLogs, exerciseId).slice(-12);
     return points.map((p) => {
@@ -79,7 +81,7 @@ export function OneRMChart({ exerciseId, sessionLogs, unit }: Props) {
 
   return (
     <div className="load-chart">
-      <svg viewBox={`0 0 ${W} ${H}`} className="load-chart__svg" role="img" aria-label="Estimated 1RM trend">
+      <svg viewBox={`0 0 ${W} ${H}`} className="load-chart__svg" role="img" aria-label={t('progress.ormTrend')}>
         <defs>
           <linearGradient id="orm-grad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#c8f135" stopOpacity="0.18" />

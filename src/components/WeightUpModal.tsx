@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { Exercise, SessionExercise } from '@/types/program';
 import { Button } from '@/components/ui';
 import { TrendingUp } from 'lucide-react';
@@ -18,6 +19,7 @@ interface Props {
 }
 
 export function WeightUpModal({ qualifying, onConfirm, onSkip }: Props) {
+  const { t } = useTranslation();
   const [checked, setChecked] = useState<Set<string>>(new Set(qualifying.map((q) => q.se.id)));
 
   function toggle(seId: string) {
@@ -33,10 +35,10 @@ export function WeightUpModal({ qualifying, onConfirm, onSkip }: Props) {
       <div className="weight-up-modal">
         <div className="weight-up-modal__header">
           <TrendingUp size={18} color="var(--accent)" />
-          <span className="weight-up-modal__title">Ready to progress</span>
+          <span className="weight-up-modal__title">{t('progress.readyToProgress')}</span>
         </div>
         <p className="weight-up-modal__body">
-          You hit the top of the rep range on every set for the exercises below. Confirm form was solid to apply the weight increase.
+          {t('progress.weightUpBody')}
         </p>
         <div className="weight-up-modal__list">
           {qualifying.map((q) => (
@@ -55,9 +57,9 @@ export function WeightUpModal({ qualifying, onConfirm, onSkip }: Props) {
           ))}
         </div>
         <div className="weight-up-modal__actions">
-          <Button variant="secondary" size="sm" onClick={onSkip}>Skip</Button>
+          <Button variant="secondary" size="sm" onClick={onSkip}>{t('log.skip')}</Button>
           <Button variant="primary" size="sm" onClick={() => onConfirm(Array.from(checked))}>
-            Apply & Finish
+            {t('progress.applyFinish')}
           </Button>
         </div>
       </div>

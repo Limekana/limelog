@@ -34,8 +34,8 @@ export function Layout() {
         <NavLink
           to="/profile"
           className={({ isActive }) => `app-avatar${isActive ? ' app-avatar--active' : ''}`}
-          aria-label="Profile & settings"
-          title="Profile & settings"
+          aria-label={t('nav.profileSettings')}
+          title={t('nav.profileSettings')}
         >
           {profileInitials(name)}
         </NavLink>

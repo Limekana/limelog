@@ -53,7 +53,8 @@
     "program": "Programa",
     "library": "Biblioteca",
     "progress": "Progresso",
-    "body": "Corpo"
+    "body": "Corpo",
+    "profileSettings": "Perfil e definições"
   },
   "workout": {
     "workout": "Treino",
@@ -97,7 +98,31 @@
     "noOrmTitle": "Ainda sem dados de 1RM",
     "noOrmBody": "Conclua um treino com carga × repetições registradas para ver a tendência estimada de 1RM.",
     "noHistoryTitle": "Nenhum treino concluído",
-    "noHistoryBody": "Termine um treino para vê-lo aqui."
+    "noHistoryBody": "Termine um treino para vê-lo aqui.",
+    "readyToProgress": "Pronto para progredir",
+    "applyFinish": "Aplicar e terminar",
+    "sessionFatigue": "Fadiga da sessão",
+    "newPr": "Novo recorde pessoal",
+    "nice": "Boa",
+    "loadTrend": "Gráfico de tendência de carga",
+    "ormTrend": "Tendência do 1RM estimado",
+    "needTwo": "Registe pelo menos 2 sessões para ver uma tendência.",
+    "weightUpBody": "Atingiu o topo do intervalo de repetições em todas as séries dos exercícios abaixo. Confirme que a técnica esteve sólida para aplicar o aumento de carga.",
+    "fatigueRating": "Fadiga {{n}}",
+    "newPrTitle_one": "Novo recorde pessoal",
+    "newPrTitle_other": "{{count}} novos recordes pessoais",
+    "newPrTitle_many": "{{count}} novos recordes pessoais",
+    "repsOnly_one": "{{count}} rep",
+    "repsOnly_other": "{{count}} reps",
+    "repsOnly_many": "{{count}} reps",
+    "stallFlags": "Sinais de estagnação",
+    "selectExercise": "Selecionar exercício",
+    "selectExerciseOrm": "Selecionar exercício para a tendência de 1RM",
+    "strengthRatio": "Rácio força/peso corporal",
+    "logJump": "Registar salto",
+    "logFirstJump": "Registar o primeiro salto",
+    "noJumpsTitle": "Sem saltos registados",
+    "noJumpsBody": "Acompanhe o seu salto vertical para monitorizar a evolução atlética."
   },
   "today": {
     "noProgramTitle": "Nenhum programa ativo",
@@ -182,7 +207,10 @@
     "photoOverwrite": "Já existe uma foto salva para esta data — capturar vai substituí-la.",
     "noPhotos": "Nenhuma foto salva ainda. Elas ficam só neste aparelho — nunca são enviadas.",
     "deleteEntryConfirm": "Excluir entrada de {{date}}?",
-    "deletePhotoConfirm": "Excluir foto de {{date}}?"
+    "deletePhotoConfirm": "Excluir foto de {{date}}?",
+    "unitSystem": "Sistema de unidades",
+    "weightChart": "Gráfico de tendência do peso",
+    "weightChartAvg": "Tendência do peso com média móvel de 7 dias"
   },
   "profile": {
     "title": "Perfil",
@@ -224,7 +252,26 @@
     "sets": "Séries",
     "targetKg": "Meta kg",
     "restSecs": "Descanso (s)",
-    "repsPlaceholder": "ex.: 6–8"
+    "repsPlaceholder": "ex.: 6–8",
+    "restingEyebrow": "A descansar",
+    "restTimer": "Temporizador de descanso",
+    "startRest": "Iniciar",
+    "startRestAria": "Iniciar descanso de {{secs}} segundos",
+    "skipRest": "Ignorar descanso",
+    "addSeconds": "Adicionar 15 segundos",
+    "subSeconds": "Retirar 15 segundos",
+    "finishWorkout": "Terminar treino",
+    "discardWorkout": "Descartar treino",
+    "missing": "Este treino já não existe.",
+    "noHistoryYet": "Primeira vez — ainda sem histórico",
+    "colRpe": "RPE",
+    "colDone": "Feito",
+    "colReps2": "Reps",
+    "setDone": "Série {{n}} feita",
+    "markSetDone": "Marcar série {{n}} como feita",
+    "deleteSetN": "Eliminar série {{n}}",
+    "currentPr": "Recorde pessoal atual",
+    "setsProgress": "{{done}}/{{total}} séries"
   },
   "program": {
     "title": "Programas",
@@ -327,6 +374,41 @@
     "sessionTitle": "Treino de {{day}}"
   },
   "health": {
-    "stepsWeekLabel": "Passos dos últimos 7 dias"
+    "stepsWeekLabel": "Passos dos últimos 7 dias",
+    "activity": "Atividade",
+    "connect": "Ligar o Health Connect",
+    "connectPrompt": "Ligue o Health Connect para passos e calorias",
+    "connectBody": "Ligue o Health Connect para ver aqui os seus passos e calorias ativas.",
+    "viaHealthConnect": "via Health Connect",
+    "steps": "passos",
+    "stepsToday": "passos hoje",
+    "kcal": "kcal",
+    "kcalToday": "kcal hoje"
+  },
+  "sync": {
+    "title": "Sincronização Nexus",
+    "connected": "Ligado",
+    "signedInAs": "Sessão iniciada como",
+    "signOut": "Terminar sessão",
+    "autoPush": "Enviar automaticamente ao terminar",
+    "retryNow": "Tentar novamente",
+    "orUseEmail": "ou usar e-mail"
+  },
+  "jump": {
+    "title": "Registar salto vertical",
+    "height": "Altura (cm)",
+    "heightPh": "ex.: 65,5",
+    "condition": "Condições",
+    "notes": "Notas (opcional)",
+    "notesPh": "Superfície, aquecimento, contexto...",
+    "condFresh": "Descansado",
+    "condMorning": "Manhã",
+    "condPost": "Pós-treino"
+  },
+  "debrief": {
+    "title": "Balanço",
+    "placeholder": "Como correu? Anote energia, técnica, desconforto…",
+    "saved": "Guardado",
+    "failed": "Não foi possível analisar — a sua nota foi guardada tal como está."
   }
 }

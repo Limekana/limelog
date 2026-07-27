@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useNavigate, useParams } from 'react-router-dom';
+import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
@@ -76,6 +77,7 @@ function remainingSecs(rest: RestState | null, now: number): number {
 }
 
 export function WorkoutPage() {
+  const { t } = useTranslation();
   const { logId = '' } = useParams();
   const navigate = useNavigate();
   const { activeProgram, exercises, updateSessionExercise } = useProgramStore();
@@ -156,9 +158,9 @@ export function WorkoutPage() {
     return (
       <div className="workout-page workout-page--missing">
         <button className="workout-page__back" onClick={() => navigate('/today')}>
-          <ChevronLeft size={18} /> Back
+          <ChevronLeft size={18} /> {t('common.back')}
         </button>
-        <p className="workout-page__missing-msg">This workout no longer exists.</p>
+        <p className="workout-page__missing-msg">{t('log.missing')}</p>
       </div>
     );
   }
@@ -260,16 +262,16 @@ export function WorkoutPage() {
       {/* Sticky top: rest bar OR session header */}
       <div className="workout-top">
         <div className="workout-top__bar">
-          <button className="workout-top__back" onClick={() => navigate('/today')} aria-label="Back">
+          <button className="workout-top__back" onClick={() => navigate('/today')} aria-label={t('common.back')}>
             <ChevronLeft size={20} />
           </button>
           <div className="workout-top__title">
             <span className="workout-top__session">{session.name}</span>
             <span className="workout-top__progress-text">
-              {completedCount}/{plannedCount} sets
+              {t('log.setsProgress', { done: completedCount, total: plannedCount })}
             </span>
           </div>
-          <button className="workout-top__discard" onClick={handleDiscard} aria-label="Discard workout">
+          <button className="workout-top__discard" onClick={handleDiscard} aria-label={t('log.discardWorkout')}>
             <Trash2 size={16} />
           </button>
         </div>
@@ -290,7 +292,7 @@ export function WorkoutPage() {
             {rest ? (
               <>
                 <div className="rest-bar__label">
-                  <span className="rest-bar__label-eyebrow">Resting</span>
+                  <span className="rest-bar__label-eyebrow">{t('log.restingEyebrow')}</span>
                   <span className="rest-bar__label-ex">{rest.exerciseName}</span>
                 </div>
                 <div className="rest-bar__seconds">
@@ -298,9 +300,9 @@ export function WorkoutPage() {
                   <span className="rest-bar__seconds-unit">s</span>
                 </div>
                 <div className="rest-bar__actions">
-                  <button onClick={() => adjustRest(-15)} aria-label="Subtract 15 seconds">−15</button>
-                  <button onClick={() => adjustRest(15)} aria-label="Add 15 seconds">+15</button>
-                  <button className="rest-bar__skip" onClick={skipRest} aria-label="Skip rest">
+                  <button onClick={() => adjustRest(-15)} aria-label={t('log.subSeconds')}>−15</button>
+                  <button onClick={() => adjustRest(15)} aria-label={t('log.addSeconds')}>+15</button>
+                  <button className="rest-bar__skip" onClick={skipRest} aria-label={t('log.skipRest')}>
                     <X size={16} />
                   </button>
                 </div>
@@ -308,16 +310,16 @@ export function WorkoutPage() {
             ) : (
               <>
                 <div className="rest-bar__label">
-                  <span className="rest-bar__label-eyebrow"><Timer size={11} /> Rest timer</span>
+                  <span className="rest-bar__label-eyebrow"><Timer size={11} /> {t('log.restTimer')}</span>
                   <span className="rest-bar__label-ex">{idleRestLabel} · {idleRestSecs}s</span>
                 </div>
                 <button
                   className="rest-bar__start"
                   onClick={() => startRest(idleRestSecs, idleRestLabel)}
-                  aria-label={`Start ${idleRestSecs} second rest`}
+                  aria-label={t('log.startRestAria', { secs: idleRestSecs })}
                 >
                   <Play size={14} />
-                  <span>Start</span>
+                  <span>{t('log.startRest')}</span>
                 </button>
               </>
             )}
@@ -384,7 +386,7 @@ export function WorkoutPage() {
 
           <button className="workout-finish-btn" onClick={handleFinish}>
             <Flag size={16} />
-            <span>Finish workout</span>
+            <span>{t('log.finishWorkout')}</span>
           </button>
         </div>
       </div>
@@ -444,6 +446,7 @@ function ExerciseSection({
   onDeleteSet,
   onCompleteSet,
 }: ExerciseSectionProps) {
+  const { t } = useTranslation();
   const [override, setOverride] = useState(false);
   const restricted = isRestrictedAvoid && !override;
 
@@ -465,11 +468,11 @@ function ExerciseSection({
           <h2 className="ex-section__name">{exerciseName}</h2>
           <div className="ex-section__meta">
             <span><strong>{targetSetsCount}</strong>×{targetReps}</span>
-            {targetRpe !== undefined && <span>RPE {targetRpe}</span>}
+            {targetRpe !== undefined && <span>{t('log.colRpe')} {targetRpe}</span>}
             {targetWeight !== undefined && <span>{formatWeight(targetWeight, unit)}</span>}
             {restSeconds !== undefined && <span>{restSeconds}s rest</span>}
             {pr && (
-              <span className="ex-section__pr" title="Current personal record">
+              <span className="ex-section__pr" title={t('log.currentPr')}>
                 PR {formatWeight(pr.weightKg, unit)}×{pr.reps}
               </span>
             )}
@@ -486,7 +489,7 @@ function ExerciseSection({
         <div className={`ex-section__flag${restriction.severity === 'avoid' ? ' ex-section__flag--avoid' : ' ex-section__flag--warn'}`}>
           <span>{restriction.label} — {restriction.severity === 'avoid' ? 'flagged as avoid' : 'modify load/range'}</span>
           {restriction.severity === 'avoid' && !override && (
-            <button onClick={() => setOverride(true)}>Override</button>
+            <button onClick={() => setOverride(true)}>{t('log.override')}</button>
           )}
         </div>
       )}
@@ -508,14 +511,14 @@ function ExerciseSection({
               </div>
             </div>
           ) : (
-            <div className="ex-section__last ex-section__last--empty">First time — no history yet</div>
+            <div className="ex-section__last ex-section__last--empty">{t('log.noHistoryYet')}</div>
           )}
 
           <div className="ex-section__set-grid ex-section__set-grid--head">
-            <span>Done</span>
+            <span>{t('log.colDone')}</span>
             <span>{unit}</span>
-            <span>Reps</span>
-            <span>RPE</span>
+            <span>{t('log.colReps2')}</span>
+            <span>{t('log.colRpe')}</span>
             <span />
           </div>
 
@@ -527,7 +530,7 @@ function ExerciseSection({
               <button
                 className="ex-section__set-check"
                 onClick={() => onCompleteSet(s.id, !s.completed, restSeconds)}
-                aria-label={s.completed ? `Set ${s.setNumber} done` : `Mark set ${s.setNumber} done`}
+                aria-label={s.completed ? t('log.setDone', { n: s.setNumber }) : t('log.markSetDone', { n: s.setNumber })}
               >
                 {s.completed ? '✓' : s.setNumber}
               </button>
@@ -549,7 +552,7 @@ function ExerciseSection({
               <button
                 className="ex-section__set-del"
                 onClick={() => onDeleteSet(s.id)}
-                aria-label={`Delete set ${s.setNumber}`}
+                aria-label={t('log.deleteSetN', { n: s.setNumber })}
               >
                 <Trash2 size={13} />
               </button>
@@ -558,7 +561,7 @@ function ExerciseSection({
 
           <button className="ex-section__add" onClick={addSet}>
             <Plus size={14} />
-            <span>Add set</span>
+            <span>{t('log.addSet')}</span>
           </button>
         </div>
       )}

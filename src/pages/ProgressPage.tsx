@@ -71,7 +71,7 @@ export function ProgressPage() {
         <>
           {activeStalls.length > 0 && (
             <div className="progress-stalls">
-              <span className="progress-stalls__label">Stall flags</span>
+              <span className="progress-stalls__label">{t('progress.stallFlags')}</span>
               {activeStalls.map((f) => {
                 const ex = exercises.find((e) => e.id === f.exerciseId);
                 return (
@@ -89,7 +89,7 @@ export function ProgressPage() {
           ) : (
             <>
               <select
-                aria-label="Select exercise"
+                aria-label={t('progress.selectExercise')}
                 className="progress-exercise-select"
                 value={selectedExId}
                 onChange={(e) => setSelectedExId(e.target.value)}
@@ -121,7 +121,7 @@ export function ProgressPage() {
           ) : (
             <>
               <select
-                aria-label="Select exercise for 1RM trend"
+                aria-label={t('progress.selectExerciseOrm')}
                 className="progress-exercise-select"
                 value={selectedExId}
                 onChange={(e) => setSelectedExId(e.target.value)}
@@ -158,7 +158,7 @@ export function ProgressPage() {
                           {ratio != null && (
                             <span
                               className="progress-orm-row__ratio"
-                              title="Strength-to-bodyweight ratio"
+                              title={t('progress.strengthRatio')}
                             >
                               {' '}· {ratio.toFixed(2)}× BW
                             </span>
@@ -183,12 +183,12 @@ export function ProgressPage() {
           <div className="progress-jump-header">
             <span className="progress-jump-header__count">{jumpLogs.length} entries</span>
             <Button size="sm" variant="primary" onClick={() => setShowJumpModal(true)}>
-              <Zap size={13} aria-hidden="true" /> Log jump
+              <Zap size={13} aria-hidden="true" /> {t('progress.logJump')}
             </Button>
           </div>
 
           {recentJumps.length === 0 ? (
-            <EmptyState icon={<Zap size={36} />} title="No jumps logged" description="Track your vertical jump to monitor athletic progress." action={<Button variant="primary" onClick={() => setShowJumpModal(true)}>Log first jump</Button>} />
+            <EmptyState icon={<Zap size={36} />} title={t('progress.noJumpsTitle')} description={t('progress.noJumpsBody')} action={<Button variant="primary" onClick={() => setShowJumpModal(true)}>{t('progress.logFirstJump')}</Button>} />
           ) : (
             recentJumps.map((j) => (
               <Card key={j.id} padding="sm">
