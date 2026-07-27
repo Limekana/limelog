@@ -4,15 +4,13 @@ import { useLogStore } from '@/store/logStore';
 import { useProgramStore } from '@/store/programStore';
 import type { ExercisePR } from '@/types/logging';
 import { Trophy, ChevronDown } from 'lucide-react';
+import { toDisplayWeight } from '@/utils/helpers';
 import './PRHistory.css';
 
 interface Props {
   unit: 'kg' | 'lb';
 }
 
-function toDisplay(kg: number, unit: 'kg' | 'lb'): number {
-  return unit === 'lb' ? Math.round(kg * 2.2046 * 10) / 10 : Math.round(kg * 10) / 10;
-}
 
 /**
  * v1.7 — per-exercise Personal Record history.
@@ -64,7 +62,7 @@ export function PRHistory({ unit }: Props) {
 
       {groups.map((g) => {
         const isOpen = expanded === g.exerciseId;
-        const bestDisplay = toDisplay(g.best.oneRepMaxKg, unit);
+        const bestDisplay = toDisplayWeight(g.best.oneRepMaxKg, unit);
         return (
           <div key={g.exerciseId} className={`pr-history__item${isOpen ? ' is-open' : ''}`}>
             <button
@@ -90,11 +88,11 @@ export function PRHistory({ unit }: Props) {
                     <span className="pr-history__detail-date">{p.date}</span>
                     <span className="pr-history__detail-set">
                       {p.weightKg > 0
-                        ? `${toDisplay(p.weightKg, unit)} ${unit} × ${p.reps}`
+                        ? `${toDisplayWeight(p.weightKg, unit)} ${unit} × ${p.reps}`
                         : t('progress.bodyweight')}
                     </span>
                     <span className="pr-history__detail-orm">
-                      {toDisplay(p.oneRepMaxKg, unit)} {unit}
+                      {toDisplayWeight(p.oneRepMaxKg, unit)} {unit}
                     </span>
                   </div>
                 ))}
@@ -113,7 +111,7 @@ function PRSparkline({ prs, unit }: { prs: ExercisePR[]; unit: 'kg' | 'lb' }) {
   const W = 64;
   const H = 24;
   const pad = 3;
-  const values = prs.map((p) => toDisplay(p.oneRepMaxKg, unit));
+  const values = prs.map((p) => toDisplayWeight(p.oneRepMaxKg, unit));
   const max = Math.max(...values);
   const min = Math.min(...values);
   const range = max - min || 1;

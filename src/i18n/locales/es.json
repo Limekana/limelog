@@ -122,7 +122,9 @@
       "thu": "Jueves",
       "fri": "Viernes",
       "sat": "Sábado"
-    }
+    },
+    "topE1rm": "Mejor e1RM",
+    "e1rmTitle": "Mejor 1RM estimado según tus registros"
   },
   "settings": {
     "language": "Idioma"

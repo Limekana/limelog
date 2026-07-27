@@ -122,7 +122,9 @@
       "thu": "Thursday",
       "fri": "Friday",
       "sat": "Saturday"
-    }
+    },
+    "topE1rm": "Top e1RM",
+    "e1rmTitle": "Best estimated 1RM from your logs"
   },
   "settings": {
     "language": "Language"

@@ -122,7 +122,9 @@
       "thu": "星期四",
       "fri": "星期五",
       "sat": "星期六"
-    }
+    },
+    "topE1rm": "最佳 e1RM",
+    "e1rmTitle": "根据你的训练记录估算的最佳 1RM"
   },
   "settings": {
     "language": "语言"

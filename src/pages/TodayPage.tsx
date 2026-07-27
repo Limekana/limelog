@@ -3,8 +3,9 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
+import { useUserStore } from '@/store/userStore';
 import type { SessionTemplate } from '@/types/program';
-import { getDayOfWeek } from '@/utils/helpers';
+import { getDayOfWeek, formatWeight } from '@/utils/helpers';
 import { bestEstimateForExercise, missedRepRatio } from '@/utils/oneRepMax';
 import { EmptyState, Button, Badge } from '@/components/ui';
 import { Dumbbell, AlertTriangle, CheckCircle2, TrendingUp, ChevronRight } from 'lucide-react';
@@ -25,6 +26,7 @@ export function TodayPage() {
   const navigate = useNavigate();
   const { activeProgram, exercises, advancePhase } = useProgramStore();
   const { sessionLogs, startSession, unfinalizeSession, discardSession, stallFlags } = useLogStore();
+  const unit = useUserStore((s) => s.profile.unitPreference);
 
   const now = new Date();
   const today = getDayOfWeek();
@@ -226,9 +228,9 @@ export function TodayPage() {
                     {t('today.exercises', { count: session.exercises.length, sets: plannedCount })}
                   </span>
                   {firstExBest != null && firstExName && (
-                    <span className="today-session__orm" title="Best estimated 1RM from your logs">
+                    <span className="today-session__orm" title={t('today.e1rmTitle')}>
                       <TrendingUp size={11} aria-hidden="true" />
-                      {' '}Top e1RM · {firstExName}: {Math.round(firstExBest * 10) / 10} kg
+                      {' '}{t('today.topE1rm')} · {firstExName}: {formatWeight(firstExBest, unit)}
                     </span>
                   )}
                 </div>

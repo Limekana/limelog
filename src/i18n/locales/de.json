@@ -122,7 +122,9 @@
       "thu": "Donnerstag",
       "fri": "Freitag",
       "sat": "Samstag"
-    }
+    },
+    "topE1rm": "Bester e1RM",
+    "e1rmTitle": "Bester geschätzter 1RM aus deinen Einträgen"
   },
   "settings": {
     "language": "Sprache"

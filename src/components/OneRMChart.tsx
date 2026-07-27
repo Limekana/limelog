@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import type { SessionLog } from '@/types/logging';
 import { oneRMHistoryForExercise } from '@/utils/oneRepMax';
+import { toDisplayWeight } from '@/utils/helpers';
 import './LoadChart.css';
 
 interface Props {
@@ -28,15 +29,11 @@ export function OneRMChart({ exerciseId, sessionLogs, unit }: Props) {
     const points = oneRMHistoryForExercise([], sessionLogs, exerciseId).slice(-12);
     return points.map((p) => {
       const d = new Date(p.date);
-      const weight = unit === 'lb'
-        ? Math.round(p.estKg * 2.2046 * 10) / 10
-        : Math.round(p.estKg * 10) / 10;
+      const weight = toDisplayWeight(p.estKg, unit);
       return {
         weight,
         label: `${d.getDate()}/${d.getMonth() + 1}`,
-        setWeight: unit === 'lb'
-          ? Math.round(p.setWeightKg * 2.2046 * 10) / 10
-          : p.setWeightKg,
+        setWeight: toDisplayWeight(p.setWeightKg, unit),
         setReps: p.setReps,
       };
     });

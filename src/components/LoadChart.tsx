@@ -1,6 +1,7 @@
 import { useMemo } from 'react';
 import './LoadChart.css';
 import type { SessionLog } from '@/types/logging';
+import { toDisplayWeight } from '@/utils/helpers';
 
 interface Props {
   exerciseId: string;
@@ -22,11 +23,7 @@ export function LoadChart({ exerciseId, sessionLogs, unit }: Props) {
       .map((l) => {
         const weights = l.sets
           .filter((s) => s.exerciseId === exerciseId && s.weightKg !== null)
-          .map((s) =>
-            unit === 'lb'
-              ? Math.round(s.weightKg! * 2.2046 * 10) / 10
-              : s.weightKg!
-          );
+          .map((s) => toDisplayWeight(s.weightKg!, unit));
         const top = Math.max(...weights);
         const d = new Date(l.loggedAt);
         return { topWeight: top, label: `${d.getDate()}/${d.getMonth() + 1}` };

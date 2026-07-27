@@ -1,3 +1,5 @@
+import { kgToLb } from '@/types/bodyMetrics';
+
 export function generateId(): string {
   return crypto.randomUUID();
 }
@@ -6,17 +8,20 @@ export function cn(...classes: (string | undefined | null | false)[]): string {
   return classes.filter(Boolean).join(' ');
 }
 
-export function kgToLb(kg: number): number {
-  return Math.round(kg * 2.2046 * 10) / 10;
+// Lift weights. The conversion itself lives in types/bodyMetrics.ts. This
+// module used to carry its own kgToLb/lbToKg on a truncated 2.2046 that also
+// rounded *inside* the conversion, so lbToKg(kgToLb(x)) !== x. Rounding belongs
+// at the display boundary, once — and only one constant should exist.
+
+/** A lift weight in the user's chosen unit, rounded for display.
+ *  For call sites that render their own unit label (charts, table rows). */
+export function toDisplayWeight(kg: number, unit: 'kg' | 'lb'): number {
+  return Math.round((unit === 'lb' ? kgToLb(kg) : kg) * 10) / 10;
 }
 
-export function lbToKg(lb: number): number {
-  return Math.round((lb / 2.2046) * 10) / 10;
-}
-
+/** A lift weight in the user's chosen unit, with the unit label. */
 export function formatWeight(kg: number, unit: 'kg' | 'lb'): string {
-  if (unit === 'lb') return `${kgToLb(kg)} lb`;
-  return `${kg} kg`;
+  return `${toDisplayWeight(kg, unit)} ${unit}`;
 }
 
 export function formatDate(iso: string): string {

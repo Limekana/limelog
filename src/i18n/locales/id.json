@@ -121,7 +121,9 @@
       "thu": "Kamis",
       "fri": "Jumat",
       "sat": "Sabtu"
-    }
+    },
+    "topE1rm": "e1RM terbaik",
+    "e1rmTitle": "Estimasi 1RM terbaik dari catatan latihanmu"
   },
   "settings": {
     "language": "Bahasa"

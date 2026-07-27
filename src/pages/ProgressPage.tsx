@@ -4,7 +4,7 @@ import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
-import { formatDate } from '@/utils/helpers';
+import { formatDate, toDisplayWeight } from '@/utils/helpers';
 import { EmptyState, Card, Button, Tabs, TabPanel } from '@/components/ui';
 import { JumpLogModal } from '@/components/JumpLogModal';
 import { LoadChart } from '@/components/LoadChart';
@@ -145,9 +145,7 @@ export function ProgressPage() {
                   .sort((a, b) => (b.best ?? 0) - (a.best ?? 0))
                   .slice(0, 10)
                   .map((row) => {
-                    const display = unit === 'lb'
-                      ? Math.round((row.best ?? 0) * 2.2046 * 10) / 10
-                      : Math.round((row.best ?? 0) * 10) / 10;
+                    const display = toDisplayWeight(row.best ?? 0, unit);
                     // v1.2 — strength-to-bodyweight ratio (best 1RM / latest
                     // logged weight). Only rendered when the user has weight
                     // entries; staying quiet for weight-only-1RM users.

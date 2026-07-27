@@ -122,7 +122,9 @@
       "thu": "Torstai",
       "fri": "Perjantai",
       "sat": "Lauantai"
-    }
+    },
+    "topE1rm": "Paras e1RM",
+    "e1rmTitle": "Paras arvioitu 1RM harjoitusmerkinnöistäsi"
   },
   "settings": {
     "language": "Kieli"
