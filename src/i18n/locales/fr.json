@@ -317,5 +317,11 @@
     "targetKg": "Objectif kg",
     "restSecs": "Repos (s)",
     "repsPlaceholder": "p. ex. 6–8"
+  },
+  "notif": {
+    "sessionTitle": "Séance du {{day}}"
+  },
+  "health": {
+    "stepsWeekLabel": "Pas sur les 7 derniers jours"
   }
 }

@@ -317,5 +317,11 @@
     "targetKg": "目标 kg",
     "restSecs": "休息 (秒)",
     "repsPlaceholder": "如 6–8"
+  },
+  "notif": {
+    "sessionTitle": "{{day}}的训练"
+  },
+  "health": {
+    "stepsWeekLabel": "最近 7 天的步数"
   }
 }

@@ -322,5 +322,11 @@
       "kettlebell": "Kettlebell",
       "other": "Outro"
     }
+  },
+  "notif": {
+    "sessionTitle": "Treino de {{day}}"
+  },
+  "health": {
+    "stepsWeekLabel": "Passos dos últimos 7 dias"
   }
 }

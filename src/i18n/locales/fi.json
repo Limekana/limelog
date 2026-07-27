@@ -317,5 +317,11 @@
     "targetKg": "Tavoite kg",
     "restSecs": "Lepo (s)",
     "repsPlaceholder": "esim. 6–8"
+  },
+  "notif": {
+    "sessionTitle": "{{day}}n treeni"
+  },
+  "health": {
+    "stepsWeekLabel": "Askeleet viimeisen 7 päivän ajalta"
   }
 }

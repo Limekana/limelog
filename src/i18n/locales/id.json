@@ -312,5 +312,11 @@
       "kettlebell": "Kettlebell",
       "other": "Lainnya"
     }
+  },
+  "notif": {
+    "sessionTitle": "Latihan {{day}}"
+  },
+  "health": {
+    "stepsWeekLabel": "Langkah selama 7 hari terakhir"
   }
 }

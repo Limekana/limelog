@@ -317,5 +317,11 @@
       "kettlebell": "केटलबेल",
       "other": "अन्य"
     }
+  },
+  "notif": {
+    "sessionTitle": "{{day}} का सत्र"
+  },
+  "health": {
+    "stepsWeekLabel": "पिछले 7 दिनों के कदम"
   }
 }

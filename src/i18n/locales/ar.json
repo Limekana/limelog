@@ -337,5 +337,11 @@
       "kettlebell": "كيتل بيل",
       "other": "أخرى"
     }
+  },
+  "notif": {
+    "sessionTitle": "تمرين {{day}}"
+  },
+  "health": {
+    "stepsWeekLabel": "الخطوات خلال آخر 7 أيام"
   }
 }

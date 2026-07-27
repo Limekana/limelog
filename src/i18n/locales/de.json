@@ -317,5 +317,11 @@
     "targetKg": "Ziel kg",
     "restSecs": "Pause (s)",
     "repsPlaceholder": "z. B. 6–8"
+  },
+  "notif": {
+    "sessionTitle": "Training am {{day}}"
+  },
+  "health": {
+    "stepsWeekLabel": "Schritte der letzten 7 Tage"
   }
 }

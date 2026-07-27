@@ -10,6 +10,7 @@
 // the surfaces render nothing, so the feature is invisible rather than broken.
 
 import { useCallback, useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Footprints, Flame } from 'lucide-react';
 import { Card, Button } from '@/components/ui';
 import {
@@ -20,6 +21,7 @@ import {
   readTodayActiveCalories,
   readWeeklySteps,
 } from '@/utils/healthConnect';
+import { weekdayNames } from '@/utils/helpers';
 import './HealthConnect.css';
 
 type HCStatus = 'loading' | 'unavailable' | 'needsPermission' | 'ready';
@@ -148,18 +150,25 @@ function Metric({
   );
 }
 
-const DAY_LABELS = ['M', 'T', 'W', 'T', 'F', 'S', 'S'];
+// Monday-first, matching readWeeklySteps()'s Monday → Sunday buckets.
+// weekdayNames() is Sunday-indexed, so rotate Sunday to the end.
+function dayLabels(): string[] {
+  const narrow = weekdayNames('narrow');
+  return [...narrow.slice(1), narrow[0]];
+}
 
 function StepBars({ week }: { week: number[] }) {
+  const { t } = useTranslation();
   const max = Math.max(1, ...week);
+  const labels = dayLabels();
   return (
-    <div className="hc-bars" role="img" aria-label="Steps over the last 7 days">
+    <div className="hc-bars" role="img" aria-label={t('health.stepsWeekLabel')}>
       {week.map((v, i) => (
         <div key={i} className="hc-bars__col">
           <div className="hc-bars__track">
             <div className="hc-bars__fill" style={{ height: `${(v / max) * 100}%` }} />
           </div>
-          <span className="hc-bars__label">{DAY_LABELS[i]}</span>
+          <span className="hc-bars__label">{labels[i]}</span>
         </div>
       ))}
     </div>

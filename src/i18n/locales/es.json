@@ -317,5 +317,11 @@
     "targetKg": "Objetivo kg",
     "restSecs": "Descanso (s)",
     "repsPlaceholder": "p. ej. 6–8"
+  },
+  "notif": {
+    "sessionTitle": "Sesión del {{day}}"
+  },
+  "health": {
+    "stepsWeekLabel": "Pasos de los últimos 7 días"
   }
 }
