@@ -54,7 +54,7 @@
     "library": "Biblioteca",
     "progress": "Progresso",
     "body": "Corpo",
-    "profileSettings": "Perfil e definições"
+    "profileSettings": "Perfil e configurações"
   },
   "workout": {
     "workout": "Treino",
@@ -107,7 +107,7 @@
     "loadTrend": "Gráfico de tendência de carga",
     "ormTrend": "Tendência do 1RM estimado",
     "needTwo": "Registe pelo menos 2 sessões para ver uma tendência.",
-    "weightUpBody": "Atingiu o topo do intervalo de repetições em todas as séries dos exercícios abaixo. Confirme que a técnica esteve sólida para aplicar o aumento de carga.",
+    "weightUpBody": "Você atingiu o topo da faixa de repetições em todas as séries dos exercícios abaixo. Confirme que a técnica estava sólida para aplicar o aumento de carga.",
     "fatigueRating": "Fadiga {{n}}",
     "newPrTitle_one": "Novo recorde pessoal",
     "newPrTitle_other": "{{count}} novos recordes pessoais",
@@ -119,10 +119,10 @@
     "selectExercise": "Selecionar exercício",
     "selectExerciseOrm": "Selecionar exercício para a tendência de 1RM",
     "strengthRatio": "Rácio força/peso corporal",
-    "logJump": "Registar salto",
-    "logFirstJump": "Registar o primeiro salto",
-    "noJumpsTitle": "Sem saltos registados",
-    "noJumpsBody": "Acompanhe o seu salto vertical para monitorizar a evolução atlética."
+    "logJump": "Registrar salto",
+    "logFirstJump": "Registrar o primeiro salto",
+    "noJumpsTitle": "Nenhum salto registrado",
+    "noJumpsBody": "Acompanhe seu salto vertical para monitorar sua evolução atlética."
   },
   "today": {
     "noProgramTitle": "Nenhum programa ativo",
@@ -150,7 +150,7 @@
       "sat": "Sábado"
     },
     "topE1rm": "Melhor e1RM",
-    "e1rmTitle": "Melhor 1RM estimado a partir dos seus registos"
+    "e1rmTitle": "Melhor 1RM estimado com base nos seus registros"
   },
   "settings": {
     "language": "Idioma"
@@ -253,7 +253,7 @@
     "targetKg": "Meta kg",
     "restSecs": "Descanso (s)",
     "repsPlaceholder": "ex.: 6–8",
-    "restingEyebrow": "A descansar",
+    "restingEyebrow": "Descansando",
     "restTimer": "Temporizador de descanso",
     "startRest": "Iniciar",
     "startRestAria": "Iniciar descanso de {{secs}} segundos",
@@ -376,9 +376,9 @@
   "health": {
     "stepsWeekLabel": "Passos dos últimos 7 dias",
     "activity": "Atividade",
-    "connect": "Ligar o Health Connect",
-    "connectPrompt": "Ligue o Health Connect para passos e calorias",
-    "connectBody": "Ligue o Health Connect para ver aqui os seus passos e calorias ativas.",
+    "connect": "Conectar o Health Connect",
+    "connectPrompt": "Conecte o Health Connect para passos e calorias",
+    "connectBody": "Conecte o Health Connect para ver aqui seus passos e calorias ativas.",
     "viaHealthConnect": "via Health Connect",
     "steps": "passos",
     "stepsToday": "passos hoje",
@@ -389,13 +389,13 @@
     "title": "Sincronização Nexus",
     "connected": "Ligado",
     "signedInAs": "Sessão iniciada como",
-    "signOut": "Terminar sessão",
-    "autoPush": "Enviar automaticamente ao terminar",
+    "signOut": "Sair",
+    "autoPush": "Enviar automaticamente ao finalizar",
     "retryNow": "Tentar novamente",
     "orUseEmail": "ou usar e-mail"
   },
   "jump": {
-    "title": "Registar salto vertical",
+    "title": "Registrar salto vertical",
     "height": "Altura (cm)",
     "heightPh": "ex.: 65,5",
     "condition": "Condições",
@@ -407,8 +407,8 @@
   },
   "debrief": {
     "title": "Balanço",
-    "placeholder": "Como correu? Anote energia, técnica, desconforto…",
-    "saved": "Guardado",
-    "failed": "Não foi possível analisar — a sua nota foi guardada tal como está."
+    "placeholder": "Como foi? Anote energia, técnica, qualquer desconforto…",
+    "saved": "Salvo",
+    "failed": "Não foi possível analisar — sua anotação foi salva como está."
   }
 }

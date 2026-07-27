@@ -11,4 +11,4 @@ LimeLog 是一款周期化的力量训练记录工具。
 
 本地优先；可选的账户云同步。无 Google Play 服务，无 Firebase —— Google 登录采用普通的网页 OAuth 流程。
 
-属于 Limecore Nexus 套件。提供英语、芬兰语、法语、德语、西班牙语和中文。
+属于 Limecore Nexus 套件。提供英语、芬兰语、法语、德语、西班牙语、中文、印地语、葡萄牙语、印尼语和阿拉伯语。
