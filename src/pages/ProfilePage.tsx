@@ -157,6 +157,10 @@ export function ProfilePage() {
                 ))}
               </div>
             </div>
+            {/* Free-tier disclosure — informed consent belongs at the switch. */}
+            <div className="settings-field__sublabel settings-ai-note">
+              {t('settings.aiTrainingNote')}
+            </div>
             <a
               className="settings-field__sublabel settings-privacy-link"
               href="https://limekana.github.io/nexus-command-center/legal/privacy.html"

@@ -156,6 +156,7 @@
     "aiOff": "Aus",
     "aiFeaturesOnSub": "KI-Nachbesprechung an — die Notiz nach dem Training wird an Google Gemini gesendet.",
     "aiFeaturesOffSub": "KI-Nachbesprechung aus — es wird nichts an Google gesendet. Bewerte die Ermüdung oben mit den Punkten.",
+    "aiTrainingNote": "Google betreibt das über den kostenlosen Tarif — was du sendest, kann zum Training künftiger Modelle verwendet werden. Lass es aus, wenn das nichts für dich ist.",
     "privacyPolicy": "Datenschutzerklärung"
   },
   "body": {

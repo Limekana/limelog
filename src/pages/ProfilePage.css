@@ -137,3 +137,8 @@
   color: var(--accent, var(--text-secondary));
   text-decoration: none;
 }
+.settings-ai-note {
+  display: block;
+  margin-top: 12px;
+  line-height: 1.5;
+}
