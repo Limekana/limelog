@@ -382,7 +382,9 @@ export function WorkoutPage() {
             onChange={(v) => setPerceivedFatigue(log.id, v)}
           />
 
-          <DebriefSection logId={log.id} />
+          {/* Opt-in only. FatigueRating above stays as the always-available
+              way to record how the session went. */}
+          {profile.aiEnabled && <DebriefSection logId={log.id} />}
 
           <button className="workout-finish-btn" onClick={handleFinish}>
             <Flag size={16} />

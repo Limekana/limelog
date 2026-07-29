@@ -150,7 +150,13 @@
     "e1rmTitle": "Bester geschätzter 1RM aus deinen Einträgen"
   },
   "settings": {
-    "language": "Sprache"
+    "language": "Sprache",
+    "privacy": "Datenschutz & KI",
+    "aiOn": "An",
+    "aiOff": "Aus",
+    "aiFeaturesOnSub": "KI-Nachbesprechung an — die Notiz nach dem Training wird an Google Gemini gesendet.",
+    "aiFeaturesOffSub": "KI-Nachbesprechung aus — es wird nichts an Google gesendet. Bewerte die Ermüdung oben mit den Punkten.",
+    "privacyPolicy": "Datenschutzerklärung"
   },
   "body": {
     "title": "Körper",

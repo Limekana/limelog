@@ -150,7 +150,13 @@
     "e1rmTitle": "Paras arvioitu 1RM harjoitusmerkinnöistäsi"
   },
   "settings": {
-    "language": "Kieli"
+    "language": "Kieli",
+    "privacy": "Tietosuoja ja tekoäly",
+    "aiOn": "Päällä",
+    "aiOff": "Pois",
+    "aiFeaturesOnSub": "Tekoälykooste päällä — treenin jälkeen kirjoittamasi muistiinpano lähetetään Google Geminille.",
+    "aiFeaturesOffSub": "Tekoälykooste pois — Googlelle ei lähetetä mitään. Arvioi väsymys yllä olevilla pisteillä.",
+    "privacyPolicy": "Tietosuojaseloste"
   },
   "body": {
     "title": "Keho",

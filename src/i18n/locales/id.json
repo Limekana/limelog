@@ -147,7 +147,13 @@
     "e1rmTitle": "Estimasi 1RM terbaik dari catatan latihanmu"
   },
   "settings": {
-    "language": "Bahasa"
+    "language": "Bahasa",
+    "privacy": "Privasi & AI",
+    "aiOn": "Aktif",
+    "aiOff": "Nonaktif",
+    "aiFeaturesOnSub": "Rangkuman AI aktif — catatan yang Anda tulis setelah latihan dikirim ke Google Gemini.",
+    "aiFeaturesOffSub": "Rangkuman AI nonaktif — tidak ada yang dikirim ke Google. Nilai kelelahan dengan titik di atas.",
+    "privacyPolicy": "Kebijakan privasi"
   },
   "injury": {
     "newRestriction": "Batasan baru",

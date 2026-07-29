@@ -150,7 +150,13 @@
     "e1rmTitle": "आपके रिकॉर्ड से अनुमानित सर्वश्रेष्ठ 1RM"
   },
   "settings": {
-    "language": "भाषा"
+    "language": "भाषा",
+    "privacy": "गोपनीयता और AI",
+    "aiOn": "चालू",
+    "aiOff": "बंद",
+    "aiFeaturesOnSub": "AI डीब्रीफ़ चालू — वर्कआउट के बाद लिखा गया आपका नोट Google Gemini को भेजा जाता है।",
+    "aiFeaturesOffSub": "AI डीब्रीफ़ बंद — Google को कुछ नहीं भेजा जाता। ऊपर दिए बिंदुओं से थकान आँकें।",
+    "privacyPolicy": "गोपनीयता नीति"
   },
   "injury": {
     "newRestriction": "नई पाबंदी",

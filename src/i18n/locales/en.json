@@ -150,7 +150,13 @@
     "e1rmTitle": "Best estimated 1RM from your logs"
   },
   "settings": {
-    "language": "Language"
+    "language": "Language",
+    "privacy": "Privacy & AI",
+    "aiOn": "On",
+    "aiOff": "Off",
+    "aiFeaturesOnSub": "AI debrief on — the note you type after a workout is sent to Google Gemini.",
+    "aiFeaturesOffSub": "AI debrief off — nothing is sent to Google. Rate fatigue with the dots above.",
+    "privacyPolicy": "Privacy policy"
   },
   "body": {
     "title": "Body",

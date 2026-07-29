@@ -13,7 +13,7 @@ import './ProfilePage.css';
 type Tab = 'injuries' | 'exercises' | 'settings';
 
 export function ProfilePage() {
-  const { profile, setName, setUnit, resolveRestriction, removeRestriction, updateDeloadThresholds } = useUserStore();
+  const { profile, setName, setUnit, setAiEnabled, resolveRestriction, removeRestriction, updateDeloadThresholds } = useUserStore();
   const { t, i18n } = useTranslation();
   const currentLang = (i18n.language || 'en').split('-')[0] as Lang;
   const langRef = useScrollSelectedIntoView<HTMLDivElement>();
@@ -135,6 +135,37 @@ export function ProfilePage() {
           </Card>
 
           <NexusSyncCard />
+
+          {/* Privacy & AI. Off by default — the debrief sends the note you type
+              to Google Gemini, so it stays dark until asked for. */}
+          <Card padding="md">
+            <span className="settings-field__label">{t('settings.privacy')}</span>
+            <div className="settings-field settings-field--mt">
+              <span className="settings-field__sublabel">
+                {profile.aiEnabled ? t('settings.aiFeaturesOnSub') : t('settings.aiFeaturesOffSub')}
+              </span>
+              <div className="settings-toggle">
+                {([false, true] as const).map((on) => (
+                  <button
+                    key={String(on)}
+                    className={`settings-toggle__btn${!!profile.aiEnabled === on ? ' settings-toggle__btn--active' : ''}`}
+                    onClick={() => setAiEnabled(on)}
+                    aria-pressed={!!profile.aiEnabled === on}
+                  >
+                    {on ? t('settings.aiOn') : t('settings.aiOff')}
+                  </button>
+                ))}
+              </div>
+            </div>
+            <a
+              className="settings-field__sublabel settings-privacy-link"
+              href="https://limekana.github.io/nexus-command-center/legal/privacy.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('settings.privacyPolicy')} ›
+            </a>
+          </Card>
 
           <Card padding="md">
             <span className="settings-field__label">{t('settings.language')}</span>

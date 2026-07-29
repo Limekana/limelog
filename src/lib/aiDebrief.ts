@@ -9,6 +9,7 @@
 // remain the always-available fallback.
 
 import { supabase, isNexusConfigured } from './supabase';
+import { useUserStore } from '@/store/userStore';
 import type { SessionMood } from '@/types/logging';
 
 export interface DebriefResult {
@@ -36,6 +37,10 @@ Note: "${userText.slice(0, 400).replace(/"/g, "'")}"`;
  *  failure (not signed in, offline, blocked, unparseable). */
 export async function analyseDebrief(userText: string): Promise<DebriefResult | null> {
   if (!isNexusConfigured) return null;
+  // The opt-in gate, checked here as well as at the call site: this is the one
+  // place the note leaves the device, so a future caller cannot skip the
+  // user's choice by forgetting to check the flag.
+  if (!useUserStore.getState().profile.aiEnabled) return null;
   const text = userText.trim();
   if (!text) return null;
   try {

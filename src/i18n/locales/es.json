@@ -153,7 +153,13 @@
     "exercises_many": "{{count}} ejercicios · {{sets}} series"
   },
   "settings": {
-    "language": "Idioma"
+    "language": "Idioma",
+    "privacy": "Privacidad e IA",
+    "aiOn": "Sí",
+    "aiOff": "No",
+    "aiFeaturesOnSub": "Resumen con IA activado: la nota que escribes tras entrenar se envía a Google Gemini.",
+    "aiFeaturesOffSub": "Resumen con IA desactivado: no se envía nada a Google. Valora la fatiga con los puntos de arriba.",
+    "privacyPolicy": "Política de privacidad"
   },
   "body": {
     "title": "Cuerpo",

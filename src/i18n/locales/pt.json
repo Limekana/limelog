@@ -153,7 +153,13 @@
     "e1rmTitle": "Melhor 1RM estimado com base nos seus registros"
   },
   "settings": {
-    "language": "Idioma"
+    "language": "Idioma",
+    "privacy": "Privacidade e IA",
+    "aiOn": "Ligado",
+    "aiOff": "Desligado",
+    "aiFeaturesOnSub": "Resumo com IA ligado — a nota que você escreve após o treino é enviada ao Google Gemini.",
+    "aiFeaturesOffSub": "Resumo com IA desligado — nada é enviado ao Google. Avalie a fadiga com os pontos acima.",
+    "privacyPolicy": "Política de privacidade"
   },
   "injury": {
     "newRestriction": "Nova restrição",

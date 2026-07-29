@@ -18,6 +18,9 @@ export interface UserProfile {
   id: string;
   name: string;
   unitPreference: 'kg' | 'lb';
+  /** v1.8 — opt-in for the cloud AI debrief. Optional so profiles saved by an
+   *  older build load unchanged; absent is read as off everywhere it is used. */
+  aiEnabled?: boolean;
   activeRestrictions: InjuryRestriction[];
   deloadThresholds: {
     stallCountTrigger: number;

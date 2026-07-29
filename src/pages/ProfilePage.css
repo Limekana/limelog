@@ -128,3 +128,12 @@
   overflow-y: auto;
   overscroll-behavior: contain;
 }
+
+/* Privacy & AI card — link out to the suite policy. Styled as a quiet row
+   rather than a button so it reads as reference, not an action. */
+.settings-privacy-link {
+  display: block;
+  margin-top: 14px;
+  color: var(--accent, var(--text-secondary));
+  text-decoration: none;
+}
