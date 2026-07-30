@@ -149,7 +149,11 @@
       "sat": "Lauantai"
     },
     "topE1rm": "Paras e1RM",
-    "e1rmTitle": "Paras arvioitu 1RM harjoitusmerkinnöistäsi"
+    "e1rmTitle": "Paras arvioitu 1RM harjoitusmerkinnöistäsi",
+    "stallAlert_one": "{{count}} pysähtymismerkintä havaittu — harkitse kevennysjaksoa",
+    "stallAlert_other": "{{count}} pysähtymismerkintää havaittu — harkitse kevennysjaksoa",
+    "deloadAdvance": "{{missed}}/{{total}} sarjaa jäi tavoitteesta kolmen viime treenin aikana — harkitse siirtymistä kevennysjaksoon.",
+    "deloadSchedule": "{{missed}}/{{total}} sarjaa jäi tavoitteesta kolmen viime treenin aikana — harkitse kevennysjakson ajoittamista."
   },
   "settings": {
     "language": "Kieli",
@@ -381,7 +385,8 @@
     "markSetDone": "Merkitse sarja {{n}} tehdyksi",
     "deleteSetN": "Poista sarja {{n}}",
     "currentPr": "Nykyinen ennätys",
-    "setsProgress": "{{done}}/{{total}} sarjaa"
+    "setsProgress": "{{done}}/{{total}} sarjaa",
+    "discardConfirm": "Hylätäänkö tämä treeni? Kaikki kirjatut sarjat menetetään."
   },
   "notif": {
     "sessionTitle": "{{day}}n treeni"
@@ -423,5 +428,8 @@
     "placeholder": "Miltä tuntui? Kirjaa energia, tekniikka, mahdolliset kivut…",
     "saved": "Tallennettu",
     "failed": "Analyysi epäonnistui — muistiinpanosi tallennettiin sellaisenaan."
+  },
+  "chart": {
+    "needMoreSessions": "1RM-trendin arviointiin tarvitaan vähintään 2 treeniä, joissa on paino × toistot."
   }
 }

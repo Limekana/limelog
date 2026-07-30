@@ -44,7 +44,7 @@ export function OneRMChart({ exerciseId, sessionLogs, unit }: Props) {
   if (data.length < 2) {
     return (
       <div className="load-chart load-chart--empty">
-        <p>Need at least 2 sessions with logged weight × reps to estimate 1RM trend.</p>
+        <p>{t('chart.needMoreSessions')}</p>
       </div>
     );
   }

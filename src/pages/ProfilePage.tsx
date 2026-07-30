@@ -8,6 +8,7 @@ import { InjuryForm } from '@/components/InjuryForm';
 import { ExerciseLibrary } from '@/components/ExerciseLibrary';
 import { NexusSyncCard } from '@/components/NexusSyncCard';
 import { ShieldAlert } from 'lucide-react';
+import { useConfirm } from '@/components/confirmContext';
 import { downloadExport, deleteAccount, wipeAllLocalData } from '@/lib/dataRights';
 import { supabase, isNexusConfigured } from '@/lib/supabase';
 import './ProfilePage.css';
@@ -17,6 +18,7 @@ type Tab = 'injuries' | 'exercises' | 'settings';
 export function ProfilePage() {
   const { profile, setName, setUnit, setAiEnabled, resolveRestriction, removeRestriction, updateDeloadThresholds } = useUserStore();
   const { t, i18n } = useTranslation();
+  const confirm = useConfirm();
   const currentLang = (i18n.language || 'en').split('-')[0] as Lang;
   const langRef = useScrollSelectedIntoView<HTMLDivElement>();
   const [tab, setTab] = useState<Tab>('injuries');
@@ -48,8 +50,8 @@ export function ProfilePage() {
   // window, and one account spans all three apps — which the second
   // confirmation says explicitly.
   const onDeleteAccount = async () => {
-    if (!window.confirm(t('settings.deleteAccountConfirm1'))) return;
-    if (!window.confirm(t('settings.deleteAccountConfirm2'))) return;
+    if (!(await confirm({ message: t('settings.deleteAccountConfirm1') }))) return;
+    if (!(await confirm({ message: t('settings.deleteAccountConfirm2') }))) return;
     setDataMsg(null);
     setDeleting(true);
     try {

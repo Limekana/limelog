@@ -149,7 +149,11 @@
       "sat": "Samstag"
     },
     "topE1rm": "Bester e1RM",
-    "e1rmTitle": "Bester geschätzter 1RM aus deinen Einträgen"
+    "e1rmTitle": "Bester geschätzter 1RM aus deinen Einträgen",
+    "stallAlert_one": "{{count}} Stagnations-Hinweis erkannt — Deload erwägen",
+    "stallAlert_other": "{{count}} Stagnations-Hinweise erkannt — Deload erwägen",
+    "deloadAdvance": "{{missed}}/{{total}} Sätze blieben in den letzten 3 Einheiten hinter dem Ziel — erwäge, zur Deload-Phase zu wechseln.",
+    "deloadSchedule": "{{missed}}/{{total}} Sätze blieben in den letzten 3 Einheiten hinter dem Ziel — erwäge, einen Deload einzuplanen."
   },
   "settings": {
     "language": "Sprache",
@@ -381,7 +385,8 @@
     "markSetDone": "Satz {{n}} als erledigt markieren",
     "deleteSetN": "Satz {{n}} löschen",
     "currentPr": "Aktueller persönlicher Rekord",
-    "setsProgress": "{{done}}/{{total}} Sätze"
+    "setsProgress": "{{done}}/{{total}} Sätze",
+    "discardConfirm": "Dieses Training verwerfen? Alle protokollierten Sätze gehen verloren."
   },
   "notif": {
     "sessionTitle": "Training am {{day}}"
@@ -423,5 +428,8 @@
     "placeholder": "Wie war es? Notiere Energie, Technik, Beschwerden…",
     "saved": "Gespeichert",
     "failed": "Analyse fehlgeschlagen — deine Notiz wurde unverändert gespeichert."
+  },
+  "chart": {
+    "needMoreSessions": "Für einen 1RM-Trend braucht es mindestens 2 Einheiten mit Gewicht × Wiederholungen."
   }
 }

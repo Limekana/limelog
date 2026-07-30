@@ -152,7 +152,12 @@
       "sat": "Sábado"
     },
     "topE1rm": "Melhor e1RM",
-    "e1rmTitle": "Melhor 1RM estimado com base nos seus registros"
+    "e1rmTitle": "Melhor 1RM estimado com base nos seus registros",
+    "stallAlert_one": "{{count}} sinal de estagnação detectado — considere um deload",
+    "stallAlert_many": "{{count}} sinais de estagnação detectados — considere um deload",
+    "stallAlert_other": "{{count}} sinais de estagnação detectados — considere um deload",
+    "deloadAdvance": "{{missed}}/{{total}} séries ficaram abaixo do alvo nos seus últimos 3 treinos — considere avançar para uma fase de deload.",
+    "deloadSchedule": "{{missed}}/{{total}} séries ficaram abaixo do alvo nos seus últimos 3 treinos — considere agendar um deload."
   },
   "settings": {
     "language": "Idioma",
@@ -291,7 +296,8 @@
     "markSetDone": "Marcar série {{n}} como feita",
     "deleteSetN": "Eliminar série {{n}}",
     "currentPr": "Recorde pessoal atual",
-    "setsProgress": "{{done}}/{{total}} séries"
+    "setsProgress": "{{done}}/{{total}} séries",
+    "discardConfirm": "Descartar este treino? Todas as séries registradas serão perdidas."
   },
   "program": {
     "title": "Programas",
@@ -430,5 +436,8 @@
     "placeholder": "Como foi? Anote energia, técnica, qualquer desconforto…",
     "saved": "Salvo",
     "failed": "Não foi possível analisar — sua anotação foi salva como está."
+  },
+  "chart": {
+    "needMoreSessions": "São necessárias pelo menos 2 sessões com peso × repetições para estimar a tendência de 1RM."
   }
 }

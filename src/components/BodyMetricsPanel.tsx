@@ -22,6 +22,7 @@ import {
 } from '@capacitor/camera';
 import { Button, Card } from '@/components/ui';
 import { Camera, Trash2 } from 'lucide-react';
+import { useConfirm } from '@/components/confirmContext';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
 import {
   formatLength,
@@ -85,6 +86,7 @@ const EMPTY_FORM: FormState = {
 
 export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } = {}) {
   const { t } = useTranslation();
+  const confirm = useConfirm();
   const metrics = useBodyMetricsStore((s) => s.metrics);
   const prefs = useBodyMetricsStore((s) => s.prefs);
   const addOrUpdate = useBodyMetricsStore((s) => s.addOrUpdate);
@@ -281,8 +283,8 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
 
   const useNativeCapture = Capacitor.isNativePlatform();
 
-  function handlePhotoDelete(p: ProgressPhoto) {
-    if (!confirm(t('body.deletePhotoConfirm', { date: p.date }))) return;
+  async function handlePhotoDelete(p: ProgressPhoto) {
+    if (!(await confirm({ message: t('body.deletePhotoConfirm', { date: p.date }) }))) return;
     deletePhoto(p.date);
     setPhotosNonce((n) => n + 1);
   }
@@ -479,8 +481,10 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
                   type="button"
                   className="body-metrics-list__delete"
                   aria-label={t('body.deleteEntryConfirm', { date: row.date })}
-                  onClick={() => {
-                    if (confirm(t('body.deleteEntryConfirm', { date: row.date }))) remove(row.id);
+                  onClick={async () => {
+                    if (await confirm({ message: t('body.deleteEntryConfirm', { date: row.date }) })) {
+                      remove(row.id);
+                    }
                   }}
                 >
                   <Trash2 size={14} aria-hidden />

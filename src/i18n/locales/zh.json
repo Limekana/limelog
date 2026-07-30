@@ -147,7 +147,10 @@
       "sat": "星期六"
     },
     "topE1rm": "最佳 e1RM",
-    "e1rmTitle": "根据你的训练记录估算的最佳 1RM"
+    "e1rmTitle": "根据你的训练记录估算的最佳 1RM",
+    "stallAlert_other": "检测到 {{count}} 个停滞标记 —— 建议安排减载周",
+    "deloadAdvance": "最近 3 次训练中有 {{missed}}/{{total}} 组未达目标 —— 建议进入减载阶段。",
+    "deloadSchedule": "最近 3 次训练中有 {{missed}}/{{total}} 组未达目标 —— 建议安排一次减载。"
   },
   "settings": {
     "language": "语言",
@@ -379,7 +382,8 @@
     "markSetDone": "将第 {{n}} 组标记为完成",
     "deleteSetN": "删除第 {{n}} 组",
     "currentPr": "当前个人纪录",
-    "setsProgress": "{{done}}/{{total}} 组"
+    "setsProgress": "{{done}}/{{total}} 组",
+    "discardConfirm": "要放弃这次训练吗？所有已记录的组数都会丢失。"
   },
   "notif": {
     "sessionTitle": "{{day}}的训练"
@@ -421,5 +425,8 @@
     "placeholder": "感觉如何？记录状态、动作、任何不适……",
     "saved": "已保存",
     "failed": "无法分析 —— 你的记录已按原样保存。"
+  },
+  "chart": {
+    "needMoreSessions": "至少需要 2 次记录了重量 × 次数的训练，才能估算 1RM 趋势。"
   }
 }

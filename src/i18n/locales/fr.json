@@ -152,7 +152,12 @@
     },
     "topE1rm": "Meilleur e1RM",
     "e1rmTitle": "Meilleur 1RM estimé d'après vos séances",
-    "exercises_many": "{{count}} exercices · {{sets}} séries"
+    "exercises_many": "{{count}} exercices · {{sets}} séries",
+    "stallAlert_one": "{{count}} signe de stagnation détecté — envisagez un deload",
+    "stallAlert_many": "{{count}} signes de stagnation détectés — envisagez un deload",
+    "stallAlert_other": "{{count}} signes de stagnation détectés — envisagez un deload",
+    "deloadAdvance": "{{missed}}/{{total}} séries en dessous de l'objectif sur vos 3 dernières séances — envisagez de passer à une phase de deload.",
+    "deloadSchedule": "{{missed}}/{{total}} séries en dessous de l'objectif sur vos 3 dernières séances — envisagez de programmer un deload."
   },
   "settings": {
     "language": "Langue",
@@ -388,7 +393,8 @@
     "markSetDone": "Marquer la série {{n}} comme faite",
     "deleteSetN": "Supprimer la série {{n}}",
     "currentPr": "Record personnel actuel",
-    "setsProgress": "{{done}}/{{total}} séries"
+    "setsProgress": "{{done}}/{{total}} séries",
+    "discardConfirm": "Abandonner cette séance ? Toutes les séries enregistrées seront perdues."
   },
   "notif": {
     "sessionTitle": "Séance du {{day}}"
@@ -430,5 +436,8 @@
     "placeholder": "Comment c'était ? Notez l'énergie, la technique, les gênes…",
     "saved": "Enregistré",
     "failed": "Analyse impossible — votre note a été enregistrée telle quelle."
+  },
+  "chart": {
+    "needMoreSessions": "Il faut au moins 2 séances avec poids × répétitions pour estimer une tendance de 1RM."
   }
 }

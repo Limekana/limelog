@@ -11,6 +11,7 @@ import type { SetLog, ExercisePR } from '@/types/logging';
 import { WeightUpModal, type QualifyingExercise } from '@/components/WeightUpModal';
 import { FatigueRating } from '@/components/FatigueRating';
 import { DebriefSection } from '@/components/DebriefSection';
+import { useConfirm } from '@/components/confirmContext';
 import { ChevronLeft, Plus, Trash2, X, Flag, Play, Timer } from 'lucide-react';
 import './WorkoutPage.css';
 
@@ -78,6 +79,7 @@ function remainingSecs(rest: RestState | null, now: number): number {
 
 export function WorkoutPage() {
   const { t } = useTranslation();
+  const confirm = useConfirm();
   const { logId = '' } = useParams();
   const navigate = useNavigate();
   const { activeProgram, exercises, updateSessionExercise } = useProgramStore();
@@ -234,12 +236,12 @@ export function WorkoutPage() {
     navigate('/today');
   }
 
-  function handleDiscard() {
-    if (confirm('Discard this workout? All logged sets will be lost.')) {
-      discardSession(log!.id);
-      clearActiveRest();
-      navigate('/today');
-    }
+  async function handleDiscard() {
+    // Was a hardcoded English string in a native confirm() — see TodayPage.
+    if (!(await confirm({ message: t('log.discardConfirm') }))) return;
+    discardSession(log!.id);
+    clearActiveRest();
+    navigate('/today');
   }
 
   function getRestrictionForExercise(exId: string) {

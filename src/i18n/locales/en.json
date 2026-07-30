@@ -149,7 +149,11 @@
       "sat": "Saturday"
     },
     "topE1rm": "Top e1RM",
-    "e1rmTitle": "Best estimated 1RM from your logs"
+    "e1rmTitle": "Best estimated 1RM from your logs",
+    "stallAlert_one": "{{count}} stall flag detected — consider a deload",
+    "stallAlert_other": "{{count}} stall flags detected — consider a deload",
+    "deloadAdvance": "{{missed}}/{{total}} sets fell short over your last 3 sessions — consider advancing to a deload phase.",
+    "deloadSchedule": "{{missed}}/{{total}} sets fell short over your last 3 sessions — consider scheduling a deload."
   },
   "settings": {
     "language": "Language",
@@ -381,7 +385,8 @@
     "markSetDone": "Mark set {{n}} done",
     "deleteSetN": "Delete set {{n}}",
     "currentPr": "Current personal record",
-    "setsProgress": "{{done}}/{{total}} sets"
+    "setsProgress": "{{done}}/{{total}} sets",
+    "discardConfirm": "Discard this workout? All logged sets will be lost."
   },
   "notif": {
     "sessionTitle": "{{day}} session"
@@ -423,5 +428,8 @@
     "placeholder": "How did it feel? Note energy, form, any discomfort…",
     "saved": "Saved",
     "failed": "Couldn't analyse — your note was saved as-is."
+  },
+  "chart": {
+    "needMoreSessions": "Need at least 2 sessions with logged weight × reps to estimate a 1RM trend."
   }
 }
