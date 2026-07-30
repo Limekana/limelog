@@ -8,6 +8,8 @@ import { InjuryForm } from '@/components/InjuryForm';
 import { ExerciseLibrary } from '@/components/ExerciseLibrary';
 import { NexusSyncCard } from '@/components/NexusSyncCard';
 import { ShieldAlert } from 'lucide-react';
+import { downloadExport, deleteAccount, wipeAllLocalData } from '@/lib/dataRights';
+import { supabase, isNexusConfigured } from '@/lib/supabase';
 import './ProfilePage.css';
 
 type Tab = 'injuries' | 'exercises' | 'settings';
@@ -20,6 +22,48 @@ export function ProfilePage() {
   const [tab, setTab] = useState<Tab>('injuries');
   const [showInjuryForm, setShowInjuryForm] = useState(false);
   const [nameVal, setNameVal] = useState(profile.name);
+  const [deleting, setDeleting] = useState(false);
+  const [dataMsg, setDataMsg] = useState<string | null>(null);
+
+  // ── GDPR Art. 20 — portability ──────────────────────────────────────────
+  // Works as a guest too: a guest's training history never left the device,
+  // but it is still their data.
+  const onExport = async () => {
+    setDataMsg(null);
+    try {
+      let account: { id: string; email?: string } | null = null;
+      if (isNexusConfigured) {
+        const { data } = await supabase.auth.getUser();
+        if (data.user) account = { id: data.user.id, email: data.user.email };
+      }
+      const name = downloadExport(account);
+      setDataMsg(t('settings.exportDone', { name }));
+    } catch (e) {
+      setDataMsg(t('settings.exportFailed', { msg: (e as Error).message }));
+    }
+  };
+
+  // ── GDPR Art. 17 — erasure ──────────────────────────────────────────────
+  // Two confirmations, because this is irreversible, there is no recovery
+  // window, and one account spans all three apps — which the second
+  // confirmation says explicitly.
+  const onDeleteAccount = async () => {
+    if (!window.confirm(t('settings.deleteAccountConfirm1'))) return;
+    if (!window.confirm(t('settings.deleteAccountConfirm2'))) return;
+    setDataMsg(null);
+    setDeleting(true);
+    try {
+      await deleteAccount({
+        clearLocal: async () => {
+          wipeAllLocalData();
+        },
+      });
+      window.location.reload();
+    } catch (e) {
+      setDataMsg(t('settings.deleteAccountFailed', { msg: (e as Error).message }));
+      setDeleting(false);
+    }
+  };
 
   const activeRestrictions = profile.activeRestrictions.filter((r) => r.active);
   const resolvedRestrictions = profile.activeRestrictions.filter((r) => !r.active);
@@ -169,6 +213,33 @@ export function ProfilePage() {
             >
               {t('settings.privacyPolicy')} ›
             </a>
+          </Card>
+
+          {/* Your data — GDPR Art. 17 / 20. Buttons rather than a "write to us"
+              address: a right the user has to request is a right most of them
+              never exercise. */}
+          <Card padding="md">
+            <span className="settings-field__label">{t('settings.yourData')}</span>
+            <div className="settings-field__sublabel settings-ai-note">
+              {t('settings.yourDataNote')}
+            </div>
+            <button
+              className="settings-data-btn"
+              onClick={onExport}
+            >
+              {t('settings.exportData')}
+            </button>
+            <button
+              className="settings-data-btn settings-data-btn--danger"
+              onClick={onDeleteAccount}
+              disabled={deleting}
+            >
+              {deleting ? t('settings.deletingAccount') : t('settings.deleteAccount')}
+            </button>
+            <div className="settings-field__sublabel settings-ai-note">
+              {t('settings.deleteAccountNote')}
+            </div>
+            {dataMsg && <div className="settings-data-msg">{dataMsg}</div>}
           </Card>
 
           <Card padding="md">

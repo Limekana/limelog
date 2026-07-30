@@ -157,7 +157,18 @@
     "aiFeaturesOnSub": "AI डीब्रीफ़ चालू — वर्कआउट के बाद लिखा गया आपका नोट Google Gemini को भेजा जाता है।",
     "aiFeaturesOffSub": "AI डीब्रीफ़ बंद — Google को कुछ नहीं भेजा जाता। ऊपर दिए बिंदुओं से थकान आँकें।",
     "aiTrainingNote": "Google इसे अपने मुफ़्त टियर पर चलाता है, इसलिए आप जो भेजते हैं उसका उपयोग उनके भावी मॉडल के प्रशिक्षण में हो सकता है। ठीक न लगे तो इसे बंद रहने दें।",
-    "privacyPolicy": "गोपनीयता नीति"
+    "privacyPolicy": "गोपनीयता नीति",
+    "yourData": "आपका डेटा",
+    "yourDataNote": "सब कुछ की एक प्रति लें, या उसे मिटा दें। एक ही खाता LimeLog, Nexus Command Center और StudyDesk को कवर करता है।",
+    "exportData": "मेरा डेटा निर्यात करें",
+    "exportDone": "{{name}} सहेजा गया",
+    "exportFailed": "निर्यात विफल: {{msg}}",
+    "deleteAccount": "मेरा खाता हटाएँ",
+    "deletingAccount": "हटाया जा रहा है…",
+    "deleteAccountNote": "आपका खाता और उसका सारा डेटा तीनों ऐप्स में तुरंत और स्थायी रूप से मिटा देता है। पुनर्प्राप्ति की कोई अवधि नहीं है।",
+    "deleteAccountConfirm1": "अपना खाता और उसमें मौजूद सब कुछ हटाएँ? यह पूर्ववत नहीं किया जा सकता।",
+    "deleteAccountConfirm2": "अंतिम पुष्टि — इससे आपका Nexus Command Center और StudyDesk डेटा भी मिट जाएगा। जारी रखें?",
+    "deleteAccountFailed": "हटाना विफल: {{msg}}"
   },
   "injury": {
     "newRestriction": "नई पाबंदी",

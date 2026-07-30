@@ -160,7 +160,18 @@
     "aiFeaturesOnSub": "Bilan IA activé — la note que vous écrivez après la séance est envoyée à Google Gemini.",
     "aiFeaturesOffSub": "Bilan IA désactivé — rien n'est envoyé à Google. Évaluez la fatigue avec les points ci-dessus.",
     "aiTrainingNote": "Google l'exécute sur son offre gratuite : ce que vous envoyez peut servir à entraîner ses futurs modèles. Laissez désactivé si cela ne vous convient pas.",
-    "privacyPolicy": "Politique de confidentialité"
+    "privacyPolicy": "Politique de confidentialité",
+    "yourData": "Vos données",
+    "yourDataNote": "Emportez une copie de tout, ou effacez-le. Un seul compte couvre LimeLog, Nexus Command Center et StudyDesk.",
+    "exportData": "Exporter mes données",
+    "exportDone": "{{name}} enregistré",
+    "exportFailed": "Échec de l'export : {{msg}}",
+    "deleteAccount": "Supprimer mon compte",
+    "deletingAccount": "Suppression…",
+    "deleteAccountNote": "Efface votre compte et toutes ses données, dans les trois applications, immédiatement et irréversiblement. Aucun délai de récupération.",
+    "deleteAccountConfirm1": "Supprimer votre compte et tout son contenu ? C'est irréversible.",
+    "deleteAccountConfirm2": "Dernière vérification — cela efface aussi vos données Nexus Command Center et StudyDesk. Continuer ?",
+    "deleteAccountFailed": "Échec de la suppression : {{msg}}"
   },
   "body": {
     "title": "Corps",

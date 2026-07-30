@@ -169,7 +169,18 @@
     "aiFeaturesOnSub": "ملخّص الذكاء الاصطناعي مُفعّل — تُرسل الملاحظة التي تكتبها بعد التمرين إلى Google Gemini.",
     "aiFeaturesOffSub": "ملخّص الذكاء الاصطناعي مُعطّل — لا يُرسل أي شيء إلى Google. قيّم الإرهاق بالنقاط أعلاه.",
     "aiTrainingNote": "تُشغّل Google هذه الميزة ضمن الفئة المجانية، ما يعني أن ما تُرسله قد يُستخدم لتدريب نماذجها المستقبلية. اتركها مُعطّلة إن لم يناسبك ذلك.",
-    "privacyPolicy": "سياسة الخصوصية"
+    "privacyPolicy": "سياسة الخصوصية",
+    "yourData": "بياناتك",
+    "yourDataNote": "خُذ نسخة من كل شيء، أو امحُه. حساب واحد يغطّي Nexus Command Center وLimeLog وStudyDesk.",
+    "exportData": "تصدير بياناتي",
+    "exportDone": "تم حفظ {{name}}",
+    "exportFailed": "فشل التصدير: {{msg}}",
+    "deleteAccount": "حذف حسابي",
+    "deletingAccount": "جارٍ الحذف…",
+    "deleteAccountNote": "يمحو حسابك وكل بياناته في التطبيقات الثلاثة فورًا وبلا رجعة. لا توجد مهلة للاسترجاع.",
+    "deleteAccountConfirm1": "حذف حسابك وكل ما فيه؟ لا يمكن التراجع عن هذا.",
+    "deleteAccountConfirm2": "تأكيد أخير — سيمحو هذا أيضًا بيانات Nexus Command Center وStudyDesk. المتابعة؟",
+    "deleteAccountFailed": "فشل الحذف: {{msg}}"
   },
   "injury": {
     "newRestriction": "قيد جديد",

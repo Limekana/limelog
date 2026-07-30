@@ -157,7 +157,18 @@
     "aiFeaturesOnSub": "KI-Nachbesprechung an — die Notiz nach dem Training wird an Google Gemini gesendet.",
     "aiFeaturesOffSub": "KI-Nachbesprechung aus — es wird nichts an Google gesendet. Bewerte die Ermüdung oben mit den Punkten.",
     "aiTrainingNote": "Google betreibt das über den kostenlosen Tarif — was du sendest, kann zum Training künftiger Modelle verwendet werden. Lass es aus, wenn das nichts für dich ist.",
-    "privacyPolicy": "Datenschutzerklärung"
+    "privacyPolicy": "Datenschutzerklärung",
+    "yourData": "Deine Daten",
+    "yourDataNote": "Nimm eine Kopie von allem mit oder lösche es. Ein Konto gilt für LimeLog, Nexus Command Center und StudyDesk.",
+    "exportData": "Meine Daten exportieren",
+    "exportDone": "{{name}} gespeichert",
+    "exportFailed": "Export fehlgeschlagen: {{msg}}",
+    "deleteAccount": "Konto löschen",
+    "deletingAccount": "Wird gelöscht…",
+    "deleteAccountNote": "Löscht dein Konto und alle Daten in allen drei Apps, sofort und unwiderruflich. Es gibt keine Wiederherstellungsfrist.",
+    "deleteAccountConfirm1": "Konto und alle Inhalte löschen? Das lässt sich nicht rückgängig machen.",
+    "deleteAccountConfirm2": "Letzte Prüfung — dies löscht auch deine Nexus Command Center- und StudyDesk-Daten. Fortfahren?",
+    "deleteAccountFailed": "Löschen fehlgeschlagen: {{msg}}"
   },
   "body": {
     "title": "Körper",

@@ -142,3 +142,27 @@
   margin-top: 12px;
   line-height: 1.5;
 }
+
+/* Your data card — export / delete buttons (GDPR Art. 17 / 20). */
+.settings-data-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 11px 14px;
+  background: transparent;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.15));
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+}
+.settings-data-btn:disabled { opacity: 0.55; cursor: default; }
+.settings-data-btn--danger {
+  color: var(--danger, #e5484d);
+  border-color: var(--danger, #e5484d);
+}
+.settings-data-msg {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--warning, var(--text-secondary));
+}

@@ -155,7 +155,18 @@
     "aiFeaturesOnSub": "AI 复盘已开启 — 训练后填写的笔记会发送至 Google Gemini。",
     "aiFeaturesOffSub": "AI 复盘已关闭 — 不会向 Google 发送任何内容。请用上方的圆点评估疲劳度。",
     "aiTrainingNote": "Google 通过免费方案运行此功能，因此你发送的内容可能被用于训练其未来的模型。若不能接受，请保持关闭。",
-    "privacyPolicy": "隐私政策"
+    "privacyPolicy": "隐私政策",
+    "yourData": "你的数据",
+    "yourDataNote": "带走一份完整副本，或将其抹除。一个账户涵盖 Nexus Command Center、LimeLog 和 StudyDesk。",
+    "exportData": "导出我的数据",
+    "exportDone": "已保存 {{name}}",
+    "exportFailed": "导出失败：{{msg}}",
+    "deleteAccount": "删除我的账户",
+    "deletingAccount": "正在删除…",
+    "deleteAccountNote": "立即且不可逆地抹除你的账户及其全部数据，涵盖三款应用。没有恢复期。",
+    "deleteAccountConfirm1": "删除你的账户及其中所有内容？此操作无法撤销。",
+    "deleteAccountConfirm2": "最后确认 — 这同时会抹除你的 Nexus Command Center 和 StudyDesk 数据。继续吗？",
+    "deleteAccountFailed": "删除失败：{{msg}}"
   },
   "body": {
     "title": "身体",
