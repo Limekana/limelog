@@ -57,12 +57,7 @@ export function weekdayNames(style: 'long' | 'short' | 'narrow'): string[] {
   return Array.from({ length: 7 }, (_, i) => fmt.format(new Date(2024, 0, 7 + i)));
 }
 
-export function todayIso(): string {
-  return new Date().toISOString();
-}
-
 export function getDayOfWeek(): 0 | 1 | 2 | 3 | 4 | 5 | 6 {
   return new Date().getDay() as 0 | 1 | 2 | 3 | 4 | 5 | 6;
 }
 
-export const DAY_NAMES = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'] as const;

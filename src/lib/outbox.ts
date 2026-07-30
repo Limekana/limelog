@@ -42,7 +42,6 @@ const STORAGE_KEY = 'limelog-outbox';
 const META_KEY = 'limelog-outbox-meta';
 const LEGACY_KEY = 'wt_nexus_pending'; // pre-v1.2 PendingPush queue
 const MAX_ATTEMPTS = 5;
-const CHANGE_EVENT = 'limelog-outbox-change';
 
 // ── Types ─────────────────────────────────────────────────────────────────
 
@@ -112,9 +111,6 @@ function saveItems(items: OutboxItem[]): void {
     console.error('[outbox] storage write failed:', e);
   }
   cachedStatus = null;
-  try {
-    window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
-  } catch { /* SSR / non-window environments */ }
 }
 
 function loadMeta(): OutboxMeta {
@@ -265,17 +261,6 @@ export function clear(): void {
     localStorage.removeItem(META_KEY);
   } catch { /* ignore */ }
   cachedStatus = null;
-  try {
-    window.dispatchEvent(new CustomEvent(CHANGE_EVENT));
-  } catch { /* ignore */ }
-}
-
-/** Subscribe to queue state changes. Returns an unsubscriber. */
-export function subscribe(listener: () => void): () => void {
-  if (typeof window === 'undefined') return () => {};
-  const handler = () => listener();
-  window.addEventListener(CHANGE_EVENT, handler);
-  return () => window.removeEventListener(CHANGE_EVENT, handler);
 }
 
 /** Wire `online` + `visibilitychange` drain triggers. Idempotent — safe to

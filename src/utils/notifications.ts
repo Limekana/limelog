@@ -256,9 +256,3 @@ export async function scheduleWorkoutReminders(
   }
 }
 
-export async function cancelWorkoutReminders(): Promise<void> {
-  if (!Capacitor.isNativePlatform()) return;
-  try {
-    await cancelAllSlots();
-  } catch { /* best-effort cleanup — ignore if the plugin call fails */ }
-}
