@@ -386,7 +386,10 @@
       "band": "बैंड",
       "kettlebell": "केटलबेल",
       "other": "अन्य"
-    }
+    },
+    "customOption": "स्वयं लिखें…",
+    "customPatternPlaceholder": "जैसे सैंडबैग कैरी",
+    "customEquipPlaceholder": "जैसे स्लेड"
   },
   "notif": {
     "sessionTitle": "{{day}} का सत्र"

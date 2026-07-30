@@ -394,7 +394,10 @@
       "band": "Elástico",
       "kettlebell": "Kettlebell",
       "other": "Outro"
-    }
+    },
+    "customOption": "Escrever o meu…",
+    "customPatternPlaceholder": "ex.: caminhada com saco",
+    "customEquipPlaceholder": "ex.: trenó"
   },
   "notif": {
     "sessionTitle": "Treino de {{day}}"

@@ -418,7 +418,10 @@
       "band": "حبل مطاطي",
       "kettlebell": "كيتل بيل",
       "other": "أخرى"
-    }
+    },
+    "customOption": "اكتب خيارك…",
+    "customPatternPlaceholder": "مثل حمل كيس الرمل",
+    "customEquipPlaceholder": "مثل الزلاجة"
   },
   "notif": {
     "sessionTitle": "تمرين {{day}}"

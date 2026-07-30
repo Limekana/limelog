@@ -312,7 +312,10 @@
       "kettlebell": "Pesa rusa",
       "other": "Otro"
     },
-    "inLibrary_many": "{{count}} ejercicios en tu biblioteca"
+    "inLibrary_many": "{{count}} ejercicios en tu biblioteca",
+    "customOption": "Escribir el mío…",
+    "customPatternPlaceholder": "p. ej. transporte de saco",
+    "customEquipPlaceholder": "p. ej. trineo"
   },
   "profile": {
     "title": "Perfil",

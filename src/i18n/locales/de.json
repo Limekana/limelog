@@ -304,7 +304,10 @@
       "band": "Band",
       "kettlebell": "Kettlebell",
       "other": "Sonstiges"
-    }
+    },
+    "customOption": "Eigenes eingeben…",
+    "customPatternPlaceholder": "z. B. Sandsack-Tragen",
+    "customEquipPlaceholder": "z. B. Schlitten"
   },
   "profile": {
     "title": "Profil",

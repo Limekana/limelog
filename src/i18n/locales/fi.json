@@ -304,7 +304,10 @@
       "band": "Vastusnauha",
       "kettlebell": "Kahvakuula",
       "other": "Muu"
-    }
+    },
+    "customOption": "Kirjoita oma…",
+    "customPatternPlaceholder": "esim. säkkikanto",
+    "customEquipPlaceholder": "esim. reki"
   },
   "profile": {
     "title": "Profiili",

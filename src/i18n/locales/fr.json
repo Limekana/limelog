@@ -312,7 +312,10 @@
       "kettlebell": "Kettlebell",
       "other": "Autre"
     },
-    "inLibrary_many": "{{count}} exercices dans votre bibliothèque"
+    "inLibrary_many": "{{count}} exercices dans votre bibliothèque",
+    "customOption": "Saisir le mien…",
+    "customPatternPlaceholder": "ex. port de sac lesté",
+    "customEquipPlaceholder": "ex. traîneau"
   },
   "profile": {
     "title": "Profil",

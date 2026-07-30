@@ -378,7 +378,10 @@
       "band": "Karet resistensi",
       "kettlebell": "Kettlebell",
       "other": "Lainnya"
-    }
+    },
+    "customOption": "Tulis sendiri…",
+    "customPatternPlaceholder": "mis. angkut sandbag",
+    "customEquipPlaceholder": "mis. sled"
   },
   "notif": {
     "sessionTitle": "Latihan {{day}}"

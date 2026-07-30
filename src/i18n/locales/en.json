@@ -304,7 +304,10 @@
       "band": "Band",
       "kettlebell": "Kettlebell",
       "other": "Other"
-    }
+    },
+    "customOption": "Type my own…",
+    "customPatternPlaceholder": "e.g. sandbag carry",
+    "customEquipPlaceholder": "e.g. sled"
   },
   "profile": {
     "title": "Profile",

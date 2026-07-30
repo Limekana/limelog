@@ -301,7 +301,10 @@
       "band": "弹力带",
       "kettlebell": "壶铃",
       "other": "其他"
-    }
+    },
+    "customOption": "自己填写…",
+    "customPatternPlaceholder": "例如：沙袋行走",
+    "customEquipPlaceholder": "例如：雪橇"
   },
   "profile": {
     "title": "个人资料",
