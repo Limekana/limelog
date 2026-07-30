@@ -270,6 +270,21 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
             {t('auth.guest')}
           </button>
           <p className="fla-guest-note">{t('auth.guestNote')}</p>
+          {/* GDPR Art. 8 — consent for an information society service is only
+              valid from 16 (13 in some member states). We cannot verify ages
+              and are not expected to, but the policy states the limit so the
+              signup surface should too, and it points at the guest option
+              directly above, which needs no account at all. */}
+          <p className="fla-legal-note">
+            {t('auth.ageNote')}{' '}
+            <a
+              href="https://limekana.github.io/nexus-command-center/legal/privacy.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('auth.privacyLink')}
+            </a>
+          </p>
         </div>
       </div>
     </div>

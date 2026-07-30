@@ -27,7 +27,9 @@
     "errEmailNotConfirmed": "Konfirmasi emailmu dulu — tautannya ada di kotak masuk.",
     "errRateLimited": "Terlalu banyak percobaan. Tunggu sebentar, lalu coba lagi.",
     "errNetwork": "Tidak dapat menghubungi server. Periksa koneksimu dan coba lagi.",
-    "errGeneric": "Gagal masuk."
+    "errGeneric": "Gagal masuk.",
+    "ageNote": "Kamu harus berusia 16+ untuk membuat akun (13+ jika hukum setempat mengizinkan). Di bawah itu, gunakan mode tamu — tidak ada data yang keluar dari perangkatmu.",
+    "privacyLink": "Kebijakan privasi"
   },
   "app": {
     "name": "LimeLog",

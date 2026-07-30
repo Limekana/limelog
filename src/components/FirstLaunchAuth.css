@@ -298,3 +298,15 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
+
+/* GDPR Art. 8 age statement + policy link. Quieter than the guest note above
+   it — it is a legal disclosure, not a call to action. */
+.fla-legal-note {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin: 14px 12px 0;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+.fla-legal-note a { color: inherit; text-decoration: underline; }

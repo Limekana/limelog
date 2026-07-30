@@ -61,7 +61,9 @@
     "errEmailNotConfirmed": "Confirma primero tu correo: el enlace está en tu bandeja de entrada.",
     "errRateLimited": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
     "errNetwork": "No se pudo conectar con el servidor. Comprueba tu conexión e inténtalo de nuevo.",
-    "errGeneric": "Error al iniciar sesión."
+    "errGeneric": "Error al iniciar sesión.",
+    "ageNote": "Debes tener 16 años o más para crear una cuenta (13 donde la ley local lo permita). Si eres menor, usa el modo invitado: nada sale de tu dispositivo.",
+    "privacyLink": "Política de privacidad"
   },
   "onboarding": {
     "welcomeTitle": "Bienvenido a LimeLog",
