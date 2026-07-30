@@ -23,7 +23,8 @@
     "program": "计划",
     "library": "动作库",
     "progress": "进度",
-    "body": "身体"
+    "body": "身体",
+    "profileSettings": "个人资料与设置"
   },
   "workout": {
     "workout": "训练",
@@ -31,6 +32,38 @@
     "rep": "次",
     "weight": "重量",
     "personalRecord": "个人纪录"
+  },
+  "auth": {
+    "tagline": "周期化力量训练 · 专注",
+    "titleGetStarted": "开始使用",
+    "titleSignInEmail": "使用邮箱登录",
+    "titleCreateAccount": "创建账户",
+    "subGetStarted": "登录以将训练同步到 Nexus，或继续在本地使用。",
+    "subEmail": "在设备间同步训练记录。",
+    "nexus": "使用 Nexus 继续",
+    "nexusNote": "本设备已登录 NEXUS COMMAND CENTER",
+    "google": "使用 Google 继续",
+    "useEmail": "改用邮箱",
+    "emailLabel": "邮箱",
+    "passwordLabel": "密码",
+    "signIn": "登录",
+    "createAccount": "创建账户",
+    "needAccount": "还没有账户？",
+    "haveAccount": "已有账户？",
+    "back": "返回",
+    "guest": "以访客身份继续",
+    "guestNote": "仅本地存储——训练记录保留在本设备。你可以稍后在“个人资料 → 设置”中登录。",
+    "notConfigured": "Supabase 未配置，无法登录。点击“以访客身份继续”即可在本地使用应用。",
+    "errNexus": "无法继承 Nexus 会话。",
+    "errInvalidCredentials": "邮箱或密码不正确。",
+    "errAlreadyRegistered": "该邮箱已注册。请尝试登录。",
+    "errWeakPassword": "请选择更强的密码。",
+    "errEmailNotConfirmed": "请先确认邮箱——确认链接已发送到你的收件箱。",
+    "errRateLimited": "尝试次数过多。请稍候再试。",
+    "errNetwork": "无法连接服务器。请检查网络后重试。",
+    "errGeneric": "登录失败。",
+    "ageNote": "创建账户需年满 16 岁（当地法律允许时为 13 岁）。未达年龄请使用访客模式 —— 数据不会离开你的设备。",
+    "privacyLink": "隐私政策"
   },
   "onboarding": {
     "welcomeTitle": "欢迎使用 LimeLog",
@@ -67,7 +100,27 @@
     "noOrmTitle": "尚无 1RM 数据",
     "noOrmBody": "完成一次记录了重量×次数的训练，即可查看估算 1RM 趋势。",
     "noHistoryTitle": "没有已完成的训练",
-    "noHistoryBody": "完成一次训练后会显示在这里。"
+    "noHistoryBody": "完成一次训练后会显示在这里。",
+    "readyToProgress": "可以加重了",
+    "applyFinish": "应用并结束",
+    "sessionFatigue": "训练疲劳度",
+    "newPr": "新的个人纪录",
+    "nice": "很棒",
+    "loadTrend": "负荷趋势图",
+    "ormTrend": "估算 1RM 趋势",
+    "needTwo": "至少记录 2 次训练才能看到趋势。",
+    "weightUpBody": "下列动作的每一组你都达到了次数区间的上限。确认动作标准后即可加重。",
+    "fatigueRating": "疲劳度 {{n}}",
+    "newPrTitle_other": "{{count}} 项新的个人纪录",
+    "repsOnly_other": "{{count}} 次",
+    "stallFlags": "停滞标记",
+    "selectExercise": "选择动作",
+    "selectExerciseOrm": "选择用于 1RM 趋势的动作",
+    "strengthRatio": "力量体重比",
+    "logJump": "记录跳跃",
+    "logFirstJump": "记录第一次跳跃",
+    "noJumpsTitle": "尚无跳跃记录",
+    "noJumpsBody": "记录垂直跳以追踪运动能力的进展。"
   },
   "today": {
     "noProgramTitle": "没有进行中的计划",
@@ -92,10 +145,33 @@
       "thu": "星期四",
       "fri": "星期五",
       "sat": "星期六"
-    }
+    },
+    "topE1rm": "最佳 e1RM",
+    "e1rmTitle": "根据你的训练记录估算的最佳 1RM",
+    "stallAlert_other": "检测到 {{count}} 个停滞标记 —— 建议安排减载周",
+    "deloadAdvance": "最近 3 次训练中有 {{missed}}/{{total}} 组未达目标 —— 建议进入减载阶段。",
+    "deloadSchedule": "最近 3 次训练中有 {{missed}}/{{total}} 组未达目标 —— 建议安排一次减载。"
   },
   "settings": {
-    "language": "语言"
+    "language": "语言",
+    "privacy": "隐私与 AI",
+    "aiOn": "开启",
+    "aiOff": "关闭",
+    "aiFeaturesOnSub": "AI 复盘已开启 — 训练后填写的笔记会发送至 Google Gemini。",
+    "aiFeaturesOffSub": "AI 复盘已关闭 — 不会向 Google 发送任何内容。请用上方的圆点评估疲劳度。",
+    "aiTrainingNote": "Google 通过免费方案运行此功能，因此你发送的内容可能被用于训练其未来的模型。若不能接受，请保持关闭。",
+    "privacyPolicy": "隐私政策",
+    "yourData": "你的数据",
+    "yourDataNote": "带走一份完整副本，或将其抹除。一个账户涵盖 Nexus Command Center、LimeLog 和 StudyDesk。",
+    "exportData": "导出我的数据",
+    "exportDone": "已保存 {{name}}",
+    "exportFailed": "导出失败：{{msg}}",
+    "deleteAccount": "删除我的账户",
+    "deletingAccount": "正在删除…",
+    "deleteAccountNote": "立即且不可逆地抹除你的账户及其全部数据，涵盖三款应用。没有恢复期。",
+    "deleteAccountConfirm1": "删除你的账户及其中所有内容？此操作无法撤销。",
+    "deleteAccountConfirm2": "最后确认 — 这同时会抹除你的 Nexus Command Center 和 StudyDesk 数据。继续吗？",
+    "deleteAccountFailed": "删除失败：{{msg}}"
   },
   "body": {
     "title": "身体",
@@ -129,7 +205,10 @@
     "photoOverwrite": "该日期已保存照片——拍摄将覆盖它。",
     "noPhotos": "尚未保存照片。它们仅存于本机——绝不上传。",
     "deleteEntryConfirm": "删除 {{date}} 的记录？",
-    "deletePhotoConfirm": "删除 {{date}} 的照片？"
+    "deletePhotoConfirm": "删除 {{date}} 的照片？",
+    "unitSystem": "单位制",
+    "weightChart": "体重趋势图",
+    "weightChartAvg": "带 7 天移动平均的体重趋势"
   },
   "program": {
     "title": "训练计划",
@@ -222,7 +301,10 @@
       "band": "弹力带",
       "kettlebell": "壶铃",
       "other": "其他"
-    }
+    },
+    "customOption": "自己填写…",
+    "customPatternPlaceholder": "例如：沙袋行走",
+    "customEquipPlaceholder": "例如：雪橇"
   },
   "profile": {
     "title": "个人资料",
@@ -284,6 +366,70 @@
     "sets": "组数",
     "targetKg": "目标 kg",
     "restSecs": "休息 (秒)",
-    "repsPlaceholder": "如 6–8"
+    "repsPlaceholder": "如 6–8",
+    "restingEyebrow": "休息中",
+    "restTimer": "休息计时器",
+    "startRest": "开始",
+    "startRestAria": "开始 {{secs}} 秒休息",
+    "skipRest": "跳过休息",
+    "addSeconds": "增加 15 秒",
+    "subSeconds": "减少 15 秒",
+    "finishWorkout": "结束训练",
+    "discardWorkout": "放弃训练",
+    "missing": "该训练已不存在。",
+    "noHistoryYet": "第一次 —— 尚无历史记录",
+    "colRpe": "RPE",
+    "colDone": "完成",
+    "colReps2": "次数",
+    "setDone": "第 {{n}} 组已完成",
+    "markSetDone": "将第 {{n}} 组标记为完成",
+    "deleteSetN": "删除第 {{n}} 组",
+    "currentPr": "当前个人纪录",
+    "setsProgress": "{{done}}/{{total}} 组",
+    "discardConfirm": "要放弃这次训练吗？所有已记录的组数都会丢失。"
+  },
+  "notif": {
+    "sessionTitle": "{{day}}的训练"
+  },
+  "health": {
+    "stepsWeekLabel": "最近 7 天的步数",
+    "activity": "活动",
+    "connect": "连接 Health Connect",
+    "connectPrompt": "连接 Health Connect 查看步数与卡路里",
+    "connectBody": "连接 Health Connect 以在此查看步数与活动卡路里。",
+    "viaHealthConnect": "来自 Health Connect",
+    "steps": "步",
+    "stepsToday": "今日步数",
+    "kcal": "千卡",
+    "kcalToday": "今日千卡"
+  },
+  "sync": {
+    "title": "Nexus 同步",
+    "connected": "已连接",
+    "signedInAs": "已登录为",
+    "signOut": "退出登录",
+    "autoPush": "结束时自动上传",
+    "retryNow": "立即重试",
+    "orUseEmail": "或使用电子邮件"
+  },
+  "jump": {
+    "title": "记录垂直跳",
+    "height": "高度（厘米）",
+    "heightPh": "例如 65.5",
+    "condition": "条件",
+    "notes": "备注（可选）",
+    "notesPh": "场地、热身、情境……",
+    "condFresh": "状态良好",
+    "condMorning": "早晨",
+    "condPost": "训练后"
+  },
+  "debrief": {
+    "title": "复盘",
+    "placeholder": "感觉如何？记录状态、动作、任何不适……",
+    "saved": "已保存",
+    "failed": "无法分析 —— 你的记录已按原样保存。"
+  },
+  "chart": {
+    "needMoreSessions": "至少需要 2 次记录了重量 × 次数的训练，才能估算 1RM 趋势。"
   }
 }

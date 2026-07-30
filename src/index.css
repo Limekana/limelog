@@ -173,3 +173,12 @@ select option {
   background: var(--border-default);
   border-radius: 2px;
 }
+
+/* v1.8 RTL — Unicode arrows are bidi-neutral and are NOT mirrored by the layout
+   engine, so a "back" arrow keeps pointing left in RTL and reads as "forward".
+   Mirror them by class, leaving flat-trend arrows (→ meaning "unchanged")
+   untouched. */
+[dir="rtl"] .rtl-mirror {
+  display: inline-block;
+  transform: scaleX(-1);
+}

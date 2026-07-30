@@ -39,12 +39,3 @@ export function setTrainingGoal(goal: TrainingGoal): void {
   }
 }
 
-export function getTrainingGoal(): TrainingGoal | null {
-  try {
-    const v = localStorage.getItem(GOAL_KEY);
-    if (v === 'strength' || v === 'hypertrophy' || v === 'sport' || v === 'general') return v;
-  } catch {
-    /* ignore */
-  }
-  return null;
-}

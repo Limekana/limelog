@@ -23,7 +23,8 @@
     "program": "Ohjelma",
     "library": "Kirjasto",
     "progress": "Edistyminen",
-    "body": "Keho"
+    "body": "Keho",
+    "profileSettings": "Profiili ja asetukset"
   },
   "workout": {
     "workout": "Treeni",
@@ -31,6 +32,38 @@
     "rep": "Toisto",
     "weight": "Paino",
     "personalRecord": "Ennätys"
+  },
+  "auth": {
+    "tagline": "JAKSOTETTU VOIMA · KESKITY",
+    "titleGetStarted": "Aloitetaan",
+    "titleSignInEmail": "Kirjaudu sähköpostilla",
+    "titleCreateAccount": "Luo tili",
+    "subGetStarted": "Kirjaudu synkronoidaksesi treenit Nexukseen tai jatka paikallisesti.",
+    "subEmail": "Synkronoi treenit laitteiden välillä.",
+    "nexus": "Jatka Nexuksella",
+    "nexusNote": "NEXUS COMMAND CENTERIIN KIRJAUDUTTU TÄLLÄ LAITTEELLA",
+    "google": "Jatka Googlella",
+    "useEmail": "Käytä sähköpostia",
+    "emailLabel": "Sähköposti",
+    "passwordLabel": "Salasana",
+    "signIn": "Kirjaudu sisään",
+    "createAccount": "Luo tili",
+    "needAccount": "Tarvitsetko tilin?",
+    "haveAccount": "Onko sinulla tili?",
+    "back": "Takaisin",
+    "guest": "Jatka vieraana",
+    "guestNote": "Vain paikallinen — treenit pysyvät tällä laitteella. Voit kirjautua myöhemmin kohdasta Profiili → Asetukset.",
+    "notConfigured": "Supabasea ei ole määritetty — kirjautuminen ei ole käytettävissä. Valitse Jatka vieraana käyttääksesi sovellusta paikallisesti.",
+    "errNexus": "Nexus-istuntoa ei voitu periä.",
+    "errInvalidCredentials": "Väärä sähköposti tai salasana.",
+    "errAlreadyRegistered": "Tälle sähköpostille on jo tili. Kokeile kirjautua sisään.",
+    "errWeakPassword": "Valitse vahvempi salasana.",
+    "errEmailNotConfirmed": "Vahvista ensin sähköpostisi — tarkista linkki postilaatikostasi.",
+    "errRateLimited": "Liian monta yritystä. Odota hetki ja yritä uudelleen.",
+    "errNetwork": "Palvelimeen ei saatu yhteyttä. Tarkista verkkoyhteytesi ja yritä uudelleen.",
+    "errGeneric": "Kirjautuminen epäonnistui.",
+    "ageNote": "Tilin luomiseen vaaditaan 16 vuoden ikä (13, jos paikallinen laki sallii). Nuorempana käytä vierastilaa — mikään ei poistu laitteeltasi.",
+    "privacyLink": "Tietosuojaseloste"
   },
   "onboarding": {
     "welcomeTitle": "Tervetuloa LimeLogiin",
@@ -67,7 +100,29 @@
     "noOrmTitle": "Ei vielä 1RM-tietoja",
     "noOrmBody": "Suorita treeni, jossa on kirjattu paino × toistot, nähdäksesi arvioidun 1RM-trendin.",
     "noHistoryTitle": "Ei valmiita treenejä",
-    "noHistoryBody": "Suorita treeni loppuun nähdäksesi sen täällä."
+    "noHistoryBody": "Suorita treeni loppuun nähdäksesi sen täällä.",
+    "readyToProgress": "Valmis etenemään",
+    "applyFinish": "Käytä ja lopeta",
+    "sessionFatigue": "Harjoituksen kuormitus",
+    "newPr": "Uusi ennätys",
+    "nice": "Hienoa",
+    "loadTrend": "Kuormituksen trendikaavio",
+    "ormTrend": "Arvioidun 1RM:n trendi",
+    "needTwo": "Kirjaa vähintään 2 harjoitusta nähdäksesi trendin.",
+    "weightUpBody": "Saavutit toistoalueen ylärajan kaikissa sarjoissa alla olevissa liikkeissä. Vahvista, että tekniikka pysyi hyvänä, jotta paino nousee.",
+    "fatigueRating": "Kuormitus {{n}}",
+    "newPrTitle_other": "{{count}} uutta ennätystä",
+    "newPrTitle_one": "Uusi ennätys",
+    "repsOnly_other": "{{count}} toistoa",
+    "repsOnly_one": "{{count}} toisto",
+    "stallFlags": "Jumiutumiset",
+    "selectExercise": "Valitse liike",
+    "selectExerciseOrm": "Valitse liike 1RM-trendille",
+    "strengthRatio": "Voima-painosuhde",
+    "logJump": "Kirjaa hyppy",
+    "logFirstJump": "Kirjaa ensimmäinen hyppy",
+    "noJumpsTitle": "Ei kirjattuja hyppyjä",
+    "noJumpsBody": "Seuraa vertikaalihyppyäsi urheilullisen kehityksen mittarina."
   },
   "today": {
     "noProgramTitle": "Ei aktiivista ohjelmaa",
@@ -92,10 +147,34 @@
       "thu": "Torstai",
       "fri": "Perjantai",
       "sat": "Lauantai"
-    }
+    },
+    "topE1rm": "Paras e1RM",
+    "e1rmTitle": "Paras arvioitu 1RM harjoitusmerkinnöistäsi",
+    "stallAlert_one": "{{count}} pysähtymismerkintä havaittu — harkitse kevennysjaksoa",
+    "stallAlert_other": "{{count}} pysähtymismerkintää havaittu — harkitse kevennysjaksoa",
+    "deloadAdvance": "{{missed}}/{{total}} sarjaa jäi tavoitteesta kolmen viime treenin aikana — harkitse siirtymistä kevennysjaksoon.",
+    "deloadSchedule": "{{missed}}/{{total}} sarjaa jäi tavoitteesta kolmen viime treenin aikana — harkitse kevennysjakson ajoittamista."
   },
   "settings": {
-    "language": "Kieli"
+    "language": "Kieli",
+    "privacy": "Tietosuoja ja tekoäly",
+    "aiOn": "Päällä",
+    "aiOff": "Pois",
+    "aiFeaturesOnSub": "Tekoälykooste päällä — treenin jälkeen kirjoittamasi muistiinpano lähetetään Google Geminille.",
+    "aiFeaturesOffSub": "Tekoälykooste pois — Googlelle ei lähetetä mitään. Arvioi väsymys yllä olevilla pisteillä.",
+    "aiTrainingNote": "Google ajaa tämän ilmaisella tasolla, joten lähettämääsi voidaan käyttää heidän tulevien mallien kouluttamiseen. Jätä pois päältä, jos se ei sovi sinulle.",
+    "privacyPolicy": "Tietosuojaseloste",
+    "yourData": "Omat tietosi",
+    "yourDataNote": "Ota kopio kaikesta tai poista se. Yksi tili kattaa Nexus Command Centerin, LimeLogin ja StudyDeskin.",
+    "exportData": "Vie tietoni",
+    "exportDone": "{{name}} tallennettu",
+    "exportFailed": "Vienti epäonnistui: {{msg}}",
+    "deleteAccount": "Poista tilini",
+    "deletingAccount": "Poistetaan…",
+    "deleteAccountNote": "Poistaa tilisi ja kaikki sen tiedot kaikista kolmesta sovelluksesta välittömästi ja peruuttamattomasti. Palautusaikaa ei ole.",
+    "deleteAccountConfirm1": "Poistetaanko tilisi ja kaikki sen sisältö? Tätä ei voi perua.",
+    "deleteAccountConfirm2": "Viimeinen varmistus — tämä poistaa myös Nexus Command Center- ja StudyDesk-tietosi. Jatketaanko?",
+    "deleteAccountFailed": "Poisto epäonnistui: {{msg}}"
   },
   "body": {
     "title": "Keho",
@@ -129,7 +208,10 @@
     "photoOverwrite": "Tälle päivälle on jo tallennettu kuva — ottaminen korvaa sen.",
     "noPhotos": "Ei tallennettuja kuvia. Ne pysyvät vain tällä laitteella — ei ladata.",
     "deleteEntryConfirm": "Poistetaanko merkintä päivältä {{date}}?",
-    "deletePhotoConfirm": "Poistetaanko kuva päivältä {{date}}?"
+    "deletePhotoConfirm": "Poistetaanko kuva päivältä {{date}}?",
+    "unitSystem": "Yksikköjärjestelmä",
+    "weightChart": "Painon trendikaavio",
+    "weightChartAvg": "Painon trendi 7 päivän liukuvalla keskiarvolla"
   },
   "program": {
     "title": "Ohjelmat",
@@ -222,7 +304,10 @@
       "band": "Vastusnauha",
       "kettlebell": "Kahvakuula",
       "other": "Muu"
-    }
+    },
+    "customOption": "Kirjoita oma…",
+    "customPatternPlaceholder": "esim. säkkikanto",
+    "customEquipPlaceholder": "esim. reki"
   },
   "profile": {
     "title": "Profiili",
@@ -284,6 +369,70 @@
     "sets": "Sarjat",
     "targetKg": "Tavoite kg",
     "restSecs": "Lepo (s)",
-    "repsPlaceholder": "esim. 6–8"
+    "repsPlaceholder": "esim. 6–8",
+    "restingEyebrow": "Palautus",
+    "restTimer": "Palautusajastin",
+    "startRest": "Aloita",
+    "startRestAria": "Aloita {{secs}} sekunnin palautus",
+    "skipRest": "Ohita palautus",
+    "addSeconds": "Lisää 15 sekuntia",
+    "subSeconds": "Vähennä 15 sekuntia",
+    "finishWorkout": "Lopeta treeni",
+    "discardWorkout": "Hylkää treeni",
+    "missing": "Tätä treeniä ei enää ole.",
+    "noHistoryYet": "Ensimmäinen kerta — ei vielä historiaa",
+    "colRpe": "RPE",
+    "colDone": "Valmis",
+    "colReps2": "Toistot",
+    "setDone": "Sarja {{n}} tehty",
+    "markSetDone": "Merkitse sarja {{n}} tehdyksi",
+    "deleteSetN": "Poista sarja {{n}}",
+    "currentPr": "Nykyinen ennätys",
+    "setsProgress": "{{done}}/{{total}} sarjaa",
+    "discardConfirm": "Hylätäänkö tämä treeni? Kaikki kirjatut sarjat menetetään."
+  },
+  "notif": {
+    "sessionTitle": "{{day}}n treeni"
+  },
+  "health": {
+    "stepsWeekLabel": "Askeleet viimeisen 7 päivän ajalta",
+    "activity": "Aktiivisuus",
+    "connect": "Yhdistä Health Connect",
+    "connectPrompt": "Yhdistä Health Connect nähdäksesi askeleet ja kalorit",
+    "connectBody": "Yhdistä Health Connect nähdäksesi askeleesi ja aktiiviset kalorisi täällä.",
+    "viaHealthConnect": "Health Connectin kautta",
+    "steps": "askelta",
+    "stepsToday": "askelta tänään",
+    "kcal": "kcal",
+    "kcalToday": "kcal tänään"
+  },
+  "sync": {
+    "title": "Nexus-synkronointi",
+    "connected": "Yhdistetty",
+    "signedInAs": "Kirjautuneena",
+    "signOut": "Kirjaudu ulos",
+    "autoPush": "Lähetä automaattisesti lopetettaessa",
+    "retryNow": "Yritä uudelleen",
+    "orUseEmail": "tai käytä sähköpostia"
+  },
+  "jump": {
+    "title": "Kirjaa vertikaalihyppy",
+    "height": "Korkeus (cm)",
+    "heightPh": "esim. 65,5",
+    "condition": "Olosuhteet",
+    "notes": "Muistiinpanot (valinnainen)",
+    "notesPh": "Alusta, lämmittely, konteksti...",
+    "condFresh": "Levänneenä",
+    "condMorning": "Aamulla",
+    "condPost": "Treenin jälkeen"
+  },
+  "debrief": {
+    "title": "Purku",
+    "placeholder": "Miltä tuntui? Kirjaa energia, tekniikka, mahdolliset kivut…",
+    "saved": "Tallennettu",
+    "failed": "Analyysi epäonnistui — muistiinpanosi tallennettiin sellaisenaan."
+  },
+  "chart": {
+    "needMoreSessions": "1RM-trendin arviointiin tarvitaan vähintään 2 treeniä, joissa on paino × toistot."
   }
 }

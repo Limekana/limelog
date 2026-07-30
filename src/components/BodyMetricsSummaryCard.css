@@ -3,7 +3,7 @@
 .bm-summary {
   background: var(--bg-surface);
   border: 1px solid var(--border-default);
-  border-left: 3px solid var(--accent);
+  border-inline-start: 3px solid var(--accent);
   border-radius: var(--radius-sm);
   padding: 16px 16px 18px;
   margin-bottom: 12px;
@@ -97,7 +97,7 @@
 }
 .bm-summary__swatch--line { border-top-color: var(--accent); }
 .bm-summary__swatch--ma { border-top-style: dashed; border-top-color: var(--text-tertiary); }
-.bm-summary__journey { margin-left: auto; color: var(--text-secondary); }
+.bm-summary__journey { margin-inline-start: auto; color: var(--text-secondary); }
 
 .bm-summary__divider {
   display: flex;

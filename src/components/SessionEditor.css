@@ -13,7 +13,7 @@
   padding: 10px 12px;
   background: none;
   cursor: pointer;
-  text-align: left;
+  text-align: start;
 }
 
 .session-editor__header-left {

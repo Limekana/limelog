@@ -123,4 +123,46 @@
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   margin-top: 8px;
+  /* v1.8 — see .onb-langs; same cap so Settings doesn't grow unboundedly. */
+  max-height: 184px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+}
+
+/* Privacy & AI card — link out to the suite policy. Styled as a quiet row
+   rather than a button so it reads as reference, not an action. */
+.settings-privacy-link {
+  display: block;
+  margin-top: 14px;
+  color: var(--accent, var(--text-secondary));
+  text-decoration: none;
+}
+.settings-ai-note {
+  display: block;
+  margin-top: 12px;
+  line-height: 1.5;
+}
+
+/* Your data card — export / delete buttons (GDPR Art. 17 / 20). */
+.settings-data-btn {
+  display: block;
+  width: 100%;
+  margin-top: 12px;
+  padding: 11px 14px;
+  background: transparent;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.15));
+  border-radius: 8px;
+  color: var(--text-primary);
+  font-size: 13px;
+  cursor: pointer;
+}
+.settings-data-btn:disabled { opacity: 0.55; cursor: default; }
+.settings-data-btn--danger {
+  color: var(--danger, #e5484d);
+  border-color: var(--danger, #e5484d);
+}
+.settings-data-msg {
+  margin-top: 10px;
+  font-size: 12px;
+  color: var(--warning, var(--text-secondary));
 }

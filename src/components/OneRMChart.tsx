@@ -1,6 +1,8 @@
 import { useMemo } from 'react';
+import { useTranslation } from 'react-i18next';
 import type { SessionLog } from '@/types/logging';
 import { oneRMHistoryForExercise } from '@/utils/oneRepMax';
+import { toDisplayWeight } from '@/utils/helpers';
 import './LoadChart.css';
 
 interface Props {
@@ -24,19 +26,16 @@ interface Props {
  * data the helper returns.
  */
 export function OneRMChart({ exerciseId, sessionLogs, unit }: Props) {
+  const { t } = useTranslation();
   const data = useMemo(() => {
     const points = oneRMHistoryForExercise([], sessionLogs, exerciseId).slice(-12);
     return points.map((p) => {
       const d = new Date(p.date);
-      const weight = unit === 'lb'
-        ? Math.round(p.estKg * 2.2046 * 10) / 10
-        : Math.round(p.estKg * 10) / 10;
+      const weight = toDisplayWeight(p.estKg, unit);
       return {
         weight,
         label: `${d.getDate()}/${d.getMonth() + 1}`,
-        setWeight: unit === 'lb'
-          ? Math.round(p.setWeightKg * 2.2046 * 10) / 10
-          : p.setWeightKg,
+        setWeight: toDisplayWeight(p.setWeightKg, unit),
         setReps: p.setReps,
       };
     });
@@ -45,7 +44,7 @@ export function OneRMChart({ exerciseId, sessionLogs, unit }: Props) {
   if (data.length < 2) {
     return (
       <div className="load-chart load-chart--empty">
-        <p>Need at least 2 sessions with logged weight × reps to estimate 1RM trend.</p>
+        <p>{t('chart.needMoreSessions')}</p>
       </div>
     );
   }
@@ -82,7 +81,7 @@ export function OneRMChart({ exerciseId, sessionLogs, unit }: Props) {
 
   return (
     <div className="load-chart">
-      <svg viewBox={`0 0 ${W} ${H}`} className="load-chart__svg" role="img" aria-label="Estimated 1RM trend">
+      <svg viewBox={`0 0 ${W} ${H}`} className="load-chart__svg" role="img" aria-label={t('progress.ormTrend')}>
         <defs>
           <linearGradient id="orm-grad" x1="0" y1="0" x2="0" y2="1">
             <stop offset="0%" stopColor="#c8f135" stopOpacity="0.18" />

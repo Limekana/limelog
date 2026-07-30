@@ -7,7 +7,7 @@
 import type { BodyMetric } from '@/types/bodyMetrics';
 
 /** Weight series — sorted oldest-first, only entries with weight set. */
-export interface WeightPoint {
+interface WeightPoint {
   date: string;
   weightKg: number;
   /** 7-day trailing moving average. null until the 7th eligible entry. */

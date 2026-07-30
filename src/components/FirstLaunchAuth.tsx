@@ -12,11 +12,13 @@
 //      local-only trade-off.
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Button, Card } from '@/components/ui';
 import { useNexusStore } from '@/store/nexusStore';
 import { inheritFromNexus } from '@/lib/suiteSso';
 import { setGuestMode } from '@/lib/guestMode';
+import { translateAuthError } from '@/lib/authErrors';
 import './FirstLaunchAuth.css';
 
 const SuiteSsoProbe = registerPlugin<{
@@ -31,6 +33,7 @@ interface FirstLaunchAuthProps {
 }
 
 export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
+  const { t } = useTranslation();
   const { signIn, signUp, signInWithGoogle, configured, loading: storeLoading } =
     useNexusStore();
   const [email, setEmail] = useState('');
@@ -66,7 +69,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
     try {
       const result = await inheritFromNexus();
       if (!result.ok) {
-        setError(result.reason ?? 'Could not inherit Nexus session.');
+        setError(result.reason ?? t('auth.errNexus'));
         setBusy(false);
         return;
       }
@@ -76,7 +79,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
       await setGuestMode(false);
       onContinue();
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(translateAuthError(err as Error, t));
       setBusy(false);
     }
   }
@@ -96,7 +99,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
       // one, the gate ignores it.
       await signInWithGoogle();
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(translateAuthError(err as Error, t));
     } finally {
       setBusy(false);
     }
@@ -116,7 +119,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
       setPassword('');
       // onAuthStateChange in nexusStore drives the parent re-render.
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(translateAuthError(err as Error, t));
     } finally {
       setBusy(false);
     }
@@ -133,22 +136,21 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
     <div className="fla-wrap">
       <div className="fla-stack">
         <div className="fla-header">
+          {/* "LimeLog" is the product name — deliberately not a key. */}
           <div className="fla-wordmark">LimeLog</div>
-          <div className="fla-tagline">PERIODIZED STRENGTH · LOCK IN</div>
+          <div className="fla-tagline">{t('auth.tagline')}</div>
         </div>
 
         <Card padding="md" className="fla-card">
           <div className="fla-title">
             {showEmail
               ? mode === 'signin'
-                ? 'Sign in with email'
-                : 'Create account'
-              : 'Get started'}
+                ? t('auth.titleSignInEmail')
+                : t('auth.titleCreateAccount')
+              : t('auth.titleGetStarted')}
           </div>
           <div className="fla-sub">
-            {showEmail
-              ? 'Sync workouts across devices.'
-              : 'Sign in to sync workouts to Nexus, or continue locally.'}
+            {showEmail ? t('auth.subEmail') : t('auth.subGetStarted')}
           </div>
 
           {!showEmail && (
@@ -167,11 +169,9 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                     className="fla-nexus"
                   >
                     <span className="fla-nexus-glyph" aria-hidden="true">◈</span>
-                    Continue with Nexus
+                    {t('auth.nexus')}
                   </Button>
-                  <p className="fla-nexus-note">
-                    SIGNED IN TO NEXUS COMMAND CENTER ON THIS DEVICE
-                  </p>
+                  <p className="fla-nexus-note">{t('auth.nexusNote')}</p>
                 </>
               )}
 
@@ -183,7 +183,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                 onClick={handleGoogle}
                 disabled={disabled}
               >
-                Continue with Google
+                {t('auth.google')}
               </Button>
 
               <button
@@ -192,7 +192,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                 onClick={() => setShowEmail(true)}
                 disabled={disabled}
               >
-                Use email instead
+                {t('auth.useEmail')}
               </button>
             </div>
           )}
@@ -200,7 +200,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
           {showEmail && (
             <form onSubmit={handleEmail} className="fla-form">
               <label className="fla-field">
-                <span className="fla-field-label">Email</span>
+                <span className="fla-field-label">{t('auth.emailLabel')}</span>
                 <input
                   type="email"
                   autoComplete="email"
@@ -210,7 +210,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                 />
               </label>
               <label className="fla-field">
-                <span className="fla-field-label">Password</span>
+                <span className="fla-field-label">{t('auth.passwordLabel')}</span>
                 <input
                   type="password"
                   autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
@@ -228,7 +228,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                 fullWidth
                 disabled={disabled}
               >
-                {disabled ? '…' : mode === 'signin' ? 'Sign in' : 'Create account'}
+                {disabled ? '…' : mode === 'signin' ? t('auth.signIn') : t('auth.createAccount')}
               </Button>
 
               <div className="fla-form-footer">
@@ -240,26 +240,21 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                     setError(null);
                   }}
                 >
-                  {mode === 'signin' ? 'Need an account?' : 'Have an account?'}
+                  {mode === 'signin' ? t('auth.needAccount') : t('auth.haveAccount')}
                 </button>
                 <button
                   type="button"
                   className="fla-toggle"
                   onClick={() => setShowEmail(false)}
                 >
-                  Back
+                  {t('auth.back')}
                 </button>
               </div>
             </form>
           )}
 
           {error && <p className="fla-error">{error}</p>}
-          {!configured && (
-            <p className="fla-warn">
-              Supabase not configured — sign-in unavailable. Tap Continue as
-              guest to use the app locally.
-            </p>
-          )}
+          {!configured && <p className="fla-warn">{t('auth.notConfigured')}</p>}
         </Card>
 
         {/* Guest path — visually below the card, distinct from the sign-in
@@ -272,11 +267,23 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
             onClick={handleGuest}
             disabled={disabled}
           >
-            Continue as guest
+            {t('auth.guest')}
           </button>
-          <p className="fla-guest-note">
-            Local only — workouts stay on this device. You can sign in later
-            from Profile → Settings.
+          <p className="fla-guest-note">{t('auth.guestNote')}</p>
+          {/* GDPR Art. 8 — consent for an information society service is only
+              valid from 16 (13 in some member states). We cannot verify ages
+              and are not expected to, but the policy states the limit so the
+              signup surface should too, and it points at the guest option
+              directly above, which needs no account at all. */}
+          <p className="fla-legal-note">
+            {t('auth.ageNote')}{' '}
+            <a
+              href="https://limekana.github.io/nexus-command-center/legal/privacy.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('auth.privacyLink')}
+            </a>
           </p>
         </div>
       </div>

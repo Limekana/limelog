@@ -4,7 +4,7 @@ import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
-import { formatDate } from '@/utils/helpers';
+import { formatDate, toDisplayWeight } from '@/utils/helpers';
 import { EmptyState, Card, Button, Tabs, TabPanel } from '@/components/ui';
 import { JumpLogModal } from '@/components/JumpLogModal';
 import { LoadChart } from '@/components/LoadChart';
@@ -71,7 +71,7 @@ export function ProgressPage() {
         <>
           {activeStalls.length > 0 && (
             <div className="progress-stalls">
-              <span className="progress-stalls__label">Stall flags</span>
+              <span className="progress-stalls__label">{t('progress.stallFlags')}</span>
               {activeStalls.map((f) => {
                 const ex = exercises.find((e) => e.id === f.exerciseId);
                 return (
@@ -89,7 +89,7 @@ export function ProgressPage() {
           ) : (
             <>
               <select
-                aria-label="Select exercise"
+                aria-label={t('progress.selectExercise')}
                 className="progress-exercise-select"
                 value={selectedExId}
                 onChange={(e) => setSelectedExId(e.target.value)}
@@ -121,7 +121,7 @@ export function ProgressPage() {
           ) : (
             <>
               <select
-                aria-label="Select exercise for 1RM trend"
+                aria-label={t('progress.selectExerciseOrm')}
                 className="progress-exercise-select"
                 value={selectedExId}
                 onChange={(e) => setSelectedExId(e.target.value)}
@@ -145,9 +145,7 @@ export function ProgressPage() {
                   .sort((a, b) => (b.best ?? 0) - (a.best ?? 0))
                   .slice(0, 10)
                   .map((row) => {
-                    const display = unit === 'lb'
-                      ? Math.round((row.best ?? 0) * 2.2046 * 10) / 10
-                      : Math.round((row.best ?? 0) * 10) / 10;
+                    const display = toDisplayWeight(row.best ?? 0, unit);
                     // v1.2 — strength-to-bodyweight ratio (best 1RM / latest
                     // logged weight). Only rendered when the user has weight
                     // entries; staying quiet for weight-only-1RM users.
@@ -160,7 +158,7 @@ export function ProgressPage() {
                           {ratio != null && (
                             <span
                               className="progress-orm-row__ratio"
-                              title="Strength-to-bodyweight ratio"
+                              title={t('progress.strengthRatio')}
                             >
                               {' '}· {ratio.toFixed(2)}× BW
                             </span>
@@ -185,12 +183,12 @@ export function ProgressPage() {
           <div className="progress-jump-header">
             <span className="progress-jump-header__count">{jumpLogs.length} entries</span>
             <Button size="sm" variant="primary" onClick={() => setShowJumpModal(true)}>
-              <Zap size={13} aria-hidden="true" /> Log jump
+              <Zap size={13} aria-hidden="true" /> {t('progress.logJump')}
             </Button>
           </div>
 
           {recentJumps.length === 0 ? (
-            <EmptyState icon={<Zap size={36} />} title="No jumps logged" description="Track your vertical jump to monitor athletic progress." action={<Button variant="primary" onClick={() => setShowJumpModal(true)}>Log first jump</Button>} />
+            <EmptyState icon={<Zap size={36} />} title={t('progress.noJumpsTitle')} description={t('progress.noJumpsBody')} action={<Button variant="primary" onClick={() => setShowJumpModal(true)}>{t('progress.logFirstJump')}</Button>} />
           ) : (
             recentJumps.map((j) => (
               <Card key={j.id} padding="sm">

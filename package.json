@@ -5,6 +5,8 @@
   "type": "module",
   "scripts": {
     "dev": "vite",
+    "prepare": "git config core.hooksPath .githooks || true",
+    "check:secrets": "node scripts/check-secrets.mjs --all",
     "build": "tsc && vite build",
     "preview": "vite preview",
     "lint": "eslint src --ext ts,tsx --report-unused-disable-directives --max-warnings 0",
@@ -20,8 +22,6 @@
     "@capacitor/local-notifications": "^8.0.2",
     "@devmaxime/capacitor-health-connect": "^1.1.0",
     "@supabase/supabase-js": "^2.105.4",
-    "clsx": "^2.1.1",
-    "date-fns": "^3.6.0",
     "i18next": "^23.16.8",
     "lucide-react": "^0.414.0",
     "react": "^18.3.1",
@@ -31,7 +31,6 @@
     "zustand": "^4.5.4"
   },
   "devDependencies": {
-    "@capacitor/assets": "^3.0.5",
     "@types/react": "^18.3.3",
     "@types/react-dom": "^18.3.0",
     "@typescript-eslint/eslint-plugin": "^7.15.0",

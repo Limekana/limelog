@@ -22,6 +22,7 @@ import {
 } from '@capacitor/camera';
 import { Button, Card } from '@/components/ui';
 import { Camera, Trash2 } from 'lucide-react';
+import { useConfirm } from '@/components/confirmContext';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
 import {
   formatLength,
@@ -85,6 +86,7 @@ const EMPTY_FORM: FormState = {
 
 export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } = {}) {
   const { t } = useTranslation();
+  const confirm = useConfirm();
   const metrics = useBodyMetricsStore((s) => s.metrics);
   const prefs = useBodyMetricsStore((s) => s.prefs);
   const addOrUpdate = useBodyMetricsStore((s) => s.addOrUpdate);
@@ -281,8 +283,8 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
 
   const useNativeCapture = Capacitor.isNativePlatform();
 
-  function handlePhotoDelete(p: ProgressPhoto) {
-    if (!confirm(t('body.deletePhotoConfirm', { date: p.date }))) return;
+  async function handlePhotoDelete(p: ProgressPhoto) {
+    if (!(await confirm({ message: t('body.deletePhotoConfirm', { date: p.date }) }))) return;
     deletePhoto(p.date);
     setPhotosNonce((n) => n + 1);
   }
@@ -294,7 +296,7 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
       <Card padding="md" className="body-metrics-prefs">
         <div className="body-metrics-prefs__row">
           <span className="body-metrics-prefs__label">{t('body.units')}</span>
-          <div className="body-metrics-prefs__unit-toggle" role="radiogroup" aria-label="Unit system">
+          <div className="body-metrics-prefs__unit-toggle" role="radiogroup" aria-label={t('body.unitSystem')}>
             <button
               type="button"
               role="radio"
@@ -479,8 +481,10 @@ export function BodyMetricsPanel({ showTrend = true }: { showTrend?: boolean } =
                   type="button"
                   className="body-metrics-list__delete"
                   aria-label={t('body.deleteEntryConfirm', { date: row.date })}
-                  onClick={() => {
-                    if (confirm(t('body.deleteEntryConfirm', { date: row.date }))) remove(row.id);
+                  onClick={async () => {
+                    if (await confirm({ message: t('body.deleteEntryConfirm', { date: row.date }) })) {
+                      remove(row.id);
+                    }
                   }}
                 >
                   <Trash2 size={14} aria-hidden />
@@ -578,6 +582,7 @@ interface WeightChartProps {
 }
 
 function WeightChart({ series, isImperial }: WeightChartProps) {
+  const { t } = useTranslation();
   const w = 320;
   const h = 140;
   const padL = 24;
@@ -618,7 +623,7 @@ function WeightChart({ series, isImperial }: WeightChartProps) {
       width="100%"
       className="body-metrics-chart"
       role="img"
-      aria-label="Weight trend chart"
+      aria-label={t('body.weightChart')}
     >
       <text x={padL - 4} y={padT + 4} className="body-metrics-chart__axis" textAnchor="end">
         {displayMax}

@@ -9,25 +9,25 @@
 // the celebration.
 
 import type { SetLog, SessionLog, ExercisePR } from '@/types/logging';
+import { estimate1RM } from '@/utils/oneRepMax';
 
-/** Epley 1RM estimate: weight × (1 + reps / 30). Single rep returns the raw
- *  weight. Bodyweight sets (weight 0) yield 0 — they don't compete on load. */
-export function epley1RM(weightKg: number, reps: number): number {
-  if (!Number.isFinite(weightKg) || !Number.isFinite(reps) || weightKg <= 0 || reps < 1) return 0;
-  if (reps === 1) return weightKg;
-  return weightKg * (1 + reps / 30);
-}
-
-/** The best scoring set for an exercise within a list of sets, by Epley 1RM.
- *  Only completed sets with a positive weight + reps count. Returns null if
- *  none qualify. */
+/** The best scoring set for an exercise within a list of sets, by estimated
+ *  1RM. Only completed sets with a positive weight + reps count. Returns null
+ *  if none qualify.
+ *
+ *  Scoring goes through the shared estimate1RM, which returns null above
+ *  MAX_RELIABLE_REPS. That deliberately means a very high-rep set can no longer
+ *  set a PR: this module used to carry its own uncapped Epley, so a 20-rep set
+ *  raised "New personal record" and then failed to appear on the Est. 1RM
+ *  chart, which discards the same set as unreliable. A PR ranked on an estimate
+ *  the app itself declines to plot is not one worth claiming. */
 function bestSet(sets: SetLog[]): { weightKg: number; reps: number; oneRepMax: number } | null {
   let best: { weightKg: number; reps: number; oneRepMax: number } | null = null;
   for (const s of sets) {
     if (!s.completed) continue;
     if (s.weightKg == null || s.reps == null) continue;
-    const orm = epley1RM(s.weightKg, s.reps);
-    if (orm <= 0) continue;
+    const orm = estimate1RM(s.weightKg, s.reps);
+    if (orm == null || orm <= 0) continue;
     if (!best || orm > best.oneRepMax) {
       best = { weightKg: s.weightKg, reps: s.reps, oneRepMax: orm };
     }

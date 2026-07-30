@@ -3,12 +3,14 @@ import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
+import { useUserStore } from '@/store/userStore';
 import type { SessionTemplate } from '@/types/program';
-import { getDayOfWeek } from '@/utils/helpers';
+import { getDayOfWeek, formatWeight } from '@/utils/helpers';
 import { bestEstimateForExercise, missedRepRatio } from '@/utils/oneRepMax';
 import { EmptyState, Button, Badge } from '@/components/ui';
 import { Dumbbell, AlertTriangle, CheckCircle2, TrendingUp, ChevronRight } from 'lucide-react';
 import { HealthTodayStrip } from '@/components/HealthConnect';
+import { useConfirm } from '@/components/confirmContext';
 import './TodayPage.css';
 
 function isSameLocalDay(iso: string, now: Date): boolean {
@@ -22,9 +24,11 @@ function isSameLocalDay(iso: string, now: Date): boolean {
 
 export function TodayPage() {
   const { t, i18n } = useTranslation();
+  const confirm = useConfirm();
   const navigate = useNavigate();
   const { activeProgram, exercises, advancePhase } = useProgramStore();
   const { sessionLogs, startSession, unfinalizeSession, discardSession, stallFlags } = useLogStore();
+  const unit = useUserStore((s) => s.profile.unitPreference);
 
   const now = new Date();
   const today = getDayOfWeek();
@@ -100,10 +104,11 @@ export function TodayPage() {
     navigate(`/workout/${logId}`);
   }
 
-  function handleDiscard(logId: string) {
-    if (confirm('Discard this workout? All logged sets will be lost.')) {
-      discardSession(logId);
-    }
+  async function handleDiscard(logId: string) {
+    // Was a hardcoded English string in a native confirm() — the message stayed
+    // English in all ten languages, and the buttons came from the OS locale.
+    if (!(await confirm({ message: t('log.discardConfirm') }))) return;
+    discardSession(logId);
   }
 
   const activeStalls = stallFlags.filter((f) => !f.resolved);
@@ -155,7 +160,10 @@ export function TodayPage() {
       {activeStalls.length > 0 && (
         <div className="today-alert">
           <AlertTriangle size={15} />
-          <span>{activeStalls.length} stall flag{activeStalls.length > 1 ? 's' : ''} detected — consider a deload</span>
+          {/* Was English-only, and pluralised with `length > 1 ? 's' : ''` —
+              which is wrong even in English for 0, and meaningless in the nine
+              other languages. i18next resolves the CLDR category instead. */}
+          <span>{t('today.stallAlert', { count: activeStalls.length })}</span>
         </div>
       )}
 
@@ -166,10 +174,14 @@ export function TodayPage() {
       {deloadSuggestion && (
         <div className="today-alert today-alert--warn">
           <AlertTriangle size={15} />
+          {/* Two whole sentences rather than a shared stem plus a fragment:
+              composing copy from pieces forces every translator into English
+              word order. */}
           <span>
-            {deloadSuggestion.missedSets}/{deloadSuggestion.totalSets} sets fell short over your last 3 sessions —
-            {' '}
-            {nextPhase ? 'consider advancing to a deload phase.' : 'consider scheduling a deload.'}
+            {t(nextPhase ? 'today.deloadAdvance' : 'today.deloadSchedule', {
+              missed: deloadSuggestion.missedSets,
+              total: deloadSuggestion.totalSets,
+            })}
           </span>
         </div>
       )}
@@ -226,9 +238,9 @@ export function TodayPage() {
                     {t('today.exercises', { count: session.exercises.length, sets: plannedCount })}
                   </span>
                   {firstExBest != null && firstExName && (
-                    <span className="today-session__orm" title="Best estimated 1RM from your logs">
+                    <span className="today-session__orm" title={t('today.e1rmTitle')}>
                       <TrendingUp size={11} aria-hidden="true" />
-                      {' '}Top e1RM · {firstExName}: {Math.round(firstExBest * 10) / 10} kg
+                      {' '}{t('today.topE1rm')} · {firstExName}: {formatWeight(firstExBest, unit)}
                     </span>
                   )}
                 </div>

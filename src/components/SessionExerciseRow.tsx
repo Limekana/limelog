@@ -50,7 +50,7 @@ export function SessionExerciseRow({ sessionExercise: se, sessionId, program: _ 
               <input type="text" value={se.targetReps} placeholder={t('log.repsPlaceholder')}
                 onChange={(e) => updateSessionExercise(sessionId, se.id, { targetReps: e.target.value })} />
             </label>
-            <label>RPE
+            <label>{t('log.colRpe')}
               <input type="number" min="6" max="10" step="0.5" value={se.targetRpe ?? ''}
                 onChange={(e) => updateSessionExercise(sessionId, se.id, { targetRpe: e.target.value ? Number(e.target.value) : undefined })} />
             </label>

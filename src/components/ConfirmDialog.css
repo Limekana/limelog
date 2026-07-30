@@ -1,0 +1,75 @@
+/* ConfirmDialog — see ConfirmDialog.tsx for why this replaces window.confirm().
+   Sheet-style on phones (thumb reach), centred from 640px up. */
+
+.cfd-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 60;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding: 16px;
+  background: rgba(0, 0, 0, 0.62);
+  backdrop-filter: blur(4px);
+}
+
+@media (min-width: 640px) {
+  .cfd-backdrop { align-items: center; }
+}
+
+.cfd-card {
+  width: 100%;
+  max-width: 380px;
+  padding: 20px;
+  border-radius: 14px;
+  background: var(--bg-elevated, var(--bg-secondary, #1b1e23));
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.12));
+  box-shadow: 0 12px 36px rgba(0, 0, 0, 0.45);
+}
+
+.cfd-title {
+  margin: 0 0 8px;
+  font-size: 16px;
+  font-weight: 600;
+  color: var(--text-primary);
+}
+
+.cfd-message {
+  margin: 0 0 18px;
+  font-size: 14px;
+  line-height: 1.5;
+  color: var(--text-primary);
+  /* Callers pass multi-sentence copy; keep authored line breaks. */
+  white-space: pre-line;
+}
+
+.cfd-actions {
+  display: flex;
+  gap: 8px;
+  /* flex-end resolves against the writing direction, so this lands correctly
+     under dir="rtl" without a separate rule. */
+  justify-content: flex-end;
+}
+
+.cfd-btn {
+  padding: 9px 16px;
+  font-size: 13px;
+  font-weight: 500;
+  border-radius: 8px;
+  cursor: pointer;
+  background: transparent;
+  border: 1px solid var(--border, rgba(255, 255, 255, 0.16));
+  color: var(--text-secondary);
+}
+
+.cfd-btn--danger {
+  background: var(--danger, #e5484d);
+  border-color: var(--danger, #e5484d);
+  color: #fff;
+}
+
+.cfd-btn--primary {
+  background: var(--accent, #a3e635);
+  border-color: var(--accent, #a3e635);
+  color: #10121a;
+}

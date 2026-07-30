@@ -7,6 +7,7 @@ const DEFAULT_PROFILE: UserProfile = {
   id: generateId(),
   name: 'Athlete',
   unitPreference: 'kg',
+  aiEnabled: false,
   activeRestrictions: [],
   deloadThresholds: {
     stallCountTrigger: 2,
@@ -20,6 +21,7 @@ interface UserStore {
   profile: UserProfile;
   setName: (name: string) => void;
   setUnit: (unit: 'kg' | 'lb') => void;
+  setAiEnabled: (on: boolean) => void;
   addRestriction: (r: Omit<InjuryRestriction, 'id' | 'createdAt'>) => void;
   resolveRestriction: (id: string) => void;
   removeRestriction: (id: string) => void;
@@ -37,6 +39,12 @@ export const useUserStore = create<UserStore>((set, get) => ({
 
   setUnit: (unit) => {
     const profile = { ...get().profile, unitPreference: unit };
+    storage.setProfile(profile);
+    set({ profile });
+  },
+
+  setAiEnabled: (on) => {
+    const profile = { ...get().profile, aiEnabled: on };
     storage.setProfile(profile);
     set({ profile });
   },

@@ -31,7 +31,7 @@ interface SuiteSsoPluginAndroid {
 // plugins registered via MainActivity.registerPlugin(...).
 const SuiteSso = registerPlugin<SuiteSsoPluginAndroid>('SuiteSso');
 
-export interface InheritResult {
+interface InheritResult {
   ok: boolean;
   reason?: string;
   email?: string;

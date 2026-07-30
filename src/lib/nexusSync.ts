@@ -15,7 +15,7 @@ import { supabase, isNexusConfigured } from './supabase';
 import type { SessionLog } from '@/types/logging';
 import type { Exercise, SessionTemplate } from '@/types/program';
 
-export interface NexusSetPayload {
+interface NexusSetPayload {
   exercise: string;
   weightKg?: number;
   reps?: number;
