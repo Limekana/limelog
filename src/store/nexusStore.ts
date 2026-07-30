@@ -4,6 +4,7 @@ import { supabase, isNexusConfigured } from '@/lib/supabase';
 import { signInWithGoogle as oauthSignInWithGoogle, initOAuthDeepLinkListener } from '@/lib/oauth';
 import { setGuestMode, isGuestMode } from '@/lib/guestMode';
 import { inheritFromNexus } from '@/lib/suiteSso';
+import { scheduleOriginStamp } from '@/lib/originMarker';
 // v1.2 — outbox replaces nexusSync's drainPendingQueue/getPendingCount as the
 // persistence + retry layer. The actual push handler (pushWorkoutToNexus) is
 // still in nexusSync.ts; the outbox dispatches to it via kind tables.
@@ -116,10 +117,15 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
 
       set({ userEmail: user?.email ?? null, loading: false });
 
+      // ACT-5 — cover the restored-session path too, not just fresh sign-ins.
+      // Every account that predates this instrumentation only ever appears here.
+      scheduleOriginStamp(user ?? null);
+
       supabase.auth.onAuthStateChange((event, session) => {
         const wasSignedIn = Boolean(get().userEmail);
         const nowSignedIn = Boolean(session?.user);
         set({ userEmail: session?.user?.email ?? null });
+        scheduleOriginStamp(session?.user ?? null);
         // v1.1 — clear guestMode on any successful sign-in. Without this,
         // a user who signed out (which sets guestMode=true) and later signs
         // in via NexusSyncCard's form would keep guestMode=true while
