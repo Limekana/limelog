@@ -14,7 +14,7 @@ import { listPhotos } from './progressPhotos';
 
 const EXPORT_SCHEMA_VERSION = 1;
 
-export interface ExportPayload {
+interface ExportPayload {
   schemaVersion: number;
   exportedAt: string;
   application: string;
@@ -33,7 +33,7 @@ export interface ExportPayload {
  * machine-readable" — JSON qualifies, and unlike CSV it carries the nested set
  * structure without inventing a flattening the user then has to undo.
  */
-export function buildExport(
+function buildExport(
   user: { id: string; email?: string } | null,
 ): ExportPayload {
   const programs = storage.getPrograms();

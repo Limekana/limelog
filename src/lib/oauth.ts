@@ -9,7 +9,7 @@ function webRedirect(): string {
   return `${window.location.origin}${window.location.pathname}`;
 }
 
-export function isNative(): boolean {
+function isNative(): boolean {
   return Capacitor.isNativePlatform();
 }
 

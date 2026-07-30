@@ -58,7 +58,7 @@ export function estimate1RM(weightKg: number, reps: number): number | null {
 }
 
 /** A single 1RM data point with provenance. */
-export interface OneRMPoint {
+interface OneRMPoint {
   /** Estimated 1RM in kg. */
   estKg: number;
   /** ISO date of the session that produced this estimate. */

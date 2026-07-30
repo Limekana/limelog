@@ -46,7 +46,7 @@ const CHANGE_EVENT = 'limelog-outbox-change';
 
 // ── Types ─────────────────────────────────────────────────────────────────
 
-export type OutboxKind =
+type OutboxKind =
   | 'upsert_workout_session'
   | 'delete_workout_session'
   // v1.2 — Body Metrics. Same upsert/delete pair pattern.
@@ -55,7 +55,7 @@ export type OutboxKind =
   // v1.6 — Personal Records. Push-only (append-only), upsert by id.
   | 'upsert_exercise_pr';
 
-export interface OutboxItem<K extends OutboxKind = OutboxKind> {
+interface OutboxItem<K extends OutboxKind = OutboxKind> {
   id: string;
   createdAt: string;
   kind: K;

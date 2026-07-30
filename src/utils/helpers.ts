@@ -33,7 +33,7 @@ export function formatWeight(kg: number, unit: 'kg' | 'lb'): string {
  *  device's regional tag so a UK user keeps "26 Jul" and a US user gets
  *  "Jul 26" — both reading the same English strings. When the user has picked a
  *  language that differs from the device, the region no longer applies. */
-export function formatLocale(): string {
+function formatLocale(): string {
   const lang = (i18n.language || 'en').split('-')[0];
   const nav = (typeof navigator !== 'undefined'
     && (navigator.languages?.[0] || navigator.language)) || '';
