@@ -244,6 +244,24 @@ export function ProfilePage() {
             {dataMsg && <div className="settings-data-msg">{dataMsg}</div>}
           </Card>
 
+          {/* Support — a link out, nothing more. No entitlements, no
+              supporter-only features, no webhook, so nothing here gates the
+              app for someone who never clicks it. The sublabel says so. */}
+          <Card padding="md">
+            <span className="settings-field__label">{t('settings.support')}</span>
+            <div className="settings-field__sublabel settings-ai-note">
+              {t('settings.supportDevSub')}
+            </div>
+            <a
+              className="settings-field__sublabel settings-privacy-link"
+              href="https://ko-fi.com/limecorestudio"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('settings.supportDev')} ›
+            </a>
+          </Card>
+
           <Card padding="md">
             <span className="settings-field__label">{t('settings.language')}</span>
             <div className="settings-lang-grid" ref={langRef}>
