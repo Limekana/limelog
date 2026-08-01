@@ -63,7 +63,19 @@
     "errNetwork": "Serveur injoignable. Vérifiez votre connexion et réessayez.",
     "errGeneric": "Échec de la connexion.",
     "ageNote": "Vous devez avoir 16 ans ou plus pour créer un compte (13 ans si la loi locale le permet). En dessous, utilisez le mode invité — rien ne quitte votre appareil.",
-    "privacyLink": "Politique de confidentialité"
+    "privacyLink": "Politique de confidentialité",
+    "otpTitle": "Saisissez votre code",
+    "otpSub": "Nous avons envoyé un code à",
+    "otpLabel": "Code de vérification",
+    "otpSubmit": "Confirmer le compte",
+    "otpHint": "Le code est valable 60 minutes. Le lien dans l’e-mail fonctionne toujours.",
+    "otpResend": "Envoyer un nouveau code",
+    "otpResendIn": "Nouveau code dans",
+    "otpSent": "Nouveau code envoyé.",
+    "otpBack": "Utiliser une autre adresse",
+    "errOtp": "Ce code n’a pas fonctionné. Vérifiez-le et réessayez.",
+    "errOtpResend": "Impossible d’envoyer un nouveau code. Réessayez sous peu.",
+    "errOtpLength": "Ce code semble incomplet. Copiez le code entier depuis l’e-mail."
   },
   "onboarding": {
     "welcomeTitle": "Bienvenue sur LimeLog",

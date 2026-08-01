@@ -63,7 +63,19 @@
     "errNetwork": "Palvelimeen ei saatu yhteyttä. Tarkista verkkoyhteytesi ja yritä uudelleen.",
     "errGeneric": "Kirjautuminen epäonnistui.",
     "ageNote": "Tilin luomiseen vaaditaan 16 vuoden ikä (13, jos paikallinen laki sallii). Nuorempana käytä vierastilaa — mikään ei poistu laitteeltasi.",
-    "privacyLink": "Tietosuojaseloste"
+    "privacyLink": "Tietosuojaseloste",
+    "otpTitle": "Syötä koodi",
+    "otpSub": "Lähetimme koodin osoitteeseen",
+    "otpLabel": "Vahvistuskoodi",
+    "otpSubmit": "Vahvista tili",
+    "otpHint": "Koodi on voimassa 60 minuuttia. Myös sähköpostin linkki toimii edelleen.",
+    "otpResend": "Lähetä uusi koodi",
+    "otpResendIn": "Lähetä uusi koodi",
+    "otpSent": "Uusi koodi lähetetty.",
+    "otpBack": "Käytä toista sähköpostia",
+    "errOtp": "Koodi ei kelvannut. Tarkista se ja yritä uudelleen.",
+    "errOtpResend": "Uuden koodin lähetys epäonnistui. Yritä hetken kuluttua.",
+    "errOtpLength": "Koodi näyttää vajaalta. Kopioi koko koodi sähköpostista."
   },
   "onboarding": {
     "welcomeTitle": "Tervetuloa LimeLogiin",
