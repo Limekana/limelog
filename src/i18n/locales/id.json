@@ -441,5 +441,24 @@
   },
   "chart": {
     "needMoreSessions": "Perlu setidaknya 2 sesi dengan beban × repetisi untuk memperkirakan tren 1RM."
+  },
+  "cardio": {
+    "logButton": "Catat kardio",
+    "title": "Catat kardio",
+    "activity": {
+      "run": "Lari",
+      "cycle": "Bersepeda",
+      "swim": "Renang",
+      "row": "Dayung",
+      "walk": "Jalan",
+      "other": "Lainnya"
+    },
+    "duration": "Durasi (menit)",
+    "durationPh": "mis. 35",
+    "distance": "Jarak ({{unit}})",
+    "distancePh": "opsional",
+    "notes": "Catatan",
+    "notesPh": "Bagaimana rasanya?",
+    "activityLabel": "Aktivitas"
   }
 }

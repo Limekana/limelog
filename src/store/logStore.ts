@@ -1,7 +1,7 @@
 import { create } from 'zustand';
 import { storage } from '@/utils/storage';
 import { generateId } from '@/utils/helpers';
-import type { SessionLog, SetLog, VerticalJumpLog, StallFlag, StallFlagType, SessionMood, ExercisePR } from '@/types/logging';
+import type { SessionLog, SetLog, VerticalJumpLog, StallFlag, StallFlagType, SessionMood, ExercisePR, CardioActivity } from '@/types/logging';
 import { useProgramStore } from '@/store/programStore';
 import { useNexusStore } from '@/store/nexusStore';
 import { mapSessionLogToNexus } from '@/lib/nexusSync';
@@ -20,6 +20,16 @@ interface LogStore {
 
   // Session logging
   startSession: (sessionTemplateId: string, programId: string) => SessionLog;
+  /** v1.9 (Item 4) — log a finished cardio activity in one step. */
+  logCardio: (input: {
+    activityType: CardioActivity;
+    durationSeconds: number;
+    /** Metres. Omit for activities where distance means nothing. */
+    distanceMeters?: number;
+    notes?: string;
+    /** ISO timestamp; defaults to now. Lets the user log yesterday's run. */
+    when?: string;
+  }) => SessionLog;
   updateSessionNote: (logId: string, notes: string) => void;
   setPerceivedFatigue: (logId: string, fatigue: number) => void;
   setSessionDebrief: (
@@ -84,6 +94,33 @@ export const useLogStore = create<LogStore>((set, get) => ({
     const sessionLogs = [log, ...get().sessionLogs];
     storage.setSessionLogs(sessionLogs);
     set({ sessionLogs });
+    return log;
+  },
+
+  // v1.9 (Item 4) — cardio is logged after the fact, not lived through, so
+  // there is no in-progress state to enter: one form, one save.
+  //
+  // It creates the log and then calls the ordinary `finalizeSession` rather
+  // than writing its own push. That path already owns persistence, the Nexus
+  // payload mapping and the outbox enqueue; duplicating it here would mean two
+  // places to fix the next time the sync contract moves. PR detection runs and
+  // finds nothing, which is correct — a run has no sets to set a record on.
+  logCardio: ({ activityType, durationSeconds, distanceMeters, notes, when }) => {
+    const at = when ?? new Date().toISOString();
+    const log: SessionLog = {
+      id: generateId(),
+      activityType,
+      durationSeconds,
+      distanceMeters,
+      loggedAt: at,
+      perceivedFatigue: null,
+      notes,
+      sets: [],
+    };
+    const sessionLogs = [log, ...get().sessionLogs];
+    storage.setSessionLogs(sessionLogs);
+    set({ sessionLogs });
+    get().finalizeSession(log.id);
     return log;
   },
 

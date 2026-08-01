@@ -481,5 +481,24 @@
   },
   "chart": {
     "needMoreSessions": "يلزم ما لا يقل عن جلستين مسجَّل فيهما الوزن × التكرارات لتقدير اتجاه 1RM."
+  },
+  "cardio": {
+    "logButton": "تسجيل الكارديو",
+    "title": "تسجيل الكارديو",
+    "activity": {
+      "run": "جري",
+      "cycle": "دراجة",
+      "swim": "سباحة",
+      "row": "تجديف",
+      "walk": "مشي",
+      "other": "أخرى"
+    },
+    "duration": "المدة (دقائق)",
+    "durationPh": "مثال 35",
+    "distance": "المسافة ({{unit}})",
+    "distancePh": "اختياري",
+    "notes": "ملاحظات",
+    "notesPh": "كيف كان؟",
+    "activityLabel": "النشاط"
   }
 }

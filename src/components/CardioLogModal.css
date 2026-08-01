@@ -1,0 +1,141 @@
+.cardio-modal-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 200;
+  padding: 0 0 env(safe-area-inset-bottom, 0px);
+  animation: cardioModalFade 140ms var(--ease-strike);
+}
+
+@keyframes cardioModalFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.cardio-modal {
+  background: rgba(13, 15, 17, 0.68);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--accent-border);
+  border-radius: 0;
+  width: 100%;
+  max-width: 430px;
+  padding-bottom: 8px;
+  position: relative;
+  animation: cardioModalRise 260ms var(--ease-rise);
+}
+
+@keyframes cardioModalRise {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.cardio-modal::before {
+  content: '';
+  position: absolute;
+  top: 8px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 36px;
+  height: 4px;
+  background: rgba(200, 241, 53, 0.45);
+}
+
+.cardio-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 22px 20px 14px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+
+.cardio-modal__title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.cardio-modal__close {
+  color: var(--text-tertiary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  padding: 8px;
+  border-radius: var(--radius-pill);
+  transition: color 160ms var(--ease-snap);
+  min-width: 44px;
+  min-height: 44px;
+  align-items: center;
+  justify-content: center;
+  margin: -8px;
+}
+.cardio-modal__close:hover { color: var(--text-primary); }
+
+.cardio-modal__body {
+  padding: 16px 20px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+}
+
+.cardio-modal__label {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.12em;
+  color: var(--text-tertiary);
+}
+
+/* Six activities, not three conditions — they wrap onto two rows on a narrow
+   phone rather than being squeezed below a readable size. */
+.cardio-modal__activities {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+}
+
+.cardio-modal__activity {
+  flex: 1 1 30%;
+  padding: 10px 4px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: background 160ms var(--ease-snap), color 160ms var(--ease-snap), border-color 160ms var(--ease-snap);
+  min-height: 44px;
+}
+.cardio-modal__activity--active {
+  background: var(--accent-dim);
+  border-color: var(--accent-border);
+  color: var(--accent);
+}
+
+.cardio-modal__footer {
+  display: flex;
+  justify-content: flex-end;
+  gap: 8px;
+  padding: 0 20px 12px;
+}
+
+/* Inputs inherit the shared field styling; only the numeric ones need tabular
+   figures so the value doesn't jitter as it is typed. */
+.cardio-modal__label input {
+  font-variant-numeric: tabular-nums;
+}

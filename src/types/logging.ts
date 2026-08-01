@@ -12,10 +12,51 @@ export interface SetLog {
 
 export type SessionMood = 'great' | 'good' | 'neutral' | 'bad' | 'terrible';
 
+/**
+ * v1.9 (Item 4) — cardio activities, logged without sets or a program.
+ *
+ * Open-ended by design: the picker offers this list, but the value is a plain
+ * string end-to-end (and `activity_type` is `text`, not an enum, in Postgres),
+ * so adding an activity never needs a migration and a value written by a newer
+ * client never fails to store against an older schema.
+ */
+export const CARDIO_ACTIVITIES = ['run', 'cycle', 'swim', 'row', 'walk', 'other'] as const;
+export type BuiltinCardioActivity = (typeof CARDIO_ACTIVITIES)[number];
+export type CardioActivity = BuiltinCardioActivity | (string & Record<never, never>);
+
+/** Activities where a distance reading is meaningful. A basketball game has a
+ *  duration but no sensible distance, so the field is hidden rather than shown
+ *  as an empty box the user has to wonder about. */
+export const DISTANCE_ACTIVITIES: readonly BuiltinCardioActivity[] = [
+  'run',
+  'cycle',
+  'swim',
+  'row',
+  'walk',
+];
+
+export function activityTakesDistance(activity: CardioActivity | undefined): boolean {
+  return !!activity && (DISTANCE_ACTIVITIES as readonly string[]).includes(activity);
+}
+
 export interface SessionLog {
   id: string;
-  sessionTemplateId: string;
-  programId: string;
+  /**
+   * v1.9 — optional. A cardio session is ad-hoc: it belongs to no program and
+   * follows no session template. Requiring these was the entire reason non-gym
+   * logging could not be built in v1.8 (LL-7 A8, deferred). Absent on cardio,
+   * always present on a strength session logged from a program.
+   */
+  sessionTemplateId?: string;
+  programId?: string;
+  /**
+   * v1.9 — set only on cardio sessions, and the discriminator for the whole
+   * shape: absent means the pre-v1.9 strength session, driven by `sets`.
+   */
+  activityType?: CardioActivity;
+  durationSeconds?: number;
+  /** Metres. Absent for activities where distance means nothing. */
+  distanceMeters?: number;
   loggedAt: string;
   finalizedAt?: string;
   perceivedFatigue: number | null;

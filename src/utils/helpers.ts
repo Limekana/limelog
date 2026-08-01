@@ -25,6 +25,36 @@ export function formatWeight(kg: number, unit: 'kg' | 'lb'): string {
   return `${toDisplayWeight(kg, unit)} ${unit}`;
 }
 
+// ── Cardio (v1.9 Item 4) ───────────────────────────────────────────────────
+
+/**
+ * A duration in whole seconds as a compact string: "45 min", "1 h 12 min".
+ *
+ * Under an hour the hour part is dropped rather than rendered as "0 h", and on
+ * the hour the minutes are dropped rather than "1 h 0 min" — a stopwatch
+ * reading is not a clock, and the zero units are noise.
+ */
+export function formatDuration(seconds: number): string {
+  const totalMin = Math.max(0, Math.round(seconds / 60));
+  const h = Math.floor(totalMin / 60);
+  const m = totalMin % 60;
+  if (h === 0) return `${m} min`;
+  return m === 0 ? `${h} h` : `${h} h ${m} min`;
+}
+
+/**
+ * A distance in metres, rendered in the user's system.
+ *
+ * Deliberately no separate distance preference: `unitPreference` already
+ * records metric vs imperial for weight, and someone who thinks in pounds
+ * thinks in miles. A second toggle would let the two disagree, which is a
+ * setting nobody wants to own.
+ */
+export function formatDistance(meters: number, unit: 'kg' | 'lb'): string {
+  if (unit === 'lb') return `${Math.round((meters / 1609.344) * 100) / 100} mi`;
+  return `${Math.round((meters / 1000) * 100) / 100} km`;
+}
+
 // ── Locale-aware dates ─────────────────────────────────────────────────────
 
 /** The formatting locale, deliberately not the same value as the i18n resource

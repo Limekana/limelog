@@ -4,7 +4,7 @@ import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
-import { formatDate, toDisplayWeight } from '@/utils/helpers';
+import { formatDate, toDisplayWeight, formatDuration, formatDistance } from '@/utils/helpers';
 import { EmptyState, Card, Button, Tabs, TabPanel } from '@/components/ui';
 import { JumpLogModal } from '@/components/JumpLogModal';
 import { LoadChart } from '@/components/LoadChart';
@@ -215,15 +215,35 @@ export function ProgressPage() {
           ) : (
             finalizedLogs.map((l) => {
               const totalSets = l.sets.filter((s) => s.completed).length;
+              // v1.9 (Item 4) — a cardio entry has no session template and no
+              // sets, so it names and measures itself differently. `sets`
+              // would read "0 sets" for a 10 km run, which is worse than
+              // saying nothing.
+              const isCardio = !!l.activityType;
               return (
                 <Card key={l.id} padding="sm">
                   <div className="history-entry">
                     <div className="history-entry__main">
-                      <span className="history-entry__name">{getSessionName(l.sessionTemplateId)}</span>
+                      <span className="history-entry__name">
+                        {isCardio
+                          ? t(`cardio.activity.${l.activityType}`, { defaultValue: l.activityType })
+                          : getSessionName(l.sessionTemplateId ?? '')}
+                      </span>
                       <span className="history-entry__date">{formatDate(l.finalizedAt!)}</span>
                     </div>
                     <div className="history-entry__meta">
-                      <span className="history-entry__sets">{totalSets} sets</span>
+                      {isCardio ? (
+                        <>
+                          {l.durationSeconds !== undefined && (
+                            <span className="history-entry__sets">{formatDuration(l.durationSeconds)}</span>
+                          )}
+                          {l.distanceMeters !== undefined && (
+                            <span className="history-entry__sets">{formatDistance(l.distanceMeters, unit)}</span>
+                          )}
+                        </>
+                      ) : (
+                        <span className="history-entry__sets">{totalSets} sets</span>
+                      )}
                       {l.perceivedFatigue !== null && (
                         <span className="history-entry__fatigue">RPE {l.perceivedFatigue}</span>
                       )}

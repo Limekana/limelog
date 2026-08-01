@@ -32,6 +32,11 @@ export interface NexusWorkoutPayload {
   date: string;
   notes?: string;
   sets: NexusSetPayload[];
+  // v1.9 (Item 4) — cardio. Absent on a strength session, which is exactly what
+  // NULL means in `workout_sessions`.
+  activityType?: string;
+  durationSeconds?: number;
+  distanceMeters?: number;
   // v1.4 — optional AI debrief fields (null when not used).
   aiDebriefRaw?: string | null;
   aiRpe?: number | null;
@@ -61,10 +66,17 @@ export function mapSessionLogToNexus(
 
   return {
     sessionId: log.id,
-    sessionType: session?.name ?? 'workout',
+    // v1.9 — `session_type` is NOT NULL and is what NCC and older LimeLog
+    // builds display, so a cardio session puts its activity there rather than
+    // falling through to the generic 'workout'. The row then reads sensibly on
+    // a client that knows nothing about `activity_type`.
+    sessionType: session?.name ?? log.activityType ?? 'workout',
     date: log.finalizedAt ?? log.loggedAt,
     notes: log.notes,
     sets,
+    activityType: log.activityType,
+    durationSeconds: log.durationSeconds,
+    distanceMeters: log.distanceMeters,
     aiDebriefRaw: log.aiDebriefRaw ?? null,
     aiRpe: log.aiRpe ?? null,
     aiPainFlags: log.aiPainFlags ?? null,
@@ -103,6 +115,9 @@ export async function pushWorkoutToNexus(workout: NexusWorkoutPayload): Promise<
       id: sessionId,
       user_id: user.id,
       session_type: workout.sessionType,
+      activity_type: workout.activityType ?? null,
+      duration_seconds: workout.durationSeconds ?? null,
+      distance_meters: workout.distanceMeters ?? null,
       date: workout.date,
       notes: workout.notes ?? null,
       ai_debrief_raw: workout.aiDebriefRaw ?? null,

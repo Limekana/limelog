@@ -449,5 +449,24 @@
   },
   "chart": {
     "needMoreSessions": "1RM-trendin arviointiin tarvitaan vähintään 2 treeniä, joissa on paino × toistot."
+  },
+  "cardio": {
+    "logButton": "Kirjaa kestävyys",
+    "title": "Kirjaa kestävyysharjoitus",
+    "activity": {
+      "run": "Juoksu",
+      "cycle": "Pyöräily",
+      "swim": "Uinti",
+      "row": "Soutu",
+      "walk": "Kävely",
+      "other": "Muu"
+    },
+    "duration": "Kesto (minuuttia)",
+    "durationPh": "esim. 35",
+    "distance": "Matka ({{unit}})",
+    "distancePh": "valinnainen",
+    "notes": "Muistiinpanot",
+    "notesPh": "Miltä tuntui?",
+    "activityLabel": "Laji"
   }
 }

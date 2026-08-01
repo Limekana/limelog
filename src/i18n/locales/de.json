@@ -449,5 +449,24 @@
   },
   "chart": {
     "needMoreSessions": "Für einen 1RM-Trend braucht es mindestens 2 Einheiten mit Gewicht × Wiederholungen."
+  },
+  "cardio": {
+    "logButton": "Cardio eintragen",
+    "title": "Cardio eintragen",
+    "activity": {
+      "run": "Laufen",
+      "cycle": "Radfahren",
+      "swim": "Schwimmen",
+      "row": "Rudern",
+      "walk": "Gehen",
+      "other": "Andere"
+    },
+    "duration": "Dauer (Minuten)",
+    "durationPh": "z. B. 35",
+    "distance": "Distanz ({{unit}})",
+    "distancePh": "optional",
+    "notes": "Notizen",
+    "notesPh": "Wie lief es?",
+    "activityLabel": "Aktivität"
   }
 }

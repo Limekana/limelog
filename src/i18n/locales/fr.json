@@ -457,5 +457,24 @@
   },
   "chart": {
     "needMoreSessions": "Il faut au moins 2 séances avec poids × répétitions pour estimer une tendance de 1RM."
+  },
+  "cardio": {
+    "logButton": "Noter le cardio",
+    "title": "Noter le cardio",
+    "activity": {
+      "run": "Course",
+      "cycle": "Vélo",
+      "swim": "Natation",
+      "row": "Rameur",
+      "walk": "Marche",
+      "other": "Autre"
+    },
+    "duration": "Durée (minutes)",
+    "durationPh": "ex. 35",
+    "distance": "Distance ({{unit}})",
+    "distancePh": "facultatif",
+    "notes": "Notes",
+    "notesPh": "Comment c’était ?",
+    "activityLabel": "Activité"
   }
 }
