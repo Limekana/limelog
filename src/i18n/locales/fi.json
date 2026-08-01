@@ -134,7 +134,10 @@
     "logJump": "Kirjaa hyppy",
     "logFirstJump": "Kirjaa ensimmäinen hyppy",
     "noJumpsTitle": "Ei kirjattuja hyppyjä",
-    "noJumpsBody": "Seuraa vertikaalihyppyäsi urheilullisen kehityksen mittarina."
+    "noJumpsBody": "Seuraa vertikaalihyppyäsi urheilullisen kehityksen mittarina.",
+    "unknownExercise": "Tuntematon liike",
+    "stallWeightPlateau": "Painon tasanne",
+    "stallRpeCreep": "RPE:n nousu"
   },
   "today": {
     "noProgramTitle": "Ei aktiivista ohjelmaa",
@@ -274,7 +277,8 @@
       "thu": "To",
       "fri": "Pe",
       "sat": "La"
-    }
+    },
+    "deactivate": "Poista käytöstä"
   },
   "library": {
     "title": "Liikekirjasto",

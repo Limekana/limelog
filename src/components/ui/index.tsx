@@ -141,6 +141,7 @@ export function TabPanel({ tabKey, activeKey, children }: TabPanelProps) {
   if (tabKey !== activeKey) return null;
   return (
     <div
+      className="tab-panel"
       role="tabpanel"
       id={`tabpanel-${tabKey}`}
       aria-labelledby={`tab-${tabKey}`}

@@ -132,7 +132,10 @@
     "logJump": "记录跳跃",
     "logFirstJump": "记录第一次跳跃",
     "noJumpsTitle": "尚无跳跃记录",
-    "noJumpsBody": "记录垂直跳以追踪运动能力的进展。"
+    "noJumpsBody": "记录垂直跳以追踪运动能力的进展。",
+    "unknownExercise": "未知动作",
+    "stallWeightPlateau": "重量停滞",
+    "stallRpeCreep": "RPE 上升"
   },
   "today": {
     "noProgramTitle": "没有进行中的计划",
@@ -271,7 +274,8 @@
       "thu": "四",
       "fri": "五",
       "sat": "六"
-    }
+    },
+    "deactivate": "停用"
   },
   "library": {
     "title": "动作库",

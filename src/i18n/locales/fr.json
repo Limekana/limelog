@@ -136,7 +136,10 @@
     "logJump": "Enregistrer un saut",
     "logFirstJump": "Enregistrer le premier saut",
     "noJumpsTitle": "Aucun saut enregistré",
-    "noJumpsBody": "Suivez votre saut vertical pour mesurer vos progrès athlétiques."
+    "noJumpsBody": "Suivez votre saut vertical pour mesurer vos progrès athlétiques.",
+    "unknownExercise": "Exercice inconnu",
+    "stallWeightPlateau": "Plateau de charge",
+    "stallRpeCreep": "Hausse du RPE"
   },
   "today": {
     "noProgramTitle": "Aucun programme actif",
@@ -281,7 +284,8 @@
     },
     "phases_many": "{{count}} phases",
     "sessions_many": "{{count}} séances",
-    "exercises_many": "{{count}} exercices"
+    "exercises_many": "{{count}} exercices",
+    "deactivate": "Désactiver"
   },
   "library": {
     "title": "Bibliothèque d'exercices",

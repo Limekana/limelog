@@ -142,7 +142,10 @@
     "logJump": "تسجيل قفزة",
     "logFirstJump": "سجّل أول قفزة",
     "noJumpsTitle": "لا توجد قفزات مسجَّلة",
-    "noJumpsBody": "تتبّع قفزتك العمودية لمراقبة تقدّمك الرياضي."
+    "noJumpsBody": "تتبّع قفزتك العمودية لمراقبة تقدّمك الرياضي.",
+    "unknownExercise": "تمرين غير معروف",
+    "stallWeightPlateau": "ثبات الوزن",
+    "stallRpeCreep": "ارتفاع RPE"
   },
   "today": {
     "noProgramTitle": "لا يوجد برنامج نشط",
@@ -384,7 +387,8 @@
       "thu": "خمي",
       "fri": "جمع",
       "sat": "سبت"
-    }
+    },
+    "deactivate": "إلغاء التفعيل"
   },
   "library": {
     "title": "مكتبة التمارين",

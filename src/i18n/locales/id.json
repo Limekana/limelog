@@ -132,7 +132,10 @@
     "logJump": "Catat lompatan",
     "logFirstJump": "Catat lompatan pertama",
     "noJumpsTitle": "Belum ada lompatan",
-    "noJumpsBody": "Lacak lompatan vertikalmu untuk memantau kemajuan atletik."
+    "noJumpsBody": "Lacak lompatan vertikalmu untuk memantau kemajuan atletik.",
+    "unknownExercise": "Latihan tidak dikenal",
+    "stallWeightPlateau": "Stagnasi beban",
+    "stallRpeCreep": "Kenaikan RPE"
   },
   "today": {
     "noProgramTitle": "Tidak ada program aktif",
@@ -349,7 +352,8 @@
       "thu": "Kam",
       "fri": "Jum",
       "sat": "Sab"
-    }
+    },
+    "deactivate": "Nonaktifkan"
   },
   "library": {
     "title": "Pustaka gerakan",

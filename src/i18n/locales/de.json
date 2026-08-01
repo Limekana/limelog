@@ -134,7 +134,10 @@
     "logJump": "Sprung erfassen",
     "logFirstJump": "Ersten Sprung erfassen",
     "noJumpsTitle": "Keine Sprünge erfasst",
-    "noJumpsBody": "Verfolge deinen Vertikalsprung, um athletische Fortschritte zu sehen."
+    "noJumpsBody": "Verfolge deinen Vertikalsprung, um athletische Fortschritte zu sehen.",
+    "unknownExercise": "Unbekannte Übung",
+    "stallWeightPlateau": "Gewichtsplateau",
+    "stallRpeCreep": "RPE-Anstieg"
   },
   "today": {
     "noProgramTitle": "Kein aktives Programm",
@@ -274,7 +277,8 @@
       "thu": "Do",
       "fri": "Fr",
       "sat": "Sa"
-    }
+    },
+    "deactivate": "Deaktivieren"
   },
   "library": {
     "title": "Übungsbibliothek",

@@ -134,7 +134,10 @@
     "logJump": "Log jump",
     "logFirstJump": "Log first jump",
     "noJumpsTitle": "No jumps logged",
-    "noJumpsBody": "Track your vertical jump to monitor athletic progress."
+    "noJumpsBody": "Track your vertical jump to monitor athletic progress.",
+    "unknownExercise": "Unknown exercise",
+    "stallWeightPlateau": "Weight plateau",
+    "stallRpeCreep": "RPE creep"
   },
   "today": {
     "noProgramTitle": "No active program",
@@ -274,7 +277,8 @@
       "thu": "Thu",
       "fri": "Fri",
       "sat": "Sat"
-    }
+    },
+    "deactivate": "Deactivate"
   },
   "library": {
     "title": "Exercise Library",

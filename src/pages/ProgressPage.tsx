@@ -76,8 +76,14 @@ export function ProgressPage() {
                 const ex = exercises.find((e) => e.id === f.exerciseId);
                 return (
                   <div key={f.id} className="progress-stall-item">
-                    <span>{ex?.name ?? 'Unknown'}</span>
-                    <span className="progress-stall-item__type">{f.flagType === 'weight_plateau' ? 'Weight plateau' : 'RPE creep'}</span>
+                    {/* Was English-only in a box that is otherwise translated —
+                        found while fixing this box's spacing. */}
+                    <span>{ex?.name ?? t('progress.unknownExercise')}</span>
+                    <span className="progress-stall-item__type">
+                      {f.flagType === 'weight_plateau'
+                        ? t('progress.stallWeightPlateau')
+                        : t('progress.stallRpeCreep')}
+                    </span>
                   </div>
                 );
               })}

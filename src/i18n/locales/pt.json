@@ -136,7 +136,10 @@
     "logJump": "Registrar salto",
     "logFirstJump": "Registrar o primeiro salto",
     "noJumpsTitle": "Nenhum salto registrado",
-    "noJumpsBody": "Acompanhe seu salto vertical para monitorar sua evolução atlética."
+    "noJumpsBody": "Acompanhe seu salto vertical para monitorar sua evolução atlética.",
+    "unknownExercise": "Exercício desconhecido",
+    "stallWeightPlateau": "Estagnação de carga",
+    "stallRpeCreep": "Aumento de RPE"
   },
   "today": {
     "noProgramTitle": "Nenhum programa ativo",
@@ -363,7 +366,8 @@
       "thu": "Qui",
       "fri": "Sex",
       "sat": "Sáb"
-    }
+    },
+    "deactivate": "Desativar"
   },
   "library": {
     "title": "Biblioteca de exercícios",
