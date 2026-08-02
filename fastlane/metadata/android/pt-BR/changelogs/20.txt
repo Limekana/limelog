@@ -1,0 +1,1 @@
+Registre cardio — corridas, pedaladas e natação — sem séries nem programa. Dá para confirmar uma conta com o código do e-mail, e não só pelo link. Três correções: um programa não podia ser desativado, o espaçamento dos painéis estava errado e a cor de navegação sumia ao tocar. As Configurações têm um link de apoio.

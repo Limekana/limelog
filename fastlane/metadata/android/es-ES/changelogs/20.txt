@@ -1,0 +1,1 @@
+Registra cardio — carreras, salidas en bici y natación — sin series ni programa. Puedes confirmar una cuenta con el código del correo, no solo con el enlace. Tres correcciones: no se podía desactivar un programa, el espaciado fallaba en los paneles y el acento de navegación se perdía al tocar. En Ajustes hay un enlace para apoyar el desarrollo.
