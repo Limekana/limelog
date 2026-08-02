@@ -134,7 +134,10 @@
     "logJump": "Kirjaa hyppy",
     "logFirstJump": "Kirjaa ensimmäinen hyppy",
     "noJumpsTitle": "Ei kirjattuja hyppyjä",
-    "noJumpsBody": "Seuraa vertikaalihyppyäsi urheilullisen kehityksen mittarina."
+    "noJumpsBody": "Seuraa vertikaalihyppyäsi urheilullisen kehityksen mittarina.",
+    "unknownExercise": "Tuntematon liike",
+    "stallWeightPlateau": "Painon tasanne",
+    "stallRpeCreep": "RPE:n nousu"
   },
   "today": {
     "noProgramTitle": "Ei aktiivista ohjelmaa",
@@ -274,7 +277,8 @@
       "thu": "To",
       "fri": "Pe",
       "sat": "La"
-    }
+    },
+    "deactivate": "Poista käytöstä"
   },
   "library": {
     "title": "Liikekirjasto",
@@ -449,5 +453,24 @@
   },
   "chart": {
     "needMoreSessions": "1RM-trendin arviointiin tarvitaan vähintään 2 treeniä, joissa on paino × toistot."
+  },
+  "cardio": {
+    "logButton": "Kirjaa kestävyys",
+    "title": "Kirjaa kestävyysharjoitus",
+    "activity": {
+      "run": "Juoksu",
+      "cycle": "Pyöräily",
+      "swim": "Uinti",
+      "row": "Soutu",
+      "walk": "Kävely",
+      "other": "Muu"
+    },
+    "duration": "Kesto (minuuttia)",
+    "durationPh": "esim. 35",
+    "distance": "Matka ({{unit}})",
+    "distancePh": "valinnainen",
+    "notes": "Muistiinpanot",
+    "notesPh": "Miltä tuntui?",
+    "activityLabel": "Laji"
   }
 }

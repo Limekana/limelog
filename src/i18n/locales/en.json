@@ -134,7 +134,10 @@
     "logJump": "Log jump",
     "logFirstJump": "Log first jump",
     "noJumpsTitle": "No jumps logged",
-    "noJumpsBody": "Track your vertical jump to monitor athletic progress."
+    "noJumpsBody": "Track your vertical jump to monitor athletic progress.",
+    "unknownExercise": "Unknown exercise",
+    "stallWeightPlateau": "Weight plateau",
+    "stallRpeCreep": "RPE creep"
   },
   "today": {
     "noProgramTitle": "No active program",
@@ -274,7 +277,8 @@
       "thu": "Thu",
       "fri": "Fri",
       "sat": "Sat"
-    }
+    },
+    "deactivate": "Deactivate"
   },
   "library": {
     "title": "Exercise Library",
@@ -449,5 +453,24 @@
   },
   "chart": {
     "needMoreSessions": "Need at least 2 sessions with logged weight × reps to estimate a 1RM trend."
+  },
+  "cardio": {
+    "logButton": "Log cardio",
+    "title": "Log cardio",
+    "activity": {
+      "run": "Run",
+      "cycle": "Cycle",
+      "swim": "Swim",
+      "row": "Row",
+      "walk": "Walk",
+      "other": "Other"
+    },
+    "duration": "Duration (minutes)",
+    "durationPh": "e.g. 35",
+    "distance": "Distance ({{unit}})",
+    "distancePh": "optional",
+    "notes": "Notes",
+    "notesPh": "How did it feel?",
+    "activityLabel": "Activity"
   }
 }

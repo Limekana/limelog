@@ -136,7 +136,10 @@
     "logJump": "Registrar salto",
     "logFirstJump": "Registrar el primer salto",
     "noJumpsTitle": "Sin saltos registrados",
-    "noJumpsBody": "Registra tu salto vertical para seguir tu progreso atlético."
+    "noJumpsBody": "Registra tu salto vertical para seguir tu progreso atlético.",
+    "unknownExercise": "Ejercicio desconocido",
+    "stallWeightPlateau": "Estancamiento de peso",
+    "stallRpeCreep": "Aumento de RPE"
   },
   "today": {
     "noProgramTitle": "Sin programa activo",
@@ -281,7 +284,8 @@
     },
     "phases_many": "{{count}} fases",
     "sessions_many": "{{count}} sesiones",
-    "exercises_many": "{{count}} ejercicios"
+    "exercises_many": "{{count}} ejercicios",
+    "deactivate": "Desactivar"
   },
   "library": {
     "title": "Biblioteca de ejercicios",
@@ -457,5 +461,24 @@
   },
   "chart": {
     "needMoreSessions": "Se necesitan al menos 2 sesiones con peso × repeticiones para estimar la tendencia de 1RM."
+  },
+  "cardio": {
+    "logButton": "Registrar cardio",
+    "title": "Registrar cardio",
+    "activity": {
+      "run": "Correr",
+      "cycle": "Ciclismo",
+      "swim": "Natación",
+      "row": "Remo",
+      "walk": "Caminar",
+      "other": "Otro"
+    },
+    "duration": "Duración (minutos)",
+    "durationPh": "p. ej. 35",
+    "distance": "Distancia ({{unit}})",
+    "distancePh": "opcional",
+    "notes": "Notas",
+    "notesPh": "¿Cómo fue?",
+    "activityLabel": "Actividad"
   }
 }

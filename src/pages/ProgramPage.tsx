@@ -9,7 +9,8 @@ import './ProgramPage.css';
 
 export function ProgramPage() {
   const { t } = useTranslation();
-  const { programs, activeProgram, createProgram, setActiveProgram } = useProgramStore();
+  const { programs, activeProgram, createProgram, setActiveProgram, deactivateProgram } =
+    useProgramStore();
   const [showNew, setShowNew] = useState(false);
   const [viewingProgramId, setViewingProgramId] = useState<string | null>(
     activeProgram?.id ?? null
@@ -36,7 +37,21 @@ export function ProgramPage() {
                 {t('program.setActive')}
               </Button>
             )}
-            {viewingProgram.status === 'active' && <Badge label={t('program.active')} variant="accent" size="md" />}
+            {viewingProgram.status === 'active' && (
+              <>
+                <Badge label={t('program.active')} variant="accent" size="md" />
+                {/* The badge used to be the whole story: once a program was
+                    active nothing could turn it off, so a user with a single
+                    program was stuck with it. */}
+                <Button
+                  size="sm"
+                  variant="ghost"
+                  onClick={() => deactivateProgram(viewingProgram.id)}
+                >
+                  {t('program.deactivate')}
+                </Button>
+              </>
+            )}
           </div>
         </div>
         <div className="program-page__title-row">

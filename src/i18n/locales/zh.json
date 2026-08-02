@@ -132,7 +132,10 @@
     "logJump": "记录跳跃",
     "logFirstJump": "记录第一次跳跃",
     "noJumpsTitle": "尚无跳跃记录",
-    "noJumpsBody": "记录垂直跳以追踪运动能力的进展。"
+    "noJumpsBody": "记录垂直跳以追踪运动能力的进展。",
+    "unknownExercise": "未知动作",
+    "stallWeightPlateau": "重量停滞",
+    "stallRpeCreep": "RPE 上升"
   },
   "today": {
     "noProgramTitle": "没有进行中的计划",
@@ -271,7 +274,8 @@
       "thu": "四",
       "fri": "五",
       "sat": "六"
-    }
+    },
+    "deactivate": "停用"
   },
   "library": {
     "title": "动作库",
@@ -446,5 +450,24 @@
   },
   "chart": {
     "needMoreSessions": "至少需要 2 次记录了重量 × 次数的训练，才能估算 1RM 趋势。"
+  },
+  "cardio": {
+    "logButton": "记录有氧",
+    "title": "记录有氧运动",
+    "activity": {
+      "run": "跑步",
+      "cycle": "骑行",
+      "swim": "游泳",
+      "row": "划船",
+      "walk": "步行",
+      "other": "其他"
+    },
+    "duration": "时长（分钟）",
+    "durationPh": "例如 35",
+    "distance": "距离（{{unit}}）",
+    "distancePh": "可选",
+    "notes": "备注",
+    "notesPh": "感觉如何？",
+    "activityLabel": "运动类型"
   }
 }

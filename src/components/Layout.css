@@ -102,9 +102,19 @@
   min-height: 44px;
 }
 
-.nav-item:hover { color: var(--text-secondary); }
+/* Hover is a pointer affordance and a touch screen has no pointer. Without
+   this guard a tap leaves the item in a sticky :hover state, and because
+   `.nav-item:hover` scores (0,2,0) against `.nav-item--active`'s (0,1,0), that
+   stale hover OUTRANKED the active accent — the tab lit up on press and went
+   grey again the moment the page settled. */
+@media (hover: hover) and (pointer: fine) {
+  .nav-item:hover { color: var(--text-secondary); }
+}
 
-.nav-item--active {
+/* Doubled class so the active state also wins on specificity rather than only
+   on source order. The media query above is the real fix; this keeps it true
+   if a hover state is ever reintroduced for touch. */
+.nav-item.nav-item--active {
   color: var(--accent);
   border-top-color: var(--accent);
   background: var(--accent-veil);

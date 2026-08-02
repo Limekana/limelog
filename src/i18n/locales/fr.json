@@ -136,7 +136,10 @@
     "logJump": "Enregistrer un saut",
     "logFirstJump": "Enregistrer le premier saut",
     "noJumpsTitle": "Aucun saut enregistré",
-    "noJumpsBody": "Suivez votre saut vertical pour mesurer vos progrès athlétiques."
+    "noJumpsBody": "Suivez votre saut vertical pour mesurer vos progrès athlétiques.",
+    "unknownExercise": "Exercice inconnu",
+    "stallWeightPlateau": "Plateau de charge",
+    "stallRpeCreep": "Hausse du RPE"
   },
   "today": {
     "noProgramTitle": "Aucun programme actif",
@@ -281,7 +284,8 @@
     },
     "phases_many": "{{count}} phases",
     "sessions_many": "{{count}} séances",
-    "exercises_many": "{{count}} exercices"
+    "exercises_many": "{{count}} exercices",
+    "deactivate": "Désactiver"
   },
   "library": {
     "title": "Bibliothèque d'exercices",
@@ -457,5 +461,24 @@
   },
   "chart": {
     "needMoreSessions": "Il faut au moins 2 séances avec poids × répétitions pour estimer une tendance de 1RM."
+  },
+  "cardio": {
+    "logButton": "Noter le cardio",
+    "title": "Noter le cardio",
+    "activity": {
+      "run": "Course",
+      "cycle": "Vélo",
+      "swim": "Natation",
+      "row": "Rameur",
+      "walk": "Marche",
+      "other": "Autre"
+    },
+    "duration": "Durée (minutes)",
+    "durationPh": "ex. 35",
+    "distance": "Distance ({{unit}})",
+    "distancePh": "facultatif",
+    "notes": "Notes",
+    "notesPh": "Comment c’était ?",
+    "activityLabel": "Activité"
   }
 }

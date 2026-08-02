@@ -202,3 +202,12 @@
   color: var(--text-tertiary);
   font-variant-numeric: tabular-nums;
 }
+
+/* v1.9 (Item 4) — cardio entry point. Right-aligned and quiet: it is a
+   secondary action next to the day's planned sessions, not a competitor to
+   them. */
+.today-cardio-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: 4px 0 2px;
+}

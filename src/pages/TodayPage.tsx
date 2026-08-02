@@ -1,4 +1,4 @@
-import { useMemo } from 'react';
+import { useMemo, useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
@@ -8,8 +8,9 @@ import type { SessionTemplate } from '@/types/program';
 import { getDayOfWeek, formatWeight } from '@/utils/helpers';
 import { bestEstimateForExercise, missedRepRatio } from '@/utils/oneRepMax';
 import { EmptyState, Button, Badge } from '@/components/ui';
-import { Dumbbell, AlertTriangle, CheckCircle2, TrendingUp, ChevronRight } from 'lucide-react';
+import { Dumbbell, AlertTriangle, CheckCircle2, TrendingUp, ChevronRight, Footprints } from 'lucide-react';
 import { HealthTodayStrip } from '@/components/HealthConnect';
+import { CardioLogModal } from '@/components/CardioLogModal';
 import { useConfirm } from '@/components/confirmContext';
 import './TodayPage.css';
 
@@ -26,6 +27,10 @@ export function TodayPage() {
   const { t, i18n } = useTranslation();
   const confirm = useConfirm();
   const navigate = useNavigate();
+  // v1.9 (Item 4) — cardio logging. Reachable from both branches of this page:
+  // someone who only runs has no program, so gating it behind the program view
+  // would hide it from exactly the person it exists for.
+  const [showCardio, setShowCardio] = useState(false);
   const { activeProgram, exercises, advancePhase } = useProgramStore();
   const { sessionLogs, startSession, unfinalizeSession, discardSession, stallFlags } = useLogStore();
   const unit = useUserStore((s) => s.profile.unitPreference);
@@ -128,6 +133,13 @@ export function TodayPage() {
           description={t('today.noProgramBody')}
           action={<Button variant="primary" onClick={() => navigate('/program')}>{t('today.goToPrograms')}</Button>}
         />
+        {/* A program is for lifting. Cardio needs none, so it stays reachable
+            here — this is the screen a runner who never builds a program sees
+            every time they open the app. */}
+        <Button variant="ghost" fullWidth onClick={() => setShowCardio(true)}>
+          <Footprints size={16} /> {t('cardio.logButton')}
+        </Button>
+        {showCardio && <CardioLogModal onClose={() => setShowCardio(false)} />}
       </div>
     );
   }
@@ -156,6 +168,15 @@ export function TodayPage() {
       {/* v1.3 BUG-20 — Health Connect daily activity strip. Renders nothing
           when Health Connect is unavailable (web / F-Droid / no HC app). */}
       <HealthTodayStrip />
+
+      {/* v1.9 (Item 4) — a run or ride belongs to no program, so it sits
+          outside the session list rather than inside it. */}
+      <div className="today-cardio-row">
+        <Button variant="ghost" size="sm" onClick={() => setShowCardio(true)}>
+          <Footprints size={15} /> {t('cardio.logButton')}
+        </Button>
+      </div>
+      {showCardio && <CardioLogModal onClose={() => setShowCardio(false)} />}
 
       {activeStalls.length > 0 && (
         <div className="today-alert">
