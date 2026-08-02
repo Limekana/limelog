@@ -54,7 +54,9 @@ interface NexusStore {
 
   init: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  /** Resolves with whether the account still needs email confirmation — see
+   *  the implementation note. Callers that don't care may ignore it. */
+  signUp: (email: string, password: string) => Promise<{ needsConfirmation: boolean }>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   setSyncEnabled: (v: boolean) => void;
@@ -179,6 +181,12 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       throw error;
     }
     set({ userEmail: data.user?.email ?? null, loading: false });
+    // AUTH-2 — Supabase returns a session only when the project auto-confirms.
+    // With confirmation required, `session` is null and the caller has to show
+    // the code step rather than waiting on an auth-state change that never
+    // comes. Reported rather than inferred: previously a successful signup
+    // awaiting confirmation looked identical to a stall.
+    return { needsConfirmation: !data.session };
   },
 
   signInWithGoogle: async () => {

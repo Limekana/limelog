@@ -16,10 +16,23 @@ import { useTranslation } from 'react-i18next';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Button, Card } from '@/components/ui';
 import { useNexusStore } from '@/store/nexusStore';
+import { supabase } from '@/lib/supabase';
 import { inheritFromNexus } from '@/lib/suiteSso';
 import { setGuestMode } from '@/lib/guestMode';
 import { translateAuthError } from '@/lib/authErrors';
 import './FirstLaunchAuth.css';
+
+// AUTH-2 — confirmation-code bounds, ported from StudyDesk's AuthGate.
+//
+// Supabase's Mailer OTP Length is a project setting with a documented 6-10
+// range, and this project emits 8. The whole range is accepted on purpose:
+// StudyDesk's first version assumed 6, which left the field physically unable
+// to hold a valid code (fixed in 1.6.2), and pinning it to 8 would only defer
+// the same failure to the next settings change.
+const OTP_MIN = 6;
+const OTP_MAX = 10;
+
+const RESEND_COOLDOWN_S = 60;
 
 const SuiteSsoProbe = registerPlugin<{
   getNexusSession(): Promise<{ available: boolean; reason?: string }>;
@@ -43,6 +56,11 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
   const [error, setError] = useState<string | null>(null);
   const [nexusAvailable, setNexusAvailable] = useState(false);
   const [busy, setBusy] = useState(false);
+  // AUTH-2 — code-entry step, ported from StudyDesk's AuthGate.
+  const [awaitingCode, setAwaitingCode] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [info, setInfo] = useState<string | null>(null);
+  const [resendIn, setResendIn] = useState(0);
 
   // Probe NCC's SessionContentProvider on mount. Silent on failure: when NCC
   // isn't installed or there's no published session, the affordance just
@@ -62,6 +80,14 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
       cancelled = true;
     };
   }, []);
+
+  // AUTH-2 — resend cooldown. An interval rather than a timeout chain, so a
+  // re-render can't orphan a pending tick; it clears itself when it hits 0.
+  useEffect(() => {
+    if (resendIn <= 0) return;
+    const id = setInterval(() => setResendIn((s) => (s <= 1 ? 0 : s - 1)), 1000);
+    return () => clearInterval(id);
+  }, [resendIn]);
 
   async function handleNexus() {
     setError(null);
@@ -113,7 +139,15 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
       if (mode === 'signin') {
         await signIn(email.trim(), password);
       } else {
-        await signUp(email.trim(), password);
+        const { needsConfirmation } = await signUp(email.trim(), password);
+        if (needsConfirmation) {
+          // AUTH-2 — no session yet, so no auth-state change is coming. Show
+          // the code step instead of leaving the user on a form that looks
+          // like it did nothing.
+          setPassword('');
+          setAwaitingCode(true);
+          return;
+        }
       }
       await setGuestMode(false);
       setPassword('');
@@ -125,12 +159,135 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
     }
   }
 
+  async function handleVerify(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setInfo(null);
+    const token = otpCode.replace(/\D/g, '');
+    // Lower bound, not an exact length — see OTP_MIN.
+    if (token.length < OTP_MIN) {
+      setError(t('auth.errOtpLength'));
+      return;
+    }
+    setBusy(true);
+    try {
+      const { error: err } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token,
+        type: 'signup',
+      });
+      if (err) throw err;
+      await setGuestMode(false);
+      // Success fires onAuthStateChange, which drives the parent re-render.
+    } catch (err) {
+      setError(translateAuthError(err as Error, t) ?? t('auth.errOtp'));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleResend() {
+    if (resendIn > 0 || busy) return;
+    setError(null);
+    setInfo(null);
+    setBusy(true);
+    try {
+      const { error: err } = await supabase.auth.resend({ type: 'signup', email: email.trim() });
+      if (err) throw err;
+      setInfo(t('auth.otpSent'));
+    } catch (err) {
+      setError(translateAuthError(err as Error, t) ?? t('auth.errOtpResend'));
+    } finally {
+      // Cooldown starts either way: the usual cause of a failure here is
+      // having hit the server-side send interval, and re-enabling the button
+      // immediately just invites the same error again.
+      setResendIn(RESEND_COOLDOWN_S);
+      setBusy(false);
+    }
+  }
+
   async function handleGuest() {
     await setGuestMode(true);
     onContinue();
   }
 
   const disabled = busy || storeLoading;
+
+  // AUTH-2 — the emailed link is not replaced. The installed Supabase template
+  // carries a link and a code off the same token, so this is a second way
+  // through and mail already sitting in an inbox keeps working.
+  if (awaitingCode) {
+    return (
+      <div className="fla-wrap">
+        <div className="fla-stack">
+          <div className="fla-header">
+            {/* "LimeLog" is the product name — deliberately not a key. */}
+            <div className="fla-wordmark">LimeLog</div>
+            <div className="fla-tagline">{t('auth.tagline')}</div>
+          </div>
+
+          <Card padding="md" className="fla-card">
+            <div className="fla-title">{t('auth.otpTitle')}</div>
+            <div className="fla-sub">
+              {t('auth.otpSub')} {email.trim()}
+            </div>
+
+            <form onSubmit={handleVerify} className="fla-form">
+              <label className="fla-field">
+                <span className="fla-field-label">{t('auth.otpLabel')}</span>
+                <input
+                  className="fla-otp-input"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  autoFocus
+                  /* Placeholder length follows OTP_MAX rather than a literal,
+                     so the field never advertises a stale digit count. */
+                  placeholder={'-'.repeat(OTP_MAX)}
+                  maxLength={OTP_MAX}
+                  value={otpCode}
+                  onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, OTP_MAX))}
+                />
+              </label>
+
+              {error && <div className="fla-error">{error}</div>}
+              {info && <div className="fla-info">{info}</div>}
+
+              <Button type="submit" variant="primary" fullWidth disabled={disabled}>
+                {t('auth.otpSubmit')}
+              </Button>
+            </form>
+
+            <div className="fla-sub fla-otp-hint">{t('auth.otpHint')}</div>
+
+            <Button
+              type="button"
+              variant="ghost"
+              fullWidth
+              disabled={resendIn > 0 || disabled}
+              onClick={handleResend}
+            >
+              {resendIn > 0 ? `${t('auth.otpResendIn')} ${resendIn}s` : t('auth.otpResend')}
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              fullWidth
+              onClick={() => {
+                setAwaitingCode(false);
+                setOtpCode('');
+                setError(null);
+                setInfo(null);
+              }}
+            >
+              {t('auth.otpBack')}
+            </Button>
+          </Card>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div className="fla-wrap">
