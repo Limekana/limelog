@@ -171,7 +171,10 @@
     "deleteAccountNote": "立即且不可逆地抹除你的账户及其全部数据，涵盖三款应用。没有恢复期。",
     "deleteAccountConfirm1": "删除你的账户及其中所有内容？此操作无法撤销。",
     "deleteAccountConfirm2": "最后确认 — 这同时会抹除你的 Nexus Command Center 和 StudyDesk 数据。继续吗？",
-    "deleteAccountFailed": "删除失败：{{msg}}"
+    "deleteAccountFailed": "删除失败：{{msg}}",
+    "support": "支持",
+    "supportDev": "支持开发",
+    "supportDevSub": "一个 Ko-fi 链接。应用中没有任何功能因此被锁定。"
   },
   "body": {
     "title": "身体",
