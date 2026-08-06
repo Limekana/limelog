@@ -43,6 +43,11 @@ interface NexusStore {
   configured: boolean;
   syncEnabled: boolean;
   userEmail: string | null;
+  /** Display name from the identity provider, when it gives one. Needed so the
+   *  avatar can show the same initials as NCC and StudyDesk, which both derive
+   *  from the name and fall back to the address. Tracking only the email meant
+   *  LimeLog could never agree with them. */
+  userName: string | null;
   loading: boolean;
   lastError: string | null;
   pendingCount: number;
@@ -65,10 +70,19 @@ interface NexusStore {
   setLastPushAt: (iso: string) => void;
 }
 
+/** The provider's display name, or null. Supabase puts Google's on
+ *  user_metadata.full_name; some providers use `name`. */
+function displayNameOf(user: { user_metadata?: Record<string, unknown> } | null | undefined): string | null {
+  const meta = user?.user_metadata ?? {};
+  const n = String(meta.full_name || meta.name || '').trim();
+  return n || null;
+}
+
 export const useNexusStore = create<NexusStore>((set, get) => ({
   configured: isNexusConfigured,
   syncEnabled: readSyncEnabled(),
   userEmail: null,
+  userName: null,
   loading: false,
   lastError: null,
   pendingCount: outboxStatus().pending,
@@ -117,7 +131,7 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
         }
       }
 
-      set({ userEmail: user?.email ?? null, loading: false });
+      set({ userEmail: user?.email ?? null, userName: displayNameOf(user), loading: false });
 
       // ACT-5 — cover the restored-session path too, not just fresh sign-ins.
       // Every account that predates this instrumentation only ever appears here.
@@ -126,7 +140,7 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       supabase.auth.onAuthStateChange((event, session) => {
         const wasSignedIn = Boolean(get().userEmail);
         const nowSignedIn = Boolean(session?.user);
-        set({ userEmail: session?.user?.email ?? null });
+        set({ userEmail: session?.user?.email ?? null, userName: displayNameOf(session?.user) });
         scheduleOriginStamp(session?.user ?? null);
         // v1.1 — clear guestMode on any successful sign-in. Without this,
         // a user who signed out (which sets guestMode=true) and later signs
@@ -165,7 +179,7 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       set({ loading: false, lastError: error.message });
       throw error;
     }
-    set({ userEmail: data.user?.email ?? null, loading: false });
+    set({ userEmail: data.user?.email ?? null, userName: displayNameOf(data.user), loading: false });
 
     if (get().syncEnabled) {
       const result = await outboxDrain();
@@ -180,7 +194,7 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       set({ loading: false, lastError: error.message });
       throw error;
     }
-    set({ userEmail: data.user?.email ?? null, loading: false });
+    set({ userEmail: data.user?.email ?? null, userName: displayNameOf(data.user), loading: false });
     // AUTH-2 — Supabase returns a session only when the project auto-confirms.
     // With confirmation required, `session` is null and the caller has to show
     // the code step rather than waiting on an auth-state change that never
@@ -267,6 +281,7 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
     window.dispatchEvent(new CustomEvent('limelog:guest-mode-changed'));
     set({
       userEmail: null,
+      userName: null,
       loading: false,
       pendingCount: 0,
       outboxStatus: outboxStatus(),
