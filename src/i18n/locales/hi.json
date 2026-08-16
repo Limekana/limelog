@@ -455,15 +455,24 @@
     "needMoreSessions": "1RM रुझान आँकने के लिए वज़न × दोहराव दर्ज किए हुए कम से कम 2 सत्र चाहिए।"
   },
   "cardio": {
-    "logButton": "कार्डियो दर्ज करें",
-    "title": "कार्डियो दर्ज करें",
+    "logButton": "गतिविधि दर्ज करें",
+    "title": "गतिविधि दर्ज करें",
     "activity": {
       "run": "दौड़",
       "cycle": "साइकिल",
       "swim": "तैराकी",
       "row": "रोइंग",
       "walk": "पैदल",
-      "other": "अन्य"
+      "other": "अन्य",
+      "basketball": "बास्केटबॉल",
+      "football": "फ़ुटबॉल",
+      "floorball": "फ़्लोरबॉल",
+      "icehockey": "आइस हॉकी",
+      "volleyball": "वॉलीबॉल",
+      "handball": "हैंडबॉल",
+      "tennis": "टेनिस",
+      "martialArts": "मार्शल आर्ट्स",
+      "otherSport": "अन्य खेल"
     },
     "duration": "अवधि (मिनट)",
     "durationPh": "जैसे 35",
@@ -471,6 +480,10 @@
     "distancePh": "वैकल्पिक",
     "notes": "नोट्स",
     "notesPh": "कैसा लगा?",
-    "activityLabel": "गतिविधि"
+    "activityLabel": "गतिविधि",
+    "group": {
+      "cardio": "कार्डियो",
+      "training": "ट्रेनिंग"
+    }
   }
 }

@@ -463,15 +463,24 @@
     "needMoreSessions": "São necessárias pelo menos 2 sessões com peso × repetições para estimar a tendência de 1RM."
   },
   "cardio": {
-    "logButton": "Registar cardio",
-    "title": "Registar cardio",
+    "logButton": "Registar atividade",
+    "title": "Registar atividade",
     "activity": {
       "run": "Corrida",
       "cycle": "Ciclismo",
       "swim": "Natação",
       "row": "Remo",
       "walk": "Caminhada",
-      "other": "Outro"
+      "other": "Outro",
+      "basketball": "Basquetebol",
+      "football": "Futebol",
+      "floorball": "Floorball",
+      "icehockey": "Hóquei no gelo",
+      "volleyball": "Voleibol",
+      "handball": "Andebol",
+      "tennis": "Ténis",
+      "martialArts": "Artes marciais",
+      "otherSport": "Outro desporto"
     },
     "duration": "Duração (minutos)",
     "durationPh": "p. ex. 35",
@@ -479,6 +488,10 @@
     "distancePh": "opcional",
     "notes": "Notas",
     "notesPh": "Como correu?",
-    "activityLabel": "Atividade"
+    "activityLabel": "Atividade",
+    "group": {
+      "cardio": "Cardio",
+      "training": "Treino"
+    }
   }
 }

@@ -21,12 +21,71 @@ export type SessionMood = 'great' | 'good' | 'neutral' | 'bad' | 'terrible';
  * client never fails to store against an older schema.
  */
 export const CARDIO_ACTIVITIES = ['run', 'cycle', 'swim', 'row', 'walk', 'other'] as const;
+
+/**
+ * v1.10 — team and skill training: basketball practice, a match, a dojo
+ * session. Requested by an owner playing competitive basketball several times
+ * a week, whose training load was invisible to the app and therefore to NCC's
+ * Life Score.
+ *
+ * These ride the SAME storage as cardio — `activity_type` text, no sets, a
+ * duration — because that shape is already exactly right for them, and because
+ * `activity_type` has no CHECK constraint, so this list costs no migration.
+ * What separates them is meaning, not structure: a practice is not cardio, and
+ * filing it under "Cardio: other" would have quietly polluted every cardio
+ * statistic. The split is therefore made where it actually matters — in the
+ * picker and the labels — rather than by inventing a column.
+ *
+ * `otherSport` rather than reusing cardio's `other`: two entries with the same
+ * stored value would be indistinguishable afterwards, and "Other" under
+ * Training means a different thing from "Other" under Cardio.
+ */
+export const TRAINING_ACTIVITIES = [
+  'basketball',
+  'football',
+  'floorball',
+  'icehockey',
+  'volleyball',
+  'handball',
+  'tennis',
+  'martialArts',
+  'otherSport',
+] as const;
+
+/** The two groups the picker offers. Presentation, not storage — nothing
+ *  downstream of the modal needs to know which group a value came from. */
+export const ACTIVITY_GROUPS = ['cardio', 'training'] as const;
+export type ActivityGroup = (typeof ACTIVITY_GROUPS)[number];
+
+export const ACTIVITIES_BY_GROUP: Record<ActivityGroup, readonly string[]> = {
+  cardio: CARDIO_ACTIVITIES,
+  training: TRAINING_ACTIVITIES,
+};
+
 export type BuiltinCardioActivity = (typeof CARDIO_ACTIVITIES)[number];
-export type CardioActivity = BuiltinCardioActivity | (string & Record<never, never>);
+export type BuiltinTrainingActivity = (typeof TRAINING_ACTIVITIES)[number];
+/** Named `CardioActivity` since v1.9 and kept for source compatibility, but it
+ *  has always been the type of ANY non-strength activity — the value is open
+ *  text end to end. v1.10 widened what it carries, not what it is. */
+export type CardioActivity =
+  | BuiltinCardioActivity
+  | BuiltinTrainingActivity
+  | (string & Record<never, never>);
+
+/** Whether a value is one of the built-in training activities. Membership, the
+ *  same mechanism `activityTakesDistance` uses — a custom string entered by a
+ *  future client is not training, which is the safe way to be wrong: it lands
+ *  in the group whose stats already tolerate anything. */
+export function activityIsTraining(activity: CardioActivity | undefined): boolean {
+  return !!activity && (TRAINING_ACTIVITIES as readonly string[]).includes(activity);
+}
 
 /** Activities where a distance reading is meaningful. A basketball game has a
  *  duration but no sensible distance, so the field is hidden rather than shown
- *  as an empty box the user has to wonder about. */
+ *  as an empty box the user has to wonder about. Written in v1.9 with
+ *  basketball as the hypothetical; v1.10 made it real, and no change was
+ *  needed here — no training activity is on this list, so distance already
+ *  hides itself for every one of them. */
 export const DISTANCE_ACTIVITIES: readonly BuiltinCardioActivity[] = [
   'run',
   'cycle',

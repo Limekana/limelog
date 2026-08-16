@@ -99,6 +99,40 @@
 
 /* Six activities, not three conditions — they wrap onto two rows on a narrow
    phone rather than being squeezed below a readable size. */
+/* v1.10 — Cardio / Training group switch. A segmented pair rather than more
+   chips in the same row: the groups are a different KIND of choice from the
+   activity itself, and rendering them alike would have read as "eleven
+   activities, two of them odd". */
+.cardio-modal__groups {
+  display: flex;
+  gap: 4px;
+  padding: 3px;
+  margin-bottom: 14px;
+  border-radius: var(--radius-pill);
+  background: rgba(255, 255, 255, 0.04);
+  border: 1px solid var(--border-subtle);
+}
+
+.cardio-modal__group {
+  flex: 1 1 50%;
+  padding: 8px 4px;
+  font-family: var(--font-display);
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  border-radius: var(--radius-pill);
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  cursor: pointer;
+}
+
+.cardio-modal__group--active {
+  background: var(--accent-dim);
+  color: var(--accent);
+}
+
 .cardio-modal__activities {
   display: flex;
   flex-wrap: wrap;

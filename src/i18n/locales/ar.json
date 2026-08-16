@@ -487,15 +487,24 @@
     "needMoreSessions": "يلزم ما لا يقل عن جلستين مسجَّل فيهما الوزن × التكرارات لتقدير اتجاه 1RM."
   },
   "cardio": {
-    "logButton": "تسجيل الكارديو",
-    "title": "تسجيل الكارديو",
+    "logButton": "تسجيل نشاط",
+    "title": "تسجيل نشاط",
     "activity": {
       "run": "جري",
       "cycle": "دراجة",
       "swim": "سباحة",
       "row": "تجديف",
       "walk": "مشي",
-      "other": "أخرى"
+      "other": "أخرى",
+      "basketball": "كرة السلة",
+      "football": "كرة القدم",
+      "floorball": "فلوربول",
+      "icehockey": "هوكي الجليد",
+      "volleyball": "الكرة الطائرة",
+      "handball": "كرة اليد",
+      "tennis": "التنس",
+      "martialArts": "فنون قتالية",
+      "otherSport": "رياضة أخرى"
     },
     "duration": "المدة (دقائق)",
     "durationPh": "مثال 35",
@@ -503,6 +512,10 @@
     "distancePh": "اختياري",
     "notes": "ملاحظات",
     "notesPh": "كيف كان؟",
-    "activityLabel": "النشاط"
+    "activityLabel": "النشاط",
+    "group": {
+      "cardio": "كارديو",
+      "training": "تدريب"
+    }
   }
 }

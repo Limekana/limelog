@@ -447,15 +447,24 @@
     "needMoreSessions": "Perlu setidaknya 2 sesi dengan beban × repetisi untuk memperkirakan tren 1RM."
   },
   "cardio": {
-    "logButton": "Catat kardio",
-    "title": "Catat kardio",
+    "logButton": "Catat aktivitas",
+    "title": "Catat aktivitas",
     "activity": {
       "run": "Lari",
       "cycle": "Bersepeda",
       "swim": "Renang",
       "row": "Dayung",
       "walk": "Jalan",
-      "other": "Lainnya"
+      "other": "Lainnya",
+      "basketball": "Bola basket",
+      "football": "Sepak bola",
+      "floorball": "Floorball",
+      "icehockey": "Hoki es",
+      "volleyball": "Bola voli",
+      "handball": "Bola tangan",
+      "tennis": "Tenis",
+      "martialArts": "Bela diri",
+      "otherSport": "Olahraga lain"
     },
     "duration": "Durasi (menit)",
     "durationPh": "mis. 35",
@@ -463,6 +472,10 @@
     "distancePh": "opsional",
     "notes": "Catatan",
     "notesPh": "Bagaimana rasanya?",
-    "activityLabel": "Aktivitas"
+    "activityLabel": "Aktivitas",
+    "group": {
+      "cardio": "Kardio",
+      "training": "Latihan"
+    }
   }
 }

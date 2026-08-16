@@ -455,15 +455,24 @@
     "needMoreSessions": "Für einen 1RM-Trend braucht es mindestens 2 Einheiten mit Gewicht × Wiederholungen."
   },
   "cardio": {
-    "logButton": "Cardio eintragen",
-    "title": "Cardio eintragen",
+    "logButton": "Aktivität erfassen",
+    "title": "Aktivität erfassen",
     "activity": {
       "run": "Laufen",
       "cycle": "Radfahren",
       "swim": "Schwimmen",
       "row": "Rudern",
       "walk": "Gehen",
-      "other": "Andere"
+      "other": "Andere",
+      "basketball": "Basketball",
+      "football": "Fußball",
+      "floorball": "Unihockey",
+      "icehockey": "Eishockey",
+      "volleyball": "Volleyball",
+      "handball": "Handball",
+      "tennis": "Tennis",
+      "martialArts": "Kampfsport",
+      "otherSport": "Andere Sportart"
     },
     "duration": "Dauer (Minuten)",
     "durationPh": "z. B. 35",
@@ -471,6 +480,10 @@
     "distancePh": "optional",
     "notes": "Notizen",
     "notesPh": "Wie lief es?",
-    "activityLabel": "Aktivität"
+    "activityLabel": "Aktivität",
+    "group": {
+      "cardio": "Ausdauer",
+      "training": "Training"
+    }
   }
 }

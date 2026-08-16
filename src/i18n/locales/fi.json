@@ -455,15 +455,24 @@
     "needMoreSessions": "1RM-trendin arviointiin tarvitaan vähintään 2 treeniä, joissa on paino × toistot."
   },
   "cardio": {
-    "logButton": "Kirjaa kestävyys",
-    "title": "Kirjaa kestävyysharjoitus",
+    "logButton": "Kirjaa suoritus",
+    "title": "Kirjaa suoritus",
     "activity": {
       "run": "Juoksu",
       "cycle": "Pyöräily",
       "swim": "Uinti",
       "row": "Soutu",
       "walk": "Kävely",
-      "other": "Muu"
+      "other": "Muu",
+      "basketball": "Koripallo",
+      "football": "Jalkapallo",
+      "floorball": "Salibandy",
+      "icehockey": "Jääkiekko",
+      "volleyball": "Lentopallo",
+      "handball": "Käsipallo",
+      "tennis": "Tennis",
+      "martialArts": "Kamppailulajit",
+      "otherSport": "Muu laji"
     },
     "duration": "Kesto (minuuttia)",
     "durationPh": "esim. 35",
@@ -471,6 +480,10 @@
     "distancePh": "valinnainen",
     "notes": "Muistiinpanot",
     "notesPh": "Miltä tuntui?",
-    "activityLabel": "Laji"
+    "activityLabel": "Laji",
+    "group": {
+      "cardio": "Kestävyys",
+      "training": "Harjoitus"
+    }
   }
 }

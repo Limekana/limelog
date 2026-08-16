@@ -455,15 +455,24 @@
     "needMoreSessions": "Need at least 2 sessions with logged weight × reps to estimate a 1RM trend."
   },
   "cardio": {
-    "logButton": "Log cardio",
-    "title": "Log cardio",
+    "logButton": "Log activity",
+    "title": "Log activity",
     "activity": {
       "run": "Run",
       "cycle": "Cycle",
       "swim": "Swim",
       "row": "Row",
       "walk": "Walk",
-      "other": "Other"
+      "other": "Other",
+      "basketball": "Basketball",
+      "football": "Football",
+      "floorball": "Floorball",
+      "icehockey": "Ice hockey",
+      "volleyball": "Volleyball",
+      "handball": "Handball",
+      "tennis": "Tennis",
+      "martialArts": "Martial arts",
+      "otherSport": "Other sport"
     },
     "duration": "Duration (minutes)",
     "durationPh": "e.g. 35",
@@ -471,6 +480,10 @@
     "distancePh": "optional",
     "notes": "Notes",
     "notesPh": "How did it feel?",
-    "activityLabel": "Activity"
+    "activityLabel": "Activity",
+    "group": {
+      "cardio": "Cardio",
+      "training": "Training"
+    }
   }
 }
