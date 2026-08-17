@@ -252,7 +252,7 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
     } catch (e) {
       console.warn('[nexus] progress-photos wipe failed:', e);
     }
-    const { error } = await supabase.auth.signOut();
+    const { error } = await supabase.auth.signOut({ scope: 'local' });
     if (error) {
       set({ loading: false, lastError: error.message });
       throw error;

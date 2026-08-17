@@ -32,9 +32,11 @@ import {
   pushBodyMetricToNexus,
   deleteBodyMetricFromNexus,
   pushExercisePRToNexus,
+  pushFeedbackToNexus,
   type NexusWorkoutPayload,
   type NexusBodyMetricPayload,
   type NexusExercisePRPayload,
+  type NexusFeedbackPayload,
 } from './nexusSync';
 import { supabase, isNexusConfigured } from './supabase';
 
@@ -52,7 +54,9 @@ type OutboxKind =
   | 'upsert_body_metric'
   | 'delete_body_metric'
   // v1.6 — Personal Records. Push-only (append-only), upsert by id.
-  | 'upsert_exercise_pr';
+  | 'upsert_exercise_pr'
+  // v1.10 - in-app feedback. Insert-only; idempotent on the client id.
+  | 'submit_feedback';
 
 interface OutboxItem<K extends OutboxKind = OutboxKind> {
   id: string;
@@ -70,6 +74,7 @@ interface KindPayload {
   upsert_body_metric: NexusBodyMetricPayload;
   delete_body_metric: { id: string };
   upsert_exercise_pr: NexusExercisePRPayload;
+  submit_feedback: NexusFeedbackPayload;
 }
 
 interface OutboxMeta {
@@ -347,4 +352,5 @@ const KIND_DISPATCH: { [K in OutboxKind]: (p: KindPayload[K]) => Promise<unknown
   upsert_body_metric: (p) => pushBodyMetricToNexus(p),
   delete_body_metric: (p) => deleteBodyMetricFromNexus(p.id),
   upsert_exercise_pr: (p) => pushExercisePRToNexus(p),
+  submit_feedback: (p) => pushFeedbackToNexus(p),
 };
