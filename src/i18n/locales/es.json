@@ -23,7 +23,8 @@
     "program": "Programa",
     "library": "Biblioteca",
     "progress": "Progreso",
-    "body": "Cuerpo"
+    "body": "Cuerpo",
+    "profileSettings": "Perfil y ajustes"
   },
   "workout": {
     "workout": "Entrenamiento",
@@ -31,6 +32,50 @@
     "rep": "Repetición",
     "weight": "Peso",
     "personalRecord": "Récord personal"
+  },
+  "auth": {
+    "tagline": "FUERZA PERIODIZADA · CONCÉNTRATE",
+    "titleGetStarted": "Empezar",
+    "titleSignInEmail": "Iniciar sesión con correo",
+    "titleCreateAccount": "Crear cuenta",
+    "subGetStarted": "Inicia sesión para sincronizar tus entrenamientos con Nexus, o continúa en local.",
+    "subEmail": "Sincroniza tus entrenamientos entre dispositivos.",
+    "nexus": "Continuar con Nexus",
+    "nexusNote": "SESIÓN INICIADA EN NEXUS COMMAND CENTER EN ESTE DISPOSITIVO",
+    "google": "Continuar con Google",
+    "useEmail": "Usar correo electrónico",
+    "emailLabel": "Correo electrónico",
+    "passwordLabel": "Contraseña",
+    "signIn": "Iniciar sesión",
+    "createAccount": "Crear cuenta",
+    "needAccount": "¿Necesitas una cuenta?",
+    "haveAccount": "¿Ya tienes cuenta?",
+    "back": "Atrás",
+    "guest": "Continuar como invitado",
+    "guestNote": "Solo local: los entrenamientos se quedan en este dispositivo. Puedes iniciar sesión más tarde desde Perfil → Ajustes.",
+    "notConfigured": "Supabase no configurado: inicio de sesión no disponible. Toca Continuar como invitado para usar la app en local.",
+    "errNexus": "No se pudo heredar la sesión de Nexus.",
+    "errInvalidCredentials": "Correo o contraseña incorrectos.",
+    "errAlreadyRegistered": "Ya existe una cuenta con ese correo. Prueba a iniciar sesión.",
+    "errWeakPassword": "Elige una contraseña más segura.",
+    "errEmailNotConfirmed": "Confirma primero tu correo: el enlace está en tu bandeja de entrada.",
+    "errRateLimited": "Demasiados intentos. Espera un momento e inténtalo de nuevo.",
+    "errNetwork": "No se pudo conectar con el servidor. Comprueba tu conexión e inténtalo de nuevo.",
+    "errGeneric": "Error al iniciar sesión.",
+    "ageNote": "Debes tener 16 años o más para crear una cuenta (13 donde la ley local lo permita). Si eres menor, usa el modo invitado: nada sale de tu dispositivo.",
+    "privacyLink": "Política de privacidad",
+    "otpTitle": "Introduce tu código",
+    "otpSub": "Enviamos un código a",
+    "otpLabel": "Código de verificación",
+    "otpSubmit": "Confirmar cuenta",
+    "otpHint": "El código es válido durante 60 minutos. El enlace del correo también sigue funcionando.",
+    "otpResend": "Enviar un código nuevo",
+    "otpResendIn": "Enviar un código nuevo en",
+    "otpSent": "Código nuevo enviado.",
+    "otpBack": "Usar otro correo",
+    "errOtp": "Ese código no funcionó. Compruébalo e inténtalo de nuevo.",
+    "errOtpResend": "No se pudo enviar un código nuevo. Inténtalo en un momento.",
+    "errOtpLength": "Ese código parece incompleto. Copia el código entero del correo."
   },
   "onboarding": {
     "welcomeTitle": "Bienvenido a LimeLog",
@@ -67,7 +112,34 @@
     "noOrmTitle": "Aún no hay datos de 1RM",
     "noOrmBody": "Completa una sesión con peso × repeticiones para ver una estimación de 1RM.",
     "noHistoryTitle": "No hay sesiones completadas",
-    "noHistoryBody": "Termina una sesión para verla aquí."
+    "noHistoryBody": "Termina una sesión para verla aquí.",
+    "readyToProgress": "Listo para progresar",
+    "applyFinish": "Aplicar y terminar",
+    "sessionFatigue": "Fatiga de la sesión",
+    "newPr": "Nuevo récord personal",
+    "nice": "Genial",
+    "loadTrend": "Gráfico de tendencia de carga",
+    "ormTrend": "Tendencia del 1RM estimado",
+    "needTwo": "Registra al menos 2 sesiones para ver una tendencia.",
+    "weightUpBody": "Alcanzaste el tope del rango de repeticiones en todas las series de los ejercicios de abajo. Confirma que la técnica fue sólida para aplicar el aumento de peso.",
+    "fatigueRating": "Fatiga {{n}}",
+    "newPrTitle_other": "{{count}} nuevos récords personales",
+    "newPrTitle_one": "Nuevo récord personal",
+    "newPrTitle_many": "{{count}} nuevos récords personales",
+    "repsOnly_other": "{{count}} reps",
+    "repsOnly_one": "{{count}} rep",
+    "repsOnly_many": "{{count}} reps",
+    "stallFlags": "Señales de estancamiento",
+    "selectExercise": "Seleccionar ejercicio",
+    "selectExerciseOrm": "Seleccionar ejercicio para la tendencia de 1RM",
+    "strengthRatio": "Relación fuerza/peso corporal",
+    "logJump": "Registrar salto",
+    "logFirstJump": "Registrar el primer salto",
+    "noJumpsTitle": "Sin saltos registrados",
+    "noJumpsBody": "Registra tu salto vertical para seguir tu progreso atlético.",
+    "unknownExercise": "Ejercicio desconocido",
+    "stallWeightPlateau": "Estancamiento de peso",
+    "stallRpeCreep": "Aumento de RPE"
   },
   "today": {
     "noProgramTitle": "Sin programa activo",
@@ -92,10 +164,39 @@
       "thu": "Jueves",
       "fri": "Viernes",
       "sat": "Sábado"
-    }
+    },
+    "topE1rm": "Mejor e1RM",
+    "e1rmTitle": "Mejor 1RM estimado según tus registros",
+    "exercises_many": "{{count}} ejercicios · {{sets}} series",
+    "stallAlert_one": "{{count}} señal de estancamiento detectada: considera un deload",
+    "stallAlert_many": "{{count}} señales de estancamiento detectadas: considera un deload",
+    "stallAlert_other": "{{count}} señales de estancamiento detectadas: considera un deload",
+    "deloadAdvance": "{{missed}}/{{total}} series se quedaron cortas en tus últimas 3 sesiones: considera pasar a una fase de deload.",
+    "deloadSchedule": "{{missed}}/{{total}} series se quedaron cortas en tus últimas 3 sesiones: considera programar un deload."
   },
   "settings": {
-    "language": "Idioma"
+    "language": "Idioma",
+    "privacy": "Privacidad e IA",
+    "aiOn": "Sí",
+    "aiOff": "No",
+    "aiFeaturesOnSub": "Resumen con IA activado: la nota que escribes tras entrenar se envía a Google Gemini.",
+    "aiFeaturesOffSub": "Resumen con IA desactivado: no se envía nada a Google. Valora la fatiga con los puntos de arriba.",
+    "aiTrainingNote": "Google lo ejecuta en su nivel gratuito, así que lo que envíes puede usarse para entrenar sus futuros modelos. Déjalo desactivado si no te convence.",
+    "privacyPolicy": "Política de privacidad",
+    "yourData": "Tus datos",
+    "yourDataNote": "Llévate una copia de todo o bórralo. Una sola cuenta cubre LimeLog, Nexus Command Center y StudyDesk.",
+    "exportData": "Exportar mis datos",
+    "exportDone": "{{name}} guardado",
+    "exportFailed": "Error al exportar: {{msg}}",
+    "deleteAccount": "Eliminar mi cuenta",
+    "deletingAccount": "Eliminando…",
+    "deleteAccountNote": "Borra tu cuenta y todos sus datos, en las tres apps, de forma inmediata e irreversible. No hay periodo de recuperación.",
+    "deleteAccountConfirm1": "¿Eliminar tu cuenta y todo su contenido? Esto no se puede deshacer.",
+    "deleteAccountConfirm2": "Última comprobación: esto también borra tus datos de Nexus Command Center y StudyDesk. ¿Continuar?",
+    "deleteAccountFailed": "Error al eliminar: {{msg}}",
+    "support": "Apoyo",
+    "supportDev": "Apoya el desarrollo",
+    "supportDevSub": "Un enlace a Ko-fi. Nada en la app depende de ello."
   },
   "body": {
     "title": "Cuerpo",
@@ -129,7 +230,10 @@
     "photoOverwrite": "Ya hay una foto guardada para esta fecha — capturar la sobrescribirá.",
     "noPhotos": "Aún no hay fotos. Viven solo en este dispositivo — nunca se suben.",
     "deleteEntryConfirm": "¿Eliminar la entrada del {{date}}?",
-    "deletePhotoConfirm": "¿Eliminar la foto del {{date}}?"
+    "deletePhotoConfirm": "¿Eliminar la foto del {{date}}?",
+    "unitSystem": "Sistema de unidades",
+    "weightChart": "Gráfico de tendencia del peso",
+    "weightChartAvg": "Tendencia del peso con media móvil de 7 días"
   },
   "program": {
     "title": "Programas",
@@ -177,7 +281,11 @@
       "thu": "Jue",
       "fri": "Vie",
       "sat": "Sáb"
-    }
+    },
+    "phases_many": "{{count}} fases",
+    "sessions_many": "{{count}} sesiones",
+    "exercises_many": "{{count}} ejercicios",
+    "deactivate": "Desactivar"
   },
   "library": {
     "title": "Biblioteca de ejercicios",
@@ -222,7 +330,11 @@
       "band": "Banda",
       "kettlebell": "Pesa rusa",
       "other": "Otro"
-    }
+    },
+    "inLibrary_many": "{{count}} ejercicios en tu biblioteca",
+    "customOption": "Escribir el mío…",
+    "customPatternPlaceholder": "p. ej. transporte de saco",
+    "customEquipPlaceholder": "p. ej. trineo"
   },
   "profile": {
     "title": "Perfil",
@@ -284,6 +396,89 @@
     "sets": "Series",
     "targetKg": "Objetivo kg",
     "restSecs": "Descanso (s)",
-    "repsPlaceholder": "p. ej. 6–8"
+    "repsPlaceholder": "p. ej. 6–8",
+    "restingEyebrow": "Descanso",
+    "restTimer": "Temporizador de descanso",
+    "startRest": "Iniciar",
+    "startRestAria": "Iniciar descanso de {{secs}} segundos",
+    "skipRest": "Omitir descanso",
+    "addSeconds": "Añadir 15 segundos",
+    "subSeconds": "Restar 15 segundos",
+    "finishWorkout": "Terminar entrenamiento",
+    "discardWorkout": "Descartar entrenamiento",
+    "missing": "Este entrenamiento ya no existe.",
+    "noHistoryYet": "Primera vez — aún sin historial",
+    "colRpe": "RPE",
+    "colDone": "Hecho",
+    "colReps2": "Reps",
+    "setDone": "Serie {{n}} hecha",
+    "markSetDone": "Marcar serie {{n}} como hecha",
+    "deleteSetN": "Eliminar serie {{n}}",
+    "currentPr": "Récord personal actual",
+    "setsProgress": "{{done}}/{{total}} series",
+    "discardConfirm": "¿Descartar este entrenamiento? Se perderán todas las series registradas."
+  },
+  "notif": {
+    "sessionTitle": "Sesión del {{day}}"
+  },
+  "health": {
+    "stepsWeekLabel": "Pasos de los últimos 7 días",
+    "activity": "Actividad",
+    "connect": "Conectar Health Connect",
+    "connectPrompt": "Conecta Health Connect para pasos y calorías",
+    "connectBody": "Conecta Health Connect para ver aquí tus pasos y calorías activas.",
+    "viaHealthConnect": "vía Health Connect",
+    "steps": "pasos",
+    "stepsToday": "pasos hoy",
+    "kcal": "kcal",
+    "kcalToday": "kcal hoy"
+  },
+  "sync": {
+    "title": "Sincronización con Nexus",
+    "connected": "Conectado",
+    "signedInAs": "Sesión iniciada como",
+    "signOut": "Cerrar sesión",
+    "autoPush": "Enviar automáticamente al terminar",
+    "retryNow": "Reintentar ahora",
+    "orUseEmail": "o usa el correo"
+  },
+  "jump": {
+    "title": "Registrar salto vertical",
+    "height": "Altura (cm)",
+    "heightPh": "p. ej. 65,5",
+    "condition": "Condiciones",
+    "notes": "Notas (opcional)",
+    "notesPh": "Superficie, calentamiento, contexto...",
+    "condFresh": "Fresco",
+    "condMorning": "Mañana",
+    "condPost": "Post-sesión"
+  },
+  "debrief": {
+    "title": "Balance",
+    "placeholder": "¿Cómo te sentiste? Anota energía, técnica, molestias…",
+    "saved": "Guardado",
+    "failed": "No se pudo analizar — tu nota se guardó tal cual."
+  },
+  "chart": {
+    "needMoreSessions": "Se necesitan al menos 2 sesiones con peso × repeticiones para estimar la tendencia de 1RM."
+  },
+  "cardio": {
+    "logButton": "Registrar cardio",
+    "title": "Registrar cardio",
+    "activity": {
+      "run": "Correr",
+      "cycle": "Ciclismo",
+      "swim": "Natación",
+      "row": "Remo",
+      "walk": "Caminar",
+      "other": "Otro"
+    },
+    "duration": "Duración (minutos)",
+    "durationPh": "p. ej. 35",
+    "distance": "Distancia ({{unit}})",
+    "distancePh": "opcional",
+    "notes": "Notas",
+    "notesPh": "¿Cómo fue?",
+    "activityLabel": "Actividad"
   }
 }

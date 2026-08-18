@@ -12,12 +12,27 @@
 //      local-only trade-off.
 
 import { useState, useEffect } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Button, Card } from '@/components/ui';
 import { useNexusStore } from '@/store/nexusStore';
+import { supabase } from '@/lib/supabase';
 import { inheritFromNexus } from '@/lib/suiteSso';
 import { setGuestMode } from '@/lib/guestMode';
+import { translateAuthError } from '@/lib/authErrors';
 import './FirstLaunchAuth.css';
+
+// AUTH-2 — confirmation-code bounds, ported from StudyDesk's AuthGate.
+//
+// Supabase's Mailer OTP Length is a project setting with a documented 6-10
+// range, and this project emits 8. The whole range is accepted on purpose:
+// StudyDesk's first version assumed 6, which left the field physically unable
+// to hold a valid code (fixed in 1.6.2), and pinning it to 8 would only defer
+// the same failure to the next settings change.
+const OTP_MIN = 6;
+const OTP_MAX = 10;
+
+const RESEND_COOLDOWN_S = 60;
 
 const SuiteSsoProbe = registerPlugin<{
   getNexusSession(): Promise<{ available: boolean; reason?: string }>;
@@ -31,6 +46,7 @@ interface FirstLaunchAuthProps {
 }
 
 export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
+  const { t } = useTranslation();
   const { signIn, signUp, signInWithGoogle, configured, loading: storeLoading } =
     useNexusStore();
   const [email, setEmail] = useState('');
@@ -40,6 +56,11 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
   const [error, setError] = useState<string | null>(null);
   const [nexusAvailable, setNexusAvailable] = useState(false);
   const [busy, setBusy] = useState(false);
+  // AUTH-2 — code-entry step, ported from StudyDesk's AuthGate.
+  const [awaitingCode, setAwaitingCode] = useState(false);
+  const [otpCode, setOtpCode] = useState('');
+  const [info, setInfo] = useState<string | null>(null);
+  const [resendIn, setResendIn] = useState(0);
 
   // Probe NCC's SessionContentProvider on mount. Silent on failure: when NCC
   // isn't installed or there's no published session, the affordance just
@@ -60,13 +81,21 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
     };
   }, []);
 
+  // AUTH-2 — resend cooldown. An interval rather than a timeout chain, so a
+  // re-render can't orphan a pending tick; it clears itself when it hits 0.
+  useEffect(() => {
+    if (resendIn <= 0) return;
+    const id = setInterval(() => setResendIn((s) => (s <= 1 ? 0 : s - 1)), 1000);
+    return () => clearInterval(id);
+  }, [resendIn]);
+
   async function handleNexus() {
     setError(null);
     setBusy(true);
     try {
       const result = await inheritFromNexus();
       if (!result.ok) {
-        setError(result.reason ?? 'Could not inherit Nexus session.');
+        setError(result.reason ?? t('auth.errNexus'));
         setBusy(false);
         return;
       }
@@ -76,7 +105,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
       await setGuestMode(false);
       onContinue();
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(translateAuthError(err as Error, t));
       setBusy(false);
     }
   }
@@ -96,7 +125,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
       // one, the gate ignores it.
       await signInWithGoogle();
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(translateAuthError(err as Error, t));
     } finally {
       setBusy(false);
     }
@@ -110,14 +139,69 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
       if (mode === 'signin') {
         await signIn(email.trim(), password);
       } else {
-        await signUp(email.trim(), password);
+        const { needsConfirmation } = await signUp(email.trim(), password);
+        if (needsConfirmation) {
+          // AUTH-2 — no session yet, so no auth-state change is coming. Show
+          // the code step instead of leaving the user on a form that looks
+          // like it did nothing.
+          setPassword('');
+          setAwaitingCode(true);
+          return;
+        }
       }
       await setGuestMode(false);
       setPassword('');
       // onAuthStateChange in nexusStore drives the parent re-render.
     } catch (err) {
-      setError(err instanceof Error ? err.message : String(err));
+      setError(translateAuthError(err as Error, t));
     } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleVerify(e: React.FormEvent) {
+    e.preventDefault();
+    setError(null);
+    setInfo(null);
+    const token = otpCode.replace(/\D/g, '');
+    // Lower bound, not an exact length — see OTP_MIN.
+    if (token.length < OTP_MIN) {
+      setError(t('auth.errOtpLength'));
+      return;
+    }
+    setBusy(true);
+    try {
+      const { error: err } = await supabase.auth.verifyOtp({
+        email: email.trim(),
+        token,
+        type: 'signup',
+      });
+      if (err) throw err;
+      await setGuestMode(false);
+      // Success fires onAuthStateChange, which drives the parent re-render.
+    } catch (err) {
+      setError(translateAuthError(err as Error, t) ?? t('auth.errOtp'));
+    } finally {
+      setBusy(false);
+    }
+  }
+
+  async function handleResend() {
+    if (resendIn > 0 || busy) return;
+    setError(null);
+    setInfo(null);
+    setBusy(true);
+    try {
+      const { error: err } = await supabase.auth.resend({ type: 'signup', email: email.trim() });
+      if (err) throw err;
+      setInfo(t('auth.otpSent'));
+    } catch (err) {
+      setError(translateAuthError(err as Error, t) ?? t('auth.errOtpResend'));
+    } finally {
+      // Cooldown starts either way: the usual cause of a failure here is
+      // having hit the server-side send interval, and re-enabling the button
+      // immediately just invites the same error again.
+      setResendIn(RESEND_COOLDOWN_S);
       setBusy(false);
     }
   }
@@ -129,26 +213,101 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
 
   const disabled = busy || storeLoading;
 
+  // AUTH-2 — the emailed link is not replaced. The installed Supabase template
+  // carries a link and a code off the same token, so this is a second way
+  // through and mail already sitting in an inbox keeps working.
+  if (awaitingCode) {
+    return (
+      <div className="fla-wrap">
+        <div className="fla-stack">
+          <div className="fla-header">
+            {/* "LimeLog" is the product name — deliberately not a key. */}
+            <div className="fla-wordmark">LimeLog</div>
+            <div className="fla-tagline">{t('auth.tagline')}</div>
+          </div>
+
+          <Card padding="md" className="fla-card">
+            <div className="fla-title">{t('auth.otpTitle')}</div>
+            <div className="fla-sub">
+              {t('auth.otpSub')} {email.trim()}
+            </div>
+
+            <form onSubmit={handleVerify} className="fla-form">
+              <label className="fla-field">
+                <span className="fla-field-label">{t('auth.otpLabel')}</span>
+                <input
+                  className="fla-otp-input"
+                  type="text"
+                  inputMode="numeric"
+                  autoComplete="one-time-code"
+                  autoFocus
+                  /* Placeholder length follows OTP_MAX rather than a literal,
+                     so the field never advertises a stale digit count. */
+                  placeholder={'-'.repeat(OTP_MAX)}
+                  maxLength={OTP_MAX}
+                  value={otpCode}
+                  onChange={(e) => setOtpCode(e.target.value.replace(/\D/g, '').slice(0, OTP_MAX))}
+                />
+              </label>
+
+              {error && <div className="fla-error">{error}</div>}
+              {info && <div className="fla-info">{info}</div>}
+
+              <Button type="submit" variant="primary" fullWidth disabled={disabled}>
+                {t('auth.otpSubmit')}
+              </Button>
+            </form>
+
+            <div className="fla-sub fla-otp-hint">{t('auth.otpHint')}</div>
+
+            <Button
+              type="button"
+              variant="ghost"
+              fullWidth
+              disabled={resendIn > 0 || disabled}
+              onClick={handleResend}
+            >
+              {resendIn > 0 ? `${t('auth.otpResendIn')} ${resendIn}s` : t('auth.otpResend')}
+            </Button>
+
+            <Button
+              type="button"
+              variant="ghost"
+              fullWidth
+              onClick={() => {
+                setAwaitingCode(false);
+                setOtpCode('');
+                setError(null);
+                setInfo(null);
+              }}
+            >
+              {t('auth.otpBack')}
+            </Button>
+          </Card>
+        </div>
+      </div>
+    );
+  }
+
   return (
     <div className="fla-wrap">
       <div className="fla-stack">
         <div className="fla-header">
+          {/* "LimeLog" is the product name — deliberately not a key. */}
           <div className="fla-wordmark">LimeLog</div>
-          <div className="fla-tagline">PERIODIZED STRENGTH · LOCK IN</div>
+          <div className="fla-tagline">{t('auth.tagline')}</div>
         </div>
 
         <Card padding="md" className="fla-card">
           <div className="fla-title">
             {showEmail
               ? mode === 'signin'
-                ? 'Sign in with email'
-                : 'Create account'
-              : 'Get started'}
+                ? t('auth.titleSignInEmail')
+                : t('auth.titleCreateAccount')
+              : t('auth.titleGetStarted')}
           </div>
           <div className="fla-sub">
-            {showEmail
-              ? 'Sync workouts across devices.'
-              : 'Sign in to sync workouts to Nexus, or continue locally.'}
+            {showEmail ? t('auth.subEmail') : t('auth.subGetStarted')}
           </div>
 
           {!showEmail && (
@@ -167,11 +326,9 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                     className="fla-nexus"
                   >
                     <span className="fla-nexus-glyph" aria-hidden="true">◈</span>
-                    Continue with Nexus
+                    {t('auth.nexus')}
                   </Button>
-                  <p className="fla-nexus-note">
-                    SIGNED IN TO NEXUS COMMAND CENTER ON THIS DEVICE
-                  </p>
+                  <p className="fla-nexus-note">{t('auth.nexusNote')}</p>
                 </>
               )}
 
@@ -183,7 +340,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                 onClick={handleGoogle}
                 disabled={disabled}
               >
-                Continue with Google
+                {t('auth.google')}
               </Button>
 
               <button
@@ -192,7 +349,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                 onClick={() => setShowEmail(true)}
                 disabled={disabled}
               >
-                Use email instead
+                {t('auth.useEmail')}
               </button>
             </div>
           )}
@@ -200,7 +357,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
           {showEmail && (
             <form onSubmit={handleEmail} className="fla-form">
               <label className="fla-field">
-                <span className="fla-field-label">Email</span>
+                <span className="fla-field-label">{t('auth.emailLabel')}</span>
                 <input
                   type="email"
                   autoComplete="email"
@@ -210,7 +367,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                 />
               </label>
               <label className="fla-field">
-                <span className="fla-field-label">Password</span>
+                <span className="fla-field-label">{t('auth.passwordLabel')}</span>
                 <input
                   type="password"
                   autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
@@ -228,7 +385,7 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                 fullWidth
                 disabled={disabled}
               >
-                {disabled ? '…' : mode === 'signin' ? 'Sign in' : 'Create account'}
+                {disabled ? '…' : mode === 'signin' ? t('auth.signIn') : t('auth.createAccount')}
               </Button>
 
               <div className="fla-form-footer">
@@ -240,26 +397,21 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
                     setError(null);
                   }}
                 >
-                  {mode === 'signin' ? 'Need an account?' : 'Have an account?'}
+                  {mode === 'signin' ? t('auth.needAccount') : t('auth.haveAccount')}
                 </button>
                 <button
                   type="button"
                   className="fla-toggle"
                   onClick={() => setShowEmail(false)}
                 >
-                  Back
+                  {t('auth.back')}
                 </button>
               </div>
             </form>
           )}
 
           {error && <p className="fla-error">{error}</p>}
-          {!configured && (
-            <p className="fla-warn">
-              Supabase not configured — sign-in unavailable. Tap Continue as
-              guest to use the app locally.
-            </p>
-          )}
+          {!configured && <p className="fla-warn">{t('auth.notConfigured')}</p>}
         </Card>
 
         {/* Guest path — visually below the card, distinct from the sign-in
@@ -272,11 +424,23 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
             onClick={handleGuest}
             disabled={disabled}
           >
-            Continue as guest
+            {t('auth.guest')}
           </button>
-          <p className="fla-guest-note">
-            Local only — workouts stay on this device. You can sign in later
-            from Profile → Settings.
+          <p className="fla-guest-note">{t('auth.guestNote')}</p>
+          {/* GDPR Art. 8 — consent for an information society service is only
+              valid from 16 (13 in some member states). We cannot verify ages
+              and are not expected to, but the policy states the limit so the
+              signup surface should too, and it points at the guest option
+              directly above, which needs no account at all. */}
+          <p className="fla-legal-note">
+            {t('auth.ageNote')}{' '}
+            <a
+              href="https://limekana.github.io/nexus-command-center/legal/privacy.html"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('auth.privacyLink')}
+            </a>
           </p>
         </div>
       </div>

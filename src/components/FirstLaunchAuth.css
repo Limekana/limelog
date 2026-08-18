@@ -298,3 +298,40 @@
   letter-spacing: 0.18em;
   text-transform: uppercase;
 }
+
+/* GDPR Art. 8 age statement + policy link. Quieter than the guest note above
+   it — it is a legal disclosure, not a call to action. */
+.fla-legal-note {
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-align: center;
+  margin: 14px 12px 0;
+  line-height: 1.5;
+  opacity: 0.85;
+}
+.fla-legal-note a { color: inherit; text-decoration: underline; }
+
+/* AUTH-2 — confirmation-code step.
+   `.fla-info` mirrors `.fla-error` on the success palette: the resend
+   confirmation is the same shape of message, just not a failure. */
+.fla-info {
+  margin: 14px 0 0;
+  padding: 10px 12px;
+  background: var(--success-dim);
+  border: 1px solid var(--success);
+  border-radius: 4px;
+  color: var(--success);
+  font-size: 12px;
+}
+
+/* Wide tracking and tabular figures so a long code stays scannable while it
+   is being typed — the digits do not reflow as the field fills. */
+.fla-otp-input {
+  text-align: center;
+  letter-spacing: 0.3em;
+  font-variant-numeric: tabular-nums;
+}
+
+.fla-otp-hint {
+  margin-top: 10px;
+}

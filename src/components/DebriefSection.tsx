@@ -1,4 +1,5 @@
 import { useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import './DebriefSection.css';
 import { useLogStore } from '@/store/logStore';
 import { useNexusStore } from '@/store/nexusStore';
@@ -20,6 +21,7 @@ const MOOD_EMOJI: Record<SessionMood, string> = {
 };
 
 export function DebriefSection({ logId }: { logId: string }) {
+  const { t } = useTranslation();
   const setSessionDebrief = useLogStore((s) => s.setSessionDebrief);
   const configured = useNexusStore((s) => s.configured);
   const syncEnabled = useNexusStore((s) => s.syncEnabled);
@@ -65,11 +67,11 @@ export function DebriefSection({ logId }: { logId: string }) {
   return (
     <div className="debrief">
       <span className="debrief__label">
-        Debrief <span className="debrief__ai">AI</span>
+        {t('debrief.title')} <span className="debrief__ai">AI</span>
       </span>
       <textarea
         className="debrief__input"
-        placeholder="How did it feel? Note energy, form, any discomfort…"
+        placeholder={t('debrief.placeholder')}
         value={text}
         onChange={(e) => {
           setText(e.target.value);
@@ -105,7 +107,7 @@ export function DebriefSection({ logId }: { logId: string }) {
             <span key={p} className="debrief__chip debrief__chip--pain">⚠ {p}</span>
           ))}
           {result.rpe == null && !result.mood && result.painFlags.length === 0 && (
-            <span className="debrief__chip">Saved</span>
+            <span className="debrief__chip">{t('debrief.saved')}</span>
           )}
         </div>
       )}
@@ -113,7 +115,7 @@ export function DebriefSection({ logId }: { logId: string }) {
       {result?.noteSummary && <div className="debrief__summary">{result.noteSummary}</div>}
 
       {failed && (
-        <div className="debrief__failed">Couldn't analyse — your note was saved as-is.</div>
+        <div className="debrief__failed">{t('debrief.failed')}</div>
       )}
     </div>
   );

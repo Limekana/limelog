@@ -2,6 +2,7 @@ import { Outlet, NavLink } from 'react-router-dom';
 import { useTranslation } from 'react-i18next';
 import { Calendar, BarChart2, Layers, BookOpen, Scale } from 'lucide-react';
 import { useUserStore } from '@/store/userStore';
+import { useNexusStore } from '@/store/nexusStore';
 import './Layout.css';
 
 // v1.7 — labels resolved via i18n at render time (labelKey → t()).
@@ -17,27 +18,87 @@ const NAV_ITEMS = [
   // (matches NCC + StudyDesk). The /profile route still exists.
 ] as const;
 
-// Initials for the top-right avatar, derived from the local profile name.
-function profileInitials(name: string): string {
-  const parts = (name || '').trim().split(/\s+/).filter(Boolean);
-  if (parts.length === 0) return '·';
+// Initials for the top-right avatar.
+//
+// Used to read the local profile name only, which defaults to "Athlete" — so a
+// signed-in user saw "AT", a placeholder, while NCC showed their real initials
+// and StudyDesk showed theirs. Now: a name the user actually chose wins, then
+// the identity provider's name, then the address. Keep in step with NCC
+// `userInitials` (store/useSessionStore.ts) and StudyDesk `avatarInitials`
+// (lib/avatarInitials.js).
+const DEFAULT_PROFILE_NAME = 'Athlete';
+
+function initialsFromWords(parts: string[]): string | null {
+  if (parts.length === 0) return null;
   if (parts.length === 1) return parts[0].slice(0, 2).toUpperCase();
-  return (parts[0][0] + parts[1][0]).toUpperCase();
+  return (parts[0][0] + parts[parts.length - 1][0]).toUpperCase();
+}
+
+/** null when there is nothing to show — the caller renders the silhouette.
+ *  Deliberately not exported: this file exports a component, and the repo lints
+ *  at --max-warnings 0, where react-refresh/only-export-components rejects a
+ *  module exporting both. StudyDesk hit the same rule and split its copy into
+ *  lib/avatarInitials.js; here there is one caller, so keeping it local is the
+ *  smaller change. Split it out if a second caller ever appears. */
+function avatarInitials(
+  profileName: string,
+  userName: string | null,
+  userEmail: string | null,
+): string | null {
+  // Only a *deliberate* local name outranks the account; the stock one does not.
+  const chosen = (profileName || '').trim();
+  if (chosen && chosen !== DEFAULT_PROFILE_NAME) {
+    return initialsFromWords(chosen.split(/\s+/).filter(Boolean));
+  }
+  const provided = (userName || '').trim();
+  if (provided) return initialsFromWords(provided.split(/\s+/).filter(Boolean));
+
+  const local = (userEmail || '').split('@')[0] || '';
+  if (!local) return null;
+  const parts = local.split(/[.\-_]+/).filter(Boolean);
+  return initialsFromWords(parts) || local.slice(0, 2).toUpperCase() || null;
+}
+
+/** Anonymous-profile silhouette, matching StudyDesk's. Replaces the "·" this
+ *  showed for a nameless guest — the same interpunct StudyDesk removed in
+ *  SD-F3 once it was clear half the userbase never signs in and saw it on
+ *  every screen. Sized in `em` so it inherits the avatar's type size. */
+function GuestAvatar() {
+  return (
+    <svg
+      viewBox="0 0 32 32"
+      width="1.15em"
+      height="1.15em"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+      focusable="false"
+    >
+      <circle cx="16" cy="11.5" r="5.5" />
+      <path d="M6.5 26.5v-1.8c0-3.1 2.5-5.6 5.6-5.6h7.8c3.1 0 5.6 2.5 5.6 5.6v1.8" />
+    </svg>
+  );
 }
 
 export function Layout() {
   const { t } = useTranslation();
   const name = useUserStore((s) => s.profile.name);
+  const userName = useNexusStore((s) => s.userName);
+  const userEmail = useNexusStore((s) => s.userEmail);
+  const initials = avatarInitials(name, userName, userEmail);
   return (
     <div className="app-shell">
       <header className="app-topbar">
         <NavLink
           to="/profile"
           className={({ isActive }) => `app-avatar${isActive ? ' app-avatar--active' : ''}`}
-          aria-label="Profile & settings"
-          title="Profile & settings"
+          aria-label={t('nav.profileSettings')}
+          title={t('nav.profileSettings')}
         >
-          {profileInitials(name)}
+          {initials ?? <GuestAvatar />}
         </NavLink>
       </header>
       <main className="app-main">

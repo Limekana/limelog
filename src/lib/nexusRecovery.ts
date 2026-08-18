@@ -31,6 +31,11 @@ import type { Exercise } from '@/types/program';
 interface CloudSessionRow {
   id: string;
   session_type: string | null;
+  // v1.9 (Item 4) — cardio. NULL on every pre-v1.9 row and on every strength
+  // session, which is how the two shapes are told apart coming back in.
+  activity_type: string | null;
+  duration_seconds: number | null;
+  distance_meters: number | null;
   date: string | null;
   notes: string | null;
   ai_debrief_raw: string | null;
@@ -78,7 +83,7 @@ export async function pullWorkoutsFromCloud(exercises: Exercise[]): Promise<Sess
 
   const { data: sessions, error: sErr } = await supabase
     .from('workout_sessions')
-    .select('id, session_type, date, notes, ai_debrief_raw, ai_rpe, ai_pain_flags, ai_mood, ai_note_summary')
+    .select('id, session_type, activity_type, duration_seconds, distance_meters, date, notes, ai_debrief_raw, ai_rpe, ai_pain_flags, ai_mood, ai_note_summary')
     .eq('user_id', user.id);
   if (sErr) throw sErr;
   if (!sessions?.length) return [];
@@ -120,10 +125,22 @@ export async function pullWorkoutsFromCloud(exercises: Exercise[]): Promise<Sess
       rpe: r.rpe,
       completed: true, // only completed sets were ever pushed
     }));
+    // v1.9 (Item 4) — a recovered cardio session must come back as cardio.
+    // Without this it would restore as a strength session with no sets: a 10 km
+    // run reappearing as an empty workout.
+    const isCardio = !!s.activity_type;
     const log: SessionLog = {
       id: s.id,
-      sessionTemplateId: '', // unknown — not stored in the cloud
-      programId: '',
+      // Cardio genuinely has no template or program, so these stay absent
+      // rather than being blanked. A recovered strength session keeps the
+      // existing '' — its template is unknown, not nonexistent.
+      ...(isCardio
+        ? {
+            activityType: s.activity_type ?? undefined,
+            durationSeconds: s.duration_seconds ?? undefined,
+            distanceMeters: s.distance_meters ?? undefined,
+          }
+        : { sessionTemplateId: '', programId: '' }),
       loggedAt: date,
       finalizedAt: date, // historical → finalized, never reopens in-progress
       perceivedFatigue: s.ai_rpe ?? null,

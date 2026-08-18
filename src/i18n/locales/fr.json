@@ -23,7 +23,8 @@
     "program": "Programme",
     "library": "Bibliothèque",
     "progress": "Progrès",
-    "body": "Corps"
+    "body": "Corps",
+    "profileSettings": "Profil et réglages"
   },
   "workout": {
     "workout": "Séance",
@@ -31,6 +32,50 @@
     "rep": "Répétition",
     "weight": "Poids",
     "personalRecord": "Record personnel"
+  },
+  "auth": {
+    "tagline": "FORCE PÉRIODISÉE · CONCENTRATION",
+    "titleGetStarted": "Commencer",
+    "titleSignInEmail": "Se connecter par e-mail",
+    "titleCreateAccount": "Créer un compte",
+    "subGetStarted": "Connectez-vous pour synchroniser vos séances avec Nexus, ou continuez en local.",
+    "subEmail": "Synchronisez vos séances entre appareils.",
+    "nexus": "Continuer avec Nexus",
+    "nexusNote": "CONNECTÉ À NEXUS COMMAND CENTER SUR CET APPAREIL",
+    "google": "Continuer avec Google",
+    "useEmail": "Utiliser un e-mail",
+    "emailLabel": "E-mail",
+    "passwordLabel": "Mot de passe",
+    "signIn": "Se connecter",
+    "createAccount": "Créer un compte",
+    "needAccount": "Besoin d'un compte ?",
+    "haveAccount": "Vous avez un compte ?",
+    "back": "Retour",
+    "guest": "Continuer en invité",
+    "guestNote": "Local uniquement — vos séances restent sur cet appareil. Vous pourrez vous connecter plus tard depuis Profil → Réglages.",
+    "notConfigured": "Supabase non configuré — connexion indisponible. Touchez Continuer en invité pour utiliser l'app en local.",
+    "errNexus": "Impossible d'hériter de la session Nexus.",
+    "errInvalidCredentials": "E-mail ou mot de passe incorrect.",
+    "errAlreadyRegistered": "Un compte existe déjà pour cet e-mail. Essayez de vous connecter.",
+    "errWeakPassword": "Choisissez un mot de passe plus fort.",
+    "errEmailNotConfirmed": "Confirmez d'abord votre e-mail — le lien est dans votre boîte de réception.",
+    "errRateLimited": "Trop de tentatives. Patientez un instant, puis réessayez.",
+    "errNetwork": "Serveur injoignable. Vérifiez votre connexion et réessayez.",
+    "errGeneric": "Échec de la connexion.",
+    "ageNote": "Vous devez avoir 16 ans ou plus pour créer un compte (13 ans si la loi locale le permet). En dessous, utilisez le mode invité — rien ne quitte votre appareil.",
+    "privacyLink": "Politique de confidentialité",
+    "otpTitle": "Saisissez votre code",
+    "otpSub": "Nous avons envoyé un code à",
+    "otpLabel": "Code de vérification",
+    "otpSubmit": "Confirmer le compte",
+    "otpHint": "Le code est valable 60 minutes. Le lien dans l’e-mail fonctionne toujours.",
+    "otpResend": "Envoyer un nouveau code",
+    "otpResendIn": "Nouveau code dans",
+    "otpSent": "Nouveau code envoyé.",
+    "otpBack": "Utiliser une autre adresse",
+    "errOtp": "Ce code n’a pas fonctionné. Vérifiez-le et réessayez.",
+    "errOtpResend": "Impossible d’envoyer un nouveau code. Réessayez sous peu.",
+    "errOtpLength": "Ce code semble incomplet. Copiez le code entier depuis l’e-mail."
   },
   "onboarding": {
     "welcomeTitle": "Bienvenue sur LimeLog",
@@ -67,7 +112,34 @@
     "noOrmTitle": "Aucune donnée de 1RM",
     "noOrmBody": "Termine une séance avec poids × répétitions pour voir une estimation de 1RM.",
     "noHistoryTitle": "Aucune séance terminée",
-    "noHistoryBody": "Termine une séance pour la voir ici."
+    "noHistoryBody": "Termine une séance pour la voir ici.",
+    "readyToProgress": "Prêt à progresser",
+    "applyFinish": "Appliquer et terminer",
+    "sessionFatigue": "Fatigue de la séance",
+    "newPr": "Nouveau record personnel",
+    "nice": "Bravo",
+    "loadTrend": "Graphique de tendance de charge",
+    "ormTrend": "Tendance du 1RM estimé",
+    "needTwo": "Enregistrez au moins 2 séances pour voir une tendance.",
+    "weightUpBody": "Vous avez atteint le haut de la fourchette de répétitions sur toutes les séries des exercices ci-dessous. Confirmez que la technique était solide pour appliquer la hausse de charge.",
+    "fatigueRating": "Fatigue {{n}}",
+    "newPrTitle_one": "Nouveau record personnel",
+    "newPrTitle_other": "{{count}} nouveaux records personnels",
+    "newPrTitle_many": "{{count}} nouveaux records personnels",
+    "repsOnly_one": "{{count}} rép.",
+    "repsOnly_other": "{{count}} réps.",
+    "repsOnly_many": "{{count}} réps.",
+    "stallFlags": "Signaux de stagnation",
+    "selectExercise": "Choisir un exercice",
+    "selectExerciseOrm": "Choisir un exercice pour la tendance 1RM",
+    "strengthRatio": "Rapport force/poids de corps",
+    "logJump": "Enregistrer un saut",
+    "logFirstJump": "Enregistrer le premier saut",
+    "noJumpsTitle": "Aucun saut enregistré",
+    "noJumpsBody": "Suivez votre saut vertical pour mesurer vos progrès athlétiques.",
+    "unknownExercise": "Exercice inconnu",
+    "stallWeightPlateau": "Plateau de charge",
+    "stallRpeCreep": "Hausse du RPE"
   },
   "today": {
     "noProgramTitle": "Aucun programme actif",
@@ -92,10 +164,39 @@
       "thu": "Jeudi",
       "fri": "Vendredi",
       "sat": "Samedi"
-    }
+    },
+    "topE1rm": "Meilleur e1RM",
+    "e1rmTitle": "Meilleur 1RM estimé d'après vos séances",
+    "exercises_many": "{{count}} exercices · {{sets}} séries",
+    "stallAlert_one": "{{count}} signe de stagnation détecté — envisagez un deload",
+    "stallAlert_many": "{{count}} signes de stagnation détectés — envisagez un deload",
+    "stallAlert_other": "{{count}} signes de stagnation détectés — envisagez un deload",
+    "deloadAdvance": "{{missed}}/{{total}} séries en dessous de l'objectif sur vos 3 dernières séances — envisagez de passer à une phase de deload.",
+    "deloadSchedule": "{{missed}}/{{total}} séries en dessous de l'objectif sur vos 3 dernières séances — envisagez de programmer un deload."
   },
   "settings": {
-    "language": "Langue"
+    "language": "Langue",
+    "privacy": "Confidentialité et IA",
+    "aiOn": "Activé",
+    "aiOff": "Désactivé",
+    "aiFeaturesOnSub": "Bilan IA activé — la note que vous écrivez après la séance est envoyée à Google Gemini.",
+    "aiFeaturesOffSub": "Bilan IA désactivé — rien n'est envoyé à Google. Évaluez la fatigue avec les points ci-dessus.",
+    "aiTrainingNote": "Google l'exécute sur son offre gratuite : ce que vous envoyez peut servir à entraîner ses futurs modèles. Laissez désactivé si cela ne vous convient pas.",
+    "privacyPolicy": "Politique de confidentialité",
+    "yourData": "Vos données",
+    "yourDataNote": "Emportez une copie de tout, ou effacez-le. Un seul compte couvre LimeLog, Nexus Command Center et StudyDesk.",
+    "exportData": "Exporter mes données",
+    "exportDone": "{{name}} enregistré",
+    "exportFailed": "Échec de l'export : {{msg}}",
+    "deleteAccount": "Supprimer mon compte",
+    "deletingAccount": "Suppression…",
+    "deleteAccountNote": "Efface votre compte et toutes ses données, dans les trois applications, immédiatement et irréversiblement. Aucun délai de récupération.",
+    "deleteAccountConfirm1": "Supprimer votre compte et tout son contenu ? C'est irréversible.",
+    "deleteAccountConfirm2": "Dernière vérification — cela efface aussi vos données Nexus Command Center et StudyDesk. Continuer ?",
+    "deleteAccountFailed": "Échec de la suppression : {{msg}}",
+    "support": "Soutien",
+    "supportDev": "Soutenir le développement",
+    "supportDevSub": "Un lien vers Ko-fi. Rien dans l’app n’en dépend."
   },
   "body": {
     "title": "Corps",
@@ -129,7 +230,10 @@
     "photoOverwrite": "Une photo existe déjà pour cette date — la capture l'écrasera.",
     "noPhotos": "Aucune photo enregistrée. Elles restent sur cet appareil — jamais envoyées.",
     "deleteEntryConfirm": "Supprimer l'entrée du {{date}} ?",
-    "deletePhotoConfirm": "Supprimer la photo du {{date}} ?"
+    "deletePhotoConfirm": "Supprimer la photo du {{date}} ?",
+    "unitSystem": "Système d’unités",
+    "weightChart": "Graphique de tendance du poids",
+    "weightChartAvg": "Tendance du poids avec moyenne mobile sur 7 jours"
   },
   "program": {
     "title": "Programmes",
@@ -177,7 +281,11 @@
       "thu": "Jeu",
       "fri": "Ven",
       "sat": "Sam"
-    }
+    },
+    "phases_many": "{{count}} phases",
+    "sessions_many": "{{count}} séances",
+    "exercises_many": "{{count}} exercices",
+    "deactivate": "Désactiver"
   },
   "library": {
     "title": "Bibliothèque d'exercices",
@@ -222,7 +330,11 @@
       "band": "Élastique",
       "kettlebell": "Kettlebell",
       "other": "Autre"
-    }
+    },
+    "inLibrary_many": "{{count}} exercices dans votre bibliothèque",
+    "customOption": "Saisir le mien…",
+    "customPatternPlaceholder": "ex. port de sac lesté",
+    "customEquipPlaceholder": "ex. traîneau"
   },
   "profile": {
     "title": "Profil",
@@ -284,6 +396,89 @@
     "sets": "Séries",
     "targetKg": "Objectif kg",
     "restSecs": "Repos (s)",
-    "repsPlaceholder": "p. ex. 6–8"
+    "repsPlaceholder": "p. ex. 6–8",
+    "restingEyebrow": "Repos",
+    "restTimer": "Minuteur de repos",
+    "startRest": "Démarrer",
+    "startRestAria": "Démarrer un repos de {{secs}} secondes",
+    "skipRest": "Passer le repos",
+    "addSeconds": "Ajouter 15 secondes",
+    "subSeconds": "Retirer 15 secondes",
+    "finishWorkout": "Terminer la séance",
+    "discardWorkout": "Abandonner la séance",
+    "missing": "Cette séance n'existe plus.",
+    "noHistoryYet": "Première fois — pas encore d’historique",
+    "colRpe": "RPE",
+    "colDone": "Fait",
+    "colReps2": "Reps",
+    "setDone": "Série {{n}} faite",
+    "markSetDone": "Marquer la série {{n}} comme faite",
+    "deleteSetN": "Supprimer la série {{n}}",
+    "currentPr": "Record personnel actuel",
+    "setsProgress": "{{done}}/{{total}} séries",
+    "discardConfirm": "Abandonner cette séance ? Toutes les séries enregistrées seront perdues."
+  },
+  "notif": {
+    "sessionTitle": "Séance du {{day}}"
+  },
+  "health": {
+    "stepsWeekLabel": "Pas sur les 7 derniers jours",
+    "activity": "Activité",
+    "connect": "Connecter Health Connect",
+    "connectPrompt": "Connectez Health Connect pour les pas et calories",
+    "connectBody": "Connectez Health Connect pour voir vos pas et calories actives ici.",
+    "viaHealthConnect": "via Health Connect",
+    "steps": "pas",
+    "stepsToday": "pas aujourd'hui",
+    "kcal": "kcal",
+    "kcalToday": "kcal aujourd'hui"
+  },
+  "sync": {
+    "title": "Synchronisation Nexus",
+    "connected": "Connecté",
+    "signedInAs": "Connecté en tant que",
+    "signOut": "Se déconnecter",
+    "autoPush": "Envoi auto à la fin",
+    "retryNow": "Réessayer",
+    "orUseEmail": "ou utiliser l’e-mail"
+  },
+  "jump": {
+    "title": "Enregistrer un saut vertical",
+    "height": "Hauteur (cm)",
+    "heightPh": "ex. 65,5",
+    "condition": "Conditions",
+    "notes": "Notes (facultatif)",
+    "notesPh": "Surface, échauffement, contexte...",
+    "condFresh": "Frais",
+    "condMorning": "Matin",
+    "condPost": "Après séance"
+  },
+  "debrief": {
+    "title": "Débriefing",
+    "placeholder": "Comment c'était ? Notez l'énergie, la technique, les gênes…",
+    "saved": "Enregistré",
+    "failed": "Analyse impossible — votre note a été enregistrée telle quelle."
+  },
+  "chart": {
+    "needMoreSessions": "Il faut au moins 2 séances avec poids × répétitions pour estimer une tendance de 1RM."
+  },
+  "cardio": {
+    "logButton": "Noter le cardio",
+    "title": "Noter le cardio",
+    "activity": {
+      "run": "Course",
+      "cycle": "Vélo",
+      "swim": "Natation",
+      "row": "Rameur",
+      "walk": "Marche",
+      "other": "Autre"
+    },
+    "duration": "Durée (minutes)",
+    "durationPh": "ex. 35",
+    "distance": "Distance ({{unit}})",
+    "distancePh": "facultatif",
+    "notes": "Notes",
+    "notesPh": "Comment c’était ?",
+    "activityLabel": "Activité"
   }
 }

@@ -2,13 +2,17 @@ import { useState, useMemo } from 'react';
 import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import { BUILTIN_EXERCISES } from '@/data/builtinExercises';
-import type { MovementPattern, Equipment } from '@/types';
+import type { MovementPattern, BuiltinMovementPattern, Equipment, BuiltinEquipment } from '@/types';
 import { Button, Tabs, TabPanel } from '@/components/ui';
 import { Plus, Trash2, Search, Dumbbell } from 'lucide-react';
 import './LibraryPage.css';
 
-const PATTERNS: MovementPattern[] = ['push', 'pull', 'hinge', 'squat', 'carry', 'jump', 'core', 'accessory'];
-const EQUIPMENT: Equipment[] = ['barbell', 'dumbbell', 'machine', 'cable', 'bodyweight', 'band', 'kettlebell', 'other'];
+const PATTERNS: BuiltinMovementPattern[] = ['push', 'pull', 'hinge', 'squat', 'carry', 'jump', 'core', 'accessory'];
+const EQUIPMENT: BuiltinEquipment[] = ['barbell', 'dumbbell', 'machine', 'cable', 'bodyweight', 'band', 'kettlebell', 'other'];
+
+// Sentinel for the "type your own" option in the two dropdowns. Not a valid
+// stored value — picking it swaps the select for a text input.
+const CUSTOM = '__custom__';
 
 type Tab = 'my' | 'browse';
 
@@ -32,8 +36,10 @@ function matchesFilter(
 export function LibraryPage() {
   const { t } = useTranslation();
   const { exercises, addExercise, deleteExercise } = useProgramStore();
-  const patternLabel = (p: MovementPattern) => t(`library.pattern.${p}`);
-  const equipLabel = (e: Equipment) => t(`library.equip.${e}`);
+  // defaultValue keeps a user's own wording intact — without it a custom
+  // pattern rendered as the raw key, "library.pattern.sandbag".
+  const patternLabel = (p: MovementPattern) => t(`library.pattern.${p}`, { defaultValue: p });
+  const equipLabel = (e: Equipment) => t(`library.equip.${e}`, { defaultValue: e });
 
   const [tab, setTab] = useState<Tab>('my');
   const [search, setSearch] = useState('');
@@ -46,8 +52,24 @@ export function LibraryPage() {
     name: '', movementPattern: 'squat' as MovementPattern,
     primaryMuscle: '', equipment: 'dumbbell' as Equipment, isBilateral: true,
   });
+  // Whether each dropdown has been swapped for its free-text input (A7).
+  const [patternIsCustom, setPatternIsCustom] = useState(false);
+  const [equipIsCustom, setEquipIsCustom] = useState(false);
 
   const builtinNames = useMemo(() => new Set(BUILTIN_EXERCISES.map((e) => e.name)), []);
+
+  // Any pattern/equipment value in the library that is not one of the eight.
+  // Without these the filter dropdowns could not reach a custom-filed exercise.
+  const extraPatterns = useMemo(
+    () => [...new Set(exercises.map((e) => e.movementPattern))]
+      .filter((p) => !(PATTERNS as string[]).includes(p)).sort(),
+    [exercises],
+  );
+  const extraEquipment = useMemo(
+    () => [...new Set(exercises.map((e) => e.equipment))]
+      .filter((e) => !(EQUIPMENT as string[]).includes(e)).sort(),
+    [exercises],
+  );
   const inStoreNames = useMemo(() => new Set(exercises.map((e) => e.name)), [exercises]);
 
   // "My Library" tab: all exercises currently in store
@@ -77,8 +99,20 @@ export function LibraryPage() {
 
   function handleAddCustom() {
     if (!form.name.trim()) return;
-    addExercise({ ...form, name: form.name.trim(), primaryMuscle: form.primaryMuscle.trim() });
+    // A blank free-text box falls back to the nearest built-in catch-all rather
+    // than storing an empty string, which would render as a bare separator dot.
+    const movementPattern = form.movementPattern.trim() || 'accessory';
+    const equipment = form.equipment.trim() || 'other';
+    addExercise({
+      ...form,
+      name: form.name.trim(),
+      primaryMuscle: form.primaryMuscle.trim(),
+      movementPattern,
+      equipment,
+    });
     setForm({ name: '', movementPattern: 'squat', primaryMuscle: '', equipment: 'dumbbell', isBilateral: true });
+    setPatternIsCustom(false);
+    setEquipIsCustom(false);
     setShowForm(false);
   }
 
@@ -127,6 +161,7 @@ export function LibraryPage() {
           >
             <option value="all">{t('library.allPatterns')}</option>
             {PATTERNS.map((p) => <option key={p} value={p}>{patternLabel(p)}</option>)}
+            {extraPatterns.map((p) => <option key={p} value={p}>{patternLabel(p)}</option>)}
           </select>
           <select
             aria-label={t('library.filterEquipAria')}
@@ -135,6 +170,7 @@ export function LibraryPage() {
           >
             <option value="all">{t('library.allEquipment')}</option>
             {EQUIPMENT.map((e) => <option key={e} value={e}>{equipLabel(e)}</option>)}
+            {extraEquipment.map((e) => <option key={e} value={e}>{equipLabel(e)}</option>)}
           </select>
           {(search || filterPattern !== 'all' || filterEquip !== 'all') && (
             <button
@@ -164,18 +200,42 @@ export function LibraryPage() {
                 onChange={(e) => setForm((f) => ({ ...f, primaryMuscle: e.target.value }))} />
               <select
                 aria-label={t('library.filterPatternAria')}
-                value={form.movementPattern}
-                onChange={(e) => setForm((f) => ({ ...f, movementPattern: e.target.value as MovementPattern }))}
+                value={patternIsCustom ? CUSTOM : form.movementPattern}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === CUSTOM) { setPatternIsCustom(true); setForm((f) => ({ ...f, movementPattern: '' })); }
+                  else { setPatternIsCustom(false); setForm((f) => ({ ...f, movementPattern: v })); }
+                }}
               >
                 {PATTERNS.map((p) => <option key={p} value={p}>{patternLabel(p)}</option>)}
+                <option value={CUSTOM}>{t('library.customOption')}</option>
               </select>
+              {patternIsCustom && (
+                <input
+                  placeholder={t('library.customPatternPlaceholder')}
+                  value={form.movementPattern}
+                  onChange={(e) => setForm((f) => ({ ...f, movementPattern: e.target.value }))}
+                />
+              )}
               <select
                 aria-label={t('library.filterEquipAria')}
-                value={form.equipment}
-                onChange={(e) => setForm((f) => ({ ...f, equipment: e.target.value as Equipment }))}
+                value={equipIsCustom ? CUSTOM : form.equipment}
+                onChange={(e) => {
+                  const v = e.target.value;
+                  if (v === CUSTOM) { setEquipIsCustom(true); setForm((f) => ({ ...f, equipment: '' })); }
+                  else { setEquipIsCustom(false); setForm((f) => ({ ...f, equipment: v })); }
+                }}
               >
                 {EQUIPMENT.map((e) => <option key={e} value={e}>{equipLabel(e)}</option>)}
+                <option value={CUSTOM}>{t('library.customOption')}</option>
               </select>
+              {equipIsCustom && (
+                <input
+                  placeholder={t('library.customEquipPlaceholder')}
+                  value={form.equipment}
+                  onChange={(e) => setForm((f) => ({ ...f, equipment: e.target.value }))}
+                />
+              )}
               <label className="lib-page__bilateral">
                 <input type="checkbox" checked={form.isBilateral}
                   onChange={(e) => setForm((f) => ({ ...f, isBilateral: e.target.checked }))} />

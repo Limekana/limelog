@@ -1,0 +1,1 @@
+Kirjaa myös kestävyysharjoittelu — juoksut, pyöräilyt ja uinnit — ilman sarjoja tai ohjelmaa. Uuden tilin voi vahvistaa sähköpostin koodilla pelkän linkin sijaan. Kolme korjausta: ohjelmaa ei voinut poistaa käytöstä, välitykset olivat pielessä välilehdillä ja navigaation korostus katosi napautuksesta. Asetuksissa on linkki, jos haluat tukea kehitystä.

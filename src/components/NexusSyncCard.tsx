@@ -1,4 +1,5 @@
 import { useEffect, useState } from 'react';
+import { useTranslation } from 'react-i18next';
 import { Capacitor, registerPlugin } from '@capacitor/core';
 import { useNexusStore } from '@/store/nexusStore';
 import { inheritFromNexus } from '@/lib/suiteSso';
@@ -15,6 +16,7 @@ const SuiteSsoProbe = registerPlugin<{
 }>('SuiteSso');
 
 export function NexusSyncCard() {
+  const { t } = useTranslation();
   const {
     configured,
     syncEnabled,
@@ -112,8 +114,11 @@ export function NexusSyncCard() {
       <Card padding="md">
         <div className="nexus-card__header">
           <CloudOff size={18} />
-          <span className="settings-field__label" style={{ margin: 0 }}>Nexus sync</span>
+          <span className="settings-field__label" style={{ margin: 0 }}>{t('sync.title')}</span>
         </div>
+        {/* Developer diagnostic: only reachable in a build without Supabase env
+            vars, which a released build never is. Left in English deliberately —
+            every meaningful token in it is an identifier. */}
         <p className="nexus-card__hint">
           Set <code>VITE_SUPABASE_URL</code> and <code>VITE_SUPABASE_ANON_KEY</code> in <code>.env</code>,
           then rebuild to enable.
@@ -126,18 +131,18 @@ export function NexusSyncCard() {
     <Card padding="md">
       <div className="nexus-card__header">
         <Cloud size={18} />
-        <span className="settings-field__label" style={{ margin: 0 }}>Nexus sync</span>
-        {userEmail && <Badge label="Connected" variant="success" />}
+        <span className="settings-field__label" style={{ margin: 0 }}>{t('sync.title')}</span>
+        {userEmail && <Badge label={t('sync.connected')} variant="success" />}
       </div>
 
       {userEmail ? (
         <>
           <p className="nexus-card__signed-in">
-            Signed in as <strong>{userEmail}</strong>
+            {t('sync.signedInAs')} <strong>{userEmail}</strong>
           </p>
 
           <div className="nexus-card__row">
-            <span className="settings-field__sublabel">Auto-push on finish</span>
+            <span className="settings-field__sublabel">{t('sync.autoPush')}</span>
             <button
               className={`settings-toggle__btn${syncEnabled ? ' settings-toggle__btn--active' : ''}`}
               onClick={() => setSyncEnabled(!syncEnabled)}
@@ -155,7 +160,7 @@ export function NexusSyncCard() {
             </span>
             {pendingCount > 0 && (
               <Button size="sm" variant="secondary" onClick={handleRetry}>
-                Retry now
+                {t('sync.retryNow')}
               </Button>
             )}
           </div>
@@ -192,7 +197,7 @@ export function NexusSyncCard() {
             disabled={loading}
             className="nexus-card__signout"
           >
-            Sign out
+            {t('sync.signOut')}
           </Button>
         </>
       ) : (
@@ -209,10 +214,10 @@ export function NexusSyncCard() {
                 className="nexus-card__nexus"
               >
                 <span className="nexus-card__nexus-glyph" aria-hidden="true">◈</span>
-                Continue with Nexus
+                {t('auth.nexus')}
               </Button>
               <p className="nexus-card__nexus-note">
-                Signed in to Nexus Command Center on this device
+                {t('auth.nexusNote')}
               </p>
             </>
           )}
@@ -226,15 +231,15 @@ export function NexusSyncCard() {
             disabled={loading}
             className="nexus-card__google"
           >
-            Continue with Google
+            {t('auth.google')}
           </Button>
 
           <div className="nexus-card__divider">
-            <span>or use email</span>
+            <span>{t('sync.orUseEmail')}</span>
           </div>
 
           <label className="settings-field">
-            <span className="settings-field__sublabel">Email</span>
+            <span className="settings-field__sublabel">{t('auth.emailLabel')}</span>
             <input
               type="email"
               autoComplete="email"
@@ -244,7 +249,7 @@ export function NexusSyncCard() {
             />
           </label>
           <label className="settings-field settings-field--mt">
-            <span className="settings-field__sublabel">Password</span>
+            <span className="settings-field__sublabel">{t('auth.passwordLabel')}</span>
             <input
               type="password"
               autoComplete={mode === 'signin' ? 'current-password' : 'new-password'}
@@ -261,7 +266,7 @@ export function NexusSyncCard() {
 
           <div className="nexus-card__actions">
             <Button type="submit" variant="primary" size="sm" disabled={loading}>
-              {loading ? '…' : mode === 'signin' ? 'Sign in' : 'Sign up'}
+              {loading ? '…' : mode === 'signin' ? t('auth.signIn') : t('auth.createAccount')}
             </Button>
             <button
               type="button"
@@ -271,7 +276,7 @@ export function NexusSyncCard() {
                 setLocalError(null);
               }}
             >
-              {mode === 'signin' ? 'Need an account?' : 'Have an account?'}
+              {mode === 'signin' ? t('auth.needAccount') : t('auth.haveAccount')}
             </button>
           </div>
 

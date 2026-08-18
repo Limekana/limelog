@@ -27,6 +27,10 @@ interface ProgramStore {
   updateProgram: (id: string, updates: Partial<Pick<Program, 'name' | 'description' | 'status'>>) => void;
   deleteProgram: (id: string) => void;
   setActiveProgram: (id: string) => void;
+  /** Archive the active program, leaving none active. The only way back out of
+   *  "active": `setActiveProgram` could move the flag between programs but
+   *  never clear it, so a user with a single program was stuck with it. */
+  deactivateProgram: (id: string) => void;
 
   // Phase CRUD
   addPhase: (programId: string, p: Omit<Phase, 'id' | 'programId'>) => void;
@@ -117,6 +121,19 @@ export const useProgramStore = create<ProgramStore>((set, get) => ({
     storage.setPrograms(programs);
     const activeProgram = programs.find((p) => p.id === id) ?? null;
     set({ programs, activeProgram });
+  },
+
+  // Archives just this program. Deliberately narrow: it does not promote
+  // another program in its place, because "I am taking a break" and "I am
+  // switching programs" are different intents and `setActiveProgram` already
+  // covers the second one. Logged sessions are untouched — archiving a program
+  // hides it from Today, it does not erase the training that happened under it.
+  deactivateProgram: (id) => {
+    const programs = get().programs.map((p) =>
+      p.id === id ? { ...p, status: 'archived' as const } : p,
+    );
+    storage.setPrograms(programs);
+    set({ programs, activeProgram: programs.find((p) => p.status === 'active') ?? null });
   },
 
   addPhase: (programId, p) => {

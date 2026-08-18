@@ -65,7 +65,7 @@
   font-size: 22px;
   font-weight: 700;
   color: var(--accent);
-  margin-right: 8px;
+  margin-inline-end: 8px;
 }
 .jump-entry__condition {
   font-size: 12px;
@@ -163,5 +163,5 @@
   color: var(--text-tertiary, var(--text-muted));
   font-size: 12px;
   font-weight: 500;
-  margin-left: 4px;
+  margin-inline-start: 4px;
 }

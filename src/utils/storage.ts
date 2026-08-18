@@ -1,6 +1,7 @@
 import type { Program, Exercise, WorkoutTemplate } from '@/types/program';
 import type { SessionLog, VerticalJumpLog, StallFlag, ExercisePR } from '@/types/logging';
 import type { UserProfile, InjuryRestriction } from '@/types/user';
+import { estimate1RMRaw } from '@/utils/oneRepMax';
 
 const KEYS = {
   programs: 'wt_programs',
@@ -17,6 +18,36 @@ const KEYS = {
   // propagate a cloud delete).
   sessionTombstones: 'wt_session_tombstones',
 } as const;
+
+// v1.8 — re-value PRs written before the two 1RM estimators were unified.
+//
+// PR detection used to score sets with its own uncapped Epley while the charts
+// used the blended Brzycki/Epley in oneRepMax.ts. Those disagree below 11 reps
+// (100 kg × 5 scored 116.67 vs 112.50), so stored PRs are inflated relative to
+// anything detected from now on. Left alone, every user's existing PRs would
+// become roughly 4 kg per 100 kg harder to beat and would effectively freeze.
+//
+// Re-valuing from the stored weightKg/reps rather than recomputing from session
+// history keeps this self-contained and works even for PRs whose source session
+// has since been deleted. estimate1RMRaw is deliberately the uncapped variant:
+// a legacy PR set above MAX_RELIABLE_REPS still gets a comparable number
+// instead of being dropped, which would destroy user history. New PRs above the
+// cap can no longer be created — that is enforced in prDetection.
+//
+// Idempotent: re-valuing an already-migrated row recomputes the same number.
+function migratePRValues(prs: ExercisePR[]): ExercisePR[] {
+  let changed = false;
+  const out = prs.map((pr) => {
+    const revalued = estimate1RMRaw(pr.weightKg, pr.reps);
+    if (revalued == null) return pr;
+    const rounded = Math.round(revalued * 100) / 100;
+    if (rounded === pr.oneRepMaxKg) return pr;
+    changed = true;
+    return { ...pr, oneRepMaxKg: rounded };
+  });
+  if (changed) set(KEYS.exercisePRs, out);
+  return out;
+}
 
 function get<T>(key: string): T | null {
   try {
@@ -57,6 +88,8 @@ function set<T>(key: string, value: T): void {
 }
 
 export const storage = {
+  migratePRValues,
+
   getPrograms: (): Program[] => get<Program[]>(KEYS.programs) ?? [],
   setPrograms: (v: Program[]) => set(KEYS.programs, v),
 
@@ -72,7 +105,7 @@ export const storage = {
   getStallFlags: (): StallFlag[] => get<StallFlag[]>(KEYS.stallFlags) ?? [],
   setStallFlags: (v: StallFlag[]) => set(KEYS.stallFlags, v),
 
-  getExercisePRs: (): ExercisePR[] => get<ExercisePR[]>(KEYS.exercisePRs) ?? [],
+  getExercisePRs: (): ExercisePR[] => migratePRValues(get<ExercisePR[]>(KEYS.exercisePRs) ?? []),
   setExercisePRs: (v: ExercisePR[]) => set(KEYS.exercisePRs, v),
 
   getProfile: (): UserProfile | null => get<UserProfile>(KEYS.profile),

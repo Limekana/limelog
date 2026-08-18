@@ -14,12 +14,14 @@ import { Capacitor } from '@capacitor/core';
 // @ts-ignore — installed separately; see setup comment above
 import { LocalNotifications } from '@capacitor/local-notifications';
 import type { Exercise, SessionTemplate } from '@/types/program';
+import i18n from '@/i18n';
+import { weekdayNames } from '@/utils/helpers';
 
 const CHANNEL_ID = 'workout-reminders';
 /** Notification IDs 100–106 are reserved for days 0 (Sun) – 6 (Sat). */
 const BASE_ID = 100;
 const SLOT_COUNT = 7;
-const DAY_NAMES = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+
 
 /**
  * Action-type ID for the workout reminder. Registered once at app start via
@@ -219,7 +221,9 @@ export async function scheduleWorkoutReminders(
 
         return {
           id: BASE_ID + s.dayOfWeek,
-          title: `${DAY_NAMES[s.dayOfWeek]} session`,
+          // Localised at schedule time. Both the weekday and the surrounding
+          // wording were English here regardless of app language.
+          title: i18n.t('notif.sessionTitle', { day: weekdayNames('long')[s.dayOfWeek] }),
           body: buildSessionBody(s, exerciseLibrary),
           schedule: {
             at: target,
@@ -252,9 +256,3 @@ export async function scheduleWorkoutReminders(
   }
 }
 
-export async function cancelWorkoutReminders(): Promise<void> {
-  if (!Capacitor.isNativePlatform()) return;
-  try {
-    await cancelAllSlots();
-  } catch { /* best-effort cleanup — ignore if the plugin call fails */ }
-}

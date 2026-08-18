@@ -1,4 +1,18 @@
-export type MovementPattern =
+// A7 — movement pattern and equipment were closed sets of eight. Custom
+// *exercises* were already supported, but each still had to be filed under a
+// built-in pattern and a built-in equipment type, which does not survive
+// contact with a sandbag carry or a Smith machine.
+//
+// The second branch widens the union without losing it: TypeScript still offers
+// the eight literals as completions, while any other string type-checks.
+// Spelled `string & Record<never, never>` rather than the more common
+// `string & {}` because the latter trips @typescript-eslint/ban-types, and this
+// repo lints at --max-warnings 0. The two are equivalent here.
+//
+// Nothing in the app switches exhaustively over either type — both are used for
+// display, filtering, and injury-restriction matching, all of which work fine on
+// an arbitrary string.
+export type BuiltinMovementPattern =
   | 'push'
   | 'pull'
   | 'hinge'
@@ -8,7 +22,9 @@ export type MovementPattern =
   | 'accessory'
   | 'core';
 
-export type Equipment =
+export type MovementPattern = BuiltinMovementPattern | (string & Record<never, never>);
+
+export type BuiltinEquipment =
   | 'barbell'
   | 'dumbbell'
   | 'machine'
@@ -17,6 +33,8 @@ export type Equipment =
   | 'band'
   | 'kettlebell'
   | 'other';
+
+export type Equipment = BuiltinEquipment | (string & Record<never, never>);
 
 export interface Exercise {
   id: string;

@@ -12,7 +12,7 @@
 // in localStorage. Mixing them in here would force them into Supabase,
 // which we're not doing for privacy reasons.
 
-export type UnitSystem = 'metric' | 'imperial';
+type UnitSystem = 'metric' | 'imperial';
 
 export interface BodyMetric {
   /** UUID. Generated client-side; stable across sync. */

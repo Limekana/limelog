@@ -4,7 +4,7 @@ import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
-import { formatDate } from '@/utils/helpers';
+import { formatDate, toDisplayWeight, formatDuration, formatDistance } from '@/utils/helpers';
 import { EmptyState, Card, Button, Tabs, TabPanel } from '@/components/ui';
 import { JumpLogModal } from '@/components/JumpLogModal';
 import { LoadChart } from '@/components/LoadChart';
@@ -71,13 +71,19 @@ export function ProgressPage() {
         <>
           {activeStalls.length > 0 && (
             <div className="progress-stalls">
-              <span className="progress-stalls__label">Stall flags</span>
+              <span className="progress-stalls__label">{t('progress.stallFlags')}</span>
               {activeStalls.map((f) => {
                 const ex = exercises.find((e) => e.id === f.exerciseId);
                 return (
                   <div key={f.id} className="progress-stall-item">
-                    <span>{ex?.name ?? 'Unknown'}</span>
-                    <span className="progress-stall-item__type">{f.flagType === 'weight_plateau' ? 'Weight plateau' : 'RPE creep'}</span>
+                    {/* Was English-only in a box that is otherwise translated —
+                        found while fixing this box's spacing. */}
+                    <span>{ex?.name ?? t('progress.unknownExercise')}</span>
+                    <span className="progress-stall-item__type">
+                      {f.flagType === 'weight_plateau'
+                        ? t('progress.stallWeightPlateau')
+                        : t('progress.stallRpeCreep')}
+                    </span>
                   </div>
                 );
               })}
@@ -89,7 +95,7 @@ export function ProgressPage() {
           ) : (
             <>
               <select
-                aria-label="Select exercise"
+                aria-label={t('progress.selectExercise')}
                 className="progress-exercise-select"
                 value={selectedExId}
                 onChange={(e) => setSelectedExId(e.target.value)}
@@ -121,7 +127,7 @@ export function ProgressPage() {
           ) : (
             <>
               <select
-                aria-label="Select exercise for 1RM trend"
+                aria-label={t('progress.selectExerciseOrm')}
                 className="progress-exercise-select"
                 value={selectedExId}
                 onChange={(e) => setSelectedExId(e.target.value)}
@@ -145,9 +151,7 @@ export function ProgressPage() {
                   .sort((a, b) => (b.best ?? 0) - (a.best ?? 0))
                   .slice(0, 10)
                   .map((row) => {
-                    const display = unit === 'lb'
-                      ? Math.round((row.best ?? 0) * 2.2046 * 10) / 10
-                      : Math.round((row.best ?? 0) * 10) / 10;
+                    const display = toDisplayWeight(row.best ?? 0, unit);
                     // v1.2 — strength-to-bodyweight ratio (best 1RM / latest
                     // logged weight). Only rendered when the user has weight
                     // entries; staying quiet for weight-only-1RM users.
@@ -160,7 +164,7 @@ export function ProgressPage() {
                           {ratio != null && (
                             <span
                               className="progress-orm-row__ratio"
-                              title="Strength-to-bodyweight ratio"
+                              title={t('progress.strengthRatio')}
                             >
                               {' '}· {ratio.toFixed(2)}× BW
                             </span>
@@ -185,12 +189,12 @@ export function ProgressPage() {
           <div className="progress-jump-header">
             <span className="progress-jump-header__count">{jumpLogs.length} entries</span>
             <Button size="sm" variant="primary" onClick={() => setShowJumpModal(true)}>
-              <Zap size={13} aria-hidden="true" /> Log jump
+              <Zap size={13} aria-hidden="true" /> {t('progress.logJump')}
             </Button>
           </div>
 
           {recentJumps.length === 0 ? (
-            <EmptyState icon={<Zap size={36} />} title="No jumps logged" description="Track your vertical jump to monitor athletic progress." action={<Button variant="primary" onClick={() => setShowJumpModal(true)}>Log first jump</Button>} />
+            <EmptyState icon={<Zap size={36} />} title={t('progress.noJumpsTitle')} description={t('progress.noJumpsBody')} action={<Button variant="primary" onClick={() => setShowJumpModal(true)}>{t('progress.logFirstJump')}</Button>} />
           ) : (
             recentJumps.map((j) => (
               <Card key={j.id} padding="sm">
@@ -217,15 +221,35 @@ export function ProgressPage() {
           ) : (
             finalizedLogs.map((l) => {
               const totalSets = l.sets.filter((s) => s.completed).length;
+              // v1.9 (Item 4) — a cardio entry has no session template and no
+              // sets, so it names and measures itself differently. `sets`
+              // would read "0 sets" for a 10 km run, which is worse than
+              // saying nothing.
+              const isCardio = !!l.activityType;
               return (
                 <Card key={l.id} padding="sm">
                   <div className="history-entry">
                     <div className="history-entry__main">
-                      <span className="history-entry__name">{getSessionName(l.sessionTemplateId)}</span>
+                      <span className="history-entry__name">
+                        {isCardio
+                          ? t(`cardio.activity.${l.activityType}`, { defaultValue: l.activityType })
+                          : getSessionName(l.sessionTemplateId ?? '')}
+                      </span>
                       <span className="history-entry__date">{formatDate(l.finalizedAt!)}</span>
                     </div>
                     <div className="history-entry__meta">
-                      <span className="history-entry__sets">{totalSets} sets</span>
+                      {isCardio ? (
+                        <>
+                          {l.durationSeconds !== undefined && (
+                            <span className="history-entry__sets">{formatDuration(l.durationSeconds)}</span>
+                          )}
+                          {l.distanceMeters !== undefined && (
+                            <span className="history-entry__sets">{formatDistance(l.distanceMeters, unit)}</span>
+                          )}
+                        </>
+                      ) : (
+                        <span className="history-entry__sets">{totalSets} sets</span>
+                      )}
                       {l.perceivedFatigue !== null && (
                         <span className="history-entry__fatigue">RPE {l.perceivedFatigue}</span>
                       )}

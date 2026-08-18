@@ -1,0 +1,1 @@
+Catat kardio — lari, bersepeda, dan berenang — tanpa set atau program. Akun baru bisa dikonfirmasi dengan kode dari email, bukan hanya lewat tautan. Tiga perbaikan: program tidak bisa dinonaktifkan, jarak antar elemen panel tab keliru, dan warna navigasi hilang saat disentuh. Pengaturan punya tautan untuk mendukung pengembangan.

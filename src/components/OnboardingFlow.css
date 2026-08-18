@@ -130,9 +130,9 @@
 }
 
 .onb-howlist {
-  text-align: left;
+  text-align: start;
   margin: 0;
-  padding-left: 20px;
+  padding-inline-start: 20px;
   display: flex;
   flex-direction: column;
   gap: 8px;
@@ -173,6 +173,12 @@
   grid-template-columns: 1fr 1fr;
   gap: 8px;
   width: 100%;
+  /* v1.8 — capped at ~3.5 rows so a 10-language list can't push the step's
+     Continue button below the fold. Only bites once the list outgrows it, so
+     the six-language layout is unchanged. Half-row is the scroll affordance. */
+  max-height: 184px;
+  overflow-y: auto;
+  overscroll-behavior: contain;
 }
 
 /* ── v1.7.1 design pass — sharper industrial brutalism ───────────────────── */

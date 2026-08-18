@@ -140,3 +140,18 @@ textarea:focus-visible {
 .empty-state__title { font-size: 15px; font-weight: 500; color: var(--text-secondary); }
 .empty-state__desc  { font-size: 13px; color: var(--text-tertiary); max-width: 260px; line-height: 1.6; }
 .empty-state__action { margin-top: 8px; }
+
+/* The tab panel used to be an unstyled <div>. Its parent pages lay their
+   content out as a flex column with a `gap`, so the panel counted as ONE
+   child — it got the page gap above it, while everything inside it sat flush
+   against everything else. On Progress that read as a stall-flags box with a
+   wide margin on top and none underneath, jammed against the exercise picker.
+
+   `gap: inherit` takes the parent's own gap rather than inventing a number
+   here, so each page keeps its own rhythm and a page with no gap set stays
+   unaffected. */
+.tab-panel {
+  display: flex;
+  flex-direction: column;
+  gap: inherit;
+}

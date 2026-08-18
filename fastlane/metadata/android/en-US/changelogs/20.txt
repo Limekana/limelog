@@ -1,0 +1,1 @@
+Log cardio — runs, rides and swims — without sets or a program. You can confirm a new account with the code from the email instead of only the link. Fixes three things: a program could not be deactivated, spacing was off on tab panels, and the nav accent was lost on tap. Settings has a link if you want to support development.

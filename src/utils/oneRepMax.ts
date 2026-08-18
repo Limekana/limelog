@@ -22,27 +22,43 @@
  * the UI boundary (display layer formats lb/kg per user preference).
  */
 
-const MAX_RELIABLE_REPS = 12;
+export const MAX_RELIABLE_REPS = 12;
 
-/** Compute estimated 1RM from a single set's weight + reps.
- *  Returns null for invalid inputs (zero/negative weight or reps, > MAX_RELIABLE_REPS)
- *  to keep the UI honest about formula reliability. */
-export function estimate1RM(weightKg: number, reps: number): number | null {
+/** The blended Brzycki/Epley estimate with no reliability cap applied.
+ *
+ *  Only for re-valuing rows that already exist: a PR recorded before the two
+ *  estimators were unified may sit above the cap, and re-valuing it with the
+ *  shared formula keeps it comparable to new PRs without discarding history.
+ *  Anything shown to the user as a fresh estimate should use estimate1RM,
+ *  which refuses to guess above MAX_RELIABLE_REPS. */
+export function estimate1RMRaw(weightKg: number, reps: number): number | null {
   if (!isFinite(weightKg) || !isFinite(reps)) return null;
   if (weightKg <= 0 || reps <= 0) return null;
-  if (reps > MAX_RELIABLE_REPS) return null;
   // 1 rep at the working weight IS the 1RM — no estimation needed.
   if (reps === 1) return weightKg;
   if (reps <= 10) {
     // Brzycki — pick the more accurate formula in the strength range.
     return weightKg * 36 / (37 - reps);
   }
-  // Epley — used for the 11-12 rep window where Brzycki starts to drift.
+  // Epley — used above 10 reps, where Brzycki starts to drift.
   return weightKg * (1 + reps / 30);
 }
 
+/** Compute estimated 1RM from a single set's weight + reps.
+ *  Returns null for invalid inputs (zero/negative weight or reps, > MAX_RELIABLE_REPS)
+ *  to keep the UI honest about formula reliability.
+ *
+ *  The single estimator for the whole app. PR detection used to carry its own
+ *  uncapped Epley, which both admitted sets this one discards AND produced a
+ *  different number for the same set — 100 kg × 5 scored 116.67 there against
+ *  112.50 here, because that copy never got the Brzycki blend. */
+export function estimate1RM(weightKg: number, reps: number): number | null {
+  if (reps > MAX_RELIABLE_REPS) return null;
+  return estimate1RMRaw(weightKg, reps);
+}
+
 /** A single 1RM data point with provenance. */
-export interface OneRMPoint {
+interface OneRMPoint {
   /** Estimated 1RM in kg. */
   estKg: number;
   /** ISO date of the session that produced this estimate. */

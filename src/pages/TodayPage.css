@@ -41,7 +41,7 @@
   padding: 10px 14px;
   background: var(--warning-dim);
   border: 1px solid rgba(245, 165, 36, 0.25);
-  border-left: 3px solid var(--warning);
+  border-inline-start: 3px solid var(--warning);
   border-radius: 0;
   font-size: 13px;
   color: var(--warning);
@@ -149,7 +149,7 @@
   letter-spacing: 0.04em;
   color: var(--text-secondary);
   min-width: 56px;
-  text-align: right;
+  text-align: end;
 }
 
 /* v1.2 — deload variant of today-alert. Same shape as the stall-flag
@@ -201,4 +201,13 @@
   font-size: 11px;
   color: var(--text-tertiary);
   font-variant-numeric: tabular-nums;
+}
+
+/* v1.9 (Item 4) — cardio entry point. Right-aligned and quiet: it is a
+   secondary action next to the day's planned sessions, not a competitor to
+   them. */
+.today-cardio-row {
+  display: flex;
+  justify-content: flex-end;
+  margin: 4px 0 2px;
 }

@@ -1,0 +1,1 @@
+Cardio erfassen — Laufen, Radfahren, Schwimmen — ohne Sätze oder Programm. Ein neues Konto lässt sich mit dem Code aus der E-Mail bestätigen, nicht nur über den Link. Drei Korrekturen: ein Programm ließ sich nicht deaktivieren, Abstände in Tab-Panels stimmten nicht, und die Navigationsfarbe ging beim Antippen verloren. In den Einstellungen gibt es einen Link zur Unterstützung.

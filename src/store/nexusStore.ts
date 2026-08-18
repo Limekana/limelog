@@ -4,6 +4,7 @@ import { supabase, isNexusConfigured } from '@/lib/supabase';
 import { signInWithGoogle as oauthSignInWithGoogle, initOAuthDeepLinkListener } from '@/lib/oauth';
 import { setGuestMode, isGuestMode } from '@/lib/guestMode';
 import { inheritFromNexus } from '@/lib/suiteSso';
+import { scheduleOriginStamp } from '@/lib/originMarker';
 // v1.2 — outbox replaces nexusSync's drainPendingQueue/getPendingCount as the
 // persistence + retry layer. The actual push handler (pushWorkoutToNexus) is
 // still in nexusSync.ts; the outbox dispatches to it via kind tables.
@@ -42,6 +43,11 @@ interface NexusStore {
   configured: boolean;
   syncEnabled: boolean;
   userEmail: string | null;
+  /** Display name from the identity provider, when it gives one. Needed so the
+   *  avatar can show the same initials as NCC and StudyDesk, which both derive
+   *  from the name and fall back to the address. Tracking only the email meant
+   *  LimeLog could never agree with them. */
+  userName: string | null;
   loading: boolean;
   lastError: string | null;
   pendingCount: number;
@@ -53,7 +59,9 @@ interface NexusStore {
 
   init: () => Promise<void>;
   signIn: (email: string, password: string) => Promise<void>;
-  signUp: (email: string, password: string) => Promise<void>;
+  /** Resolves with whether the account still needs email confirmation — see
+   *  the implementation note. Callers that don't care may ignore it. */
+  signUp: (email: string, password: string) => Promise<{ needsConfirmation: boolean }>;
   signInWithGoogle: () => Promise<void>;
   signOut: () => Promise<void>;
   setSyncEnabled: (v: boolean) => void;
@@ -62,10 +70,19 @@ interface NexusStore {
   setLastPushAt: (iso: string) => void;
 }
 
+/** The provider's display name, or null. Supabase puts Google's on
+ *  user_metadata.full_name; some providers use `name`. */
+function displayNameOf(user: { user_metadata?: Record<string, unknown> } | null | undefined): string | null {
+  const meta = user?.user_metadata ?? {};
+  const n = String(meta.full_name || meta.name || '').trim();
+  return n || null;
+}
+
 export const useNexusStore = create<NexusStore>((set, get) => ({
   configured: isNexusConfigured,
   syncEnabled: readSyncEnabled(),
   userEmail: null,
+  userName: null,
   loading: false,
   lastError: null,
   pendingCount: outboxStatus().pending,
@@ -114,12 +131,17 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
         }
       }
 
-      set({ userEmail: user?.email ?? null, loading: false });
+      set({ userEmail: user?.email ?? null, userName: displayNameOf(user), loading: false });
+
+      // ACT-5 — cover the restored-session path too, not just fresh sign-ins.
+      // Every account that predates this instrumentation only ever appears here.
+      scheduleOriginStamp(user ?? null);
 
       supabase.auth.onAuthStateChange((event, session) => {
         const wasSignedIn = Boolean(get().userEmail);
         const nowSignedIn = Boolean(session?.user);
-        set({ userEmail: session?.user?.email ?? null });
+        set({ userEmail: session?.user?.email ?? null, userName: displayNameOf(session?.user) });
+        scheduleOriginStamp(session?.user ?? null);
         // v1.1 — clear guestMode on any successful sign-in. Without this,
         // a user who signed out (which sets guestMode=true) and later signs
         // in via NexusSyncCard's form would keep guestMode=true while
@@ -157,7 +179,7 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       set({ loading: false, lastError: error.message });
       throw error;
     }
-    set({ userEmail: data.user?.email ?? null, loading: false });
+    set({ userEmail: data.user?.email ?? null, userName: displayNameOf(data.user), loading: false });
 
     if (get().syncEnabled) {
       const result = await outboxDrain();
@@ -172,7 +194,13 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       set({ loading: false, lastError: error.message });
       throw error;
     }
-    set({ userEmail: data.user?.email ?? null, loading: false });
+    set({ userEmail: data.user?.email ?? null, userName: displayNameOf(data.user), loading: false });
+    // AUTH-2 — Supabase returns a session only when the project auto-confirms.
+    // With confirmation required, `session` is null and the caller has to show
+    // the code step rather than waiting on an auth-state change that never
+    // comes. Reported rather than inferred: previously a successful signup
+    // awaiting confirmation looked identical to a stall.
+    return { needsConfirmation: !data.session };
   },
 
   signInWithGoogle: async () => {
@@ -253,6 +281,7 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
     window.dispatchEvent(new CustomEvent('limelog:guest-mode-changed'));
     set({
       userEmail: null,
+      userName: null,
       loading: false,
       pendingCount: 0,
       outboxStatus: outboxStatus(),

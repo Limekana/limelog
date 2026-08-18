@@ -1,0 +1,14 @@
+LimeLog adalah pencatat latihan kekuatan yang terperiodisasi.
+
+Fitur:
+* Susun program dengan fase
+* Catat setiap set dan repetisi
+* Deteksi otomatis rekor pribadi (1RM Epley)
+* Acuan beban progresif saat mencatat
+* Tren estimasi 1RM dengan riwayat PR per latihan
+* Pelacakan lompatan vertikal dan metrik tubuh (opsional)
+* Langkah dan kalori aktif dari Health Connect
+
+Local-first; sinkronisasi awan opsional dan terikat akun. Tanpa Google Play Services, tanpa Firebase — masuk dengan Google memakai alur OAuth web biasa.
+
+Bagian dari rangkaian Limecore Nexus.

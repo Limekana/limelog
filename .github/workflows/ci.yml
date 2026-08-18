@@ -1,0 +1,37 @@
+name: CI
+
+on:
+  push:
+    branches: [main, develop, 'feature/**', 'claude/**']
+  pull_request:
+    branches: [main, develop]
+
+jobs:
+  check:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install
+        run: npm ci
+
+      # Scans every tracked file, not just staged ones — nothing is staged in
+      # CI, so the default (hook) mode would pass vacuously.
+      - name: Secret scan
+        run: node scripts/check-secrets.mjs --all
+
+      # The working agreement calls this gate mandatory. Two releases shipped
+      # broken because it was skipped by hand; this makes it structural.
+      # `npm run build` runs tsc before vite, so this is the typecheck too.
+      - name: Build gate
+        run: npm run build
+
+      # Already at --max-warnings 0 locally; this makes that standard hold in
+      # CI rather than depending on whoever remembers to run it.
+      - name: Lint
+        run: npm run lint

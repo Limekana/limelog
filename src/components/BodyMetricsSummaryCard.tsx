@@ -131,6 +131,7 @@ export function BodyMetricsSummaryCard() {
 // Weight sparkline — solid accent line + dashed 7-day MA overlay. Last 30
 // eligible points so the line stays legible on a phone.
 function Sparkline({ series }: { series: ReturnType<typeof weightSeries> }) {
+  const { t } = useTranslation();
   const data = series.slice(-30);
   const W = 300;
   const H = 76;
@@ -161,7 +162,7 @@ function Sparkline({ series }: { series: ReturnType<typeof weightSeries> }) {
       width="100%"
       className="bm-summary__chart"
       role="img"
-      aria-label="Weight trend with 7-day moving average"
+      aria-label={t('body.weightChartAvg')}
       preserveAspectRatio="none"
     >
       {maPath && <path d={maPath} className="bm-summary__chart-ma" fill="none" />}
