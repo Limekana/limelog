@@ -349,6 +349,23 @@
       "avoid": "Vältä",
       "modify": "Mukauta",
       "monitor": "Tarkkaile"
+    },
+    "feedback": "Palaute",
+    "feedbackBlurb": "Kerro kehittäjälle mikä toimii ja mikä ei. Lähetetään sovellusversion ja alustan kanssa, jotta raportti voidaan jäljittää.",
+    "feedbackCategory": "Luokka",
+    "feedbackRating": "Arvosana",
+    "feedbackRatingN": "{{n}} / 5",
+    "feedbackPlaceholder": "Mitä tapahtui, tai mitä haluaisit nähdä?",
+    "feedbackSend": "Lähetä palaute",
+    "feedbackThanks": "Kiitos — palaute on matkalla.",
+    "feedbackEmpty": "Kirjoita ensin viesti.",
+    "feedbackSignIn": "Kirjaudu sisään lähettääksesi palautetta.",
+    "feedbackMeta": "Lähetetään tiedolla {{app}} v{{version}}.",
+    "fbCat": {
+      "bug": "Vika",
+      "idea": "Idea",
+      "praise": "Kehu",
+      "other": "Muu"
     }
   },
   "exlib": {
@@ -455,15 +472,24 @@
     "needMoreSessions": "1RM-trendin arviointiin tarvitaan vähintään 2 treeniä, joissa on paino × toistot."
   },
   "cardio": {
-    "logButton": "Kirjaa kestävyys",
-    "title": "Kirjaa kestävyysharjoitus",
+    "logButton": "Kirjaa suoritus",
+    "title": "Kirjaa suoritus",
     "activity": {
       "run": "Juoksu",
       "cycle": "Pyöräily",
       "swim": "Uinti",
       "row": "Soutu",
       "walk": "Kävely",
-      "other": "Muu"
+      "other": "Muu",
+      "basketball": "Koripallo",
+      "football": "Jalkapallo",
+      "floorball": "Salibandy",
+      "icehockey": "Jääkiekko",
+      "volleyball": "Lentopallo",
+      "handball": "Käsipallo",
+      "tennis": "Tennis",
+      "martialArts": "Kamppailulajit",
+      "otherSport": "Muu laji"
     },
     "duration": "Kesto (minuuttia)",
     "durationPh": "esim. 35",
@@ -471,6 +497,10 @@
     "distancePh": "valinnainen",
     "notes": "Muistiinpanot",
     "notesPh": "Miltä tuntui?",
-    "activityLabel": "Laji"
+    "activityLabel": "Laji",
+    "group": {
+      "cardio": "Kestävyys",
+      "training": "Harjoitus"
+    }
   }
 }

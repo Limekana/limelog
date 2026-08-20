@@ -346,6 +346,23 @@
       "avoid": "避免",
       "modify": "调整",
       "monitor": "监测"
+    },
+    "feedback": "反馈",
+    "feedbackBlurb": "告诉开发者哪些好用、哪些不好用。会附带应用版本和平台，便于追踪问题。",
+    "feedbackCategory": "分类",
+    "feedbackRating": "评分",
+    "feedbackRatingN": "5 分中的 {{n}} 分",
+    "feedbackPlaceholder": "发生了什么，或者你希望看到什么？",
+    "feedbackSend": "发送反馈",
+    "feedbackThanks": "谢谢 — 已发送。",
+    "feedbackEmpty": "请先写一条消息。",
+    "feedbackSignIn": "登录后即可发送反馈。",
+    "feedbackMeta": "随 {{app}} v{{version}} 一起发送。",
+    "fbCat": {
+      "bug": "缺陷",
+      "idea": "建议",
+      "praise": "表扬",
+      "other": "其他"
     }
   },
   "exlib": {
@@ -452,15 +469,24 @@
     "needMoreSessions": "至少需要 2 次记录了重量 × 次数的训练，才能估算 1RM 趋势。"
   },
   "cardio": {
-    "logButton": "记录有氧",
-    "title": "记录有氧运动",
+    "logButton": "记录活动",
+    "title": "记录活动",
     "activity": {
       "run": "跑步",
       "cycle": "骑行",
       "swim": "游泳",
       "row": "划船",
       "walk": "步行",
-      "other": "其他"
+      "other": "其他",
+      "basketball": "篮球",
+      "football": "足球",
+      "floorball": "地板球",
+      "icehockey": "冰球",
+      "volleyball": "排球",
+      "handball": "手球",
+      "tennis": "网球",
+      "martialArts": "武术",
+      "otherSport": "其他运动"
     },
     "duration": "时长（分钟）",
     "durationPh": "例如 35",
@@ -468,6 +494,10 @@
     "distancePh": "可选",
     "notes": "备注",
     "notesPh": "感觉如何？",
-    "activityLabel": "运动类型"
+    "activityLabel": "运动类型",
+    "group": {
+      "cardio": "有氧",
+      "training": "训练"
+    }
   }
 }

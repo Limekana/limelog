@@ -7,6 +7,7 @@ import { Button, Card, Badge, EmptyState, Tabs, TabPanel } from '@/components/ui
 import { InjuryForm } from '@/components/InjuryForm';
 import { ExerciseLibrary } from '@/components/ExerciseLibrary';
 import { NexusSyncCard } from '@/components/NexusSyncCard';
+import { FeedbackCard } from '@/components/FeedbackCard';
 import { ShieldAlert } from 'lucide-react';
 import { useConfirm } from '@/components/confirmContext';
 import { downloadExport, deleteAccount, wipeAllLocalData } from '@/lib/dataRights';
@@ -181,6 +182,8 @@ export function ProfilePage() {
           </Card>
 
           <NexusSyncCard />
+
+          <FeedbackCard />
 
           {/* Privacy & AI. Off by default — the debrief sends the note you type
               to Google Gemini, so it stays dark until asked for. */}

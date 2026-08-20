@@ -1,0 +1,105 @@
+/* v1.10 — in-app feedback. Follows the brutalist-lime idiom already used by
+   BodyMetricsPanel: hard 1px borders, uppercase mono micro-labels, lime only
+   where something is selected. */
+
+.fb-card__header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.fb-card__hint {
+  font-size: 13px;
+  color: var(--text-secondary);
+  margin-bottom: 14px;
+}
+
+.fb-card__cats {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  margin-bottom: 12px;
+}
+
+.fb-card__cat {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 8px 13px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+
+.fb-card__cat:hover {
+  border-color: var(--accent, var(--lime));
+}
+
+.fb-card__cat--on {
+  border-color: var(--accent, var(--lime));
+  background: var(--accent, var(--lime));
+  color: #0a0a0a;
+  font-weight: 700;
+}
+
+.fb-card__stars {
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+}
+
+.fb-card__star {
+  font-size: 21px;
+  line-height: 1;
+  background: none;
+  border: none;
+  padding: 2px 3px;
+  cursor: pointer;
+  color: var(--border);
+  transition: color 0.12s;
+}
+
+.fb-card__star--on {
+  color: var(--accent, var(--lime));
+}
+
+.fb-card__text {
+  width: 100%;
+  min-height: 98px;
+  resize: vertical;
+  padding: 10px 12px;
+  border: 1px solid var(--border);
+  background: transparent;
+  color: var(--text-primary, inherit);
+  font: inherit;
+  font-size: 14px;
+}
+
+.fb-card__text:focus {
+  outline: none;
+  border-color: var(--accent, var(--lime));
+}
+
+.fb-card__count {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  color: var(--text-tertiary);
+  text-align: end;
+  margin: 5px 0 12px;
+}
+
+.fb-card__notice {
+  font-size: 12px;
+  color: var(--text-secondary);
+  margin-top: 10px;
+}
+
+.fb-card__meta {
+  font-size: 11px;
+  color: var(--text-tertiary);
+  margin-top: 8px;
+}

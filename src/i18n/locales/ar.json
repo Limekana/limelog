@@ -288,6 +288,23 @@
       "avoid": "تجنّب",
       "modify": "عدّل",
       "monitor": "راقب"
+    },
+    "feedback": "الملاحظات",
+    "feedbackBlurb": "أخبر المطوّر بما ينجح وما لا ينجح. تُرسل مع إصدار التطبيق والمنصّة حتى يمكن تتبّع البلاغ.",
+    "feedbackCategory": "الفئة",
+    "feedbackRating": "التقييم",
+    "feedbackRatingN": "{{n}} من 5",
+    "feedbackPlaceholder": "ماذا حدث، أو ما الذي تودّ رؤيته؟",
+    "feedbackSend": "إرسال الملاحظات",
+    "feedbackThanks": "شكرًا — تم الإرسال.",
+    "feedbackEmpty": "اكتب رسالة أولاً.",
+    "feedbackSignIn": "سجّل الدخول لإرسال الملاحظات.",
+    "feedbackMeta": "تُرسل مع {{app}} v{{version}}.",
+    "fbCat": {
+      "bug": "خلل",
+      "idea": "فكرة",
+      "praise": "إشادة",
+      "other": "أخرى"
     }
   },
   "log": {
@@ -487,15 +504,24 @@
     "needMoreSessions": "يلزم ما لا يقل عن جلستين مسجَّل فيهما الوزن × التكرارات لتقدير اتجاه 1RM."
   },
   "cardio": {
-    "logButton": "تسجيل الكارديو",
-    "title": "تسجيل الكارديو",
+    "logButton": "تسجيل نشاط",
+    "title": "تسجيل نشاط",
     "activity": {
       "run": "جري",
       "cycle": "دراجة",
       "swim": "سباحة",
       "row": "تجديف",
       "walk": "مشي",
-      "other": "أخرى"
+      "other": "أخرى",
+      "basketball": "كرة السلة",
+      "football": "كرة القدم",
+      "floorball": "فلوربول",
+      "icehockey": "هوكي الجليد",
+      "volleyball": "الكرة الطائرة",
+      "handball": "كرة اليد",
+      "tennis": "التنس",
+      "martialArts": "فنون قتالية",
+      "otherSport": "رياضة أخرى"
     },
     "duration": "المدة (دقائق)",
     "durationPh": "مثال 35",
@@ -503,6 +529,10 @@
     "distancePh": "اختياري",
     "notes": "ملاحظات",
     "notesPh": "كيف كان؟",
-    "activityLabel": "النشاط"
+    "activityLabel": "النشاط",
+    "group": {
+      "cardio": "كارديو",
+      "training": "تدريب"
+    }
   }
 }

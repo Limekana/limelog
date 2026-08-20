@@ -20,7 +20,7 @@ import { useProgramStore } from '@/store/programStore';
 import { useNexusStore } from '@/store/nexusStore';
 import { useLogStore } from '@/store/logStore';
 import { isGuestMode } from '@/lib/guestMode';
-import { isOnboarded, setOnboarded } from '@/lib/onboarding';
+import { isOnboarded, setOnboarded, hydrateOnboardedFromCloud, markOnboardedCloud } from '@/lib/onboarding';
 import { pullWorkoutsFromCloud } from '@/lib/nexusRecovery';
 import {
   setupNotificationChannel,
@@ -84,6 +84,26 @@ export default function App() {
   // populated on first render. `onboarded` flips when the wizard finishes.
   const sessionCount = useLogStore((s) => s.sessionLogs.length);
   const [onboarded, setOnboardedState] = useState<boolean>(() => isOnboarded());
+  const [onboardChecked, setOnboardChecked] = useState(false);
+
+  // v1.10 - ask the ACCOUNT whether onboarding is already done, not just this
+  // device. Keyed on userEmail rather than nexusInitialized because it must
+  // re-run when the user actually changes, not only on first init. Gated
+  // behind `onboardChecked` so a signed-in user never sees a frame of the
+  // wizard before the answer lands; signed out it resolves immediately,
+  // because there is no account to ask.
+  useEffect(() => {
+    if (!nexusInitialized) return;
+    if (!userEmail) { setOnboardChecked(true); return; }
+    let cancelled = false;
+    setOnboardChecked(false);
+    void hydrateOnboardedFromCloud().then((done) => {
+      if (cancelled) return;
+      if (done) setOnboardedState(true);
+      setOnboardChecked(true);
+    });
+    return () => { cancelled = true; };
+  }, [userEmail, nexusInitialized]);
 
   // One-time channel creation + nexusStore init. The init() call awaits
   // supabase.auth.getUser(), which is what sets userEmail to its restored
@@ -199,11 +219,12 @@ export default function App() {
 
   // Onboarding gate — only after auth is satisfied, for a genuinely fresh
   // user (no sessions logged). Skipping or finishing sets the persisted flag.
-  if (!onboarded && sessionCount === 0) {
+  if (!onboarded && sessionCount === 0 && onboardChecked) {
     return (
       <OnboardingFlow
         onDone={() => {
           setOnboarded(); // belt-and-suspenders; the flow already persists it
+          void markOnboardedCloud();
           setOnboardedState(true);
         }}
       />

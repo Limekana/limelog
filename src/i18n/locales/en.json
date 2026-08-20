@@ -349,6 +349,23 @@
       "avoid": "Avoid",
       "modify": "Modify",
       "monitor": "Monitor"
+    },
+    "feedback": "Feedback",
+    "feedbackBlurb": "Tell the developer what's working and what isn't. Sent with your app version and platform so a report can be traced.",
+    "feedbackCategory": "Category",
+    "feedbackRating": "Rating",
+    "feedbackRatingN": "{{n}} out of 5",
+    "feedbackPlaceholder": "What happened, or what would you like to see?",
+    "feedbackSend": "Send feedback",
+    "feedbackThanks": "Thanks — that's on its way.",
+    "feedbackEmpty": "Write a message first.",
+    "feedbackSignIn": "Sign in to send feedback.",
+    "feedbackMeta": "Sent with {{app}} v{{version}}.",
+    "fbCat": {
+      "bug": "Bug",
+      "idea": "Idea",
+      "praise": "Praise",
+      "other": "Other"
     }
   },
   "exlib": {
@@ -455,15 +472,24 @@
     "needMoreSessions": "Need at least 2 sessions with logged weight × reps to estimate a 1RM trend."
   },
   "cardio": {
-    "logButton": "Log cardio",
-    "title": "Log cardio",
+    "logButton": "Log activity",
+    "title": "Log activity",
     "activity": {
       "run": "Run",
       "cycle": "Cycle",
       "swim": "Swim",
       "row": "Row",
       "walk": "Walk",
-      "other": "Other"
+      "other": "Other",
+      "basketball": "Basketball",
+      "football": "Football",
+      "floorball": "Floorball",
+      "icehockey": "Ice hockey",
+      "volleyball": "Volleyball",
+      "handball": "Handball",
+      "tennis": "Tennis",
+      "martialArts": "Martial arts",
+      "otherSport": "Other sport"
     },
     "duration": "Duration (minutes)",
     "durationPh": "e.g. 35",
@@ -471,6 +497,10 @@
     "distancePh": "optional",
     "notes": "Notes",
     "notesPh": "How did it feel?",
-    "activityLabel": "Activity"
+    "activityLabel": "Activity",
+    "group": {
+      "cardio": "Cardio",
+      "training": "Training"
+    }
   }
 }
