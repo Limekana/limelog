@@ -1,0 +1,7 @@
+Registra cualquier sesión de entrenamiento, no solo cardio.
+
+Las sesiones que no son de fuerza ni una actividad de cardio concreta ya tienen sitio: indica tipo, duración y una nota, y cuentan para tu semana como lo demás.
+
+Se ha corregido el cierre de sesión cada uno o dos días: cada app mantiene ahora su propia sesión.
+
+También puedes enviar comentarios desde Ajustes, y la configuración inicial ya no reaparece en una cuenta que ya la completó.

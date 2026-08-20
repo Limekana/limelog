@@ -272,6 +272,23 @@
       "avoid": "टालें",
       "modify": "बदलें",
       "monitor": "निगरानी रखें"
+    },
+    "feedback": "प्रतिक्रिया",
+    "feedbackBlurb": "डेवलपर को बताएं कि क्या काम कर रहा है और क्या नहीं। ऐप संस्करण और प्लेटफ़ॉर्म के साथ भेजा जाता है ताकि रिपोर्ट ट्रैक की जा सके।",
+    "feedbackCategory": "श्रेणी",
+    "feedbackRating": "रेटिंग",
+    "feedbackRatingN": "5 में से {{n}}",
+    "feedbackPlaceholder": "क्या हुआ, या आप क्या देखना चाहेंगे?",
+    "feedbackSend": "प्रतिक्रिया भेजें",
+    "feedbackThanks": "धन्यवाद — भेज दिया गया है।",
+    "feedbackEmpty": "पहले एक संदेश लिखें।",
+    "feedbackSignIn": "प्रतिक्रिया भेजने के लिए साइन इन करें।",
+    "feedbackMeta": "{{app}} v{{version}} के साथ भेजा गया।",
+    "fbCat": {
+      "bug": "बग",
+      "idea": "सुझाव",
+      "praise": "प्रशंसा",
+      "other": "अन्य"
     }
   },
   "log": {
@@ -455,15 +472,24 @@
     "needMoreSessions": "1RM रुझान आँकने के लिए वज़न × दोहराव दर्ज किए हुए कम से कम 2 सत्र चाहिए।"
   },
   "cardio": {
-    "logButton": "कार्डियो दर्ज करें",
-    "title": "कार्डियो दर्ज करें",
+    "logButton": "गतिविधि दर्ज करें",
+    "title": "गतिविधि दर्ज करें",
     "activity": {
       "run": "दौड़",
       "cycle": "साइकिल",
       "swim": "तैराकी",
       "row": "रोइंग",
       "walk": "पैदल",
-      "other": "अन्य"
+      "other": "अन्य",
+      "basketball": "बास्केटबॉल",
+      "football": "फ़ुटबॉल",
+      "floorball": "फ़्लोरबॉल",
+      "icehockey": "आइस हॉकी",
+      "volleyball": "वॉलीबॉल",
+      "handball": "हैंडबॉल",
+      "tennis": "टेनिस",
+      "martialArts": "मार्शल आर्ट्स",
+      "otherSport": "अन्य खेल"
     },
     "duration": "अवधि (मिनट)",
     "durationPh": "जैसे 35",
@@ -471,6 +497,10 @@
     "distancePh": "वैकल्पिक",
     "notes": "नोट्स",
     "notesPh": "कैसा लगा?",
-    "activityLabel": "गतिविधि"
+    "activityLabel": "गतिविधि",
+    "group": {
+      "cardio": "कार्डियो",
+      "training": "ट्रेनिंग"
+    }
   }
 }

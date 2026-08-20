@@ -1,4 +1,9 @@
 // v1.9 (Item 4) — logging a run, ride or swim.
+// v1.10 — and a basketball practice, a match, a dojo session. Same form,
+// because the shape a training session needs is the shape this already had:
+// duration, no sets, optional notes. The group toggle exists so training is
+// not filed as "Cardio: other" — that stored a practice inside the cardio
+// statistics, which is a different claim about the session than the user made.
 //
 // Deliberately not the workout logger with a type tag bolted on. That screen is
 // built around sets and reps, and a run has neither — it has a duration and
@@ -16,8 +21,10 @@ import { useTranslation } from 'react-i18next';
 import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
 import {
-  CARDIO_ACTIVITIES,
+  ACTIVITY_GROUPS,
+  ACTIVITIES_BY_GROUP,
   activityTakesDistance,
+  type ActivityGroup,
   type CardioActivity,
 } from '@/types/logging';
 import { Button } from '@/components/ui';
@@ -33,7 +40,17 @@ export function CardioLogModal({ onClose }: Props) {
   const { logCardio } = useLogStore();
   const unit = useUserStore((s) => s.profile.unitPreference);
 
+  const [group, setGroup] = useState<ActivityGroup>('cardio');
   const [activity, setActivity] = useState<CardioActivity>('run');
+
+  // Switching group moves the selection to that group's first entry rather
+  // than keeping a now-hidden one. Leaving it would let someone switch to
+  // Training, see nothing selected, hit Save and store a run.
+  const pickGroup = (g: ActivityGroup) => {
+    if (g === group) return;
+    setGroup(g);
+    setActivity(ACTIVITIES_BY_GROUP[g][0]);
+  };
   const [minutes, setMinutes] = useState('');
   const [distance, setDistance] = useState('');
   const [notes, setNotes] = useState('');
@@ -81,9 +98,24 @@ export function CardioLogModal({ onClose }: Props) {
         <div className="cardio-modal__body">
           {/* `cardio.activity` is the namespace holding the activity names, so
               the field's own label is a separate key rather than a collision. */}
+          <div className="cardio-modal__groups" role="tablist" aria-label={t('cardio.activityLabel')}>
+            {ACTIVITY_GROUPS.map((g) => (
+              <button
+                key={g}
+                type="button"
+                role="tab"
+                aria-selected={group === g}
+                className={`cardio-modal__group${group === g ? ' cardio-modal__group--active' : ''}`}
+                onClick={() => pickGroup(g)}
+              >
+                {t(`cardio.group.${g}`)}
+              </button>
+            ))}
+          </div>
+
           <span className="cardio-modal__label">{t('cardio.activityLabel')}</span>
           <div className="cardio-modal__activities">
-            {CARDIO_ACTIVITIES.map((a) => (
+            {ACTIVITIES_BY_GROUP[group].map((a) => (
               <button
                 key={a}
                 type="button"

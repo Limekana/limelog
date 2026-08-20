@@ -1,0 +1,7 @@
+Kirjaa mikä tahansa harjoitus, ei vain kardio.
+
+Harjoituksille, jotka eivät ole voimaharjoittelua eivätkä nimettyä kardiota, on nyt paikka: anna tyyppi, kesto ja muistiinpano, ja se lasketaan viikkoosi kuten muutkin.
+
+Uloskirjautuminen parin päivän välein on korjattu — jokaisella sovelluksella on nyt oma istuntonsa yhteisen sijaan.
+
+Voit myös lähettää palautetta asetuksista, eikä käyttöönotto toistu tilillä, joka on jo tehnyt sen.

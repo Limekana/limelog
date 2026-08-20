@@ -223,6 +223,40 @@ export interface NexusExercisePRPayload {
   date: string;
 }
 
+// -- v1.10: in-app feedback ------------------------------------------------
+// `id` comes from the caller so an outbox retry files the same report rather
+// than a second one. Retry safety is INSERT + duplicate-key check rather than
+// UPSERT: `feedback` deliberately has no UPDATE policy, and an UPSERT onto an
+// existing row becomes an UPDATE, which RLS would refuse. A 23505 means the
+// first attempt landed, so it is success, not an error to surface.
+export interface NexusFeedbackPayload {
+  id: string;
+  category: string;
+  rating: number | null;
+  message: string;
+  appVersion: string;
+  platform: string;
+}
+
+export async function pushFeedbackToNexus(p: NexusFeedbackPayload): Promise<void> {
+  if (!isNexusConfigured) throw new Error('Nexus not configured');
+  const { data: { user }, error: authErr } = await supabase.auth.getUser();
+  if (authErr) throw authErr;
+  if (!user) throw new Error('Not signed in to Nexus');
+
+  const { error } = await supabase.from('feedback').insert({
+    id: p.id,
+    user_id: user.id,
+    app: 'limelog',
+    app_version: p.appVersion || null,
+    platform: p.platform || null,
+    category: p.category,
+    rating: p.rating,
+    message: p.message,
+  });
+  if (error && (error as { code?: string }).code !== '23505') throw error;
+}
+
 export async function pushExercisePRToNexus(p: NexusExercisePRPayload): Promise<void> {
   if (!isNexusConfigured) throw new Error('Nexus not configured');
   const { data: { user }, error: authErr } = await supabase.auth.getUser();

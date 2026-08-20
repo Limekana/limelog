@@ -1,0 +1,7 @@
+Jede Trainingseinheit erfassen, nicht nur Cardio.
+
+Einheiten, die weder Krafttraining noch eine benannte Cardio-Aktivität sind, haben jetzt einen Platz: Typ, Dauer und Notiz angeben – und sie zählt für die Woche wie alles andere.
+
+Das Abmelden alle ein bis zwei Tage ist behoben – jede App hält jetzt ihre eigene Sitzung.
+
+Zudem: Feedback direkt aus den Einstellungen, und die Einrichtung erscheint auf einem bekannten Konto nicht erneut.

@@ -1,0 +1,7 @@
+Log any training session, not just cardio.
+
+Sessions that aren't lifting and aren't a named cardio activity now have a home: give a session a type, a duration and a note, and it counts toward your week like everything else.
+
+Being signed out every day or two is fixed — each app now holds its own session instead of sharing one they kept invalidating for each other.
+
+You can also send feedback from Settings, and setup no longer reappears on an account that has already finished it.

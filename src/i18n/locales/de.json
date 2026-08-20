@@ -349,6 +349,23 @@
       "avoid": "Vermeiden",
       "modify": "Anpassen",
       "monitor": "Beobachten"
+    },
+    "feedback": "Feedback",
+    "feedbackBlurb": "Sag dem Entwickler, was funktioniert und was nicht. Wird mit App-Version und Plattform gesendet, damit Meldungen nachvollziehbar sind.",
+    "feedbackCategory": "Kategorie",
+    "feedbackRating": "Bewertung",
+    "feedbackRatingN": "{{n}} von 5",
+    "feedbackPlaceholder": "Was ist passiert, oder was wünschst du dir?",
+    "feedbackSend": "Feedback senden",
+    "feedbackThanks": "Danke — es ist unterwegs.",
+    "feedbackEmpty": "Schreib zuerst eine Nachricht.",
+    "feedbackSignIn": "Melde dich an, um Feedback zu senden.",
+    "feedbackMeta": "Gesendet mit {{app}} v{{version}}.",
+    "fbCat": {
+      "bug": "Fehler",
+      "idea": "Idee",
+      "praise": "Lob",
+      "other": "Sonstiges"
     }
   },
   "exlib": {
@@ -455,15 +472,24 @@
     "needMoreSessions": "Für einen 1RM-Trend braucht es mindestens 2 Einheiten mit Gewicht × Wiederholungen."
   },
   "cardio": {
-    "logButton": "Cardio eintragen",
-    "title": "Cardio eintragen",
+    "logButton": "Aktivität erfassen",
+    "title": "Aktivität erfassen",
     "activity": {
       "run": "Laufen",
       "cycle": "Radfahren",
       "swim": "Schwimmen",
       "row": "Rudern",
       "walk": "Gehen",
-      "other": "Andere"
+      "other": "Andere",
+      "basketball": "Basketball",
+      "football": "Fußball",
+      "floorball": "Unihockey",
+      "icehockey": "Eishockey",
+      "volleyball": "Volleyball",
+      "handball": "Handball",
+      "tennis": "Tennis",
+      "martialArts": "Kampfsport",
+      "otherSport": "Andere Sportart"
     },
     "duration": "Dauer (Minuten)",
     "durationPh": "z. B. 35",
@@ -471,6 +497,10 @@
     "distancePh": "optional",
     "notes": "Notizen",
     "notesPh": "Wie lief es?",
-    "activityLabel": "Aktivität"
+    "activityLabel": "Aktivität",
+    "group": {
+      "cardio": "Ausdauer",
+      "training": "Training"
+    }
   }
 }
