@@ -1,6 +1,7 @@
 import { create } from 'zustand';
 import { Capacitor } from '@capacitor/core';
 import { supabase, isNexusConfigured } from '@/lib/supabase';
+import { withCaptcha } from '@/lib/captcha';
 import { signInWithGoogle as oauthSignInWithGoogle, initOAuthDeepLinkListener } from '@/lib/oauth';
 import { setGuestMode, isGuestMode } from '@/lib/guestMode';
 import { inheritFromNexus } from '@/lib/suiteSso';
@@ -174,7 +175,10 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
 
   signIn: async (email, password) => {
     set({ loading: true, lastError: null });
-    const { data, error } = await supabase.auth.signInWithPassword({ email, password });
+    // withCaptcha only involves hCaptcha if the server asks for it — see
+    // lib/captcha.ts for why this is not a widget on the screen.
+    const { data, error } = await withCaptcha((captchaToken) =>
+      supabase.auth.signInWithPassword({ email, password, options: { captchaToken } }));
     if (error) {
       set({ loading: false, lastError: error.message });
       throw error;
@@ -189,7 +193,8 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
 
   signUp: async (email, password) => {
     set({ loading: true, lastError: null });
-    const { data, error } = await supabase.auth.signUp({ email, password });
+    const { data, error } = await withCaptcha((captchaToken) =>
+      supabase.auth.signUp({ email, password, options: { captchaToken } }));
     if (error) {
       set({ loading: false, lastError: error.message });
       throw error;
