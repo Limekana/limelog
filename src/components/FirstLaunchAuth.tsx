@@ -17,6 +17,7 @@ import { Capacitor, registerPlugin } from '@capacitor/core';
 import { Button, Card } from '@/components/ui';
 import { useNexusStore } from '@/store/nexusStore';
 import { supabase } from '@/lib/supabase';
+import { withCaptcha } from '@/lib/captcha';
 import { inheritFromNexus } from '@/lib/suiteSso';
 import { setGuestMode } from '@/lib/guestMode';
 import { translateAuthError } from '@/lib/authErrors';
@@ -192,7 +193,8 @@ export function FirstLaunchAuth({ onContinue }: FirstLaunchAuthProps) {
     setInfo(null);
     setBusy(true);
     try {
-      const { error: err } = await supabase.auth.resend({ type: 'signup', email: email.trim() });
+      const { error: err } = await withCaptcha((captchaToken) =>
+        supabase.auth.resend({ type: 'signup', email: email.trim(), options: { captchaToken } }));
       if (err) throw err;
       setInfo(t('auth.otpSent'));
     } catch (err) {
