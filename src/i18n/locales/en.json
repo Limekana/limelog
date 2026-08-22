@@ -502,5 +502,17 @@
       "cardio": "Cardio",
       "training": "Training"
     }
+  },
+  "referral": {
+    "eyebrow": "ONE QUESTION",
+    "title": "Where did you hear about LimeLog?",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "Browsing F-Droid or an app store",
+      "friend": "A friend",
+      "other": "Somewhere else"
+    },
+    "dismiss": "Not now",
+    "thanks": "Thanks — that helps."
   }
 }

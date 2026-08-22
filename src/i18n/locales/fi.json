@@ -502,5 +502,17 @@
       "cardio": "Kestävyys",
       "training": "Harjoitus"
     }
+  },
+  "referral": {
+    "eyebrow": "YKSI KYSYMYS",
+    "title": "Mistä kuulit LimeLogista?",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "Selaillessa F-Droidia tai sovelluskauppaa",
+      "friend": "Kaverilta",
+      "other": "Jostain muualta"
+    },
+    "dismiss": "Ei nyt",
+    "thanks": "Kiitos – tästä on apua."
   }
 }
