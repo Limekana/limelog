@@ -192,7 +192,9 @@
     "deleteAccountFailed": "हटाना विफल: {{msg}}",
     "support": "सहयोग",
     "supportDev": "विकास में सहयोग करें",
-    "supportDevSub": "Ko-fi का एक लिंक। ऐप में कुछ भी इसके पीछे बंद नहीं है।"
+    "supportDevSub": "Ko-fi का एक लिंक। ऐप में कुछ भी इसके पीछे बंद नहीं है।",
+    "discord": "Discord समुदाय",
+    "discordSub": "सवाल, बग रिपोर्ट और आगे क्या आ रहा है"
   },
   "injury": {
     "newRestriction": "नई पाबंदी",

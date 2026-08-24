@@ -263,6 +263,22 @@ export function ProfilePage() {
             >
               {t('settings.supportDev')} ›
             </a>
+            {/* Shares the Ko-fi card rather than taking its own, because the
+                two are about to be connected: Ko-fi's Discord bot maps a
+                membership tier onto a Discord role. Same shape as the link
+                above — an ordinary outbound link, no SDK, no embed, nothing
+                fetched from discord.com unless the user taps it. */}
+            <div className="settings-field__sublabel settings-ai-note">
+              {t('settings.discordSub')}
+            </div>
+            <a
+              className="settings-field__sublabel settings-privacy-link"
+              href="https://discord.gg/g8VuB4yXHY"
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              {t('settings.discord')} ›
+            </a>
           </Card>
 
           <Card padding="md">

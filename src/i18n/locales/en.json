@@ -192,7 +192,9 @@
     "deleteAccountFailed": "Deletion failed: {{msg}}",
     "support": "Support",
     "supportDev": "Support development",
-    "supportDevSub": "A link to Ko-fi. Nothing in the app is locked behind it."
+    "supportDevSub": "A link to Ko-fi. Nothing in the app is locked behind it.",
+    "discord": "Discord community",
+    "discordSub": "Questions, bug reports, and what's coming next"
   },
   "body": {
     "title": "Body",
