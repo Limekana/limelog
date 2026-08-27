@@ -192,7 +192,9 @@
     "deleteAccountFailed": "Löschen fehlgeschlagen: {{msg}}",
     "support": "Unterstützen",
     "supportDev": "Entwicklung unterstützen",
-    "supportDevSub": "Ein Link zu Ko-fi. Nichts in der App ist davon abhängig."
+    "supportDevSub": "Ein Link zu Ko-fi. Nichts in der App ist davon abhängig.",
+    "discord": "Discord-Community",
+    "discordSub": "Fragen, Fehlerberichte und was als Nächstes kommt"
   },
   "body": {
     "title": "Körper",

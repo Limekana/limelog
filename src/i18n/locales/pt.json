@@ -196,7 +196,9 @@
     "deleteAccountFailed": "Falha na exclusão: {{msg}}",
     "support": "Apoio",
     "supportDev": "Apoiar o desenvolvimento",
-    "supportDevSub": "Um link para o Ko-fi. Nada na app depende disso."
+    "supportDevSub": "Um link para o Ko-fi. Nada na app depende disso.",
+    "discord": "Comunidade no Discord",
+    "discordSub": "Dúvidas, relatos de bugs e o que vem por aí"
   },
   "injury": {
     "newRestriction": "Nova restrição",

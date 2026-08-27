@@ -208,7 +208,9 @@
     "deleteAccountFailed": "فشل الحذف: {{msg}}",
     "support": "الدعم",
     "supportDev": "ادعم التطوير",
-    "supportDevSub": "رابط إلى Ko-fi. لا شيء في التطبيق مقيّد به."
+    "supportDevSub": "رابط إلى Ko-fi. لا شيء في التطبيق مقيّد به.",
+    "discord": "مجتمع Discord",
+    "discordSub": "الأسئلة وتقارير الأخطاء وما هو قادم"
   },
   "injury": {
     "newRestriction": "قيد جديد",
