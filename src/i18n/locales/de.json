@@ -504,5 +504,17 @@
       "cardio": "Ausdauer",
       "training": "Training"
     }
+  },
+  "referral": {
+    "eyebrow": "EINE FRAGE",
+    "title": "Woher kennst du LimeLog?",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "Beim Stöbern in F-Droid oder einem App-Store",
+      "friend": "Von Freunden",
+      "other": "Woanders"
+    },
+    "dismiss": "Nicht jetzt",
+    "thanks": "Danke – das hilft."
   }
 }

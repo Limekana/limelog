@@ -1,0 +1,70 @@
+/* Referral prompt (v1.11 Item 8) — corner panel, not a modal.
+   See ReferralPrompt.tsx for why it does not block.
+   Existing tokens only; nothing new is defined here. */
+.ref-card {
+  position: fixed;
+  z-index: 60;
+  inset-inline: 12px;
+  bottom: calc(var(--nav-height) + 12px + env(safe-area-inset-bottom));
+  background: var(--bg-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 16px;
+  animation: ref-rise 0.24s var(--ease-rise);
+}
+@media (min-width: 600px) {
+  .ref-card { inset-inline: auto 20px; width: 320px; bottom: calc(var(--nav-height) + 20px + env(safe-area-inset-bottom)); }
+}
+@keyframes ref-rise {
+  from { opacity: 0; transform: translateY(8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.ref-eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.ref-title {
+  font-family: var(--font-display);
+  font-size: 19px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin: 6px 0 12px;
+}
+.ref-options { display: flex; flex-direction: column; gap: 6px; }
+.ref-option {
+  font-family: var(--font-body);
+  font-size: 14px;
+  text-align: start;
+  color: var(--text-primary);
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  padding: 10px 12px;
+  cursor: pointer;
+  transition: border-color 0.12s var(--ease-snap), background 0.12s var(--ease-snap);
+}
+.ref-option:active { background: var(--bg-overlay); border-color: var(--accent-border); }
+.ref-dismiss {
+  display: block;
+  margin: 12px 0 0 auto;
+  background: none;
+  border: none;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+  padding: 2px 0;
+}
+.ref-thanks {
+  font-family: var(--font-display);
+  font-size: 18px;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  padding: 4px 0;
+}

@@ -536,5 +536,17 @@
       "cardio": "كارديو",
       "training": "تدريب"
     }
+  },
+  "referral": {
+    "eyebrow": "سؤال واحد",
+    "title": "كيف عرفت LimeLog؟",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "أثناء التصفّح في F-Droid أو متجر تطبيقات",
+      "friend": "من صديق",
+      "other": "من مكان آخر"
+    },
+    "dismiss": "ليس الآن",
+    "thanks": "شكرًا — هذا يساعدنا."
   }
 }
