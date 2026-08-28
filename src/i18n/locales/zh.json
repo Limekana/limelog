@@ -189,7 +189,9 @@
     "deleteAccountFailed": "删除失败：{{msg}}",
     "support": "支持",
     "supportDev": "支持开发",
-    "supportDevSub": "一个 Ko-fi 链接。应用中没有任何功能因此被锁定。"
+    "supportDevSub": "一个 Ko-fi 链接。应用中没有任何功能因此被锁定。",
+    "discord": "Discord 社区",
+    "discordSub": "提问、报告问题，了解后续计划"
   },
   "body": {
     "title": "身体",
@@ -499,5 +501,17 @@
       "cardio": "有氧",
       "training": "训练"
     }
+  },
+  "referral": {
+    "eyebrow": "一个问题",
+    "title": "你从哪里知道 LimeLog 的？",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "在 F-Droid 或应用商店里浏览时",
+      "friend": "朋友推荐",
+      "other": "其他地方"
+    },
+    "dismiss": "以后再说",
+    "thanks": "谢谢，这很有帮助。"
   }
 }

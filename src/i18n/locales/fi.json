@@ -192,7 +192,9 @@
     "deleteAccountFailed": "Poisto epäonnistui: {{msg}}",
     "support": "Tuki",
     "supportDev": "Tue kehitystä",
-    "supportDevSub": "Linkki Ko-fiin. Mikään sovelluksessa ei ole sen takana."
+    "supportDevSub": "Linkki Ko-fiin. Mikään sovelluksessa ei ole sen takana.",
+    "discord": "Discord-yhteisö",
+    "discordSub": "Kysymykset, bugi-ilmoitukset ja mitä on tulossa"
   },
   "body": {
     "title": "Keho",
@@ -502,5 +504,17 @@
       "cardio": "Kestävyys",
       "training": "Harjoitus"
     }
+  },
+  "referral": {
+    "eyebrow": "YKSI KYSYMYS",
+    "title": "Mistä kuulit LimeLogista?",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "Selaillessa F-Droidia tai sovelluskauppaa",
+      "friend": "Kaverilta",
+      "other": "Jostain muualta"
+    },
+    "dismiss": "Ei nyt",
+    "thanks": "Kiitos – tästä on apua."
   }
 }

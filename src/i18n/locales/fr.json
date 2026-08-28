@@ -196,7 +196,9 @@
     "deleteAccountFailed": "Échec de la suppression : {{msg}}",
     "support": "Soutien",
     "supportDev": "Soutenir le développement",
-    "supportDevSub": "Un lien vers Ko-fi. Rien dans l’app n’en dépend."
+    "supportDevSub": "Un lien vers Ko-fi. Rien dans l’app n’en dépend.",
+    "discord": "Communauté Discord",
+    "discordSub": "Questions, rapports de bugs et la suite du programme"
   },
   "body": {
     "title": "Corps",
@@ -510,5 +512,17 @@
       "cardio": "Cardio",
       "training": "Entraînement"
     }
+  },
+  "referral": {
+    "eyebrow": "UNE QUESTION",
+    "title": "Comment avez-vous connu LimeLog ?",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "En parcourant F-Droid ou un magasin d’applis",
+      "friend": "Un ami",
+      "other": "Ailleurs"
+    },
+    "dismiss": "Pas maintenant",
+    "thanks": "Merci, ça nous aide."
   }
 }

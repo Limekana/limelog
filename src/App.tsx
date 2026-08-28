@@ -14,6 +14,7 @@ import { ProfilePage } from '@/pages/ProfilePage';
 import { LibraryPage } from '@/pages/LibraryPage';
 import { WorkoutPage } from '@/pages/WorkoutPage';
 import { FirstLaunchAuth } from '@/components/FirstLaunchAuth';
+import { ReferralPrompt } from '@/components/ReferralPrompt';
 import { OnboardingFlow } from '@/components/OnboardingFlow';
 import { PRCelebrationModal } from '@/components/PRCelebrationModal';
 import { useProgramStore } from '@/store/programStore';
@@ -251,6 +252,9 @@ export default function App() {
       {/* v1.6 — global PR celebration; mounted outside Routes so it survives
           the post-finish navigate('/today'). */}
       <PRCelebrationModal />
+      {/* Item 8 — asks once per account, inside the account-age window only.
+          Non-blocking by design; see the component. */}
+      <ReferralPrompt />
     </BrowserRouter>
   );
 }

@@ -192,7 +192,9 @@
     "deleteAccountFailed": "हटाना विफल: {{msg}}",
     "support": "सहयोग",
     "supportDev": "विकास में सहयोग करें",
-    "supportDevSub": "Ko-fi का एक लिंक। ऐप में कुछ भी इसके पीछे बंद नहीं है।"
+    "supportDevSub": "Ko-fi का एक लिंक। ऐप में कुछ भी इसके पीछे बंद नहीं है।",
+    "discord": "Discord समुदाय",
+    "discordSub": "सवाल, बग रिपोर्ट और आगे क्या आ रहा है"
   },
   "injury": {
     "newRestriction": "नई पाबंदी",
@@ -502,5 +504,17 @@
       "cardio": "कार्डियो",
       "training": "ट्रेनिंग"
     }
+  },
+  "referral": {
+    "eyebrow": "एक सवाल",
+    "title": "आपने LimeLog के बारे में कहाँ सुना?",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "F-Droid या किसी ऐप स्टोर में ब्राउज़ करते हुए",
+      "friend": "किसी दोस्त से",
+      "other": "कहीं और"
+    },
+    "dismiss": "अभी नहीं",
+    "thanks": "धन्यवाद — इससे मदद मिलती है।"
   }
 }

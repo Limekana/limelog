@@ -196,7 +196,9 @@
     "deleteAccountFailed": "Falha na exclusão: {{msg}}",
     "support": "Apoio",
     "supportDev": "Apoiar o desenvolvimento",
-    "supportDevSub": "Um link para o Ko-fi. Nada na app depende disso."
+    "supportDevSub": "Um link para o Ko-fi. Nada na app depende disso.",
+    "discord": "Comunidade no Discord",
+    "discordSub": "Dúvidas, relatos de bugs e o que vem por aí"
   },
   "injury": {
     "newRestriction": "Nova restrição",
@@ -510,5 +512,17 @@
       "cardio": "Cardio",
       "training": "Treino"
     }
+  },
+  "referral": {
+    "eyebrow": "UMA PERGUNTA",
+    "title": "Como você conheceu o LimeLog?",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "Navegando na F-Droid ou em uma loja de apps",
+      "friend": "Um amigo",
+      "other": "Em outro lugar"
+    },
+    "dismiss": "Agora não",
+    "thanks": "Obrigado — isso ajuda."
   }
 }

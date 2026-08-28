@@ -196,7 +196,9 @@
     "deleteAccountFailed": "Error al eliminar: {{msg}}",
     "support": "Apoyo",
     "supportDev": "Apoya el desarrollo",
-    "supportDevSub": "Un enlace a Ko-fi. Nada en la app depende de ello."
+    "supportDevSub": "Un enlace a Ko-fi. Nada en la app depende de ello.",
+    "discord": "Comunidad de Discord",
+    "discordSub": "Preguntas, informes de errores y lo que viene"
   },
   "body": {
     "title": "Cuerpo",
@@ -510,5 +512,17 @@
       "cardio": "Cardio",
       "training": "Entrenamiento"
     }
+  },
+  "referral": {
+    "eyebrow": "UNA PREGUNTA",
+    "title": "¿Cómo conociste LimeLog?",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "Explorando F-Droid o una tienda de apps",
+      "friend": "Un amigo",
+      "other": "En otro sitio"
+    },
+    "dismiss": "Ahora no",
+    "thanks": "Gracias, nos ayuda."
   }
 }

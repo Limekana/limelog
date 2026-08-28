@@ -192,7 +192,9 @@
     "deleteAccountFailed": "Deletion failed: {{msg}}",
     "support": "Support",
     "supportDev": "Support development",
-    "supportDevSub": "A link to Ko-fi. Nothing in the app is locked behind it."
+    "supportDevSub": "A link to Ko-fi. Nothing in the app is locked behind it.",
+    "discord": "Discord community",
+    "discordSub": "Questions, bug reports, and what's coming next"
   },
   "body": {
     "title": "Body",
@@ -502,5 +504,17 @@
       "cardio": "Cardio",
       "training": "Training"
     }
+  },
+  "referral": {
+    "eyebrow": "ONE QUESTION",
+    "title": "Where did you hear about LimeLog?",
+    "opt": {
+      "reddit": "Reddit",
+      "store": "Browsing F-Droid or an app store",
+      "friend": "A friend",
+      "other": "Somewhere else"
+    },
+    "dismiss": "Not now",
+    "thanks": "Thanks — that helps."
   }
 }
