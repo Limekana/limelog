@@ -26,6 +26,7 @@ import {
 // re-seed of BUILTIN_EXERCISES that would lose their tweaks. The
 // per-user scope of programs is tracked as a v1.3 design item.
 import { watchAppOpens } from '@/lib/appOpens';
+import { clearEntitlement, refreshEntitlement } from '@/lib/entitlement';
 import pkgJson from '../../package.json';
 import { useLogStore } from '@/store/logStore';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
@@ -148,6 +149,12 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       // days later without the process having died.
       watchAppOpens(pkgJson.version);
 
+      // v1.12 Item 5 — supporter entitlement, sited here for the same reason
+      // as the line above: on a cold start there is usually no session until
+      // the SSO inherit resolves, and asking earlier would cache a "not
+      // entitled" answer for six hours.
+      if (user?.id) void refreshEntitlement(user.id);
+
       supabase.auth.onAuthStateChange((event, session) => {
         const wasSignedIn = Boolean(get().userEmail);
         const nowSignedIn = Boolean(session?.user);
@@ -165,6 +172,11 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
         if (event === 'SIGNED_IN') {
           void setGuestMode(false);
           window.dispatchEvent(new CustomEvent('limelog:guest-mode-changed'));
+          // v1.12 Item 5 — a supporter who signs in mid-session should see the
+          // perk without restarting. `force` skips the six-hour cache, which
+          // would otherwise serve the "not entitled" answer cached moments ago
+          // while signed out.
+          if (session?.user?.id) void refreshEntitlement(session.user.id, { force: true });
         }
         if (!wasSignedIn && nowSignedIn && get().syncEnabled) {
           void outboxDrain().then((result) => {
@@ -236,6 +248,11 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
     // drained is forfeit vs. potentially leaking writes to the next signed-in
     // user on a shared device. Matches StudyDesk's sign-out hygiene contract.
     outboxClear();
+    // v1.12 Item 5 — the supporter entitlement is cached locally so a perk
+    // survives being offline. That cache is per-account, so it has to go with
+    // everything else here: leaving it would hand the next signed-in user on a
+    // shared device someone else's paid perk.
+    clearEntitlement();
     // v1.2.1 — AUDIT-LL-FSG-2: wipe the personal-data stores so the next
     // signed-in user (on a shared device) doesn't inherit User A's
     // workout history, bodyweight log, or progress photos in the UI.
