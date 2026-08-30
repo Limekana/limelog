@@ -1,0 +1,5 @@
+Korjaa kirjoittamisen kiinan, japanin ja korean näppäimistöillä.
+
+Merkkejä saattoi kadota kesken kirjoittamisen, joten harjoitusmuistiinpanoon tai liikkeen nimeen kirjoitettu ei aina säilynyt. Kaikki tekstikentät on korjattu.
+
+Lisää myös pohjan sille, että näemme miten sovellusta ajan myötä käytetään, jotta tulevat muutokset perustuisivat siihen eikä arvailuun. Harjoituksistasi ei jaeta mitään.

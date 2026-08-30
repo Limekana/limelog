@@ -1,0 +1,5 @@
+Corrige la saisie avec les claviers chinois, japonais et coréens.
+
+Des caractères pouvaient être perdus pendant leur composition, si bien qu'une note de séance ou un nom d'exercice ne survivait pas toujours. Tous les champs sont corrigés.
+
+Pose aussi les bases pour observer l'usage réel dans le temps, afin que les évolutions reposent là-dessus plutôt que sur des suppositions. Rien de tes séances n'est partagé.
