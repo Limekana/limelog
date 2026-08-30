@@ -35,3 +35,9 @@ key.properties
 # in git history. NCC and StudyDesk have ignored this path since v1.9 — LimeLog
 # was the only one of the three that did not.
 /release/
+
+# Signing credentials for the shared Limecore release keystore.
+# Must never be committed - the whole suite is signed with one key.
+keystore.properties
+*.jks
+*.keystore
