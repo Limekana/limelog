@@ -25,6 +25,8 @@ import {
 // wipe would clobber the user's custom builtin overrides + force a
 // re-seed of BUILTIN_EXERCISES that would lose their tweaks. The
 // per-user scope of programs is tracked as a v1.3 design item.
+import { watchAppOpens } from '@/lib/appOpens';
+import pkgJson from '../../package.json';
 import { useLogStore } from '@/store/logStore';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
 import { DEFAULT_PREFS as DEFAULT_BODY_METRICS_PREFS } from '@/types/bodyMetrics';
@@ -137,6 +139,14 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       // ACT-5 — cover the restored-session path too, not just fresh sign-ins.
       // Every account that predates this instrumentation only ever appears here.
       scheduleOriginStamp(user ?? null);
+
+      // v1.12 Item 0 — retention. Placed after the SSO inherit above rather
+      // than at component mount: on a cold start LimeLog usually has no
+      // session until that call resolves, and an open recorded before it would
+      // find no user and be skipped. The visibilitychange listener installed
+      // here covers the commoner case — the app resumed from the background
+      // days later without the process having died.
+      watchAppOpens(pkgJson.version);
 
       supabase.auth.onAuthStateChange((event, session) => {
         const wasSignedIn = Boolean(get().userEmail);
