@@ -257,6 +257,43 @@ export async function pushFeedbackToNexus(p: NexusFeedbackPayload): Promise<void
   if (error && (error as { code?: string }).code !== '23505') throw error;
 }
 
+// ── retention (v1.12 Item 0) ─────────────────────────────────────────────────
+
+export interface NexusAppOpenPayload {
+  appVersion: string;
+  platform: string;
+  /** The user's own calendar date (YYYY-MM-DD), never the UTC one. */
+  openedOn: string;
+}
+
+/**
+ * Record that the user opened LimeLog today.
+ *
+ * Retention across the suite was previously inferred from content-row
+ * timestamps and `auth.users.last_sign_in_at`; the latter moves on a silent
+ * token refresh, so it recorded that the client woke up rather than that the
+ * person came back.
+ *
+ * `app_opens`'s primary key is (user_id, app, opened_on), so this is idempotent
+ * by construction — the caller upserts on every foreground and the database
+ * collapses same-day repeats.
+ */
+export async function pushAppOpenToNexus(p: NexusAppOpenPayload): Promise<void> {
+  if (!isNexusConfigured) throw new Error('Nexus not configured');
+  const { data: { user }, error: authErr } = await supabase.auth.getUser();
+  if (authErr) throw authErr;
+  if (!user) throw new Error('Not signed in to Nexus');
+
+  const { error } = await supabase.from('app_opens').upsert({
+    user_id: user.id,
+    app: 'limelog',
+    app_version: p.appVersion || null,
+    platform: p.platform || null,
+    opened_on: p.openedOn,
+  }, { onConflict: 'user_id,app,opened_on' });
+  if (error) throw error;
+}
+
 export async function pushExercisePRToNexus(p: NexusExercisePRPayload): Promise<void> {
   if (!isNexusConfigured) throw new Error('Nexus not configured');
   const { data: { user }, error: authErr } = await supabase.auth.getUser();

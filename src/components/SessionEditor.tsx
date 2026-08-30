@@ -6,6 +6,7 @@ import { Button } from '@/components/ui';
 import { SessionExerciseRow } from '@/components/SessionExerciseRow';
 import { ChevronDown, ChevronUp, Plus, Trash2, BookmarkPlus, FolderOpen } from 'lucide-react';
 import './SessionEditor.css';
+import { enterSubmit } from '../lib/imeSubmit';
 
 const DAY_KEYS = ['sun', 'mon', 'tue', 'wed', 'thu', 'fri', 'sat'] as const;
 
@@ -72,7 +73,7 @@ export function SessionEditor({ session, program }: Props) {
               onClick={(e) => e.stopPropagation()}
               onChange={(e) => setName(e.target.value)}
               onBlur={handleNameSave}
-              onKeyDown={(e) => e.key === 'Enter' && handleNameSave()}
+              {...enterSubmit(handleNameSave)}
             />
           ) : (
             <span
@@ -132,7 +133,7 @@ export function SessionEditor({ session, program }: Props) {
                 placeholder={t('program.templateNamePlaceholder')}
                 value={templateName}
                 onChange={(e) => setTemplateName(e.target.value)}
-                onKeyDown={(e) => e.key === 'Enter' && handleSaveTemplate()}
+                {...enterSubmit(handleSaveTemplate)}
               />
               <div className="session-editor__tpl-form-actions">
                 <Button size="sm" variant="ghost" onClick={() => setShowSaveTemplate(false)}>{t('common.cancel')}</Button>

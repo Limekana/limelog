@@ -1,0 +1,5 @@
+Behebt die Eingabe mit chinesischen, japanischen und koreanischen Tastaturen.
+
+Zeichen konnten verloren gehen, während die Tastatur sie noch zusammensetzte, sodass Notizen oder Übungsnamen nicht immer erhalten blieben. Alle Textfelder sind korrigiert.
+
+Legt außerdem die Grundlage dafür, die tatsächliche Nutzung über die Zeit zu sehen, damit künftige Änderungen darauf beruhen statt auf Vermutungen. Zu deinen Workouts wird nichts geteilt.

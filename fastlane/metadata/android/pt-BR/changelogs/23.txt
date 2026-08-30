@@ -1,0 +1,5 @@
+Corrige a digitação com teclados chinês, japonês e coreano.
+
+Caracteres podiam se perder enquanto o teclado ainda os compunha, então o que você escrevia numa nota ou no nome de um exercício nem sempre sobrevivia. Todos os campos foram corrigidos.
+
+Também prepara a base para entender como o app é usado ao longo do tempo, para que mudanças futuras se baseiem nisso e não em suposições. Nada dos seus treinos é compartilhado.

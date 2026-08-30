@@ -1,0 +1,5 @@
+Memperbaiki pengetikan dengan papan ketik Tionghoa, Jepang, dan Korea.
+
+Karakter bisa hilang saat papan ketik masih menyusunnya, sehingga catatan sesi atau nama latihan tidak selalu tersimpan. Semua kolom teks sudah diperbaiki.
+
+Juga menyiapkan dasar untuk melihat bagaimana aplikasi benar-benar dipakai seiring waktu, agar perubahan berikutnya berdasar data, bukan tebakan. Tidak ada data latihanmu yang dibagikan.

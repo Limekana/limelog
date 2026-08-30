@@ -1,0 +1,5 @@
+Fixes typing with Chinese, Japanese and Korean keyboards.
+
+Characters could be lost while the keyboard was still composing them, so what you typed into a session note or an exercise name did not always survive. Every text field is fixed.
+
+Also adds the groundwork for seeing how the app is actually used over time, so future changes can be based on that rather than guesswork. Nothing about your workouts is shared.
