@@ -104,6 +104,12 @@ Schema is fixed by the Nexus side; the integration brief lives outside this repo
 
 ---
 
+## Support
+
+Limelog is free, open source and ad-free. If it's useful to you, you can support development on Ko-fi — it goes straight back into building the suite.
+
+[![ko-fi](https://ko-fi.com/img/githubbutton_sm.svg)](https://ko-fi.com/J6K8240SNW)
+
 ## License
 
 Personal project — no license declared.
