@@ -33,10 +33,12 @@ import {
   deleteBodyMetricFromNexus,
   pushExercisePRToNexus,
   pushFeedbackToNexus,
+  pushAppOpenToNexus,
   type NexusWorkoutPayload,
   type NexusBodyMetricPayload,
   type NexusExercisePRPayload,
   type NexusFeedbackPayload,
+  type NexusAppOpenPayload,
 } from './nexusSync';
 import { supabase, isNexusConfigured } from './supabase';
 
@@ -56,7 +58,11 @@ type OutboxKind =
   // v1.6 — Personal Records. Push-only (append-only), upsert by id.
   | 'upsert_exercise_pr'
   // v1.10 - in-app feedback. Insert-only; idempotent on the client id.
-  | 'submit_feedback';
+  | 'submit_feedback'
+  // v1.12 Item 0 - retention. Queued rather than pushed directly because a
+  // cold start can foreground before the Nexus session has been adopted, and
+  // RLS rejects the write with no session; offline is the same story.
+  | 'record_app_open';
 
 interface OutboxItem<K extends OutboxKind = OutboxKind> {
   id: string;
@@ -75,6 +81,7 @@ interface KindPayload {
   delete_body_metric: { id: string };
   upsert_exercise_pr: NexusExercisePRPayload;
   submit_feedback: NexusFeedbackPayload;
+  record_app_open: NexusAppOpenPayload;
 }
 
 interface OutboxMeta {
@@ -353,4 +360,5 @@ const KIND_DISPATCH: { [K in OutboxKind]: (p: KindPayload[K]) => Promise<unknown
   delete_body_metric: (p) => deleteBodyMetricFromNexus(p.id),
   upsert_exercise_pr: (p) => pushExercisePRToNexus(p),
   submit_feedback: (p) => pushFeedbackToNexus(p),
+  record_app_open: (p) => pushAppOpenToNexus(p),
 };
