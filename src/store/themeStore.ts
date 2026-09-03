@@ -1,8 +1,13 @@
 import { create } from 'zustand';
 import { storage } from '@/utils/storage';
 import { isEntitled, refreshEntitlement } from '@/lib/entitlement';
+import type { ThemeId } from '@/types/theme';
 
-export type ThemeId = 'lime' | 'cast-iron';
+// Re-exported so `ThemeId` stays importable from the store, which is where a
+// theme-aware component would look for it first. The declaration moved to
+// `@/types/theme` so `utils/storage.ts` can read it without importing a store;
+// see that file for why the direction of that edge matters.
+export type { ThemeId };
 
 /** Free tier. Anything not listed here needs an entitlement. */
 const FREE_THEMES: ThemeId[] = ['lime'];

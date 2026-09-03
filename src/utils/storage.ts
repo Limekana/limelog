@@ -1,6 +1,7 @@
 import type { Program, Exercise, WorkoutTemplate } from '@/types/program';
 import type { SessionLog, VerticalJumpLog, StallFlag, ExercisePR } from '@/types/logging';
 import type { UserProfile, InjuryRestriction } from '@/types/user';
+import type { ThemeId } from '@/types/theme';
 import { estimate1RMRaw } from '@/utils/oneRepMax';
 
 const KEYS = {
@@ -17,6 +18,10 @@ const KEYS = {
   // resurrected from the still-present cloud row (push-only means discards don't
   // propagate a cloud delete).
   sessionTombstones: 'wt_session_tombstones',
+  // v1.12 (Item 5) — the selected theme id. Read synchronously by
+  // `bootstrapTheme()` before first paint, so it has to live here in
+  // localStorage rather than behind any async store.
+  theme: 'wt_theme',
 } as const;
 
 // v1.8 — re-value PRs written before the two 1RM estimators were unified.
@@ -121,4 +126,10 @@ export const storage = {
 
   getSessionTombstones: (): string[] => get<string[]>(KEYS.sessionTombstones) ?? [],
   setSessionTombstones: (v: string[]) => set(KEYS.sessionTombstones, v),
+
+  // Null when nothing has been chosen yet, which the store reads as the free
+  // theme. It validates the value rather than trusting this cast — a hand-
+  // edited or stale localStorage entry is not necessarily a live ThemeId.
+  getTheme: (): ThemeId | null => get<ThemeId>(KEYS.theme),
+  setTheme: (v: ThemeId) => set(KEYS.theme, v),
 };
