@@ -35,6 +35,17 @@
   src: url('/fonts/archivo-variable.woff2') format('woff2');
 }
 
+/* Same idea as index.css's `--lime-*`: declared OUTSIDE the [data-theme]
+   block so the settings preview can read them while the free theme is
+   applied. Unconditional custom properties paint nothing on their own — with
+   `[data-theme]` unset this file still contributes no rendered style, which
+   is the regression gate stated at the top. */
+:root {
+  --cast-iron-surface: #232019;
+  --cast-iron-accent: #b4552b;
+  --cast-iron-ink: #e6e1d6;
+}
+
 [data-theme='cast-iron'] {
   /* Google renamed the family to "Big Shoulders" in newer releases; the
      token names the old family regardless so it stays stable. */
@@ -45,7 +56,7 @@
      Never blue-grey — the free theme's neutrals sit cold near 250°, and
      the two themes must read as different materials, not brightnesses. */
   --bg-base: #1b1a18;      /* Crumb — the floor */
-  --bg-surface: #232019;   /* Cast Iron — equipment */
+  --bg-surface: var(--cast-iron-surface);   /* Cast Iron — equipment */
   --bg-raised: #2a2620;
   --bg-overlay: #322c24;
 
@@ -53,12 +64,23 @@
   --border-default: rgba(230, 225, 214, 0.12);
   --border-strong: rgba(230, 225, 214, 0.20);
 
-  --text-primary: #e6e1d6;   /* Chalk Dust — 11.4:1 on Crumb */
-  --text-secondary: #a79d8f;
-  --text-tertiary: #8c8378;  /* Bare Steel — 4.6:1 on Crumb */
+  /* Measured, not estimated. The WIP comments here claimed 11.4:1 and 4.6:1;
+     re-measuring against the shipped hexes gave 13.34:1 and — the one that
+     mattered — 4.36:1 for Bare Steel on --bg-surface, which is BELOW AA.
+     `--text-tertiary` on Crumb did pass at 4.66:1, so the original figure was
+     not wrong so much as measured against the wrong background: cards are
+     drawn on the surface, not the floor, and that is where tertiary text
+     actually lives.
+     Bare Steel is lifted 18 points to #9e958a, which clears 4.5:1 against
+     ALL FOUR backgrounds (5.90 / 5.51 / 5.10 / 4.68 on base / surface /
+     raised / overlay) while keeping the warm grey — every channel moved by
+     the same amount, so the hue is untouched. */
+  --text-primary: var(--cast-iron-ink);   /* Chalk Dust — 13.34:1 on Crumb */
+  --text-secondary: #a79d8f;              /* 6.51:1 on Crumb, 5.17:1 worst */
+  --text-tertiary: #9e958a;               /* Bare Steel — 4.68:1 worst case */
   --text-inverse: #171512;
 
-  --accent: #b4552b;         /* Oxide — rust through paint */
+  --accent: var(--cast-iron-accent);         /* Oxide — rust through paint */
   --accent-hot: #c86234;
   --accent-dim: rgba(180, 85, 43, 0.14);
   --accent-border: rgba(180, 85, 43, 0.34);

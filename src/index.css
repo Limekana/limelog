@@ -49,11 +49,21 @@
 }
 
 :root {
+  /* v1.13 — the three colours the theme picker's preview swatch paints with,
+     declared unconditionally so they are readable even while another theme is
+     applied and `--bg-surface` no longer holds this palette's value. The
+     tokens below consume them, so the swatch and the theme have ONE source
+     and a preview cannot advertise a colour the theme does not use.
+     Cast Iron declares the same three; see src/themes/cast-iron.css. */
+  --lime-surface: #161a1e;
+  --lime-accent: #c8f135;
+  --lime-ink: #f0f2f4;
+
   --font-display: 'Barlow Condensed', sans-serif;
   --font-body: 'Barlow', sans-serif;
 
   --bg-base: #0d0f11;
-  --bg-surface: #161a1e;
+  --bg-surface: var(--lime-surface);
   --bg-raised: #1d2227;
   --bg-overlay: #242a30;
 
@@ -61,12 +71,12 @@
   --border-default: rgba(255, 255, 255, 0.10);
   --border-strong: rgba(255, 255, 255, 0.18);
 
-  --text-primary: #f0f2f4;
+  --text-primary: var(--lime-ink);
   --text-secondary: #8a9099;
   --text-tertiary: #76818c; /* lightened from #545c66 for WCAG AA contrast on dark bg */
   --text-inverse: #0d0f11;
 
-  --accent: #c8f135;
+  --accent: var(--lime-accent);
   --accent-hot: #d6ff3d;
   --accent-dim: rgba(200, 241, 53, 0.12);
   --accent-border: rgba(200, 241, 53, 0.30);

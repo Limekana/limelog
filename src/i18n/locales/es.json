@@ -196,9 +196,16 @@
     "deleteAccountFailed": "Error al eliminar: {{msg}}",
     "support": "Apoyo",
     "supportDev": "Apoya el desarrollo",
-    "supportDevSub": "Un enlace a Ko-fi. Nada en la app depende de ello.",
+    "supportDevSub": "Un enlace a Ko-fi. Quienes apoyan obtienen el tema Cast Iron; nada más está bloqueado detrás.",
     "discord": "Comunidad de Discord",
-    "discordSub": "Preguntas, informes de errores y lo que viene"
+    "discordSub": "Preguntas, informes de errores y lo que viene",
+    "theme": "Apariencia",
+    "themeName": {
+      "lime": "Lime",
+      "cast-iron": "Cast Iron"
+    },
+    "themeLockedAria": "{{name}}: tema para colaboradores, bloqueado",
+    "themeSupporterNote": "Cast Iron es un tema para quienes apoyan el proyecto. Todas las funciones de entrenamiento siguen siendo gratuitas: esto es una paleta, no un muro de pago."
   },
   "body": {
     "title": "Cuerpo",

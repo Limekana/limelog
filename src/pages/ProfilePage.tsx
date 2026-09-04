@@ -8,6 +8,7 @@ import { InjuryForm } from '@/components/InjuryForm';
 import { ExerciseLibrary } from '@/components/ExerciseLibrary';
 import { NexusSyncCard } from '@/components/NexusSyncCard';
 import { FeedbackCard } from '@/components/FeedbackCard';
+import { ThemeCard } from '@/components/ThemeCard';
 import { ShieldAlert } from 'lucide-react';
 import { useConfirm } from '@/components/confirmContext';
 import { downloadExport, deleteAccount, wipeAllLocalData } from '@/lib/dataRights';
@@ -247,9 +248,17 @@ export function ProfilePage() {
             {dataMsg && <div className="settings-data-msg">{dataMsg}</div>}
           </Card>
 
-          {/* Support — a link out, nothing more. No entitlements, no
-              supporter-only features, no webhook, so nothing here gates the
-              app for someone who never clicks it. The sublabel says so. */}
+          {/* Support — a link out, nothing more. It used to say "no
+              entitlements, no supporter-only features"; v1.13 shipped the Cast
+              Iron theme, so that is no longer true and the comment would have
+              been the kind that quietly rots.
+              What IS still true, and is the part worth stating: nothing here
+              gates the app. The perk is one alternative palette. Every
+              workout feature, every export, every sync path is identical for
+              someone who never clicks this link — and because the app is
+              open-source and on F-Droid, the theme's CSS ships to them too.
+              The check exists so a supporter's perk switches on by itself,
+              not as an enforcement boundary. */}
           <Card padding="md">
             <span className="settings-field__label">{t('settings.support')}</span>
             <div className="settings-field__sublabel settings-ai-note">
@@ -280,6 +289,11 @@ export function ProfilePage() {
               {t('settings.discord')} ›
             </a>
           </Card>
+
+          {/* Appearance sits next to Language: both answer "how does this app
+              look and read to me", and a user hunting for one will scan past
+              the other. */}
+          <ThemeCard />
 
           <Card padding="md">
             <span className="settings-field__label">{t('settings.language')}</span>
