@@ -28,6 +28,26 @@ function apply(theme: ThemeId): void {
   const el = document.documentElement;
   if (theme === 'lime') delete el.dataset.theme;
   else el.dataset.theme = theme;
+  applyChrome();
+}
+
+/**
+ * Repoint the `theme-color` meta at whatever `--bg-base` now resolves to.
+ *
+ * Android tints the system bars from this. It was a hardcoded `#0d0f11` in
+ * index.html — the free theme's base — so without this Cast Iron would paint
+ * the whole app warm and leave a cold near-black strip along the top of the
+ * screen, which reads as a rendering bug rather than a theme.
+ *
+ * Read from the cascade rather than a table in this file: the value then
+ * comes from whichever stylesheet actually won, and a theme that changes its
+ * base colour needs no edit here.
+ */
+function applyChrome(): void {
+  const meta = document.querySelector('meta[name="theme-color"]');
+  if (!meta) return;
+  const bg = getComputedStyle(document.documentElement).getPropertyValue('--bg-base').trim();
+  if (bg) meta.setAttribute('content', bg);
 }
 
 interface ThemeState {
@@ -37,7 +57,10 @@ interface ThemeState {
   setTheme: (theme: ThemeId) => void;
   setEntitled: (entitled: boolean) => void;
   /** Re-read entitlement from the server and re-resolve the theme. */
-  syncEntitlement: (userId: string | null | undefined) => Promise<void>;
+  syncEntitlement: (
+    userId: string | null | undefined,
+    opts?: { force?: boolean },
+  ) => Promise<void>;
 }
 
 /**
@@ -94,8 +117,12 @@ export const useThemeStore = create<ThemeState>((set, get) => ({
     }
   },
 
-  syncEntitlement: async (userId) => {
-    const ok = await refreshEntitlement(userId);
+  // `force` skips the six-hour cache. The caller that needs it is sign-in: a
+  // supporter who was signed out moments ago has a fresh "not entitled"
+  // answer cached, and serving that would hide the perk they just paid for
+  // until the cache aged out.
+  syncEntitlement: async (userId, opts) => {
+    const ok = await refreshEntitlement(userId, opts);
     get().setEntitled(ok);
   },
 }));

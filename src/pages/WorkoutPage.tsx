@@ -4,7 +4,7 @@ import { useTranslation } from 'react-i18next';
 import { useProgramStore } from '@/store/programStore';
 import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
-import { formatWeight } from '@/utils/helpers';
+import { formatWeight, toDisplayWeight } from '@/utils/helpers';
 import { playRestComplete } from '@/utils/audio';
 import { getLastSessionSets, type LastSessionRef } from '@/lib/lastSessionSets';
 import type { SetLog, ExercisePR } from '@/types/logging';
@@ -12,6 +12,8 @@ import { WeightUpModal, type QualifyingExercise } from '@/components/WeightUpMod
 import { FatigueRating } from '@/components/FatigueRating';
 import { DebriefSection } from '@/components/DebriefSection';
 import { useConfirm } from '@/components/confirmContext';
+import { PlateBar } from '@/components/PlateBar';
+import { useThemeStore } from '@/store/themeStore';
 import { ChevronLeft, Plus, Trash2, X, Flag, Play, Timer } from 'lucide-react';
 import './WorkoutPage.css';
 
@@ -454,6 +456,20 @@ function ExerciseSection({
   const [override, setOverride] = useState(false);
   const restricted = isRestrictedAvoid && !override;
 
+  // ── The plate bay ────────────────────────────────────────────────────
+  //
+  // Cast Iron ONLY, and that is not a licensing decision — it is the theme's
+  // regression gate. With `[data-theme]` unset the app has to render exactly
+  // as it did before this theme existed, and a bar drawn across every
+  // exercise header is not "exactly as it did".
+  //
+  // The weight shown is the one you are about to lift: the first set still
+  // open, falling back to the programmed target. A bay showing the last
+  // completed set would be a picture of work already done.
+  const castIron = useThemeStore((s) => s.theme) === 'cast-iron';
+  const nextWeightKg = sets.find((s) => !s.completed)?.weightKg ?? targetWeight ?? null;
+  const showBay = castIron && !restricted && nextWeightKg != null && nextWeightKg > 0;
+
   function addSet() {
     const last = sets[sets.length - 1];
     onLogSet({
@@ -496,6 +512,14 @@ function ExerciseSection({
             <button onClick={() => setOverride(true)}>{t('log.override')}</button>
           )}
         </div>
+      )}
+
+      {showBay && (
+        <PlateBar
+          total={toDisplayWeight(nextWeightKg as number, unit)}
+          unit={unit}
+          size="md"
+        />
       )}
 
       {!restricted && (
