@@ -1,0 +1,248 @@
+/* ─────────────────────────────────────────────────────────────
+   Cast Iron — paid theme token overrides.
+
+   Imported once from src/main.tsx AFTER src/index.css. Nothing in
+   index.css is edited: with [data-theme] unset the app is byte-identical
+   to the free brutalist-lime theme, and that is this theme's regression
+   gate rather than a nice-to-have.
+
+   Fonts are self-hosted for the same reason index.css self-hosts Barlow —
+   a render-blocking fonts.googleapis.com <link> hung the WebView on the
+   native splash whenever Google was unreachable (offline / F-Droid).
+
+   Deviation from the handoff's file table, deliberate: it lists seven
+   woff2 files (Big Shoulders 600/700/800, Archivo 400/500/600/700).
+   Google serves ONE file per family for every weight in the range —
+   verified by fetching the css2 response and finding a single URL across
+   all weights, and by the downloaded files hashing identically. Both
+   families are variable, so seven files would be five redundant copies
+   and ~175 KB of dead weight in an F-Droid APK. One file per family with
+   a weight range renders the same.
+   ───────────────────────────────────────────────────────────── */
+
+@font-face {
+  font-family: 'Big Shoulders Display';
+  font-style: normal;
+  font-weight: 600 800;
+  font-display: swap;
+  src: url('/fonts/big-shoulders-display-variable.woff2') format('woff2');
+}
+@font-face {
+  font-family: 'Archivo';
+  font-style: normal;
+  font-weight: 400 700;
+  font-display: swap;
+  src: url('/fonts/archivo-variable.woff2') format('woff2');
+}
+
+/* Same idea as index.css's `--lime-*`: declared OUTSIDE the [data-theme]
+   block so the settings preview can read them while the free theme is
+   applied. Unconditional custom properties paint nothing on their own — with
+   `[data-theme]` unset this file still contributes no rendered style, which
+   is the regression gate stated at the top. */
+:root {
+  --cast-iron-surface: #232019;
+  --cast-iron-accent: #b4552b;
+  --cast-iron-ink: #e6e1d6;
+}
+
+[data-theme='cast-iron'] {
+  /* Google renamed the family to "Big Shoulders" in newer releases; the
+     token names the old family regardless so it stays stable. */
+  --font-display: 'Big Shoulders Display', 'Barlow Condensed', sans-serif;
+  --font-body: 'Archivo', 'Barlow', sans-serif;
+
+  /* Neutral ramp is warm: oklch hue 40–48°, chroma 0.004–0.010.
+     Never blue-grey — the free theme's neutrals sit cold near 250°, and
+     the two themes must read as different materials, not brightnesses. */
+  --bg-base: #1b1a18;      /* Crumb — the floor */
+  --bg-surface: var(--cast-iron-surface);   /* Cast Iron — equipment */
+  --bg-raised: #2a2620;
+  --bg-overlay: #322c24;
+
+  --border-subtle: rgba(230, 225, 214, 0.07);
+  --border-default: rgba(230, 225, 214, 0.12);
+  --border-strong: rgba(230, 225, 214, 0.20);
+
+  /* Measured, not estimated. The WIP comments here claimed 11.4:1 and 4.6:1;
+     re-measuring against the shipped hexes gave 13.34:1 and — the one that
+     mattered — 4.36:1 for Bare Steel on --bg-surface, which is BELOW AA.
+     `--text-tertiary` on Crumb did pass at 4.66:1, so the original figure was
+     not wrong so much as measured against the wrong background: cards are
+     drawn on the surface, not the floor, and that is where tertiary text
+     actually lives.
+     Bare Steel is lifted 18 points to #9e958a, which clears 4.5:1 against
+     ALL FOUR backgrounds (5.90 / 5.51 / 5.10 / 4.68 on base / surface /
+     raised / overlay) while keeping the warm grey — every channel moved by
+     the same amount, so the hue is untouched. */
+  --text-primary: var(--cast-iron-ink);   /* Chalk Dust — 13.34:1 on Crumb */
+  --text-secondary: #a79d8f;              /* 6.51:1 on Crumb, 5.17:1 worst */
+  --text-tertiary: #9e958a;               /* Bare Steel — 4.68:1 worst case */
+  --text-inverse: #171512;
+
+  --accent: var(--cast-iron-accent);         /* Oxide — rust through paint */
+  --accent-hot: #c86234;
+  --accent-dim: rgba(180, 85, 43, 0.14);
+  --accent-border: rgba(180, 85, 43, 0.34);
+  --accent-veil: rgba(180, 85, 43, 0.05);
+
+  --danger: #c33a2c;
+  --danger-dim: rgba(195, 58, 44, 0.14);
+  --danger-border: rgba(195, 58, 44, 0.30);
+
+  --warning: #d6c08a;
+  --warning-dim: rgba(214, 192, 138, 0.14);
+  --warning-border: rgba(214, 192, 138, 0.25);
+
+  --success: #7a8f4e;
+  --success-dim: rgba(122, 143, 78, 0.16);
+  --success-border: rgba(122, 143, 78, 0.30);
+
+  --info: #7e8ca0;
+  --info-dim: rgba(126, 140, 160, 0.16);
+  --info-border: rgba(126, 140, 160, 0.30);
+
+  /* One radius. The chamfer on a milled plate edge, not a UI corner.
+     `--radius-hard` is the free tier's own name for 2px after LL-2. */
+  --radius-hard: 2px;
+  --radius-sm: 2px;
+  --radius-md: 2px;
+  --radius-lg: 2px;
+  --radius-xl: 2px;
+
+  /* One easing: pure decelerate. Loaded things do not bounce. */
+  --ease-snap: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-strike: cubic-bezier(0.22, 0.61, 0.36, 1);
+  --ease-rise: cubic-bezier(0.22, 0.61, 0.36, 1);
+
+  /* New tokens — the material system. */
+  --seam: #100f0e;
+  --edge-light: #3a352c;
+  --tape: #d6c08a;
+  --plate-face: #26241f;
+  --plate-rim: #3d382f;
+  --bar-steel-top: #8c8378;
+  --bar-steel-bottom: #5e574c;
+}
+
+/* Radius: 2px everywhere. The tokens above cover every surface that uses
+   one; this catches the literals and the 50% circles that do not. The
+   avatar is the single exception the acceptance list names — it holds a
+   photo, and a square photo is a different thing. */
+html[data-theme='cast-iron'] *,
+html[data-theme='cast-iron'] *::before,
+html[data-theme='cast-iron'] *::after {
+  border-radius: 2px;
+}
+html[data-theme='cast-iron'] .app-avatar {
+  border-radius: 50%;
+}
+
+/* Elevation policy, applied categorically rather than enumerated.
+   The handoff states it as an absolute: "zero box-shadow and zero
+   backdrop-filter in the theme. Depth is material." Naming the sites
+   individually was the first attempt and it was wrong — a sweep of the app
+   found eleven `backdrop-filter: blur()` declarations across six modals and
+   the workout header, plus outer shadows in onboarding and the PR modal, none
+   of which the theme was suppressing. An enumerated list would also go stale
+   the first time a component adds a shadow.
+
+   `!important` is deliberate here and only here: `.onb-goal.is-selected` and
+   friends are two-class selectors that outrank this sweep, and the policy is
+   categorical, so losing to a call site is a bug rather than a nuance. */
+html[data-theme='cast-iron'] *,
+html[data-theme='cast-iron'] *::before,
+html[data-theme='cast-iron'] *::after {
+  box-shadow: none !important;
+  backdrop-filter: none !important;
+  -webkit-backdrop-filter: none !important;
+}
+
+/* ── Suppressions ─────────────────────────────────────────────
+   The free theme's atmosphere is lime light. There is no backlight in
+   this room, so all of it comes off. ─────────────────────────── */
+
+[data-theme='cast-iron'] body::before {
+  background: none;
+}
+
+[data-theme='cast-iron'] .workout-page {
+  background-image: none;
+}
+
+/* Flat, not glass. */
+[data-theme='cast-iron'] .workout-top {
+  background: rgba(27, 26, 24, 0.97);
+  backdrop-filter: none;
+  -webkit-backdrop-filter: none;
+}
+
+/* Elevation policy: none, ever. Depth is an edge pair, not a shadow. */
+[data-theme='cast-iron'] .rest-bar__start,
+[data-theme='cast-iron'] .rest-bar__start:hover,
+[data-theme='cast-iron'] .workout-finish-btn,
+[data-theme='cast-iron'] .workout-finish-btn:hover,
+[data-theme='cast-iron'] .workout-top__progress-fill {
+  box-shadow: none;
+}
+
+/* Steel does not throb. At ≤5s the fill goes solid instead. */
+[data-theme='cast-iron'] .rest-bar--urgent .rest-bar__seconds-num {
+  animation: none;
+  color: var(--accent);
+}
+[data-theme='cast-iron'] .rest-bar--urgent .rest-bar__fill {
+  width: 100% !important;
+  background: var(--accent-dim);
+}
+
+/* ── Material edges ───────────────────────────────────────────
+   Every raised surface: 1px light on top, 1px seam-dark underneath.
+   Zones butt together and are separated by a 5px seam, not by air. */
+
+[data-theme='cast-iron'] .today-session,
+[data-theme='cast-iron'] .today-phase-advance,
+[data-theme='cast-iron'] .ex-section__last {
+  border: none;
+  border-top: 1px solid var(--edge-light);
+  border-bottom: 1px solid var(--seam);
+}
+
+[data-theme='cast-iron'] .ex-section,
+[data-theme='cast-iron'] .workout-finalize {
+  border-bottom: 5px solid var(--seam);
+}
+
+[data-theme='cast-iron'] .app-nav {
+  border-top: 5px solid var(--seam);
+}
+
+/* Painted numerals: the set-number pad and every weight field. */
+[data-theme='cast-iron'] .ex-section__sets input,
+[data-theme='cast-iron'] .ex-section__set-check {
+  font-family: var(--font-display);
+  font-weight: 700;
+}
+
+/* Gaffer tape: annotation the lifter added, never system chrome.
+   The rotation is deliberate — hand-stuck tape is not square.
+   One chip per screen: phase/week, or a PR mark, not both. */
+[data-theme='cast-iron'] .badge--accent,
+[data-theme='cast-iron'] .ex-section__pr {
+  background: var(--tape);
+  color: #241f19;
+  border-radius: 2px;
+  transform: rotate(-1.2deg);
+}
+
+@media (prefers-reduced-motion: reduce) {
+  [data-theme='cast-iron'] * {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+  /* The rest fill is information, not decoration — it keeps its 1s sweep. */
+  [data-theme='cast-iron'] .rest-bar__fill {
+    transition-duration: 1s !important;
+  }
+}

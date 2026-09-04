@@ -1,0 +1,86 @@
+/* Theme picker. v1.13 Item 5.
+   No colour literal in this file: every swatch paints from the `--lime-*` and
+   `--cast-iron-*` variables the two themes declare, so a preview cannot
+   advertise a colour its theme does not actually use. */
+
+.theme-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+  gap: 10px;
+  margin-top: 10px;
+}
+
+.theme-swatch {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 8px;
+  padding: 10px;
+  border: 1px solid var(--border-default);
+  border-radius: 10px;
+  background: var(--bg-raised);
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  cursor: pointer;
+  text-align: left;
+}
+
+.theme-swatch--active {
+  border-color: var(--accent-border);
+  color: var(--text-primary);
+}
+
+/* Locked reads as unavailable rather than broken: dimmed, still legible, and
+   the cursor says why before the tap does. `disabled` already blocks the
+   press; this is the part a sighted user reads. */
+.theme-swatch--locked {
+  opacity: 0.55;
+  cursor: not-allowed;
+}
+
+.theme-swatch__preview {
+  display: flex;
+  align-items: flex-end;
+  gap: 4px;
+  height: 40px;
+  padding: 6px;
+  border-radius: 6px;
+  border: 1px solid var(--border-subtle);
+}
+
+.theme-swatch__preview-bar {
+  flex: 1;
+  height: 6px;
+  border-radius: 3px;
+}
+
+.theme-swatch__preview-accent {
+  width: 14px;
+  height: 18px;
+  border-radius: 3px;
+}
+
+.theme-swatch__preview--lime { background: var(--lime-surface); }
+.theme-swatch__preview--lime .theme-swatch__preview-bar { background: var(--lime-ink); opacity: 0.35; }
+.theme-swatch__preview--lime .theme-swatch__preview-accent { background: var(--lime-accent); }
+
+.theme-swatch__preview--cast-iron { background: var(--cast-iron-surface); }
+.theme-swatch__preview--cast-iron .theme-swatch__preview-bar { background: var(--cast-iron-ink); opacity: 0.35; }
+.theme-swatch__preview--cast-iron .theme-swatch__preview-accent { background: var(--cast-iron-accent); }
+
+.theme-swatch__name {
+  font-family: var(--font-display);
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  text-transform: uppercase;
+}
+
+.theme-swatch__lock {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  font-size: 0.75rem;
+  line-height: 1;
+}
