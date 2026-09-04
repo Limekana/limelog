@@ -72,7 +72,26 @@ interface ThemeState {
  * be synchronous, and the cache is what the previous session's server check
  * left behind. The store re-checks against the server once auth resolves.
  */
-export function bootstrapTheme(): ThemeId {
+/**
+ * The stored theme, gated on entitlement. Pure: reads storage and the cached
+ * entitlement, touches no DOM.
+ *
+ * ── Why this is separate from `bootstrapTheme` (v1.13 review) ───────────
+ *
+ * The store used to initialise `theme` by reading
+ * `document.documentElement.dataset.theme`. Zustand's `create()` runs at
+ * IMPORT time, and `main.tsx` imports this module in order to call
+ * `bootstrapTheme()` — so the read happened before the attribute was set,
+ * every time. A Cast Iron supporter got a Cast Iron-painted app whose store
+ * said `lime`: the plate bay, the theme's headline feature, never rendered,
+ * and the picker showed Lime as the active row. It self-healed only if they
+ * re-tapped the theme.
+ *
+ * Both the store and `bootstrapTheme` now derive from this one function, so
+ * they agree no matter which runs first — the DOM is an output of the
+ * resolution, never an input to it.
+ */
+function resolveStoredTheme(): ThemeId {
   let stored: ThemeId = 'lime';
   try {
     const raw = storage.getTheme();
@@ -80,13 +99,17 @@ export function bootstrapTheme(): ThemeId {
   } catch {
     /* storage unavailable — the free theme is the right fallback */
   }
-  const theme = !isPaidTheme(stored) || isEntitled() ? stored : 'lime';
+  return !isPaidTheme(stored) || isEntitled() ? stored : 'lime';
+}
+
+export function bootstrapTheme(): ThemeId {
+  const theme = resolveStoredTheme();
   apply(theme);
   return theme;
 }
 
 export const useThemeStore = create<ThemeState>((set, get) => ({
-  theme: (document.documentElement.dataset.theme as ThemeId) ?? 'lime',
+  theme: resolveStoredTheme(),
   entitled: isEntitled(),
 
   setTheme: (theme) => {
