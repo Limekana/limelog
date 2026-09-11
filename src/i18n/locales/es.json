@@ -205,7 +205,8 @@
       "cast-iron": "Cast Iron"
     },
     "themeLockedAria": "{{name}}: tema para colaboradores, bloqueado",
-    "themeSupporterNote": "Cast Iron es un tema para quienes apoyan el proyecto. Todas las funciones de entrenamiento siguen siendo gratuitas: esto es una paleta, no un muro de pago."
+    "themeSupporterNote": "Cast Iron es un tema para quienes apoyan el proyecto. Todas las funciones de entrenamiento siguen siendo gratuitas: esto es una paleta, no un muro de pago.",
+    "about": "Acerca de"
   },
   "body": {
     "title": "Cuerpo",

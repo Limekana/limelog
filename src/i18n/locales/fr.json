@@ -205,7 +205,8 @@
       "cast-iron": "Cast Iron"
     },
     "themeLockedAria": "{{name}} — thème réservé aux soutiens, verrouillé",
-    "themeSupporterNote": "Cast Iron est un thème réservé aux soutiens. Toutes les fonctions d'entraînement restent gratuites — c'est une palette, pas un péage."
+    "themeSupporterNote": "Cast Iron est un thème réservé aux soutiens. Toutes les fonctions d'entraînement restent gratuites — c'est une palette, pas un péage.",
+    "about": "À propos"
   },
   "body": {
     "title": "Corps",

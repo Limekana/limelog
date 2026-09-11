@@ -201,7 +201,8 @@
       "cast-iron": "Cast Iron"
     },
     "themeLockedAria": "{{name}} — tukijoiden teema, lukittu",
-    "themeSupporterNote": "Cast Iron on tukijoiden teema. Kaikki treeniominaisuudet pysyvät ilmaisina — kyse on väreistä, ei maksumuurista."
+    "themeSupporterNote": "Cast Iron on tukijoiden teema. Kaikki treeniominaisuudet pysyvät ilmaisina — kyse on väreistä, ei maksumuurista.",
+    "about": "Tietoja"
   },
   "body": {
     "title": "Keho",
