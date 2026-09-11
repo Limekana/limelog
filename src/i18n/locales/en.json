@@ -192,9 +192,16 @@
     "deleteAccountFailed": "Deletion failed: {{msg}}",
     "support": "Support",
     "supportDev": "Support development",
-    "supportDevSub": "A link to Ko-fi. Nothing in the app is locked behind it.",
+    "supportDevSub": "A link to Ko-fi. Supporters get the Cast Iron theme; nothing else in the app is locked behind it.",
     "discord": "Discord community",
-    "discordSub": "Questions, bug reports, and what's coming next"
+    "discordSub": "Questions, bug reports, and what's coming next",
+    "theme": "Appearance",
+    "themeName": {
+      "lime": "Lime",
+      "cast-iron": "Cast Iron"
+    },
+    "themeLockedAria": "{{name}} — supporter theme, locked",
+    "themeSupporterNote": "Cast Iron is a supporter theme. Every workout feature stays free — this is a palette, not a paywall."
   },
   "body": {
     "title": "Body",

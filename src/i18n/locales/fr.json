@@ -196,9 +196,16 @@
     "deleteAccountFailed": "Échec de la suppression : {{msg}}",
     "support": "Soutien",
     "supportDev": "Soutenir le développement",
-    "supportDevSub": "Un lien vers Ko-fi. Rien dans l’app n’en dépend.",
+    "supportDevSub": "Un lien vers Ko-fi. Les soutiens obtiennent le thème Cast Iron ; rien d’autre n’est verrouillé derrière.",
     "discord": "Communauté Discord",
-    "discordSub": "Questions, rapports de bugs et la suite du programme"
+    "discordSub": "Questions, rapports de bugs et la suite du programme",
+    "theme": "Apparence",
+    "themeName": {
+      "lime": "Lime",
+      "cast-iron": "Cast Iron"
+    },
+    "themeLockedAria": "{{name}} — thème réservé aux soutiens, verrouillé",
+    "themeSupporterNote": "Cast Iron est un thème réservé aux soutiens. Toutes les fonctions d'entraînement restent gratuites — c'est une palette, pas un péage."
   },
   "body": {
     "title": "Corps",

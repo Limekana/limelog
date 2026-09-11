@@ -12,6 +12,9 @@ import { WeightUpModal, type QualifyingExercise } from '@/components/WeightUpMod
 import { FatigueRating } from '@/components/FatigueRating';
 import { DebriefSection } from '@/components/DebriefSection';
 import { useConfirm } from '@/components/confirmContext';
+import { PlateBar } from '@/components/PlateBar';
+import { convertLoad, usesBarbell } from '@/utils/plateMath';
+import { useThemeStore } from '@/store/themeStore';
 import { ChevronLeft, Plus, Trash2, X, Flag, Play, Timer } from 'lucide-react';
 import './WorkoutPage.css';
 
@@ -349,6 +352,7 @@ export function WorkoutPage() {
               index={idx + 1}
               exerciseName={exercise.name}
               exerciseId={exercise.id}
+              equipment={exercise.equipment}
               lastSession={lastSession}
               pr={pr}
               targetSetsCount={se.targetSets}
@@ -410,6 +414,7 @@ interface ExerciseSectionProps {
   index: number;
   exerciseName: string;
   exerciseId: string;
+  equipment?: string;
   lastSession?: LastSessionRef | null;
   pr?: ExercisePR | null;
   targetSetsCount: number;
@@ -432,6 +437,7 @@ interface ExerciseSectionProps {
 function ExerciseSection({
   index,
   exerciseName,
+  equipment,
   lastSession,
   pr,
   targetSetsCount,
@@ -453,6 +459,33 @@ function ExerciseSection({
   const { t } = useTranslation();
   const [override, setOverride] = useState(false);
   const restricted = isRestrictedAvoid && !override;
+
+  // ── The plate bay ────────────────────────────────────────────────────
+  //
+  // Cast Iron ONLY, and that is not a licensing decision — it is the theme's
+  // regression gate. With `[data-theme]` unset the app has to render exactly
+  // as it did before this theme existed, and a bar drawn across every
+  // exercise header is not "exactly as it did".
+  //
+  // The weight shown is the one you are about to lift: the first set still
+  // open, falling back to the programmed target. A bay showing the last
+  // completed set would be a picture of work already done.
+  // Two conditions the first cut of this missed, both from the v1.13 review.
+  //
+  // `usesBarbell` existed in plateMath and was never called, so the bay drew
+  // an Olympic bar for cable and dumbbell work — a picture of equipment that
+  // is not in the room.
+  //
+  // `convertLoad` existed and was never called either: the weight went
+  // through `toDisplayWeight`, which rounds to one decimal for display. 100 kg
+  // became 220.5 lb, no combination of plates makes a half pound, and every
+  // ordinary set grew a spurious "+0.25 UNMADE" tape chip. `convertLoad`
+  // snaps to the nearest load the plates can actually build, which is the
+  // whole point of drawing them.
+  const castIron = useThemeStore((s) => s.theme) === 'cast-iron';
+  const nextWeightKg = sets.find((s) => !s.completed)?.weightKg ?? targetWeight ?? null;
+  const showBay =
+    castIron && !restricted && usesBarbell(equipment) && nextWeightKg != null && nextWeightKg > 0;
 
   function addSet() {
     const last = sets[sets.length - 1];
@@ -496,6 +529,14 @@ function ExerciseSection({
             <button onClick={() => setOverride(true)}>{t('log.override')}</button>
           )}
         </div>
+      )}
+
+      {showBay && (
+        <PlateBar
+          total={convertLoad(nextWeightKg as number, 'kg', unit)}
+          unit={unit}
+          size="md"
+        />
       )}
 
       {!restricted && (

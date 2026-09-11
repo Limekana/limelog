@@ -188,9 +188,16 @@
     "deleteAccountFailed": "Penghapusan gagal: {{msg}}",
     "support": "Dukungan",
     "supportDev": "Dukung pengembangan",
-    "supportDevSub": "Tautan ke Ko-fi. Tidak ada fitur yang dikunci karenanya.",
+    "supportDevSub": "Tautan ke Ko-fi. Pendukung mendapatkan tema Cast Iron; tidak ada hal lain yang dikunci di baliknya.",
     "discord": "Komunitas Discord",
-    "discordSub": "Pertanyaan, laporan bug, dan rencana berikutnya"
+    "discordSub": "Pertanyaan, laporan bug, dan rencana berikutnya",
+    "theme": "Tampilan",
+    "themeName": {
+      "lime": "Lime",
+      "cast-iron": "Cast Iron"
+    },
+    "themeLockedAria": "{{name}} — tema pendukung, terkunci",
+    "themeSupporterNote": "Cast Iron adalah tema untuk pendukung. Semua fitur latihan tetap gratis — ini soal palet warna, bukan dinding berbayar."
   },
   "injury": {
     "newRestriction": "Batasan baru",

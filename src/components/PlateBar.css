@@ -1,0 +1,125 @@
+/* The plate bay. Material depth only: 1px light top edge, 1px seam bottom.
+   No shadows anywhere in this theme. */
+
+.plate-bar {
+  display: block;
+  width: 100%;
+  background: var(--bg-surface);
+  border: none;
+  border-top: 1px solid var(--edge-light);
+  border-bottom: 1px solid var(--seam);
+  border-radius: var(--radius-sm);
+  padding: 18px 14px 14px;
+  text-align: start;
+}
+
+.plate-bar--md { padding: 8px 12px; }
+.plate-bar--sm { padding: 4px 8px; background: none; border: none; }
+
+.plate-bar--interactive { cursor: pointer; min-height: 44px; }
+.plate-bar--interactive:active { transform: scale(0.99); }
+
+.plate-bar__rail {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  min-height: 92px;
+}
+.plate-bar--md .plate-bar__rail { min-height: 38px; }
+.plate-bar--sm .plate-bar__rail { min-height: 24px; }
+
+.plate-bar__plate {
+  flex: 0 0 auto;
+  background: var(--plate-face);
+  border: 1px solid var(--plate-rim);
+  border-top-color: var(--edge-light);
+  border-radius: var(--radius-sm);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-display);
+  font-weight: 700;
+  font-size: 11px;
+  color: #d6cfc0;
+  writing-mode: vertical-rl;
+  /* A plate lands and stops. No overshoot. */
+  animation: plate-land 180ms var(--ease-snap);
+}
+
+@keyframes plate-land {
+  from { transform: translateX(6px); opacity: 0.7; }
+  to   { transform: none; opacity: 1; }
+}
+
+.plate-bar__collar {
+  flex: 0 0 auto;
+  width: 7px;
+  height: 34px;
+  background: var(--plate-rim);
+  border-radius: 1px;
+}
+.plate-bar--md .plate-bar__collar { height: 16px; width: 5px; }
+.plate-bar--sm .plate-bar__collar { height: 11px; width: 4px; }
+
+.plate-bar__sleeve {
+  flex: 1 1 auto;
+  max-width: 120px;
+  height: 10px;
+  background: linear-gradient(var(--bar-steel-top), var(--bar-steel-bottom));
+  border-radius: 1px;
+}
+.plate-bar--md .plate-bar__sleeve { height: 6px; max-width: 56px; }
+.plate-bar--sm .plate-bar__sleeve { height: 4px; max-width: 34px; }
+
+/* Hand-stuck tape for a load no plate can make. Deliberately off-square. */
+.plate-bar__tape {
+  margin-inline-start: 6px;
+  background: var(--tape);
+  color: #241f19;
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  padding: 2px 5px;
+  border-radius: var(--radius-sm);
+  transform: rotate(-1.2deg);
+}
+
+.plate-bar__readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.plate-bar__stack {
+  font-family: var(--font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.plate-bar__total {
+  font-family: var(--font-display);
+  font-size: 30px;
+  font-weight: 800;
+  line-height: 1;
+  color: var(--accent);
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.plate-bar__unit {
+  font-size: 14px;
+  color: var(--text-tertiary);
+  margin-inline-start: 3px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .plate-bar__plate { animation: none; }
+  .plate-bar--interactive:active { transform: none; }
+}

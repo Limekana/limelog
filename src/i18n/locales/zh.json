@@ -189,9 +189,16 @@
     "deleteAccountFailed": "删除失败：{{msg}}",
     "support": "支持",
     "supportDev": "支持开发",
-    "supportDevSub": "一个 Ko-fi 链接。应用中没有任何功能因此被锁定。",
+    "supportDevSub": "一个 Ko-fi 链接。支持者可获得 Cast Iron 主题；除此之外没有任何功能被锁在后面。",
     "discord": "Discord 社区",
-    "discordSub": "提问、报告问题，了解后续计划"
+    "discordSub": "提问、报告问题，了解后续计划",
+    "theme": "外观",
+    "themeName": {
+      "lime": "Lime",
+      "cast-iron": "Cast Iron"
+    },
+    "themeLockedAria": "{{name}} — 支持者主题，已锁定",
+    "themeSupporterNote": "Cast Iron 是支持者主题。所有训练功能依然免费——这只是配色，不是付费墙。"
   },
   "body": {
     "title": "身体",

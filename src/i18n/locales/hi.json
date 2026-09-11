@@ -192,9 +192,16 @@
     "deleteAccountFailed": "हटाना विफल: {{msg}}",
     "support": "सहयोग",
     "supportDev": "विकास में सहयोग करें",
-    "supportDevSub": "Ko-fi का एक लिंक। ऐप में कुछ भी इसके पीछे बंद नहीं है।",
+    "supportDevSub": "Ko-fi का लिंक। समर्थकों को Cast Iron थीम मिलती है; इसके पीछे और कुछ लॉक नहीं है।",
     "discord": "Discord समुदाय",
-    "discordSub": "सवाल, बग रिपोर्ट और आगे क्या आ रहा है"
+    "discordSub": "सवाल, बग रिपोर्ट और आगे क्या आ रहा है",
+    "theme": "रूप-रंग",
+    "themeName": {
+      "lime": "Lime",
+      "cast-iron": "Cast Iron"
+    },
+    "themeLockedAria": "{{name}} — समर्थक थीम, लॉक",
+    "themeSupporterNote": "Cast Iron समर्थकों के लिए थीम है। सभी वर्कआउट सुविधाएँ मुफ़्त रहती हैं — यह रंगों की बात है, पेवॉल की नहीं।"
   },
   "injury": {
     "newRestriction": "नई पाबंदी",

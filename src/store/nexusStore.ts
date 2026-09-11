@@ -26,7 +26,8 @@ import {
 // re-seed of BUILTIN_EXERCISES that would lose their tweaks. The
 // per-user scope of programs is tracked as a v1.3 design item.
 import { watchAppOpens } from '@/lib/appOpens';
-import { clearEntitlement, refreshEntitlement } from '@/lib/entitlement';
+import { clearEntitlement } from '@/lib/entitlement';
+import { useThemeStore } from '@/store/themeStore';
 import pkgJson from '../../package.json';
 import { useLogStore } from '@/store/logStore';
 import { useBodyMetricsStore } from '@/store/bodyMetricsStore';
@@ -153,7 +154,12 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       // as the line above: on a cold start there is usually no session until
       // the SSO inherit resolves, and asking earlier would cache a "not
       // entitled" answer for six hours.
-      if (user?.id) void refreshEntitlement(user.id);
+      // Routed through the theme store rather than calling
+      // `refreshEntitlement` directly. The raw call updates the cache and
+      // nothing else — the store's `setEntitled` is what demotes a paid theme
+      // when an entitlement has lapsed, and without it a lapsed supporter
+      // keeps Cast Iron until they happen to restart the app.
+      if (user?.id) void useThemeStore.getState().syncEntitlement(user.id);
 
       supabase.auth.onAuthStateChange((event, session) => {
         const wasSignedIn = Boolean(get().userEmail);
@@ -176,7 +182,14 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
           // perk without restarting. `force` skips the six-hour cache, which
           // would otherwise serve the "not entitled" answer cached moments ago
           // while signed out.
-          if (session?.user?.id) void refreshEntitlement(session.user.id, { force: true });
+          if (session?.user?.id) void useThemeStore.getState().syncEntitlement(session.user.id, { force: true });
+        }
+        // Signing out ends the entitlement with it. `syncEntitlement(null)`
+        // clears the cache and hands the store `false`, which drops a paid
+        // theme back to lime — otherwise signing out of a supporter account
+        // leaves the perk running on a device with no account behind it.
+        if (event === 'SIGNED_OUT') {
+          void useThemeStore.getState().syncEntitlement(null);
         }
         if (!wasSignedIn && nowSignedIn && get().syncEnabled) {
           void outboxDrain().then((result) => {

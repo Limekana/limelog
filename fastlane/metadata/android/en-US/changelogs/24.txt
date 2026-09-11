@@ -1,0 +1,3 @@
+Adds the Cast Iron theme.
+
+A warm, iron-and-chalk palette for supporters, with the weight on each exercise drawn as a loaded barbell — 145 kg and 100 kg look like different objects, not just different numbers. The free Lime theme is unchanged, and every workout feature works the same either way.

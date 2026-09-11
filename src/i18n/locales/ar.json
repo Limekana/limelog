@@ -208,9 +208,16 @@
     "deleteAccountFailed": "فشل الحذف: {{msg}}",
     "support": "الدعم",
     "supportDev": "ادعم التطوير",
-    "supportDevSub": "رابط إلى Ko-fi. لا شيء في التطبيق مقيّد به.",
+    "supportDevSub": "رابط إلى Ko-fi. يحصل الداعمون على سمة Cast Iron؛ ولا شيء آخر مقفل خلفه.",
     "discord": "مجتمع Discord",
-    "discordSub": "الأسئلة وتقارير الأخطاء وما هو قادم"
+    "discordSub": "الأسئلة وتقارير الأخطاء وما هو قادم",
+    "theme": "المظهر",
+    "themeName": {
+      "lime": "Lime",
+      "cast-iron": "Cast Iron"
+    },
+    "themeLockedAria": "{{name}} — سمة للداعمين، مقفلة",
+    "themeSupporterNote": "Cast Iron سمة للداعمين. تبقى كل ميزات التمرين مجانية — الأمر يتعلق بالألوان لا بجدار دفع."
   },
   "injury": {
     "newRestriction": "قيد جديد",

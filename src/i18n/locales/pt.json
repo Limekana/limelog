@@ -196,9 +196,16 @@
     "deleteAccountFailed": "Falha na exclusão: {{msg}}",
     "support": "Apoio",
     "supportDev": "Apoiar o desenvolvimento",
-    "supportDevSub": "Um link para o Ko-fi. Nada na app depende disso.",
+    "supportDevSub": "Um link para o Ko-fi. Apoiadores recebem o tema Cast Iron; nada mais fica bloqueado por trás dele.",
     "discord": "Comunidade no Discord",
-    "discordSub": "Dúvidas, relatos de bugs e o que vem por aí"
+    "discordSub": "Dúvidas, relatos de bugs e o que vem por aí",
+    "theme": "Aparência",
+    "themeName": {
+      "lime": "Lime",
+      "cast-iron": "Cast Iron"
+    },
+    "themeLockedAria": "{{name}} — tema de apoiador, bloqueado",
+    "themeSupporterNote": "Cast Iron é um tema para apoiadores. Todos os recursos de treino continuam gratuitos — isto é uma paleta, não um muro de pagamento."
   },
   "injury": {
     "newRestriction": "Nova restrição",

@@ -192,9 +192,16 @@
     "deleteAccountFailed": "Poisto epäonnistui: {{msg}}",
     "support": "Tuki",
     "supportDev": "Tue kehitystä",
-    "supportDevSub": "Linkki Ko-fiin. Mikään sovelluksessa ei ole sen takana.",
+    "supportDevSub": "Linkki Ko-fiin. Tukijat saavat Cast Iron -teeman; muuta ei ole lukittu sen taakse.",
     "discord": "Discord-yhteisö",
-    "discordSub": "Kysymykset, bugi-ilmoitukset ja mitä on tulossa"
+    "discordSub": "Kysymykset, bugi-ilmoitukset ja mitä on tulossa",
+    "theme": "Ulkoasu",
+    "themeName": {
+      "lime": "Lime",
+      "cast-iron": "Cast Iron"
+    },
+    "themeLockedAria": "{{name}} — tukijoiden teema, lukittu",
+    "themeSupporterNote": "Cast Iron on tukijoiden teema. Kaikki treeniominaisuudet pysyvät ilmaisina — kyse on väreistä, ei maksumuurista."
   },
   "body": {
     "title": "Keho",

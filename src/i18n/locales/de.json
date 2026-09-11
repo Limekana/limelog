@@ -192,9 +192,16 @@
     "deleteAccountFailed": "Löschen fehlgeschlagen: {{msg}}",
     "support": "Unterstützen",
     "supportDev": "Entwicklung unterstützen",
-    "supportDevSub": "Ein Link zu Ko-fi. Nichts in der App ist davon abhängig.",
+    "supportDevSub": "Ein Link zu Ko-fi. Unterstützer erhalten das Cast-Iron-Theme; sonst ist nichts dahinter gesperrt.",
     "discord": "Discord-Community",
-    "discordSub": "Fragen, Fehlerberichte und was als Nächstes kommt"
+    "discordSub": "Fragen, Fehlerberichte und was als Nächstes kommt",
+    "theme": "Erscheinungsbild",
+    "themeName": {
+      "lime": "Lime",
+      "cast-iron": "Cast Iron"
+    },
+    "themeLockedAria": "{{name}} — Unterstützer-Theme, gesperrt",
+    "themeSupporterNote": "Cast Iron ist ein Unterstützer-Theme. Alle Trainingsfunktionen bleiben kostenlos — es geht um Farben, nicht um eine Bezahlschranke."
   },
   "body": {
     "title": "Körper",
