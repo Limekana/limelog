@@ -13,6 +13,7 @@ import { ShieldAlert } from 'lucide-react';
 import { useConfirm } from '@/components/confirmContext';
 import { downloadExport, deleteAccount, wipeAllLocalData } from '@/lib/dataRights';
 import { supabase, isNexusConfigured } from '@/lib/supabase';
+import pkg from '../../package.json';
 import './ProfilePage.css';
 
 type Tab = 'injuries' | 'exercises' | 'settings';
@@ -334,6 +335,20 @@ export function ProfilePage() {
                 onChange={(e) => updateDeloadThresholds({ avgFatigueTrigger: Number(e.target.value) })}
               />
             </label>
+          </Card>
+
+          {/* About. StudyDesk and NCC have both shown the version in Settings
+              since v1.9; this app only ever put it in the feedback card's
+              footer, so "which build is on my phone?" could not be answered
+              without opening the feedback form and reading the small print
+              under it. That is the one question a version string exists to
+              answer, and it is asked precisely when something is wrong. */}
+          <Card padding="md">
+            <span className="settings-field__label">{t('settings.about')}</span>
+            <div className="settings-version-row">
+              <span className="settings-field__sublabel">LimeLog</span>
+              <span className="settings-version">v{pkg.version}</span>
+            </div>
           </Card>
         </div>
       </TabPanel>

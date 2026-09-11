@@ -205,7 +205,8 @@
       "cast-iron": "Cast Iron"
     },
     "themeLockedAria": "{{name}} — tema de apoiador, bloqueado",
-    "themeSupporterNote": "Cast Iron é um tema para apoiadores. Todos os recursos de treino continuam gratuitos — isto é uma paleta, não um muro de pagamento."
+    "themeSupporterNote": "Cast Iron é um tema para apoiadores. Todos os recursos de treino continuam gratuitos — isto é uma paleta, não um muro de pagamento.",
+    "about": "Sobre"
   },
   "injury": {
     "newRestriction": "Nova restrição",

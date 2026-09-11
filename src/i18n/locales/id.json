@@ -197,7 +197,8 @@
       "cast-iron": "Cast Iron"
     },
     "themeLockedAria": "{{name}} — tema pendukung, terkunci",
-    "themeSupporterNote": "Cast Iron adalah tema untuk pendukung. Semua fitur latihan tetap gratis — ini soal palet warna, bukan dinding berbayar."
+    "themeSupporterNote": "Cast Iron adalah tema untuk pendukung. Semua fitur latihan tetap gratis — ini soal palet warna, bukan dinding berbayar.",
+    "about": "Tentang"
   },
   "injury": {
     "newRestriction": "Batasan baru",

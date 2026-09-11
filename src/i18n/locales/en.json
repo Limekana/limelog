@@ -201,7 +201,8 @@
       "cast-iron": "Cast Iron"
     },
     "themeLockedAria": "{{name}} — supporter theme, locked",
-    "themeSupporterNote": "Cast Iron is a supporter theme. Every workout feature stays free — this is a palette, not a paywall."
+    "themeSupporterNote": "Cast Iron is a supporter theme. Every workout feature stays free — this is a palette, not a paywall.",
+    "about": "About"
   },
   "body": {
     "title": "Body",

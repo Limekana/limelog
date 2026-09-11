@@ -201,7 +201,8 @@
       "cast-iron": "Cast Iron"
     },
     "themeLockedAria": "{{name}} — Unterstützer-Theme, gesperrt",
-    "themeSupporterNote": "Cast Iron ist ein Unterstützer-Theme. Alle Trainingsfunktionen bleiben kostenlos — es geht um Farben, nicht um eine Bezahlschranke."
+    "themeSupporterNote": "Cast Iron ist ein Unterstützer-Theme. Alle Trainingsfunktionen bleiben kostenlos — es geht um Farben, nicht um eine Bezahlschranke.",
+    "about": "Über"
   },
   "body": {
     "title": "Körper",
