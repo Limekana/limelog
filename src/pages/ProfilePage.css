@@ -166,3 +166,20 @@
   font-size: 12px;
   color: var(--warning, var(--text-secondary));
 }
+
+/* About row. `.settings-field` is a column, so the version would stack under
+   the app name; this one wants them opposite, the way NCC's ListRow and
+   StudyDesk's `.sv2-row` both render it. Monospaced, so a version reads as an
+   identifier rather than prose. Tokenised — this app ships two palettes now,
+   and a literal colour is the one thing a theme cannot follow. */
+.settings-version-row {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.settings-version {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  font-size: 12px;
+  color: var(--text-secondary);
+}

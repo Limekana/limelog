@@ -70,6 +70,7 @@ export default function App() {
   const { t } = useTranslation();
   const { activeProgram } = useProgramStore();
   const userEmail = useNexusStore((s) => s.userEmail);
+  const sessionUnverified = useNexusStore((s) => s.sessionUnverified);
   const isNexusConfigured = useNexusStore((s) => s.configured);
 
   // Auth-gate state: whether the first-launch screen should be shown.
@@ -107,9 +108,10 @@ export default function App() {
   }, [userEmail, nexusInitialized]);
 
   // One-time channel creation + nexusStore init. The init() call awaits
-  // supabase.auth.getUser(), which is what sets userEmail to its restored
+  // supabase.auth.getSession(), which is what sets userEmail to its restored
   // value; we set nexusInitialized after init resolves so the gate below
-  // doesn't show the auth screen mid-restore.
+  // doesn't show the auth screen mid-restore. (It was getUser() until v1.13 —
+  // a network round trip standing between a returning user and their own app.)
   useEffect(() => {
     setupNotificationChannel();
     void (async () => {
@@ -187,9 +189,17 @@ export default function App() {
   // absent — local-only build) because there's no point asking for an
   // account that can never be created. Skipped during the initial state
   // resolution to avoid a one-frame flash for returning users.
+  //
+  // v1.13 — `sessionUnverified` is the third state this gate was missing. It
+  // used to have only "signed in" and "not signed in", so a launch that could
+  // not REACH the server to find out landed in the second one and showed the
+  // sign-in screen to someone who had never signed out. The app is local-first;
+  // everything except sync works without a confirmed session, so the right
+  // behaviour while the answer is unknown is to open the app and let the
+  // auto-refresh resolve it — onAuthStateChange clears the flag either way.
   const isResolving = guestMode === null || !nexusInitialized;
   const shouldShowAuth =
-    !isResolving && !userEmail && !guestMode && isNexusConfigured;
+    !isResolving && !userEmail && !sessionUnverified && !guestMode && isNexusConfigured;
 
   if (isResolving) {
     return (

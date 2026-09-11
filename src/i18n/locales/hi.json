@@ -201,7 +201,8 @@
       "cast-iron": "Cast Iron"
     },
     "themeLockedAria": "{{name}} — समर्थक थीम, लॉक",
-    "themeSupporterNote": "Cast Iron समर्थकों के लिए थीम है। सभी वर्कआउट सुविधाएँ मुफ़्त रहती हैं — यह रंगों की बात है, पेवॉल की नहीं।"
+    "themeSupporterNote": "Cast Iron समर्थकों के लिए थीम है। सभी वर्कआउट सुविधाएँ मुफ़्त रहती हैं — यह रंगों की बात है, पेवॉल की नहीं।",
+    "about": "ऐप के बारे में"
   },
   "injury": {
     "newRestriction": "नई पाबंदी",

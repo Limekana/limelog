@@ -198,7 +198,8 @@
       "cast-iron": "Cast Iron"
     },
     "themeLockedAria": "{{name}} — 支持者主题，已锁定",
-    "themeSupporterNote": "Cast Iron 是支持者主题。所有训练功能依然免费——这只是配色，不是付费墙。"
+    "themeSupporterNote": "Cast Iron 是支持者主题。所有训练功能依然免费——这只是配色，不是付费墙。",
+    "about": "关于"
   },
   "body": {
     "title": "身体",

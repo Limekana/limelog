@@ -217,7 +217,8 @@
       "cast-iron": "Cast Iron"
     },
     "themeLockedAria": "{{name}} — سمة للداعمين، مقفلة",
-    "themeSupporterNote": "Cast Iron سمة للداعمين. تبقى كل ميزات التمرين مجانية — الأمر يتعلق بالألوان لا بجدار دفع."
+    "themeSupporterNote": "Cast Iron سمة للداعمين. تبقى كل ميزات التمرين مجانية — الأمر يتعلق بالألوان لا بجدار دفع.",
+    "about": "حول"
   },
   "injury": {
     "newRestriction": "قيد جديد",

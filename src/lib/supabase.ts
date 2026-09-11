@@ -1,6 +1,7 @@
-import { createClient } from '@supabase/supabase-js';
+import { createClient, type SupportedStorage } from '@supabase/supabase-js';
 import { Capacitor } from '@capacitor/core';
 import { App as CapacitorApp } from '@capacitor/app';
+import { Preferences } from '@capacitor/preferences';
 
 // Supabase backend — overridable at build time via Vite env vars so the app
 // can be re-built against a self-hosted Supabase instance without forking
@@ -21,8 +22,71 @@ const url =
 const anonKey =
   import.meta.env.VITE_SUPABASE_ANON_KEY || 'sb_publishable_ykHLJ4QuFm2HKXACygwezw_c_cvR_yf';
 
+// ── Where the session actually lives ───────────────────────────────────────
+//
+// With no `storage` option supabase-js defaults to the WebView's
+// localStorage. NCC has used Capacitor Preferences since v1.7 and StudyDesk
+// since v1.10, both for the reason their comments give: Preferences is
+// Android SharedPreferences, and localStorage is WebView storage that Android
+// evicts under pressure. This app was the one that never got the port, so it
+// was the one whose users were silently signed out when the system decided it
+// needed the space — with nothing on the server to show for it, because from
+// Supabase's side nothing happened at all.
+//
+// `getItem` falls back to localStorage on a MISSING value, not only on a
+// thrown one. That is the upgrade path: every existing install has its session
+// in localStorage right now, and without the read-through every one of them
+// would be signed out by this very fix. Found once, it is written into
+// Preferences, so the fallback is a migration rather than a permanent second
+// home.
+const capacitorStorage: SupportedStorage = {
+  async getItem(key) {
+    try {
+      const { value } = await Preferences.get({ key });
+      if (value !== null && value !== undefined) return value;
+      // Nothing in Preferences: this is either a fresh install or an install
+      // upgrading from the localStorage era. Migrate rather than sign out.
+      const legacy = localStorage.getItem(key);
+      if (legacy !== null) {
+        try {
+          await Preferences.set({ key, value: legacy });
+          localStorage.removeItem(key);
+        } catch {
+          /* keep the legacy copy; it is still the live session */
+        }
+      }
+      return legacy;
+    } catch {
+      return localStorage.getItem(key);
+    }
+  },
+  async setItem(key, value) {
+    try {
+      await Preferences.set({ key, value });
+    } catch {
+      localStorage.setItem(key, value);
+    }
+  },
+  async removeItem(key) {
+    try {
+      await Preferences.remove({ key });
+    } catch {
+      /* fall through — the localStorage copy below must go either way */
+    }
+    try {
+      localStorage.removeItem(key);
+    } catch {
+      /* private mode */
+    }
+  },
+};
+
 export const supabase = createClient(url, anonKey, {
   auth: {
+    // Web keeps localStorage: there is no Preferences plugin in a browser, the
+    // eviction problem is an Android WebView one, and wrapping a synchronous
+    // store in an async shim there buys nothing.
+    storage: Capacitor.isNativePlatform() ? capacitorStorage : undefined,
     persistSession: true,
     autoRefreshToken: true,
     detectSessionInUrl: true,
