@@ -53,6 +53,16 @@ interface NexusStore {
    *  from the name and fall back to the address. Tracking only the email meant
    *  LimeLog could never agree with them. */
   userName: string | null;
+  /** A session exists in storage but this launch could not confirm it — the
+   *  refresh needed the network and the network was not there.
+   *
+   *  It is deliberately NOT the same as being signed out, and the auth gate
+   *  treats it differently. Signing someone out because a request failed is
+   *  the bug this flag exists to close: the credentials were fine, the radio
+   *  was not, and the app threw the session away on their behalf. Set only
+   *  when storage HAD something (a fresh install errors with no session and
+   *  no error, so it never lands here). */
+  sessionUnverified: boolean;
   loading: boolean;
   lastError: string | null;
   pendingCount: number;
@@ -88,6 +98,7 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
   syncEnabled: readSyncEnabled(),
   userEmail: null,
   userName: null,
+  sessionUnverified: false,
   loading: false,
   lastError: null,
   pendingCount: outboxStatus().pending,
@@ -103,7 +114,57 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
     outboxInstallTriggers();
     set({ loading: true });
     try {
-      let user = (await supabase.auth.getUser()).data.user;
+      // v1.13 — getSession(), not getUser().
+      //
+      // `getUser()` is a REQUEST to /auth/v1/user on every single cold start,
+      // and the old code read `.data.user` while discarding the error. So a
+      // launch with no signal — a tunnel, a dead zone, wifi that associates
+      // before it routes, a phone whose radio is not up yet — produced
+      // `user = null`, indistinguishable from being signed out. The inherit
+      // below then needed the network too, failed the same way, and the app
+      // rendered FirstLaunchAuth over a session that was sitting in storage,
+      // valid, the whole time.
+      //
+      // That is the "I keep getting logged out" report with nothing on the
+      // server to corroborate it: 66 token refreshes in the sample window,
+      // all 200, no revoked families, no time-boxed sessions. Nothing
+      // happened server-side because nothing was ever asked of it.
+      //
+      // `getSession()` reads local storage and only touches the network when
+      // the access token has actually expired. StudyDesk and NCC have both
+      // resolved their session this way all along; this app was the outlier.
+      // Bounded, for the reason StudyDesk's suiteSso.js records as item G: an
+      // unbounded await in a session-init path does not fail, it HANGS, and
+      // the app sits on its loading label until the OS-level TCP timeout —
+      // minutes, not seconds. `getSession()` refreshes an expired token, and
+      // supabase-js retries that refresh with backoff, so a dead network here
+      // is measured in retries rather than one failure. Reproduced: an
+      // offline cold start with an expired token left the app on "LOADING…"
+      // past nine seconds with six refresh attempts made.
+      //
+      // Six seconds is longer than any plausible refresh on a slow mobile
+      // connection and far shorter than a TCP timeout. Expiring early costs a
+      // launch that starts in the unverified state and resolves itself the
+      // moment the refresh lands; not expiring at all costs an app that never
+      // opens.
+      const resolved = await Promise.race([
+        supabase.auth.getSession().then(
+          (r) => ({ data: r.data, error: r.error }),
+          (error: unknown) => ({ data: { session: null }, error: error as { message?: string } }),
+        ),
+        new Promise<{ data: { session: null }; error: { message: string } }>((res) =>
+          setTimeout(() => res({ data: { session: null }, error: { message: 'timed out resolving the session' } }), 6000),
+        ),
+      ]);
+      const { data: sessionData, error: sessionError } = resolved;
+      let user = sessionData.session?.user ?? null;
+      // An empty store returns {session: null, error: null}. An error with no
+      // session therefore means there WAS one and it could not be refreshed —
+      // keep that apart from being signed out. See `sessionUnverified`.
+      const unverified = !user && !!sessionError;
+      if (unverified) {
+        console.warn('[nexus] session present but unverifiable this launch:', sessionError?.message);
+      }
 
       // v1.1 — auto-inherit from NCC on cold start when no local session.
       //
@@ -122,11 +183,16 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       // auth screen unless NCC itself has signed out. Guest mode and the
       // web platform short-circuit this path — guests opted out of auth
       // explicitly; web has no native plugin to call.
-      if (!user && Capacitor.isNativePlatform() && !isGuestMode()) {
+      //
+      // `!unverified` is new: inheriting is for an app that has no session,
+      // not for one whose session merely could not be reached. Probing NCC
+      // over the same dead network would only spend the SSO timeout before
+      // failing the same way.
+      if (!user && !unverified && Capacitor.isNativePlatform() && !isGuestMode()) {
         try {
           const result = await inheritFromNexus();
           if (result.ok) {
-            user = (await supabase.auth.getUser()).data.user;
+            user = (await supabase.auth.getSession()).data.session?.user ?? null;
           }
         } catch (e) {
           // Silent — fall through to no-user state, FirstLaunchAuth will
@@ -136,7 +202,12 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
         }
       }
 
-      set({ userEmail: user?.email ?? null, userName: displayNameOf(user), loading: false });
+      set({
+        userEmail: user?.email ?? null,
+        userName: displayNameOf(user),
+        sessionUnverified: unverified,
+        loading: false,
+      });
 
       // ACT-5 — cover the restored-session path too, not just fresh sign-ins.
       // Every account that predates this instrumentation only ever appears here.
@@ -164,7 +235,16 @@ export const useNexusStore = create<NexusStore>((set, get) => ({
       supabase.auth.onAuthStateChange((event, session) => {
         const wasSignedIn = Boolean(get().userEmail);
         const nowSignedIn = Boolean(session?.user);
-        set({ userEmail: session?.user?.email ?? null, userName: displayNameOf(session?.user) });
+        // Any event here is an ANSWER about the session — a refresh that
+        // landed, or a sign-out the server actually asserted. Either way the
+        // "could not reach the server to ask" state is over, so the flag
+        // clears; leaving it set would hold the auth gate open after a real
+        // sign-out.
+        set({
+          userEmail: session?.user?.email ?? null,
+          userName: displayNameOf(session?.user),
+          sessionUnverified: false,
+        });
         scheduleOriginStamp(session?.user ?? null);
         // v1.1 — clear guestMode on any successful sign-in. Without this,
         // a user who signed out (which sets guestMode=true) and later signs
