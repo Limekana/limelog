@@ -16,7 +16,9 @@
     "continue": "Continuer",
     "retry": "Réessayer",
     "loading": "Chargement…",
-    "settings": "Paramètres"
+    "settings": "Paramètres",
+    "undo": "Annuler",
+    "clear": "Effacer"
   },
   "nav": {
     "today": "Aujourd'hui",
@@ -443,7 +445,13 @@
     "deleteSetN": "Supprimer la série {{n}}",
     "currentPr": "Record personnel actuel",
     "setsProgress": "{{done}}/{{total}} séries",
-    "discardConfirm": "Abandonner cette séance ? Toutes les séries enregistrées seront perdues."
+    "discardConfirm": "Abandonner cette séance ? Toutes les séries enregistrées seront perdues.",
+    "plateKeypad": "Charger la barre",
+    "perSide": "par côté",
+    "barOnly": "Barre seule · {{weight}} {{unit}}",
+    "addPlatePair": "Ajouter une paire de disques de {{weight}} {{unit}}",
+    "useWeight": "Utiliser {{weight}} {{unit}}",
+    "plateSeedRounded": "{{from}} → {{to}} {{unit}} — aucun disque ne fait la différence."
   },
   "notif": {
     "sessionTitle": "Séance du {{day}}"

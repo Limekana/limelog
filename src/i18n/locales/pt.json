@@ -60,7 +60,9 @@
     "continue": "Continuar",
     "retry": "Tentar de novo",
     "loading": "Carregando…",
-    "settings": "Configurações"
+    "settings": "Configurações",
+    "undo": "Anular",
+    "clear": "Limpar"
   },
   "nav": {
     "today": "Hoje",
@@ -342,7 +344,13 @@
     "deleteSetN": "Eliminar série {{n}}",
     "currentPr": "Recorde pessoal atual",
     "setsProgress": "{{done}}/{{total}} séries",
-    "discardConfirm": "Descartar este treino? Todas as séries registradas serão perdidas."
+    "discardConfirm": "Descartar este treino? Todas as séries registradas serão perdidas.",
+    "plateKeypad": "Carregar a barra",
+    "perSide": "por lado",
+    "barOnly": "Só a barra · {{weight}} {{unit}}",
+    "addPlatePair": "Adicionar um par de discos de {{weight}} {{unit}}",
+    "useWeight": "Usar {{weight}} {{unit}}",
+    "plateSeedRounded": "{{from}} → {{to}} {{unit}} — nenhum disco cobre a diferença."
   },
   "program": {
     "title": "Programas",

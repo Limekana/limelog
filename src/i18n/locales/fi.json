@@ -16,7 +16,9 @@
     "continue": "Jatka",
     "retry": "Yritä uudelleen",
     "loading": "Ladataan…",
-    "settings": "Asetukset"
+    "settings": "Asetukset",
+    "undo": "Kumoa",
+    "clear": "Tyhjennä"
   },
   "nav": {
     "today": "Tänään",
@@ -435,7 +437,13 @@
     "deleteSetN": "Poista sarja {{n}}",
     "currentPr": "Nykyinen ennätys",
     "setsProgress": "{{done}}/{{total}} sarjaa",
-    "discardConfirm": "Hylätäänkö tämä treeni? Kaikki kirjatut sarjat menetetään."
+    "discardConfirm": "Hylätäänkö tämä treeni? Kaikki kirjatut sarjat menetetään.",
+    "plateKeypad": "Lataa tanko",
+    "perSide": "per puoli",
+    "barOnly": "Pelkkä tanko · {{weight}} {{unit}}",
+    "addPlatePair": "Lisää pari {{weight}} {{unit}} levyjä",
+    "useWeight": "Käytä {{weight}} {{unit}}",
+    "plateSeedRounded": "{{from}} → {{to}} {{unit}} — erotusta ei saa levyillä."
   },
   "notif": {
     "sessionTitle": "{{day}}n treeni"
