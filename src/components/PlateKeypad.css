@@ -1,0 +1,124 @@
+/* Tap-to-stack entry — v1.14 Item 13.
+   Same bottom-sheet material as WeightUpModal: this is a second sheet in the
+   same app, not a second idea about what a sheet is. Cast Iron rules hold —
+   material depth from a light top edge and a seam, no shadows anywhere. */
+
+.plate-keypad__overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 110; /* above WeightUpModal's 100 — this one opens on top of nothing else, but a sheet that can be summoned from a sheet must win */
+  padding: 0 0 env(safe-area-inset-bottom, 0px);
+  animation: plateKeypadFade 140ms var(--ease-strike);
+}
+
+@keyframes plateKeypadFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.plate-keypad {
+  background: rgba(13, 15, 17, 0.68);
+  backdrop-filter: blur(22px);
+  -webkit-backdrop-filter: blur(22px);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-top: 1px solid var(--accent-border);
+  padding: 18px 16px 16px;
+  width: 100%;
+  max-width: 430px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.plate-keypad__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 10px;
+}
+.plate-keypad__title {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.plate-keypad__close {
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  padding: 6px;
+  margin: -6px;
+  cursor: pointer;
+  display: inline-flex;
+}
+.plate-keypad__close:active { color: var(--text-primary); }
+
+.plate-keypad__note {
+  font-family: var(--font-mono, monospace);
+  font-size: 11px;
+  line-height: 1.4;
+  color: var(--accent);
+}
+
+/* Six plates, two rows of three. Not auto-fit: a row that reflows to 4+2 puts
+   the 1.25 under the 20 and the muscle memory is gone. */
+.plate-keypad__grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 8px;
+}
+
+.plate-keypad__plate {
+  min-height: 56px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 2px;
+  background: var(--plate-face);
+  border: 1px solid var(--plate-rim);
+  border-top-color: var(--edge-light);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  padding: 6px 4px;
+}
+.plate-keypad__plate:active { transform: scale(0.98); }
+
+.plate-keypad__plate-weight {
+  font-family: var(--font-mono, monospace);
+  font-size: 17px;
+  font-weight: 600;
+  line-height: 1;
+}
+/* What pressing it does, which is twice what it says above it. */
+.plate-keypad__plate-pair {
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  letter-spacing: 0.04em;
+  color: var(--text-secondary);
+}
+
+.plate-keypad__stack {
+  min-height: 18px;
+  font-family: var(--font-mono, monospace);
+  font-size: 12px;
+  letter-spacing: 0.04em;
+  color: var(--text-primary);
+}
+.plate-keypad__stack-empty { color: var(--text-secondary); }
+.plate-keypad__stack-side { color: var(--text-secondary); }
+
+.plate-keypad__actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+/* The commit sits hard right and takes the remaining width: it is the only
+   button here anyone presses more than once a session. */
+.plate-keypad__actions > :last-child { margin-inline-start: auto; }

@@ -60,7 +60,9 @@
     "continue": "Lanjutkan",
     "retry": "Coba lagi",
     "loading": "Memuat…",
-    "settings": "Pengaturan"
+    "settings": "Pengaturan",
+    "undo": "Urungkan",
+    "clear": "Kosongkan"
   },
   "nav": {
     "today": "Hari ini",
@@ -334,7 +336,13 @@
     "deleteSetN": "Hapus set {{n}}",
     "currentPr": "Rekor pribadi saat ini",
     "setsProgress": "{{done}}/{{total}} set",
-    "discardConfirm": "Buang latihan ini? Semua set yang dicatat akan hilang."
+    "discardConfirm": "Buang latihan ini? Semua set yang dicatat akan hilang.",
+    "plateKeypad": "Muat barbel",
+    "perSide": "per sisi",
+    "barOnly": "Barbel saja · {{weight}} {{unit}}",
+    "addPlatePair": "Tambah sepasang beban {{weight}} {{unit}}",
+    "useWeight": "Pakai {{weight}} {{unit}}",
+    "plateSeedRounded": "{{from}} → {{to}} {{unit}} — tidak ada beban yang pas untuk selisihnya."
   },
   "program": {
     "title": "Program",

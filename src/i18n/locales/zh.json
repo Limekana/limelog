@@ -16,7 +16,9 @@
     "continue": "继续",
     "retry": "重试",
     "loading": "加载中…",
-    "settings": "设置"
+    "settings": "设置",
+    "undo": "撤销",
+    "clear": "清空"
   },
   "nav": {
     "today": "今天",
@@ -432,7 +434,13 @@
     "deleteSetN": "删除第 {{n}} 组",
     "currentPr": "当前个人纪录",
     "setsProgress": "{{done}}/{{total}} 组",
-    "discardConfirm": "要放弃这次训练吗？所有已记录的组数都会丢失。"
+    "discardConfirm": "要放弃这次训练吗？所有已记录的组数都会丢失。",
+    "plateKeypad": "上杠片",
+    "perSide": "每侧",
+    "barOnly": "空杠 · {{weight}} {{unit}}",
+    "addPlatePair": "添加一对 {{weight}} {{unit}} 杠片",
+    "useWeight": "使用 {{weight}} {{unit}}",
+    "plateSeedRounded": "{{from}} → {{to}} {{unit}} — 没有杠片能补上差值。"
   },
   "notif": {
     "sessionTitle": "{{day}}的训练"

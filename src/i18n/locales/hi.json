@@ -60,7 +60,9 @@
     "continue": "जारी रखें",
     "retry": "फिर कोशिश करें",
     "loading": "लोड हो रहा है…",
-    "settings": "सेटिंग्स"
+    "settings": "सेटिंग्स",
+    "undo": "पूर्ववत करें",
+    "clear": "साफ़ करें"
   },
   "nav": {
     "today": "आज",
@@ -338,7 +340,13 @@
     "deleteSetN": "सेट {{n}} हटाएँ",
     "currentPr": "वर्तमान व्यक्तिगत रिकॉर्ड",
     "setsProgress": "{{done}}/{{total}} सेट",
-    "discardConfirm": "यह वर्कआउट छोड़ दें? दर्ज किए गए सभी सेट खो जाएँगे।"
+    "discardConfirm": "यह वर्कआउट छोड़ दें? दर्ज किए गए सभी सेट खो जाएँगे।",
+    "plateKeypad": "बार लोड करें",
+    "perSide": "प्रति साइड",
+    "barOnly": "सिर्फ़ बार · {{weight}} {{unit}}",
+    "addPlatePair": "{{weight}} {{unit}} की एक जोड़ी प्लेट जोड़ें",
+    "useWeight": "{{weight}} {{unit}} इस्तेमाल करें",
+    "plateSeedRounded": "{{from}} → {{to}} {{unit}} — इस अंतर के लिए कोई प्लेट नहीं है।"
   },
   "program": {
     "title": "प्रोग्राम",

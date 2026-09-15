@@ -117,6 +117,20 @@ function trim(n: number): string {
 }
 
 /** "BAR 20 + 20 + 20 + 2.5 PER SIDE" — real text under the bay, not an image. */
+/**
+ * What a list of plate weights adds to the bar — BOTH sleeves.
+ *
+ * v1.14 Item 13. Lives here rather than in PlateKeypad because "a plate is a
+ * pair" is a fact about barbells, not about a keypad, and `solvePlates`
+ * already halves in the other direction two functions up. One place knows it.
+ *
+ * Summed in hundredths: 1.25 + 1.25 + 2.5 in binary floating point is not 5,
+ * and a bar reading 99.99999 kg is absurd.
+ */
+export function pairLoad(plateWeights: number[]): number {
+  return plateWeights.reduce((n, w) => n + Math.round(w * 200), 0) / 100;
+}
+
 export function stackLabel(stack: PlateStack): string {
   const u = stack.unit.toUpperCase();
   if (stack.barOnly) return `BAR ONLY · ${trim(stack.barWeight)} ${u}`;

@@ -60,7 +60,9 @@
     "continue": "متابعة",
     "retry": "إعادة المحاولة",
     "loading": "جارٍ التحميل…",
-    "settings": "الإعدادات"
+    "settings": "الإعدادات",
+    "undo": "تراجع",
+    "clear": "مسح"
   },
   "nav": {
     "today": "اليوم",
@@ -354,7 +356,13 @@
     "deleteSetN": "حذف المجموعة {{n}}",
     "currentPr": "الرقم الشخصي الحالي",
     "setsProgress": "{{done}}/{{total}} مجموعة",
-    "discardConfirm": "هل تريد تجاهل هذا التمرين؟ ستُفقد جميع المجموعات المسجّلة."
+    "discardConfirm": "هل تريد تجاهل هذا التمرين؟ ستُفقد جميع المجموعات المسجّلة.",
+    "plateKeypad": "حمّل البار",
+    "perSide": "لكل جانب",
+    "barOnly": "البار فقط · {{weight}} {{unit}}",
+    "addPlatePair": "أضف زوج أقراص {{weight}} {{unit}}",
+    "useWeight": "استخدم {{weight}} {{unit}}",
+    "plateSeedRounded": "{{from}} يصبح {{to}} {{unit}} — لا توجد أقراص تغطي الفرق."
   },
   "program": {
     "title": "البرامج",

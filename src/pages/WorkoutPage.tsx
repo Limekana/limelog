@@ -13,6 +13,7 @@ import { FatigueRating } from '@/components/FatigueRating';
 import { DebriefSection } from '@/components/DebriefSection';
 import { useConfirm } from '@/components/confirmContext';
 import { PlateBar } from '@/components/PlateBar';
+import { PlateKeypad } from '@/components/PlateKeypad';
 import { convertLoad, usesBarbell } from '@/utils/plateMath';
 import { useThemeStore } from '@/store/themeStore';
 import { ChevronLeft, Plus, Trash2, X, Flag, Play, Timer } from 'lucide-react';
@@ -88,6 +89,9 @@ export function WorkoutPage() {
   const { activeProgram, exercises, updateSessionExercise } = useProgramStore();
   const { sessionLogs, logSet, updateSet, deleteSet, checkAndFlagStalls, setPerceivedFatigue, finalizeSession, discardSession, currentPRFor } = useLogStore();
   const { profile } = useUserStore();
+  // v1.14 Item 13 — the bay is a Cast Iron idea, so the weight-up modal
+  // asks the same question ExerciseSection already asks further down.
+  const pageTheme = useThemeStore((s) => s.theme);
 
   const log = sessionLogs.find((l) => l.id === logId) ?? null;
   const session = useMemo(
@@ -402,6 +406,8 @@ export function WorkoutPage() {
       {modal && (
         <WeightUpModal
           qualifying={modal.qualifying}
+          unit={profile.unitPreference}
+          showBay={pageTheme === 'cast-iron'}
           onConfirm={handleModalConfirm}
           onSkip={handleModalSkip}
         />
@@ -483,9 +489,15 @@ function ExerciseSection({
   // snaps to the nearest load the plates can actually build, which is the
   // whole point of drawing them.
   const castIron = useThemeStore((s) => s.theme) === 'cast-iron';
-  const nextWeightKg = sets.find((s) => !s.completed)?.weightKg ?? targetWeight ?? null;
+  const nextSet = sets.find((s) => !s.completed);
+  const nextWeightKg = nextSet?.weightKg ?? targetWeight ?? null;
   const showBay =
     castIron && !restricted && usesBarbell(equipment) && nextWeightKg != null && nextWeightKg > 0;
+  // v1.14 Item 13 — the bay becomes the way in. It already shows the weight of
+  // the set you are about to lift, so tapping it edits THAT set: one thing on
+  // screen, one thing it changes. Nothing to open when there is no open set.
+  const [keypadOpen, setKeypadOpen] = useState(false);
+  const canStack = showBay && !!nextSet;
 
   function addSet() {
     const last = sets[sets.length - 1];
@@ -536,6 +548,24 @@ function ExerciseSection({
           total={convertLoad(nextWeightKg as number, 'kg', unit)}
           unit={unit}
           size="md"
+          interactive={canStack}
+          onPress={canStack ? () => setKeypadOpen(true) : undefined}
+        />
+      )}
+
+      {keypadOpen && nextSet && (
+        <PlateKeypad
+          initial={convertLoad(nextWeightKg as number, 'kg', unit)}
+          unit={unit}
+          onClose={() => setKeypadOpen(false)}
+          // The keypad works in the DISPLAYED unit and the set stores kg, so
+          // the answer is converted back on the way in. `convertLoad` snaps to
+          // a load the plates can build, so a lb round trip lands on a real
+          // bar rather than on 102.05903 kg.
+          onDone={(total) => {
+            onUpdateSet(nextSet.id, { weightKg: convertLoad(total, unit, 'kg') });
+            setKeypadOpen(false);
+          }}
         />
       )}
 
