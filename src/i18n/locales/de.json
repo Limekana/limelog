@@ -16,7 +16,9 @@
     "continue": "Weiter",
     "retry": "Erneut versuchen",
     "loading": "Wird geladen…",
-    "settings": "Einstellungen"
+    "settings": "Einstellungen",
+    "undo": "Rückgängig",
+    "clear": "Leeren"
   },
   "nav": {
     "today": "Heute",
@@ -435,7 +437,13 @@
     "deleteSetN": "Satz {{n}} löschen",
     "currentPr": "Aktueller persönlicher Rekord",
     "setsProgress": "{{done}}/{{total}} Sätze",
-    "discardConfirm": "Dieses Training verwerfen? Alle protokollierten Sätze gehen verloren."
+    "discardConfirm": "Dieses Training verwerfen? Alle protokollierten Sätze gehen verloren.",
+    "plateKeypad": "Hantel beladen",
+    "perSide": "pro Seite",
+    "barOnly": "Nur die Stange · {{weight}} {{unit}}",
+    "addPlatePair": "Ein Paar {{weight}}-{{unit}}-Scheiben hinzufügen",
+    "useWeight": "{{weight}} {{unit}} übernehmen",
+    "plateSeedRounded": "{{from}} → {{to}} {{unit}} — die Differenz lässt sich nicht auflegen."
   },
   "notif": {
     "sessionTitle": "Training am {{day}}"

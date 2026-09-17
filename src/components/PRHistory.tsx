@@ -5,6 +5,9 @@ import { useProgramStore } from '@/store/programStore';
 import type { ExercisePR } from '@/types/logging';
 import { Trophy, ChevronDown } from 'lucide-react';
 import { toDisplayWeight } from '@/utils/helpers';
+import { PlateBar } from '@/components/PlateBar';
+import { convertLoad, usesBarbell } from '@/utils/plateMath';
+import { useThemeStore } from '@/store/themeStore';
 import './PRHistory.css';
 
 interface Props {
@@ -30,6 +33,12 @@ export function PRHistory({ unit }: Props) {
   const exercisePRs = useLogStore((s) => s.exercisePRs);
   const exercises = useProgramStore((s) => s.exercises);
   const [expanded, setExpanded] = useState<string | null>(null);
+  // v1.14 Item 13 — the bay reaches the last of the three surfaces PR #17
+  // named. A PR is the one number in this app people actually picture as a
+  // bar, so it is the place it earns its space most and was the last to get
+  // it. Cast Iron only, and barbell only: a 60 kg dumbbell press drawn on an
+  // Olympic bar would be a picture of a lift nobody did.
+  const castIron = useThemeStore((s) => s.theme) === 'cast-iron';
 
   // Group PRs by exercise, sorted chronologically within each group, and order
   // exercises by their current (best) 1RM descending — strongest lifts first.
@@ -45,8 +54,12 @@ export function PRHistory({ unit }: Props) {
       const best = sorted.reduce((m, p) => (p.oneRepMaxKg > m.oneRepMaxKg ? p : m), sorted[0]);
       // Prefer the live exercise name; fall back to the denormalised name on
       // the PR row (survives a rename/delete).
-      const name = exercises.find((e) => e.id === exerciseId)?.name ?? sorted[0].exerciseName;
-      return { exerciseId, name, prs: sorted, best };
+      const live = exercises.find((e) => e.id === exerciseId);
+      const name = live?.name ?? sorted[0].exerciseName;
+      // A PR row survives its exercise being renamed or deleted, so the
+      // equipment may be unknown. Unknown means no bay, which is the right
+      // way round: draw nothing rather than draw a guess.
+      return { exerciseId, name, prs: sorted, best, barbell: usesBarbell(live?.equipment) };
     });
     return rows.sort((a, b) => b.best.oneRepMaxKg - a.best.oneRepMaxKg);
   }, [exercisePRs, exercises]);
@@ -83,6 +96,20 @@ export function PRHistory({ unit }: Props) {
 
             {isOpen && (
               <div className="pr-history__detail">
+                {/* Inside the expansion, not on the collapsed row: the row
+                    already carries a name, a number and a sparkline, and a
+                    fourth thing there is a list nobody can scan. */}
+                {castIron && g.barbell && g.best.weightKg > 0 && (
+                  <div className="pr-history__bay">
+                    <span className="pr-history__bay-label">{t('progress.currentPr')}</span>
+                    <PlateBar
+                      total={convertLoad(g.best.weightKg, 'kg', unit)}
+                      unit={unit}
+                      size="sm"
+                      showReadout={false}
+                    />
+                  </div>
+                )}
                 {[...g.prs].reverse().map((p) => (
                   <div key={p.id} className="pr-history__detail-row">
                     <span className="pr-history__detail-date">{p.date}</span>
