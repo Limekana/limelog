@@ -16,7 +16,9 @@
     "continue": "Continue",
     "retry": "Retry",
     "loading": "Loading…",
-    "settings": "Settings"
+    "settings": "Settings",
+    "undo": "Undo",
+    "clear": "Clear"
   },
   "nav": {
     "today": "Today",
@@ -435,7 +437,13 @@
     "deleteSetN": "Delete set {{n}}",
     "currentPr": "Current personal record",
     "setsProgress": "{{done}}/{{total}} sets",
-    "discardConfirm": "Discard this workout? All logged sets will be lost."
+    "discardConfirm": "Discard this workout? All logged sets will be lost.",
+    "plateKeypad": "Load the bar",
+    "perSide": "per side",
+    "barOnly": "Bar only · {{weight}} {{unit}}",
+    "addPlatePair": "Add a pair of {{weight}} {{unit}} plates",
+    "useWeight": "Use {{weight}} {{unit}}",
+    "plateSeedRounded": "{{from}} → {{to}} {{unit}} — no plates make the difference."
   },
   "notif": {
     "sessionTitle": "{{day}} session"

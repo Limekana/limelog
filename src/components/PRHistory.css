@@ -96,3 +96,22 @@
   font-weight: 600;
   font-variant-numeric: tabular-nums;
 }
+
+/* v1.14 Item 13 — the plate bay for the current PR, inside the expansion. */
+.pr-history__bay {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 6px 0 10px;
+  border-bottom: 1px solid var(--seam);
+  margin-bottom: 6px;
+}
+.pr-history__bay-label {
+  flex: 0 0 auto;
+  font-family: var(--font-mono, monospace);
+  font-size: 10px;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.pr-history__bay .plate-bar { flex: 1 1 auto; }
