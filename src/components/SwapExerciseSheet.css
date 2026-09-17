@@ -1,0 +1,182 @@
+/* v1.15 Item 8 — swap-exercise sheet. Same bottom-sheet shape as the cardio
+   and weight-up modals so a lifter meets one kind of sheet mid-workout, but
+   on the surface tokens rather than their hardcoded glass, so a theme that
+   repaints the surfaces repaints this too. */
+.swap-sheet-backdrop {
+  position: fixed;
+  inset: 0;
+  background: rgba(0, 0, 0, 0.45);
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  z-index: 200;
+  padding: 0 0 env(safe-area-inset-bottom, 0px);
+  animation: swapSheetFade 140ms var(--ease-strike);
+}
+
+@keyframes swapSheetFade {
+  from { opacity: 0; }
+  to   { opacity: 1; }
+}
+
+.swap-sheet {
+  background: var(--bg-surface);
+  border: 1px solid var(--border-subtle);
+  border-top: 1px solid var(--accent-border);
+  width: 100%;
+  max-width: 430px;
+  max-height: min(78vh, 640px);
+  display: flex;
+  flex-direction: column;
+  padding: 20px 20px 12px;
+  gap: 12px;
+  animation: swapSheetRise 260ms var(--ease-rise);
+}
+
+@keyframes swapSheetRise {
+  from { transform: translateY(16px); opacity: 0; }
+  to   { transform: translateY(0);    opacity: 1; }
+}
+
+.swap-sheet__header {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 12px;
+}
+
+.swap-sheet__heading {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+  min-width: 0;
+}
+
+.swap-sheet__title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-primary);
+}
+
+.swap-sheet__current {
+  font-size: 13px;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.swap-sheet__close {
+  color: var(--text-tertiary);
+  background: none;
+  border: none;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 44px;
+  min-height: 44px;
+  margin: -10px -12px 0 0;
+}
+.swap-sheet__close:hover { color: var(--text-primary); }
+
+.swap-sheet__body {
+  margin: 0;
+  font-size: 12px;
+  color: var(--text-tertiary);
+}
+
+.swap-sheet__back {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 44px;
+  padding: 0 12px;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent-border);
+  border-radius: var(--radius-sm);
+  color: var(--accent);
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  text-align: start;
+}
+
+.swap-sheet__search {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 0 12px;
+  min-height: 44px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-sm);
+  color: var(--text-tertiary);
+}
+.swap-sheet__search:focus-within { border-color: var(--accent-border); }
+.swap-sheet__search input {
+  flex: 1;
+  min-width: 0;
+  background: none;
+  border: none;
+  outline: none;
+  color: var(--text-primary);
+  font: inherit;
+  font-size: 14px;
+}
+
+.swap-sheet__label {
+  font-family: var(--font-display);
+  font-size: 11px;
+  font-weight: 600;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+
+.swap-sheet__list {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.swap-sheet__item {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: 2px;
+  min-height: 48px;
+  padding: 8px 12px;
+  background: transparent;
+  border: 1px solid var(--border-subtle);
+  border-radius: var(--radius-sm);
+  color: var(--text-primary);
+  cursor: pointer;
+  text-align: start;
+  transition: background 160ms var(--ease-snap), border-color 160ms var(--ease-snap);
+}
+.swap-sheet__item:hover,
+.swap-sheet__item:focus-visible {
+  background: var(--accent-veil);
+  border-color: var(--accent-border);
+}
+
+.swap-sheet__item-name { font-size: 14px; font-weight: 600; }
+.swap-sheet__item-meta { font-size: 11px; color: var(--text-tertiary); }
+.swap-sheet__item-flag { font-size: 11px; color: var(--danger); }
+
+.swap-sheet__empty {
+  padding: 16px 0;
+  font-size: 13px;
+  color: var(--text-tertiary);
+  text-align: center;
+}
