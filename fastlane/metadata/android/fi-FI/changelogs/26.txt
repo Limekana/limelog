@@ -1,0 +1,3 @@
+Vaihda liike yhden treenin ajaksi.
+
+Teline varattu tai jokin sattuu? Napauta liikkeen kohdalla Vaihda ja valitse vaihtoehto, joka kuormittaa samaa liikettä tai lihasta. Vaihto koskee vain tätä treeniä — ohjelmasi pysyy ennallaan — ja sarjat kirjataan liikkeelle, jonka oikeasti teit. Vammamerkintöjesi mukaan vältettäviä liikkeitä ei ehdoteta.

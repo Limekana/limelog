@@ -1,0 +1,3 @@
+Remplacer un exercice le temps d’une séance.
+
+Rack occupé ou une douleur ? Touchez Remplacer sur un exercice pour choisir une alternative qui travaille le même mouvement ou le même muscle. Cela ne vaut que pour cette séance — votre programme ne change pas — et vos séries sont enregistrées sous l’exercice réellement fait. Les exercices à éviter selon vos notes de blessure ne sont pas proposés.
