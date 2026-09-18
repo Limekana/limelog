@@ -55,6 +55,9 @@ interface LogStore {
   logSet: (logId: string, set: Omit<SetLog, 'id' | 'sessionLogId'>) => void;
   updateSet: (logId: string, setId: string, updates: Partial<SetLog>) => void;
   deleteSet: (logId: string, setId: string) => void;
+  /** v1.15 Item 8 — use `toExerciseId` for one programmed slot in this
+   *  workout only. Passing the programmed exercise clears the swap. */
+  swapExercise: (logId: string, sessionExerciseId: string, programmedExerciseId: string, toExerciseId: string) => void;
 
   // Jump logging
   logJump: (j: Omit<VerticalJumpLog, 'id'>) => void;
@@ -276,6 +279,26 @@ export const useLogStore = create<LogStore>((set, get) => ({
     const sessionLogs = get().sessionLogs.map((l) =>
       l.id === logId ? { ...l, sets: l.sets.filter((s) => s.id !== setId) } : l
     );
+    storage.setSessionLogs(sessionLogs);
+    set({ sessionLogs });
+  },
+
+  swapExercise: (logId, sessionExerciseId, programmedExerciseId, toExerciseId) => {
+    const sessionLogs = get().sessionLogs.map((l) => {
+      if (l.id !== logId) return l;
+      const from = l.exerciseSwaps?.[sessionExerciseId] ?? programmedExerciseId;
+      if (from === toExerciseId) return l;
+      // A COMPLETED set is a lift that happened and is never moved or dropped;
+      // the page only offers a swap before one exists. Unfinished rows for the
+      // outgoing exercise are dropped: their weights belong to a different
+      // movement, and carrying 100 kg from a squat onto a leg press would be a
+      // wrong default rather than a helpful one.
+      const sets = l.sets.filter((s) => s.exerciseId !== from || s.completed);
+      const swaps = { ...(l.exerciseSwaps ?? {}) };
+      if (toExerciseId === programmedExerciseId) delete swaps[sessionExerciseId];
+      else swaps[sessionExerciseId] = toExerciseId;
+      return { ...l, sets, exerciseSwaps: Object.keys(swaps).length ? swaps : undefined };
+    });
     storage.setSessionLogs(sessionLogs);
     set({ sessionLogs });
   },
