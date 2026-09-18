@@ -130,6 +130,12 @@ export interface SessionLog {
   aiPainFlags?: string[] | null;
   aiMood?: SessionMood | null;
   aiNoteSummary?: string | null;
+  /**
+   * v1.15 Item 8 — per-workout exercise swaps, SessionExercise id → the
+   * exerciseId used instead. Local only (not in the Nexus push); the sets
+   * already carry the substitute's exerciseId. See lib/exerciseSwap.ts.
+   */
+  exerciseSwaps?: Record<string, string>;
 }
 
 // v1.6 — Personal Records. Append-only: one row per PR achievement, so the
