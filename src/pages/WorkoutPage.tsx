@@ -16,7 +16,9 @@ import { PlateBar } from '@/components/PlateBar';
 import { PlateKeypad } from '@/components/PlateKeypad';
 import { convertLoad, usesBarbell } from '@/utils/plateMath';
 import { useThemeStore } from '@/store/themeStore';
-import { ChevronLeft, Plus, Trash2, X, Flag, Play, Timer } from 'lucide-react';
+import { SwapExerciseSheet } from '@/components/SwapExerciseSheet';
+import { effectiveExerciseId } from '@/lib/exerciseSwap';
+import { ChevronLeft, Plus, Trash2, X, Flag, Play, Timer, ArrowLeftRight } from 'lucide-react';
 import './WorkoutPage.css';
 
 const DEFAULT_REST_SECONDS = 90;
@@ -87,7 +89,7 @@ export function WorkoutPage() {
   const { logId = '' } = useParams();
   const navigate = useNavigate();
   const { activeProgram, exercises, updateSessionExercise } = useProgramStore();
-  const { sessionLogs, logSet, updateSet, deleteSet, checkAndFlagStalls, setPerceivedFatigue, finalizeSession, discardSession, currentPRFor } = useLogStore();
+  const { sessionLogs, logSet, updateSet, deleteSet, swapExercise, checkAndFlagStalls, setPerceivedFatigue, finalizeSession, discardSession, currentPRFor } = useLogStore();
   const { profile } = useUserStore();
   // v1.14 Item 13 — the bay is a Cast Iron idea, so the weight-up modal
   // asks the same question ExerciseSection already asks further down.
@@ -104,6 +106,8 @@ export function WorkoutPage() {
   // wall-clock-derived countdown. Not the source of truth — `rest.endsAt` is.
   const [, setTick] = useState(0);
   const [modal, setModal] = useState<{ qualifying: QualifyingExercise[] } | null>(null);
+  // v1.15 Item 8 — the SessionExercise whose swap sheet is open.
+  const [swapSeId, setSwapSeId] = useState<string | null>(null);
 
   // Rehydrate a still-running rest on mount (covers process-death + resume, and
   // a plain remount). Only adopt it if it belongs to THIS workout and hasn't
@@ -181,10 +185,13 @@ export function WorkoutPage() {
 
   // The "current" exercise is the first one that still has incomplete sets — drives the idle rest bar.
   const currentExercise = orderedExercises.find((se) => {
-    const exDoneSets = log.sets.filter((s) => s.exerciseId === se.exerciseId && s.completed).length;
+    const exId = effectiveExerciseId(log, se);
+    const exDoneSets = log.sets.filter((s) => s.exerciseId === exId && s.completed).length;
     return exDoneSets < se.targetSets;
   }) ?? orderedExercises[0];
-  const currentExerciseObj = exercises.find((e) => e.id === currentExercise?.exerciseId);
+  const currentExerciseObj = currentExercise
+    ? exercises.find((e) => e.id === effectiveExerciseId(log, currentExercise))
+    : undefined;
   const idleRestSecs = currentExercise?.restSeconds ?? DEFAULT_REST_SECONDS;
   const idleRestLabel = currentExerciseObj?.name ?? 'workout';
 
@@ -192,6 +199,10 @@ export function WorkoutPage() {
     if (!log || !session) return [];
     const result: QualifyingExercise[] = [];
     for (const se of session.exercises) {
+      // v1.15 Item 8 — a swapped slot never proposes a weight increase: the
+      // target weight belongs to the programmed lift, and topping out on a
+      // lighter substitute says nothing about it.
+      if (log.exerciseSwaps?.[se.id]) continue;
       const exercise = exercises.find((e) => e.id === se.exerciseId);
       if (!exercise) continue;
       const completedSets = log.sets.filter((s) => s.exerciseId === se.exerciseId && s.completed);
@@ -338,9 +349,11 @@ export function WorkoutPage() {
 
       <div className="workout-body">
         {orderedExercises.map((se, idx) => {
-          const exercise = exercises.find((e) => e.id === se.exerciseId);
+          const exId = effectiveExerciseId(log, se);
+          const exercise = exercises.find((e) => e.id === exId);
           if (!exercise) return null;
-          const restriction = getRestrictionForExercise(se.exerciseId);
+          const programmed = exId !== se.exerciseId ? exercises.find((e) => e.id === se.exerciseId) : undefined;
+          const restriction = getRestrictionForExercise(exId);
           const isRestrictedAvoid = restriction?.severity === 'avoid';
           const mySets = log.sets
             .filter((s) => s.exerciseId === exercise.id)
@@ -362,8 +375,14 @@ export function WorkoutPage() {
               targetSetsCount={se.targetSets}
               targetReps={se.targetReps}
               targetRpe={se.targetRpe}
-              targetWeight={se.targetWeight}
+              // The programmed weight is for the programmed lift, and would be
+              // a wrong placeholder and plate bay for its substitute.
+              targetWeight={programmed ? undefined : se.targetWeight}
               restSeconds={se.restSeconds}
+              swappedFrom={programmed?.name}
+              // Offered until the first set is done, then withdrawn: a finished
+              // set is a lift that happened and a swap must not orphan it.
+              onSwap={doneSets === 0 ? () => setSwapSeId(se.id) : undefined}
               restriction={restriction}
               isRestrictedAvoid={isRestrictedAvoid}
               sets={mySets}
@@ -403,6 +422,26 @@ export function WorkoutPage() {
         </div>
       </div>
 
+      {(() => {
+        const se = swapSeId ? orderedExercises.find((x) => x.id === swapSeId) : undefined;
+        const current = se ? exercises.find((e) => e.id === effectiveExerciseId(log, se)) : undefined;
+        if (!se || !current) return null;
+        const programmed = current.id !== se.exerciseId ? exercises.find((e) => e.id === se.exerciseId) ?? null : null;
+        return (
+          <SwapExerciseSheet
+            current={current}
+            programmed={programmed}
+            exercises={exercises}
+            restrictions={profile.activeRestrictions}
+            onClose={() => setSwapSeId(null)}
+            onPick={(toId) => {
+              swapExercise(log.id, se.id, se.exerciseId, toId);
+              setSwapSeId(null);
+            }}
+          />
+        );
+      })()}
+
       {modal && (
         <WeightUpModal
           qualifying={modal.qualifying}
@@ -428,6 +467,10 @@ interface ExerciseSectionProps {
   targetRpe?: number;
   targetWeight?: number;
   restSeconds?: number;
+  /** v1.15 Item 8 — name of the programmed exercise this one replaces. */
+  swappedFrom?: string;
+  /** Absent once a set is done, which hides the swap control. */
+  onSwap?: () => void;
   restriction: { severity: string; label: string } | null;
   isRestrictedAvoid: boolean;
   sets: SetLog[];
@@ -451,6 +494,8 @@ function ExerciseSection({
   targetRpe,
   targetWeight,
   restSeconds,
+  swappedFrom,
+  onSwap,
   restriction,
   isRestrictedAvoid,
   sets,
@@ -533,6 +578,18 @@ function ExerciseSection({
           <span className="ex-section__counter-target">{targetSetsCount}</span>
         </div>
       </header>
+
+      {(swappedFrom || onSwap) && (
+        <div className="ex-section__swap-row">
+          {swappedFrom && <span className="ex-section__swapped">{t('log.swappedFrom', { name: swappedFrom })}</span>}
+          {onSwap && (
+            <button type="button" className="ex-section__swap" onClick={onSwap} aria-label={t('log.swapAria', { name: exerciseName })}>
+              <ArrowLeftRight size={12} aria-hidden="true" />
+              <span>{t('log.swap')}</span>
+            </button>
+          )}
+        </div>
+      )}
 
       {restriction && (
         <div className={`ex-section__flag${restriction.severity === 'avoid' ? ' ex-section__flag--avoid' : ' ex-section__flag--warn'}`}>
