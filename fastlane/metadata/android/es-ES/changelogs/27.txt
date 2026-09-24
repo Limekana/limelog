@@ -1,0 +1,1 @@
+Corrección: un entrenamiento terminado podía subirse varias veces a la vez, así que sus series aparecían multiplicadas en Nexus Command Center, y un entrenamiento guardado durante otra subida podía no sincronizarse. Ahora cada entrenamiento se sube una sola vez, y volver a subirlo limpia las copias sobrantes.

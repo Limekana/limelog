@@ -86,9 +86,26 @@ export function mapSessionLogToNexus(
 }
 
 /**
- * Push one workout payload to Supabase. Two-step write (session row, then
- * sets) with rollback of the session if the sets insert fails. Throws on
- * any failure — caller decides whether to enqueue for retry.
+ * Deterministic UUID for the set at `index` of `sessionId` (limelog#28).
+ * SHA-256 of the pair, shaped as an RFC 4122 version-8 ("custom") UUID so the
+ * `uuid` column accepts it. Session ids are unique per workout, so two
+ * sessions — or two users — never share a set id.
+ */
+export async function setRowId(sessionId: string, index: number): Promise<string> {
+  const bytes = new Uint8Array(
+    await crypto.subtle.digest('SHA-256', new TextEncoder().encode(`limelog-set:${sessionId}:${index}`)),
+  ).slice(0, 16);
+  bytes[6] = (bytes[6] & 0x0f) | 0x80; // version 8
+  bytes[8] = (bytes[8] & 0x3f) | 0x80; // RFC 4122 variant
+  const hex = Array.from(bytes, (b) => b.toString(16).padStart(2, '0')).join('');
+  return `${hex.slice(0, 8)}-${hex.slice(8, 12)}-${hex.slice(12, 16)}-${hex.slice(16, 20)}-${hex.slice(20)}`;
+}
+
+/**
+ * Push one workout payload to Supabase: upsert the session row, upsert its
+ * sets under deterministic ids, then drop the session's other set rows.
+ * Idempotent — any number of pushes, sequential or overlapping, converge on
+ * the same rows. Throws on any failure; the caller decides whether to retry.
  *
  * Called by:
  *   - outbox.ts dispatch for the `upsert_workout_session` kind (typical path)
@@ -104,8 +121,7 @@ export async function pushWorkoutToNexus(workout: NexusWorkoutPayload): Promise<
   // v1.6.1 — idempotent push, honouring the outbox's UPSERT-style contract.
   // Use the STABLE local session id (not a fresh random one) and UPSERT, so a
   // retry / double-dispatch converges on the same row instead of inserting a
-  // duplicate. Sets are replaced wholesale (delete-then-insert) so re-pushing
-  // an edited workout doesn't leave stale or duplicated set rows.
+  // duplicate. Sets follow the same rule below (limelog#28).
   const sessionId = workout.sessionId;
   const now = new Date().toISOString();
 
@@ -129,28 +145,35 @@ export async function pushWorkoutToNexus(workout: NexusWorkoutPayload): Promise<
     });
   if (sessionErr) throw sessionErr;
 
-  // Replace this session's sets atomically-enough: clear then re-insert. The
-  // clear is keyed on session_id so it only touches this workout's rows.
-  const { error: clearErr } = await supabase
-    .from('workout_sets')
-    .delete()
-    .eq('session_id', sessionId);
-  if (clearErr) throw clearErr;
+  // Limekana/limelog#28 — sets are written idempotently. The old
+  // delete-everything-then-insert-fresh-uuids shape multiplied rows whenever
+  // two pushes of one session overlapped (5 parallel pushes → 5 copies, seen in
+  // production), and a failed insert after the delete left the session empty.
+  //
+  // Each set now has an id derived from (session, position), so any number of
+  // pushes of the same workout upsert the SAME rows. Only after that succeeds
+  // are this session's other rows removed — sets the user deleted, and the
+  // random-id duplicates older versions left behind, which a re-push therefore
+  // also cleans up.
+  const setRows = await Promise.all(workout.sets.map(async (s, i) => ({
+    id: await setRowId(sessionId, i),
+    user_id: user.id,
+    session_id: sessionId,
+    exercise: s.exercise,
+    weight_kg: s.weightKg ?? null,
+    reps: s.reps ?? null,
+    rpe: s.rpe ?? null,
+  })));
 
-  if (workout.sets.length > 0) {
-    const setRows = workout.sets.map((s) => ({
-      id: crypto.randomUUID(),
-      user_id: user.id,
-      session_id: sessionId,
-      exercise: s.exercise,
-      weight_kg: s.weightKg ?? null,
-      reps: s.reps ?? null,
-      rpe: s.rpe ?? null,
-    }));
-
-    const { error: setsErr } = await supabase.from('workout_sets').insert(setRows);
+  if (setRows.length > 0) {
+    const { error: setsErr } = await supabase.from('workout_sets').upsert(setRows);
     if (setsErr) throw setsErr;
   }
+
+  let clear = supabase.from('workout_sets').delete().eq('session_id', sessionId);
+  if (setRows.length > 0) clear = clear.not('id', 'in', `(${setRows.map((r) => r.id).join(',')})`);
+  const { error: clearErr } = await clear;
+  if (clearErr) throw clearErr;
 
   return sessionId;
 }

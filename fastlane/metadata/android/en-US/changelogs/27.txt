@@ -1,0 +1,1 @@
+Fix: a finished workout could be uploaded several times at once, so its sets showed up multiplied in Nexus Command Center, and a workout saved while another was uploading could fail to sync. Each workout now uploads exactly once, and uploading one again cleans up its extra copies.
