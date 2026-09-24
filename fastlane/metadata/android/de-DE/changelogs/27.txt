@@ -1,0 +1,1 @@
+Korrektur: Ein beendetes Training konnte mehrfach gleichzeitig hochgeladen werden, sodass seine Sätze im Nexus Command Center vervielfacht erschienen, und ein während eines Uploads gespeichertes Training wurde womöglich nicht synchronisiert. Jetzt wird jedes Training genau einmal hochgeladen; ein erneuter Upload räumt überzählige Kopien auf.

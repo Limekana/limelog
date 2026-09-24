@@ -1,0 +1,1 @@
+Korjaus: valmis treeni saattoi lähteä pilveen monta kertaa yhtä aikaa, jolloin sen sarjat näkyivät Nexus Command Centerissä moninkertaisina, ja toisen latauksen aikana tallennettu treeni saattoi jäädä synkronoimatta. Nyt jokainen treeni lähtee tasan kerran, ja uudelleenlähetys siivoaa ylimääräiset kopiot.
