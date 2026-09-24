@@ -181,22 +181,29 @@ let draining = false;
  *  result message. */
 export async function drain(): Promise<{ sent: number; remaining: number }> {
   if (draining) return { sent: 0, remaining: loadItems().length };
-  // Skip if offline — items stay queued. `online` event will re-trigger.
-  if (typeof navigator !== 'undefined' && navigator.onLine === false) {
-    return { sent: 0, remaining: loadItems().length };
-  }
-  // Skip if Supabase not configured — nothing to push to.
-  if (!isNexusConfigured) {
-    return { sent: 0, remaining: loadItems().length };
-  }
-  // Skip if no auth session — let post-sign-in path re-trigger.
-  // (drainPendingQueue legacy did the same gate.)
-  const { data: { user } } = await supabase.auth.getUser();
-  if (!user) return { sent: 0, remaining: loadItems().length };
-
+  // Limekana/limelog#28 — claimed BEFORE the first await. The flag used to be
+  // set only after `getUser()` below, a network round trip, so every drain()
+  // fired meanwhile (each enqueue fires one; finishing a workout enqueues
+  // several) passed the check and ran the same queue head in parallel: five
+  // parallel pushes of one workout in production, and parallel loops writing
+  // stale queue snapshots back over items enqueued in between. The early
+  // exits below are inside the try so `finally` always releases it.
   draining = true;
   let sent = 0;
   try {
+    // Skip if offline — items stay queued. `online` event will re-trigger.
+    if (typeof navigator !== 'undefined' && navigator.onLine === false) {
+      return { sent: 0, remaining: loadItems().length };
+    }
+    // Skip if Supabase not configured — nothing to push to.
+    if (!isNexusConfigured) {
+      return { sent: 0, remaining: loadItems().length };
+    }
+    // Skip if no auth session — let post-sign-in path re-trigger.
+    // (drainPendingQueue legacy did the same gate.)
+    const { data: { user } } = await supabase.auth.getUser();
+    if (!user) return { sent: 0, remaining: loadItems().length };
+
     for (;;) {
       const items = loadItems();
       if (items.length === 0) break;
@@ -212,25 +219,23 @@ export async function drain(): Promise<{ sent: number; remaining: number }> {
       }
       try {
         await handler(item.payload as never);
-        // Success — remove from queue + bump last-success.
-        saveItems(items.slice(1));
+        // Success — remove THIS item from the queue as it is now, not from the
+        // snapshot read before the push: anything enqueued during the await
+        // would otherwise be overwritten out of storage (limelog#28).
+        saveItems(loadItems().filter((i) => i.id !== item.id));
         saveMeta({ ...loadMeta(), lastSuccessAt: new Date().toISOString(), lastError: null });
         sent++;
       } catch (e) {
         const attempts = (item.attempts || 0) + 1;
         const errMsg = (e instanceof Error ? e.message : String(e));
-        const updated = [
-          { ...item, attempts, lastAttemptAt: new Date().toISOString(), lastError: errMsg },
-          ...items.slice(1),
-        ];
+        const failed = { ...item, attempts, lastAttemptAt: new Date().toISOString(), lastError: errMsg };
+        // Same rule as the success path: rebuild from the live queue so items
+        // enqueued during the await survive (limelog#28).
+        const others = loadItems().filter((i) => i.id !== item.id);
         // At ceiling? Move to the back of the queue so subsequent items can
         // still attempt. We never silently drop — the stuck-queue warning in
         // Settings surfaces this.
-        if (attempts >= MAX_ATTEMPTS) {
-          saveItems([...updated.slice(1), updated[0]]);
-        } else {
-          saveItems(updated);
-        }
+        saveItems(attempts >= MAX_ATTEMPTS ? [...others, failed] : [failed, ...others]);
         saveMeta({ ...loadMeta(), lastError: errMsg, lastErrorAt: new Date().toISOString() });
         // Stop the drain pass — most likely the next item would hit the same
         // error. Next trigger (online / visibility / manual) tries again.

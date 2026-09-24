@@ -1,0 +1,1 @@
+Correção: um treino finalizado podia ser enviado várias vezes ao mesmo tempo, fazendo suas séries aparecerem multiplicadas no Nexus Command Center, e um treino salvo durante outro envio podia não sincronizar. Agora cada treino é enviado uma única vez, e reenviá-lo limpa as cópias extras.

@@ -1,0 +1,1 @@
+Perbaikan: latihan yang selesai bisa terunggah beberapa kali sekaligus, sehingga set-nya tampak berlipat di Nexus Command Center, dan latihan yang disimpan saat unggahan lain berjalan bisa gagal tersinkron. Kini setiap latihan diunggah tepat sekali, dan mengunggahnya ulang membersihkan salinan berlebih.

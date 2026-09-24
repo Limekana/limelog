@@ -1,0 +1,1 @@
+Correction : une séance terminée pouvait être envoyée plusieurs fois en même temps, ses séries apparaissant alors multipliées dans Nexus Command Center, et une séance enregistrée pendant un autre envoi pouvait ne pas se synchroniser. Chaque séance est désormais envoyée une seule fois, et un nouvel envoi supprime les copies en trop.
