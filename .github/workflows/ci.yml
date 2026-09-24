@@ -42,3 +42,10 @@ jobs:
       # CI rather than depending on whoever remembers to run it.
       - name: Lint
         run: npm run lint
+
+      # v1.16 (limecore#11). Characterization tests over the training maths:
+      # the shared 1RM estimator, PR detection and the last-session lookup the
+      # progression nudge reads. They exist so the code-health pass
+      # (limecore#12) has something to refactor against.
+      - name: Test gate
+        run: npm test
