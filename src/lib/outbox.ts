@@ -151,11 +151,41 @@ function makeId(): string {
  *  Returns synchronously — does NOT block on the drain. Failure surfaces via
  *  the meta + Settings panel; callers don't need to await.
  */
+// v1.16 (limecore#27, registry P6) — stamp the SAVE, not the send.
+//
+// The session push used `updated_at: now` at SEND time, so a workout saved
+// offline and pushed hours later arrived newer than an edit made in between
+// on another device, and overwrote it. The stamp is taken here, when the save
+// is enqueued, and each save of one session is stamped strictly later than the
+// last even if the clock steps backwards — `max(now, previous + 1 ms)`.
+//
+// LimeLog is push-only: it never pulls a session back to edit it (the
+// recovery pull only restores), so the only stamps it has seen for a session
+// are its own. Memory only; after a restart the plain clock is used, which is
+// what every push did before.
+const lastStamp = new Map<string, number>();
+
+function stampWorkout(payload: NexusWorkoutPayload): NexusWorkoutPayload {
+  const now = Date.now();
+  const prev = lastStamp.get(payload.sessionId);
+  const at = prev !== undefined && now <= prev ? prev + 1 : now;
+  lastStamp.set(payload.sessionId, at);
+  return { ...payload, updatedAt: new Date(at).toISOString() };
+}
+
+/** Test seam. */
+export function resetWorkoutStamps(): void {
+  lastStamp.clear();
+}
+
 export function enqueue<K extends OutboxKind>(kind: K, payload: KindPayload[K]): void {
   if (!KIND_DISPATCH[kind]) {
      
     console.error('[outbox] unknown kind:', kind);
     return;
+  }
+  if (kind === 'upsert_workout_session') {
+    payload = stampWorkout(payload as NexusWorkoutPayload) as KindPayload[K];
   }
   const items = loadItems();
   items.push({
