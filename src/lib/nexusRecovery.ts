@@ -150,7 +150,9 @@ export async function pullWorkoutsFromCloud(exercises: Exercise[]): Promise<Sess
   // history, with older sessions restored empty.
   const { data: sessions, error: sErr } = await selectAll<CloudSessionRow>(supabase, 'workout_sessions', {
     columns: 'id, session_type, activity_type, duration_seconds, distance_meters, date, notes, ai_debrief_raw, ai_rpe, ai_pain_flags, ai_mood, ai_note_summary',
-    filter: (q) => q.eq('user_id', user.id),
+    // v1.16 (limelog#32): a discarded workout is a tombstone upstream now, and
+    // recovery must not bring it back.
+    filter: (q) => q.eq('user_id', user.id).is('deleted_at', null),
   });
   if (sErr) throw sErr;
   if (!sessions?.length) return [];
