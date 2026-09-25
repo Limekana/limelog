@@ -25,6 +25,7 @@
 // historical) so they never reopen as an in-progress workout.
 
 import { supabase, isNexusConfigured } from './supabase';
+import { selectAll, PAGE_SIZE } from './selectAll';
 import type { SessionLog, SetLog } from '@/types/logging';
 import type { Exercise } from '@/types/program';
 
@@ -66,6 +67,68 @@ function syntheticExerciseId(name: string): string {
   return `rec:${name.trim().toLowerCase().replace(/\s+/g, '-')}`;
 }
 
+const SET_COLUMNS = 'id, session_id, exercise, weight_kg, reps, rpe';
+
+/** Sessions per request. At the usual 15–20 sets a session this stays well
+ *  under the 1000-row cap; a batch that does hit it is split, below. */
+const SESSIONS_PER_REQUEST = 40;
+
+/**
+ * Every set belonging to `sessionIds`, with each session's sets in the order
+ * they were inserted.
+ *
+ * Deliberately NOT paged by id like everything else (v1.16, limecore#28). The
+ * set order in a recovered workout comes from arrival order below
+ * (`setNumber: i + 1`), and no column records it: there is no set_number, and
+ * `created_at` is tied for 28 of 30 multi-set sessions because a workout's
+ * sets are inserted in one statement. The only signal is insertion order,
+ * which an UNORDERED select returns. Keyset paging orders by uuid — random —
+ * and would restore a warm-up as set 3.
+ *
+ * So each request fetches every set for a batch of sessions, unordered, and a
+ * session's sets always come back from ONE request. Truncation is detected
+ * from the exact count, and a batch that hit the cap is split in half and
+ * fetched again. Only a single session with more sets than the cap — not a
+ * real workout — falls back to id paging, where its order is lost but no set
+ * is.
+ */
+async function fetchSetsForSessions(userId: string, sessionIds: string[]): Promise<CloudSetRow[]> {
+  const out: CloudSetRow[] = [];
+  const queue: string[][] = [];
+  for (let i = 0; i < sessionIds.length; i += SESSIONS_PER_REQUEST) {
+    queue.push(sessionIds.slice(i, i + SESSIONS_PER_REQUEST));
+  }
+
+  while (queue.length > 0) {
+    const batch = queue.shift()!;
+    const { data, error, count } = await supabase
+      .from('workout_sets')
+      .select(SET_COLUMNS, { count: 'exact' })
+      .eq('user_id', userId)
+      .in('session_id', batch);
+    if (error) throw error;
+    const rows = (data ?? []) as CloudSetRow[];
+
+    const truncated = typeof count === 'number' ? count > rows.length : rows.length >= PAGE_SIZE;
+    if (!truncated) {
+      out.push(...rows);
+      continue;
+    }
+    if (batch.length > 1) {
+      const mid = Math.ceil(batch.length / 2);
+      queue.unshift(batch.slice(0, mid), batch.slice(mid));
+      continue;
+    }
+    const whole = await selectAll<CloudSetRow>(supabase, 'workout_sets', {
+      columns: SET_COLUMNS,
+      filter: (q) => q.eq('user_id', userId).eq('session_id', batch[0]),
+    });
+    if (whole.error) throw whole.error;
+    out.push(...(whole.data ?? []));
+  }
+  return out;
+}
+
 /**
  * Fetch all cloud workouts for the signed-in user and reconstruct them as local
  * SessionLogs. Pure fetch + map — the caller decides which to actually insert
@@ -81,18 +144,21 @@ export async function pullWorkoutsFromCloud(exercises: Exercise[]): Promise<Sess
   if (authErr) throw authErr;
   if (!user) return [];
 
-  const { data: sessions, error: sErr } = await supabase
-    .from('workout_sessions')
-    .select('id, session_type, activity_type, duration_seconds, distance_meters, date, notes, ai_debrief_raw, ai_rpe, ai_pain_flags, ai_mood, ai_note_summary')
-    .eq('user_id', user.id);
+  // v1.16 (limecore#28): both pulls used to be one bare select, which PostgREST
+  // truncates at its row cap without an error. A regular lifter crosses 1000
+  // sets in a few months, so a reinstall gave them back only part of their
+  // history, with older sessions restored empty.
+  const { data: sessions, error: sErr } = await selectAll<CloudSessionRow>(supabase, 'workout_sessions', {
+    columns: 'id, session_type, activity_type, duration_seconds, distance_meters, date, notes, ai_debrief_raw, ai_rpe, ai_pain_flags, ai_mood, ai_note_summary',
+    filter: (q) => q.eq('user_id', user.id),
+  });
   if (sErr) throw sErr;
   if (!sessions?.length) return [];
 
-  const { data: sets, error: setErr } = await supabase
-    .from('workout_sets')
-    .select('id, session_id, exercise, weight_kg, reps, rpe')
-    .eq('user_id', user.id);
-  if (setErr) throw setErr;
+  const sets = await fetchSetsForSessions(
+    user.id,
+    sessions.map((s) => s.id),
+  );
 
   // Resolve exercise NAME → local id (case-insensitive). Unmatched names get a
   // stable synthetic id so recovered sets for the same movement still group.
