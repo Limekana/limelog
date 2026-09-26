@@ -3,6 +3,7 @@ import { useTranslation } from 'react-i18next';
 import { Calendar, BarChart2, Layers, BookOpen, Scale } from 'lucide-react';
 import { useUserStore } from '@/store/userStore';
 import { useNexusStore } from '@/store/nexusStore';
+import { FdroidUpdateNote } from '@/components/FdroidUpdateNote';
 import './Layout.css';
 
 // v1.7 — labels resolved via i18n at render time (labelKey → t()).
@@ -102,6 +103,9 @@ export function Layout() {
         </NavLink>
       </header>
       <main className="app-main">
+        {/* v1.16 (#26) — Android only, once a day, off in Settings. Renders
+            nothing unless F-Droid has a newer build than this one. */}
+        <FdroidUpdateNote />
         <Outlet />
       </main>
       <nav className="app-nav">

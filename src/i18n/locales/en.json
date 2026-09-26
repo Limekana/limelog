@@ -204,7 +204,9 @@
     },
     "themeLockedAria": "{{name}} — supporter theme, locked",
     "themeSupporterNote": "Cast Iron is a supporter theme. Every workout feature stays free — this is a palette, not a paywall.",
-    "about": "About"
+    "about": "About",
+    "fdroidCheck": "Check F-Droid for updates",
+    "fdroidCheckNote": "Once a day, LimeLog asks f-droid.org for its newest version. Nothing about you is sent. Turning this off stops the request entirely."
   },
   "body": {
     "title": "Body",
@@ -541,5 +543,12 @@
     },
     "dismiss": "Not now",
     "thanks": "Thanks — that helps."
+  },
+  "update": {
+    "eyebrow": "On F-Droid",
+    "title": "LimeLog {{version}} is out",
+    "versions": "Update from {{current}} to {{latest}}",
+    "open": "Get it on F-Droid",
+    "later": "Later"
   }
 }

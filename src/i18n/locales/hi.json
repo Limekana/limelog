@@ -204,7 +204,9 @@
     },
     "themeLockedAria": "{{name}} — समर्थक थीम, लॉक",
     "themeSupporterNote": "Cast Iron समर्थकों के लिए थीम है। सभी वर्कआउट सुविधाएँ मुफ़्त रहती हैं — यह रंगों की बात है, पेवॉल की नहीं।",
-    "about": "ऐप के बारे में"
+    "about": "ऐप के बारे में",
+    "fdroidCheck": "F-Droid पर अपडेट जाँचें",
+    "fdroidCheckNote": "LimeLog दिन में एक बार f-droid.org से नवीनतम संस्करण पूछता है। आपके बारे में कुछ भी नहीं भेजा जाता। इसे बंद करने पर यह अनुरोध बिल्कुल नहीं भेजा जाता।"
   },
   "injury": {
     "newRestriction": "नई पाबंदी",
@@ -541,5 +543,12 @@
     },
     "dismiss": "अभी नहीं",
     "thanks": "धन्यवाद — इससे मदद मिलती है।"
+  },
+  "update": {
+    "eyebrow": "F-Droid पर",
+    "title": "LimeLog {{version}} आ गया है",
+    "versions": "{{current}} से {{latest}} पर अपडेट करें",
+    "open": "F-Droid से पाएँ",
+    "later": "बाद में"
   }
 }
