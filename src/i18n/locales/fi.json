@@ -204,7 +204,9 @@
     },
     "themeLockedAria": "{{name}} — tukijoiden teema, lukittu",
     "themeSupporterNote": "Cast Iron on tukijoiden teema. Kaikki treeniominaisuudet pysyvät ilmaisina — kyse on väreistä, ei maksumuurista.",
-    "about": "Tietoja"
+    "about": "Tietoja",
+    "fdroidCheck": "Tarkista päivitykset F-Droidista",
+    "fdroidCheckNote": "LimeLog kysyy kerran päivässä f-droid.orgilta uusinta versiota. Sinusta ei lähetetä mitään. Kun tämä on pois päältä, kyselyä ei tehdä lainkaan."
   },
   "body": {
     "title": "Keho",
@@ -541,5 +543,12 @@
     },
     "dismiss": "Ei nyt",
     "thanks": "Kiitos – tästä on apua."
+  },
+  "update": {
+    "eyebrow": "F-Droidissa",
+    "title": "LimeLog {{version}} on julkaistu",
+    "versions": "Päivitä versiosta {{current}} versioon {{latest}}",
+    "open": "Hae F-Droidista",
+    "later": "Myöhemmin"
   }
 }

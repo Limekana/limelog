@@ -204,7 +204,9 @@
     },
     "themeLockedAria": "{{name}} — Unterstützer-Theme, gesperrt",
     "themeSupporterNote": "Cast Iron ist ein Unterstützer-Theme. Alle Trainingsfunktionen bleiben kostenlos — es geht um Farben, nicht um eine Bezahlschranke.",
-    "about": "Über"
+    "about": "Über",
+    "fdroidCheck": "Auf F-Droid nach Updates suchen",
+    "fdroidCheckNote": "Einmal am Tag fragt LimeLog bei f-droid.org nach der neuesten Version. Über dich wird nichts gesendet. Ausgeschaltet unterbleibt die Anfrage ganz."
   },
   "body": {
     "title": "Körper",
@@ -541,5 +543,12 @@
     },
     "dismiss": "Nicht jetzt",
     "thanks": "Danke – das hilft."
+  },
+  "update": {
+    "eyebrow": "Auf F-Droid",
+    "title": "LimeLog {{version}} ist da",
+    "versions": "Update von {{current}} auf {{latest}}",
+    "open": "Auf F-Droid holen",
+    "later": "Später"
   }
 }

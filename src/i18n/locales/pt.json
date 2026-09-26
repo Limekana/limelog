@@ -208,7 +208,9 @@
     },
     "themeLockedAria": "{{name}} — tema de apoiador, bloqueado",
     "themeSupporterNote": "Cast Iron é um tema para apoiadores. Todos os recursos de treino continuam gratuitos — isto é uma paleta, não um muro de pagamento.",
-    "about": "Sobre"
+    "about": "Sobre",
+    "fdroidCheck": "Procurar atualizações no F-Droid",
+    "fdroidCheckNote": "Uma vez por dia, o LimeLog pergunta ao f-droid.org qual é a versão mais recente. Nada sobre você é enviado. Desativado, o pedido deixa de ser feito."
   },
   "injury": {
     "newRestriction": "Nova restrição",
@@ -549,5 +551,12 @@
     },
     "dismiss": "Agora não",
     "thanks": "Obrigado — isso ajuda."
+  },
+  "update": {
+    "eyebrow": "No F-Droid",
+    "title": "O LimeLog {{version}} já saiu",
+    "versions": "Atualizar de {{current}} para {{latest}}",
+    "open": "Obter no F-Droid",
+    "later": "Mais tarde"
   }
 }

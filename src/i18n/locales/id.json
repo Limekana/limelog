@@ -200,7 +200,9 @@
     },
     "themeLockedAria": "{{name}} — tema pendukung, terkunci",
     "themeSupporterNote": "Cast Iron adalah tema untuk pendukung. Semua fitur latihan tetap gratis — ini soal palet warna, bukan dinding berbayar.",
-    "about": "Tentang"
+    "about": "Tentang",
+    "fdroidCheck": "Periksa pembaruan di F-Droid",
+    "fdroidCheckNote": "Sekali sehari, LimeLog menanyakan versi terbaru ke f-droid.org. Tidak ada data tentang Anda yang dikirim. Jika dimatikan, permintaan ini tidak dikirim sama sekali."
   },
   "injury": {
     "newRestriction": "Batasan baru",
@@ -533,5 +535,12 @@
     },
     "dismiss": "Nanti saja",
     "thanks": "Terima kasih — ini membantu."
+  },
+  "update": {
+    "eyebrow": "Di F-Droid",
+    "title": "LimeLog {{version}} sudah rilis",
+    "versions": "Perbarui dari {{current}} ke {{latest}}",
+    "open": "Dapatkan di F-Droid",
+    "later": "Nanti"
   }
 }

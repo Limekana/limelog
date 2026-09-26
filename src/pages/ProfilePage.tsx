@@ -13,6 +13,8 @@ import { ShieldAlert } from 'lucide-react';
 import { useConfirm } from '@/components/confirmContext';
 import { downloadExport, deleteAccount, wipeAllLocalData } from '@/lib/dataRights';
 import { supabase, isNexusConfigured } from '@/lib/supabase';
+import { Capacitor } from '@capacitor/core';
+import { setUpdateCheckEnabled, useFdroidUpdate } from '@/lib/fdroidUpdate';
 import pkg from '../../package.json';
 import './ProfilePage.css';
 
@@ -349,9 +351,39 @@ export function ProfilePage() {
               <span className="settings-field__sublabel">LimeLog</span>
               <span className="settings-version">v{pkg.version}</span>
             </div>
+            {Capacitor.getPlatform() === 'android' && <FdroidUpdateToggle />}
           </Card>
         </div>
       </TabPanel>
     </div>
+  );
+}
+
+/** v1.16 (#26) — the switch the privacy policy promises (NCC#50): Off stops
+ *  the once-a-day request to f-droid.org entirely, not merely the note. The
+ *  same Off/On pair as the AI switch above. Android only, because it is the
+ *  only build F-Droid ships. */
+function FdroidUpdateToggle() {
+  const { t } = useTranslation();
+  const { enabled } = useFdroidUpdate();
+  return (
+    <>
+      <div className="settings-field settings-field--mt">
+        <span className="settings-field__sublabel">{t('settings.fdroidCheck')}</span>
+        <div className="settings-toggle">
+          {([false, true] as const).map((on) => (
+            <button
+              key={String(on)}
+              className={`settings-toggle__btn${enabled === on ? ' settings-toggle__btn--active' : ''}`}
+              onClick={() => setUpdateCheckEnabled(on)}
+              aria-pressed={enabled === on}
+            >
+              {on ? t('settings.aiOn') : t('settings.aiOff')}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="settings-field__sublabel settings-ai-note">{t('settings.fdroidCheckNote')}</div>
+    </>
   );
 }
