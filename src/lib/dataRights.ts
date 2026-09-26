@@ -11,6 +11,7 @@
 import { storage } from '@/utils/storage';
 import { supabase, isNexusConfigured } from './supabase';
 import { listPhotos } from './progressPhotos';
+import { selectAll } from './selectAll';
 
 const EXPORT_SCHEMA_VERSION = 1;
 
@@ -22,6 +23,30 @@ interface ExportPayload {
   counts: Record<string, number>;
   notes: Record<string, string>;
   data: Record<string, unknown>;
+  server?: Record<string, unknown[] | { error: string }>;
+}
+
+/**
+ * v1.16 (limecore#16) — the two things we hold that exist ONLY on the server:
+ * feedback the user sent, and error reports (kept 90 days). Neither is in
+ * local storage, so an export built from it alone would omit them, and the
+ * privacy policy (NCC#50) promises the export includes both. Signed-in only;
+ * a guest has sent neither. A failed read is recorded in the export rather
+ * than dropped, so an incomplete export says so.
+ */
+export const SERVER_ONLY_TABLES = ['feedback', 'client_errors'] as const;
+
+export async function serverOnlyData(userId: string): Promise<Record<string, unknown[] | { error: string }>> {
+  const out: Record<string, unknown[] | { error: string }> = {};
+  for (const table of SERVER_ONLY_TABLES) {
+    try {
+      const { data, error } = await selectAll(supabase, table, { filter: (q) => q.eq('user_id', userId) });
+      out[table] = error ? { error: error.message } : (data ?? []);
+    } catch (e) {
+      out[table] = { error: (e as Error).message };
+    }
+  }
+  return out;
 }
 
 /**
@@ -33,9 +58,9 @@ interface ExportPayload {
  * machine-readable" — JSON qualifies, and unlike CSV it carries the nested set
  * structure without inventing a flattening the user then has to undo.
  */
-function buildExport(
+async function buildExport(
   user: { id: string; email?: string } | null,
-): ExportPayload {
+): Promise<ExportPayload> {
   const programs = storage.getPrograms();
   const exercises = storage.getExercises();
   const sessionLogs = storage.getSessionLogs();
@@ -89,14 +114,15 @@ function buildExport(
       exercisePRs,
       progressPhotoDates: photoDates,
     },
+    ...(user && isNexusConfigured ? { server: await serverOnlyData(user.id) } : {}),
   };
 }
 
 /** Trigger a download of the export as a .json file. Returns the filename. */
-export function downloadExport(
+export async function downloadExport(
   user: { id: string; email?: string } | null,
-): string {
-  const payload = buildExport(user);
+): Promise<string> {
+  const payload = await buildExport(user);
   const json = JSON.stringify(payload, null, 2);
   const name = `limelog-export-${new Date().toISOString().slice(0, 10)}.json`;
   const url = URL.createObjectURL(new Blob([json], { type: 'application/json' }));
