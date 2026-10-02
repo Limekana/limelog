@@ -4,11 +4,17 @@
 .cfd-backdrop {
   position: fixed;
   inset: 0;
-  z-index: 60;
+  /* limelog#39: above the tab bar (100) and every sheet (200). At 60 the tab
+     bar was drawn over the sheet and hid its message and buttons, and a
+     confirm can be raised from inside a sheet, so it must outrank those too. */
+  z-index: 300;
   display: flex;
   align-items: flex-end;
   justify-content: center;
   padding: 16px;
+  /* Clear the system navigation bar, as every other sheet here does: with
+     edge-to-edge (targetSdk 36) the WebView draws underneath it. */
+  padding-bottom: calc(16px + env(safe-area-inset-bottom, 0px));
   background: rgba(0, 0, 0, 0.62);
   backdrop-filter: blur(4px);
 }
