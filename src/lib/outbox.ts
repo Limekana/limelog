@@ -5,9 +5,9 @@
 // LimeLog-specific shape:
 //
 //   - Two kinds today: `upsert_workout_session` (the existing finalize push)
-//     and `delete_workout_session` (for the future delete-from-history feature
-//     deferred per LimeLog v1.0.1 release notes). Add more here as edit/delete
-//     surfaces ship.
+//     and `delete_workout_session` (a tombstone, enqueued when a workout is
+//     discarded — v1.16, limelog#32). Add more here as edit/delete surfaces
+//     ship.
 //   - Drain triggers: `online`, `visibilitychange` (Capacitor bridges Android
 //     `onResume` into the WebView's visibility events), app mount, post-sign-in,
 //     manual "Retry now" button.
@@ -16,7 +16,8 @@
 //     idempotent end-to-end because the payload doesn't yet reference a remote
 //     ID — the retry creates a fresh row with the same data, no duplicate risk
 //     because the prior call failed before the row landed). For `delete_*`,
-//     `DELETE WHERE id = ?` is naturally idempotent.
+//     the write is idempotent too: a DELETE, or for workouts a tombstone
+//     UPDATE, lands the same way however many times it is retried.
 //   - One-shot migration: legacy `wt_nexus_pending` items (pre-v1.2) are read
 //     once on module load and re-enqueued as `upsert_workout_session`, then
 //     the old key is cleared. No data loss on upgrade.
@@ -356,10 +357,20 @@ const KIND_DISPATCH: { [K in OutboxKind]: (p: KindPayload[K]) => Promise<unknown
   upsert_workout_session: (p) => pushWorkoutToNexus(p),
   delete_workout_session: async (p) => {
     if (!isNexusConfigured) throw new Error('Nexus not configured');
-    const { error } = await supabase.from('workout_sessions').delete().eq('id', p.id);
+    // v1.16 (limelog#32, registry P6) — a tombstone, never a DELETE. A hard
+    // delete left nothing behind, so a later push of the same workout from
+    // another device simply inserted it again. The server's guard lets a
+    // tombstone land whatever its stamp, and a workout upsert never sends
+    // `deleted_at`, so it cannot un-delete one. NCC's pull filters tombstoned
+    // sessions out (and prunes their sets); `purge_soft_deleted()` removes the
+    // row after 90 days, and its sets cascade with it then. Matching no row —
+    // a workout that was never pushed — is a no-op, not an error.
+    const stamp = new Date().toISOString();
+    const { error } = await supabase
+      .from('workout_sessions')
+      .update({ deleted_at: stamp, updated_at: stamp })
+      .eq('id', p.id);
     if (error) throw error;
-    // Sets cascade-delete via FK (workout_sets.session_id REFERENCES workout_sessions
-    // ON DELETE CASCADE per the v1.0 schema).
   },
   upsert_body_metric: (p) => pushBodyMetricToNexus(p),
   delete_body_metric: (p) => deleteBodyMetricFromNexus(p.id),
