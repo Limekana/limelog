@@ -1,0 +1,57 @@
+/* F-Droid update note (v1.16, #26). The referral card's vocabulary — raised
+   panel, display-type eyebrow and title — laid inline at the top of the page.
+   Lime appears once, on the new version number. Existing tokens only, so
+   every theme (Cast Iron included) restyles it. */
+.upd-note {
+  margin: 12px 16px 0;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-default);
+  border-inline-start: 3px solid var(--accent-border);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+}
+.upd-note__head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: 12px;
+}
+.upd-note__eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.upd-note__versions {
+  display: inline-flex;
+  align-items: baseline;
+  gap: 6px;
+  font-family: var(--font-display);
+  font-size: 13px;
+  font-variant-numeric: tabular-nums;
+  color: var(--text-tertiary);
+}
+.upd-note__new { color: var(--accent); }
+.upd-note__title {
+  font-family: var(--font-display);
+  font-size: 17px;
+  line-height: 1.15;
+  text-transform: uppercase;
+  color: var(--text-primary);
+  margin: 6px 0 12px;
+}
+.upd-note__actions { display: flex; align-items: center; gap: 14px; }
+.upd-note__open { text-decoration: none; }
+.upd-note__later {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.upd-note__later:active { color: var(--text-primary); }
