@@ -1,4 +1,5 @@
 import { Outlet, NavLink } from 'react-router-dom';
+import { PolicyUpdatedNote } from '@/components/PolicyUpdatedNote';
 import { useTranslation } from 'react-i18next';
 import { Calendar, BarChart2, Layers, BookOpen, Scale } from 'lucide-react';
 import { useUserStore } from '@/store/userStore';
@@ -91,6 +92,9 @@ export function Layout() {
   const initials = avatarInitials(name, userName, userEmail);
   return (
     <div className="app-shell">
+      {/* v1.16 (limecore#16) — once, for people who used LimeLog under the old
+          policy. In Layout, so it never appears on the fullscreen workout. */}
+      <PolicyUpdatedNote />
       <header className="app-topbar">
         <NavLink
           to="/profile"

@@ -1,0 +1,86 @@
+/* v1.16 (limecore#16) — the crash screen and the one-time policy note.
+   The referral card's vocabulary (raised panel, uppercase display type),
+   existing tokens only, so every theme restyles both. Imported by the error
+   boundary itself, so the crash screen has styles even when whatever
+   normally loads them is what broke. */
+.crash {
+  min-height: 100%;
+  min-height: 100dvh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 24px 16px;
+  padding-top: calc(24px + env(safe-area-inset-top));
+  background: var(--bg-base);
+  color: var(--text-primary);
+}
+.crash__card {
+  width: 100%;
+  max-width: 380px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 20px;
+}
+.crash__eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.crash__title {
+  font-family: var(--font-display);
+  font-size: 24px;
+  line-height: 1.1;
+  text-transform: uppercase;
+  margin: 6px 0 10px;
+}
+.crash__body { font-family: var(--font-body); font-size: 14px; line-height: 1.5; color: var(--text-secondary); margin: 0 0 10px; }
+.crash__meta { font-family: var(--font-display); font-size: 12px; letter-spacing: 0.04em; color: var(--text-tertiary); word-break: break-all; margin-bottom: 16px; }
+.crash__actions { display: flex; flex-direction: column; gap: 8px; }
+.crash__status { font-family: var(--font-body); font-size: 13px; color: var(--text-secondary); text-align: center; padding: 8px 0; }
+.crash__note { font-family: var(--font-body); font-size: 12px; line-height: 1.5; color: var(--text-tertiary); margin: 14px 0 0; }
+
+/* ── Policy note: pinned to the top edge, clear of the referral card and the
+   nav, once per install. */
+.pol-note {
+  position: fixed;
+  z-index: 60;
+  top: calc(12px + env(safe-area-inset-top));
+  inset-inline: 12px;
+  margin-inline: auto;
+  max-width: 406px;
+  background: var(--bg-raised);
+  border: 1px solid var(--border-default);
+  border-radius: var(--radius-md);
+  padding: 12px 14px;
+  animation: pol-rise 0.24s var(--ease-rise);
+}
+@keyframes pol-rise {
+  from { opacity: 0; transform: translateY(-8px); }
+  to   { opacity: 1; transform: translateY(0); }
+}
+.pol-note__eyebrow {
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.pol-note__body { font-family: var(--font-body); font-size: 13px; line-height: 1.45; color: var(--text-primary); margin: 6px 0 10px; }
+.pol-note__actions { display: flex; align-items: center; gap: 14px; }
+.pol-note__read { text-decoration: none; }
+.pol-note__ok {
+  background: none;
+  border: none;
+  padding: 4px 0;
+  cursor: pointer;
+  font-family: var(--font-display);
+  font-size: 11px;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-tertiary);
+}
+.pol-note__ok:active { color: var(--text-primary); }
+@media (prefers-reduced-motion: reduce) { .pol-note { animation: none; } }

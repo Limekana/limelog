@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { setErrorReportsEnabled, useErrorReportsEnabled } from '@/lib/errorReports';
 import { setLanguage, SUPPORTED_LANGS, LANGUAGE_NAMES, type Lang } from '@/i18n';
 import { useScrollSelectedIntoView } from '@/utils/useScrollSelectedIntoView';
 import { useUserStore } from '@/store/userStore';
@@ -17,6 +18,33 @@ import pkg from '../../package.json';
 import './ProfilePage.css';
 
 type Tab = 'injuries' | 'exercises' | 'settings';
+
+/** v1.16 (limecore#16) — "Send error reports", the same Off/On pair as the
+ *  AI switch. Off by default; the note under it is the consent text. */
+function ErrorReportsField() {
+  const { t } = useTranslation();
+  const on = useErrorReportsEnabled();
+  return (
+    <>
+      <div className="settings-field settings-field--mt">
+        <span className="settings-field__sublabel">{t('settings.errorReports')}</span>
+        <div className="settings-toggle">
+          {([false, true] as const).map((v) => (
+            <button
+              key={String(v)}
+              className={`settings-toggle__btn${on === v ? ' settings-toggle__btn--active' : ''}`}
+              onClick={() => setErrorReportsEnabled(v)}
+              aria-pressed={on === v}
+            >
+              {v ? t('settings.aiOn') : t('settings.aiOff')}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="settings-field__sublabel settings-ai-note">{t('settings.errorReportsNote')}</div>
+    </>
+  );
+}
 
 export function ProfilePage() {
   const { profile, setName, setUnit, setAiEnabled, resolveRestriction, removeRestriction, updateDeloadThresholds } = useUserStore();
@@ -41,7 +69,7 @@ export function ProfilePage() {
         const { data } = await supabase.auth.getUser();
         if (data.user) account = { id: data.user.id, email: data.user.email };
       }
-      const name = downloadExport(account);
+      const name = await downloadExport(account);
       setDataMsg(t('settings.exportDone', { name }));
     } catch (e) {
       setDataMsg(t('settings.exportFailed', { msg: (e as Error).message }));
@@ -212,6 +240,9 @@ export function ProfilePage() {
             <div className="settings-field__sublabel settings-ai-note">
               {t('settings.aiTrainingNote')}
             </div>
+            {/* v1.16 (limecore#16) — off by default, accounts only; the note is
+                the consent text the privacy policy (NCC#50) relies on. */}
+            <ErrorReportsField />
             <a
               className="settings-field__sublabel settings-privacy-link"
               href="https://limekana.github.io/nexus-command-center/legal/privacy.html"
