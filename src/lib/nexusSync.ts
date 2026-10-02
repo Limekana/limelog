@@ -23,6 +23,10 @@ interface NexusSetPayload {
 }
 
 export interface NexusWorkoutPayload {
+  /** v1.16 (limecore#27, registry P6): when this version of the workout was
+   *  saved, stamped by `outbox.enqueue`. Absent on items queued by an older
+   *  build, which push with the send time as before. */
+  updatedAt?: string;
   // v1.6.1 — the LOCAL SessionLog id. Threaded through so the push upserts a
   // stable row instead of minting a fresh random id every dispatch. Without
   // this, an outbox retry / double-dispatch inserted a NEW session each time —
@@ -141,7 +145,10 @@ export async function pushWorkoutToNexus(workout: NexusWorkoutPayload): Promise<
       ai_pain_flags: workout.aiPainFlags ?? null,
       ai_mood: workout.aiMood ?? null,
       ai_note_summary: workout.aiNoteSummary ?? null,
-      updated_at: now,
+      // The moment the workout was saved, not the moment it was sent — a
+      // session saved offline and pushed hours later must not beat an edit
+      // made in between on another device (limecore#27, registry P6).
+      updated_at: workout.updatedAt ?? now,
     });
   if (sessionErr) throw sessionErr;
 
