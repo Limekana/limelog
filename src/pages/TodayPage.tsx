@@ -6,6 +6,7 @@ import { useLogStore } from '@/store/logStore';
 import { useUserStore } from '@/store/userStore';
 import type { SessionTemplate } from '@/types/program';
 import { getDayOfWeek, formatWeight } from '@/utils/helpers';
+import { sessionsForDay } from '@/lib/todaySessions';
 import { bestEstimateForExercise, missedRepRatio } from '@/utils/oneRepMax';
 import { EmptyState, Button, Badge } from '@/components/ui';
 import { Dumbbell, AlertTriangle, CheckCircle2, TrendingUp, ChevronRight, Footprints } from 'lucide-react';
@@ -40,10 +41,6 @@ export function TodayPage() {
   const dayName = t(`today.dayFull.${(['sun','mon','tue','wed','thu','fri','sat'] as const)[today]}`);
   const dateStr = now.toLocaleDateString(i18n.language || 'en', { day: 'numeric', month: 'long' });
 
-  const todaySessions: SessionTemplate[] = activeProgram
-    ? activeProgram.sessions.filter((s) => s.dayOfWeek === today)
-    : [];
-
   // v1.2 — phase tracking honors Program.activePhaseId when set. Old
   // programs without the field fall back to lowest-orderIndex (matches
   // v1.1 behavior). Sorted explicitly so the "next phase" lookup is
@@ -63,6 +60,9 @@ export function TodayPage() {
     };
   }
   const { current: phase, next: nextPhase } = getCurrentPhaseAndNext();
+
+  // limelog#43 - the active phase's sessions for today, not every phase's.
+  const todaySessions: SessionTemplate[] = sessionsForDay(activeProgram, today, phase?.id);
 
   // v1.2 — deload suggestion. Walks the last 3 finalized sessions and
   // compares logged reps to each exercise's targetReps lower-bound.
