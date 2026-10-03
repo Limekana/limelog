@@ -545,6 +545,14 @@
   border-color: var(--accent);
   background: var(--bg-raised);
 }
+/* limelog#42 (B2): DONE was refused because reps were empty and the target had
+   no number to take ("AMRAP"). The field itself says what is missing. After
+   :focus on purpose: the refusal focuses this field, and the red must win. */
+.ex-section__sets input[aria-invalid="true"],
+.ex-section__sets input[aria-invalid="true"]:focus {
+  border-color: var(--danger);
+  box-shadow: 0 0 0 1px var(--danger);
+}
 
 .ex-section__set-del {
   width: 32px;

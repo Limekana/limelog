@@ -7,6 +7,7 @@ import { useUserStore } from '@/store/userStore';
 import { formatWeight } from '@/utils/helpers';
 import { playRestComplete } from '@/utils/audio';
 import { getLastSessionSets, type LastSessionRef } from '@/lib/lastSessionSets';
+import { resolveDone } from '@/lib/setCompletion';
 import type { SetLog, ExercisePR } from '@/types/logging';
 import { WeightUpModal, type QualifyingExercise } from '@/components/WeightUpModal';
 import { FatigueRating } from '@/components/FatigueRating';
@@ -544,6 +545,25 @@ function ExerciseSection({
   const [keypadOpen, setKeypadOpen] = useState(false);
   const canStack = showBay && !!nextSet;
 
+  // limelog#42 (B2): DONE on an empty field logs the target shown in it; with
+  // no target to take, DONE is refused and the reps field is flagged instead.
+  const [repsNeeded, setRepsNeeded] = useState<string | null>(null);
+  function tapDone(s: SetLog) {
+    if (s.completed) {
+      onCompleteSet(s.id, false, restSeconds);
+      return;
+    }
+    const r = resolveDone(s, targetReps, targetWeight);
+    if (!r.ok) {
+      setRepsNeeded(s.id);
+      document.getElementById(`reps-${s.id}`)?.focus();
+      return;
+    }
+    if (Object.keys(r.fill).length > 0) onUpdateSet(s.id, r.fill);
+    setRepsNeeded(null);
+    onCompleteSet(s.id, true, restSeconds);
+  }
+
   function addSet() {
     const last = sets[sets.length - 1];
     onLogSet({
@@ -661,7 +681,7 @@ function ExerciseSection({
             >
               <button
                 className="ex-section__set-check"
-                onClick={() => onCompleteSet(s.id, !s.completed, restSeconds)}
+                onClick={() => tapDone(s)}
                 aria-label={s.completed ? t('log.setDone', { n: s.setNumber }) : t('log.markSetDone', { n: s.setNumber })}
               >
                 {s.completed ? '✓' : s.setNumber}
@@ -673,8 +693,13 @@ function ExerciseSection({
               />
               <input
                 type="number" inputMode="numeric" min="0" step="1"
+                id={`reps-${s.id}`}
+                aria-invalid={repsNeeded === s.id || undefined}
                 value={s.reps ?? ''} placeholder={targetReps}
-                onChange={(e) => onUpdateSet(s.id, { reps: e.target.value === '' ? null : Math.max(0, Number(e.target.value)) })}
+                onChange={(e) => {
+                  if (repsNeeded === s.id) setRepsNeeded(null);
+                  onUpdateSet(s.id, { reps: e.target.value === '' ? null : Math.max(0, Number(e.target.value)) });
+                }}
               />
               <input
                 type="number" inputMode="decimal" min="6" max="10" step="0.5"
