@@ -239,6 +239,17 @@ export const useLogStore = create<LogStore>((set, get) => ({
     if (!tombstones.includes(logId)) {
       storage.setSessionTombstones([...tombstones, logId]);
     }
+    // v1.16 (limelog#32) — and tombstone it in the cloud. The local list above
+    // only protects THIS device: a workout finished (so pushed), then undone
+    // and discarded, stayed live upstream, kept counting in NCC, and came back
+    // on any other device's recovery. There is no telling here whether this
+    // log ever reached the cloud (Undo clears finalizedAt), so the tombstone
+    // is always sent; for a workout that was never pushed it matches no row.
+    const nexus = useNexusStore.getState();
+    if (nexus.configured && nexus.syncEnabled) {
+      outboxEnqueue('delete_workout_session', { id: logId });
+      nexus.refreshPendingCount();
+    }
   },
 
   recoverSessions: (incoming) => {

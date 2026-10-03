@@ -20,14 +20,22 @@ export function getLastSessionSets(
   exerciseId: string,
   excludeSessionId: string,
 ): LastSessionRef | null {
+  // limelog#42: only work that was actually done counts. A set must be ticked
+  // done AND carry reps > 0; anything else (an abandoned practice workout, a
+  // set added and never finished, a set ticked with reps left empty by an
+  // older build) is skipped. Only the counting sets are returned, so LAST never
+  // shows "95 kg×—" next to a PR chip that says 95 kg×5.
+  const counts = (s: SetLog) =>
+    s.exerciseId === exerciseId && s.completed && s.reps != null && s.reps > 0;
+
   const candidates = sessionLogs
     .filter((l) => l.id !== excludeSessionId)
-    .filter((l) => l.sets.some((s) => s.exerciseId === exerciseId))
+    .filter((l) => l.sets.some(counts))
     .sort((a, b) => new Date(b.loggedAt).getTime() - new Date(a.loggedAt).getTime());
 
   for (const log of candidates) {
     const sets = log.sets
-      .filter((s) => s.exerciseId === exerciseId)
+      .filter(counts)
       .sort((a, b) => a.setNumber - b.setNumber);
     if (sets.length > 0) {
       return { date: log.loggedAt.slice(0, 10), sets };

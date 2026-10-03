@@ -17,8 +17,10 @@ package com.limecore.workouttracker;
 // returns an EMPTY cursor to any caller not on it. Accordingly this app
 // declares ONLY a <queries><provider authorities="com.limecore.nexus.session"/>
 // entry (for Android 11+ package visibility) in its manifest — there is NO
-// <uses-permission> and none is required. Package-name uniqueness on the
-// store / F-Droid / sideload is the practical trust anchor.
+// <uses-permission> and none is required. (It said here that package-name
+// uniqueness was the trust anchor. It is not — names are unique per device
+// only. Since v1.16, limecore#35, both sides also check the suite signing
+// key: NCC checks this app, and isGenuineNexus() below checks NCC.)
 //
 // Returned data is the JSON bundle NCC published — see ssoPublisher.ts on
 // the NCC side for the shape:
@@ -30,6 +32,10 @@ package com.limecore.workouttracker;
 // query() returns null/empty and the JS side falls back to normal sign-in.
 
 import android.content.ContentResolver;
+import android.content.Context;
+import android.content.pm.ApplicationInfo;
+import android.content.pm.PackageManager;
+import android.content.pm.ProviderInfo;
 import android.database.Cursor;
 import android.net.Uri;
 
@@ -47,6 +53,27 @@ public class SuiteSsoPlugin extends Plugin {
 
     private static final String COL_BUNDLE = "session_bundle_json";
     private static final String COL_PUBLISHED_AT = "published_at";
+
+    private static final String NEXUS_PACKAGE = "com.limecore.nexus";
+
+    /**
+     * v1.16 (limecore#35, SSO-1) — take a session only from the real NCC.
+     * An authority is unique per device, not globally: on a phone without
+     * NCC, any app can declare `com.limecore.nexus.session` and hand this app
+     * an attacker's session, after which everything the user records goes to
+     * the attacker's account. The provider must be served by NCC's package
+     * and signed with this app's own key (all three suite apps share the one
+     * release key). Skipped in a debuggable build, whose key differs from the
+     * other projects' — the same exception NCC's provider makes.
+     */
+    private boolean isGenuineNexus() {
+        Context ctx = getContext();
+        PackageManager pm = ctx.getPackageManager();
+        ProviderInfo info = pm.resolveContentProvider(SESSION_URI.getAuthority(), 0);
+        if (info == null || !NEXUS_PACKAGE.equals(info.packageName)) return false;
+        if ((ctx.getApplicationInfo().flags & ApplicationInfo.FLAG_DEBUGGABLE) != 0) return true;
+        return pm.checkSignatures(ctx.getPackageName(), info.packageName) == PackageManager.SIGNATURE_MATCH;
+    }
 
     /**
      * Query NCC's SessionContentProvider.
@@ -70,6 +97,12 @@ public class SuiteSsoPlugin extends Plugin {
         ContentResolver resolver = getContext().getContentResolver();
         Cursor cursor = null;
         try {
+            if (!isGenuineNexus()) {
+                result.put("available", false);
+                result.put("reason", "Nexus Command Center not reachable (not installed, or not a genuine suite build).");
+                call.resolve(result);
+                return;
+            }
             cursor = resolver.query(SESSION_URI, null, null, null, null);
             if (cursor == null) {
                 // Null cursor means the provider wasn't reachable — NCC not

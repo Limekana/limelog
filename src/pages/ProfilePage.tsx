@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
+import { setErrorReportsEnabled, useErrorReportsEnabled } from '@/lib/errorReports';
 import { setLanguage, SUPPORTED_LANGS, LANGUAGE_NAMES, type Lang } from '@/i18n';
 import { useScrollSelectedIntoView } from '@/utils/useScrollSelectedIntoView';
 import { useUserStore } from '@/store/userStore';
@@ -13,10 +14,39 @@ import { ShieldAlert } from 'lucide-react';
 import { useConfirm } from '@/components/confirmContext';
 import { downloadExport, deleteAccount, wipeAllLocalData } from '@/lib/dataRights';
 import { supabase, isNexusConfigured } from '@/lib/supabase';
+import { Capacitor } from '@capacitor/core';
+import { setUpdateCheckEnabled, useFdroidUpdate } from '@/lib/fdroidUpdate';
 import pkg from '../../package.json';
 import './ProfilePage.css';
 
 type Tab = 'injuries' | 'exercises' | 'settings';
+
+/** v1.16 (limecore#16) — "Send error reports", the same Off/On pair as the
+ *  AI switch. Off by default; the note under it is the consent text. */
+function ErrorReportsField() {
+  const { t } = useTranslation();
+  const on = useErrorReportsEnabled();
+  return (
+    <>
+      <div className="settings-field settings-field--mt">
+        <span className="settings-field__sublabel">{t('settings.errorReports')}</span>
+        <div className="settings-toggle">
+          {([false, true] as const).map((v) => (
+            <button
+              key={String(v)}
+              className={`settings-toggle__btn${on === v ? ' settings-toggle__btn--active' : ''}`}
+              onClick={() => setErrorReportsEnabled(v)}
+              aria-pressed={on === v}
+            >
+              {v ? t('settings.aiOn') : t('settings.aiOff')}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="settings-field__sublabel settings-ai-note">{t('settings.errorReportsNote')}</div>
+    </>
+  );
+}
 
 export function ProfilePage() {
   const { profile, setName, setUnit, setAiEnabled, resolveRestriction, removeRestriction, updateDeloadThresholds } = useUserStore();
@@ -41,7 +71,7 @@ export function ProfilePage() {
         const { data } = await supabase.auth.getUser();
         if (data.user) account = { id: data.user.id, email: data.user.email };
       }
-      const name = downloadExport(account);
+      const name = await downloadExport(account);
       setDataMsg(t('settings.exportDone', { name }));
     } catch (e) {
       setDataMsg(t('settings.exportFailed', { msg: (e as Error).message }));
@@ -212,6 +242,9 @@ export function ProfilePage() {
             <div className="settings-field__sublabel settings-ai-note">
               {t('settings.aiTrainingNote')}
             </div>
+            {/* v1.16 (limecore#16) — off by default, accounts only; the note is
+                the consent text the privacy policy (NCC#50) relies on. */}
+            <ErrorReportsField />
             <a
               className="settings-field__sublabel settings-privacy-link"
               href="https://limekana.github.io/nexus-command-center/legal/privacy.html"
@@ -349,9 +382,39 @@ export function ProfilePage() {
               <span className="settings-field__sublabel">LimeLog</span>
               <span className="settings-version">v{pkg.version}</span>
             </div>
+            {Capacitor.getPlatform() === 'android' && <FdroidUpdateToggle />}
           </Card>
         </div>
       </TabPanel>
     </div>
+  );
+}
+
+/** v1.16 (#26) — the switch the privacy policy promises (NCC#50): Off stops
+ *  the once-a-day request to f-droid.org entirely, not merely the note. The
+ *  same Off/On pair as the AI switch above. Android only, because it is the
+ *  only build F-Droid ships. */
+function FdroidUpdateToggle() {
+  const { t } = useTranslation();
+  const { enabled } = useFdroidUpdate();
+  return (
+    <>
+      <div className="settings-field settings-field--mt">
+        <span className="settings-field__sublabel">{t('settings.fdroidCheck')}</span>
+        <div className="settings-toggle">
+          {([false, true] as const).map((on) => (
+            <button
+              key={String(on)}
+              className={`settings-toggle__btn${enabled === on ? ' settings-toggle__btn--active' : ''}`}
+              onClick={() => setUpdateCheckEnabled(on)}
+              aria-pressed={enabled === on}
+            >
+              {on ? t('settings.aiOn') : t('settings.aiOff')}
+            </button>
+          ))}
+        </div>
+      </div>
+      <div className="settings-field__sublabel settings-ai-note">{t('settings.fdroidCheckNote')}</div>
+    </>
   );
 }
