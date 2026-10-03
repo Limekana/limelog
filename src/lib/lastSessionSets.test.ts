@@ -88,15 +88,58 @@ describe('getLastSessionSets', () => {
     expect(out?.sets.map((s) => s.setNumber)).toEqual([1, 2, 3]);
   });
 
-  it('returns the sets whether or not they were completed', () => {
-    // The filter is on the exercise, not on completion — an abandoned set is
-    // still what happened last time.
+  // limelog#42 (owner decision A1, 2026-10-03): LAST is "what did I do last
+  // time", so only finished work counts. This replaced a test that pinned the
+  // old lenient behaviour ("returns the sets whether or not they were completed").
+  it('skips a session whose sets for the exercise were never finished', () => {
     const out = getLastSessionSets(
-      [log('s', '2026-01-08T10:00:00.000Z', [set({ completed: false })])],
+      [
+        log('abandoned', '2026-01-08T10:00:00.000Z', [set({ completed: false }), set({ setNumber: 2, completed: false })]),
+        log('real', '2026-01-01T10:00:00.000Z', [set({ weightKg: 95 })]),
+      ],
       'squat',
       'current',
     );
-    expect(out?.sets).toHaveLength(1);
+    expect(out?.date).toBe('2026-01-01');
+    expect(out?.sets.map((s) => s.weightKg)).toEqual([95]);
+  });
+
+  it('skips a session whose only done sets have no reps (the "95 kg×—" screenshot)', () => {
+    const out = getLastSessionSets(
+      [
+        log('repless', '2026-01-08T10:00:00.000Z', [
+          set({ reps: null as never }),
+          set({ setNumber: 2, reps: 0 }),
+        ]),
+        log('real', '2026-01-01T10:00:00.000Z', [set({ reps: 5 })]),
+      ],
+      'squat',
+      'current',
+    );
+    expect(out?.date).toBe('2026-01-01');
+  });
+
+  it('returns only the finished sets of a partly finished session', () => {
+    const out = getLastSessionSets(
+      [
+        log('partial', '2026-01-08T10:00:00.000Z', [
+          set({ setNumber: 1, reps: 5 }),
+          set({ setNumber: 2, reps: 5 }),
+          set({ setNumber: 3, completed: false }),
+          set({ setNumber: 4, reps: null as never }),
+        ]),
+      ],
+      'squat',
+      'current',
+    );
+    expect(out?.date).toBe('2026-01-08');
+    expect(out?.sets.map((s) => s.setNumber)).toEqual([1, 2]);
+  });
+
+  it('is null when no session has finished work for the exercise', () => {
+    expect(
+      getLastSessionSets([log('s', '2026-01-08T10:00:00.000Z', [set({ completed: false })])], 'squat', 'current'),
+    ).toBeNull();
   });
 
   it('is null when there is no history for the exercise', () => {
