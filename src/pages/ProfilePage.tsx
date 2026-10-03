@@ -247,7 +247,7 @@ export function ProfilePage() {
             <ErrorReportsField />
             <a
               className="settings-field__sublabel settings-privacy-link"
-              href="https://limekana.github.io/nexus-command-center/legal/privacy.html"
+              href="https://limecore.dev/privacy"
               target="_blank"
               rel="noopener noreferrer"
             >
