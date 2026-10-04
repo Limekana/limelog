@@ -2,7 +2,7 @@ import React from 'react';
 import ReactDOM from 'react-dom/client';
 import App from './App';
 import { ConfirmProvider } from './components/ConfirmDialog';
-import './i18n';
+import { i18nReady } from './i18n';
 import './index.css';
 import './components/ui/ui.css';
 // AFTER index.css: Cast Iron is a token override, and with `[data-theme]`
@@ -26,16 +26,20 @@ installGlobalErrorHandlers();
 // Before onboarding can run: a fresh install starts on the current policy.
 notePolicyBaseline();
 
-ReactDOM.createRoot(document.getElementById('root')!).render(
-  <React.StrictMode>
-    {/* Outermost, so a throw anywhere below lands on the recovery screen
-        instead of a blank page (limecore#16). */}
-    <ErrorBoundary>
-      {/* Outside <App> so any screen can call useConfirm(), including the
-          first-launch auth gate that renders before the app shell. */}
-      <ConfirmProvider>
-        <App />
-      </ConfirmProvider>
-    </ErrorBoundary>
-  </React.StrictMode>
-);
+// v1.17 (limecore#18): the active language is its own chunk now. Render once it
+// has loaded, so the first paint is not English for a frame.
+void i18nReady.then(() => {
+  ReactDOM.createRoot(document.getElementById('root')!).render(
+    <React.StrictMode>
+      {/* Outermost, so a throw anywhere below lands on the recovery screen
+          instead of a blank page (limecore#16). */}
+      <ErrorBoundary>
+        {/* Outside <App> so any screen can call useConfirm(), including the
+            first-launch auth gate that renders before the app shell. */}
+        <ConfirmProvider>
+          <App />
+        </ConfirmProvider>
+      </ErrorBoundary>
+    </React.StrictMode>
+  );
+});
