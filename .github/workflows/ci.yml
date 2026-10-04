@@ -38,6 +38,12 @@ jobs:
       - name: Build gate
         run: npm run build
 
+      # v1.17 (limecore#13). The JS a cold start loads has a budget, so a static
+      # import of a lazy screen or a heavy library cannot quietly undo the
+      # splitting. See the header of scripts/check-bundle-size.mjs.
+      - name: Bundle size gate
+        run: npm run check:bundle-size
+
       # Already at --max-warnings 0 locally; this makes that standard hold in
       # CI rather than depending on whoever remembers to run it.
       - name: Lint
