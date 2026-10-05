@@ -5,6 +5,7 @@ import { useNexusStore } from '@/store/nexusStore';
 import { inheritFromNexus } from '@/lib/suiteSso';
 import { Button, Card, Badge } from '@/components/ui';
 import { Cloud, CloudOff } from 'lucide-react';
+import { ChangeEmail } from '@/components/ChangeEmail';
 import './NexusSyncCard.css';
 
 // Inline plugin handle for the "is NCC session available?" probe. We can't
@@ -140,6 +141,8 @@ export function NexusSyncCard() {
           <p className="nexus-card__signed-in">
             {t('sync.signedInAs')} <strong>{userEmail}</strong>
           </p>
+          {/* v1.17 (limecore#10): email/password accounts only. */}
+          <ChangeEmail userEmail={userEmail} />
 
           <div className="nexus-card__row">
             <span className="settings-field__sublabel">{t('sync.autoPush')}</span>
