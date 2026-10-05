@@ -133,5 +133,3 @@ export function PlateKeypad({ initial, unit, onDone, onClose }: Props) {
     </div>
   );
 }
-
-export default PlateKeypad;
