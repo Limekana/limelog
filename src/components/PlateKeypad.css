@@ -58,6 +58,32 @@
 }
 .plate-keypad__close:active { color: var(--text-primary); }
 
+/* The readout outside Cast Iron: the total in the display face, at a size
+   you can read with the phone on the floor beside the bar. */
+.plate-keypad__readout {
+  display: flex;
+  align-items: baseline;
+  justify-content: center;
+  gap: 6px;
+  padding: 6px 0 2px;
+  border-bottom: 1px solid var(--border-subtle);
+}
+.plate-keypad__readout-total {
+  font-family: var(--font-display);
+  font-size: 44px;
+  font-weight: 700;
+  line-height: 1;
+  color: var(--text-primary);
+  font-variant-numeric: tabular-nums;
+}
+.plate-keypad__readout-unit {
+  font-family: var(--font-display);
+  font-size: 14px;
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  color: var(--accent);
+}
+
 .plate-keypad__note {
   font-family: var(--font-mono, monospace);
   font-size: 11px;
@@ -73,6 +99,9 @@
   gap: 8px;
 }
 
+/* limelog#41: the keypad is free in every theme, and the plate tokens are
+   Cast Iron's own. Each one falls back to the base palette's nearest surface,
+   so in Lime a plate is a raised key with a lighter top edge. */
 .plate-keypad__plate {
   min-height: 56px;
   display: flex;
@@ -80,9 +109,9 @@
   align-items: center;
   justify-content: center;
   gap: 2px;
-  background: var(--plate-face);
-  border: 1px solid var(--plate-rim);
-  border-top-color: var(--edge-light);
+  background: var(--plate-face, var(--bg-raised));
+  border: 1px solid var(--plate-rim, var(--border-default));
+  border-top-color: var(--edge-light, var(--border-strong));
   border-radius: var(--radius-sm);
   color: var(--text-primary);
   cursor: pointer;
