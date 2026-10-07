@@ -1,3 +1,4 @@
+import { Suspense } from 'react';
 import { Outlet, NavLink } from 'react-router-dom';
 import { PolicyUpdatedNote } from '@/components/PolicyUpdatedNote';
 import { useTranslation } from 'react-i18next';
@@ -110,7 +111,11 @@ export function Layout() {
         {/* v1.16 (#26) — Android only, once a day, off in Settings. Renders
             nothing unless F-Droid has a newer build than this one. */}
         <FdroidUpdateNote />
-        <Outlet />
+        {/* v1.17 (limecore#13) — pages are lazy chunks; the boundary sits
+            inside the layout so the bottom nav stays put while one loads. */}
+        <Suspense fallback={null}>
+          <Outlet />
+        </Suspense>
       </main>
       <nav className="app-nav">
         {NAV_ITEMS.map(({ to, icon: Icon, labelKey }) => (

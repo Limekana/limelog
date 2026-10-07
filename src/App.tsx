@@ -1,4 +1,4 @@
-import { useEffect, useRef, useState } from 'react';
+import { lazy, Suspense, useEffect, useRef, useState } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BrowserRouter, Routes, Route, Navigate, useNavigate } from 'react-router-dom';
 import { Capacitor } from '@capacitor/core';
@@ -7,15 +7,8 @@ import { Capacitor } from '@capacitor/core';
 import { LocalNotifications } from '@capacitor/local-notifications';
 import { Layout } from '@/components/Layout';
 import { TodayPage } from '@/pages/TodayPage';
-import { ProgramPage } from '@/pages/ProgramPage';
-import { ProgressPage } from '@/pages/ProgressPage';
-import { BodyMetricsPage } from '@/pages/BodyMetricsPage';
-import { ProfilePage } from '@/pages/ProfilePage';
-import { LibraryPage } from '@/pages/LibraryPage';
-import { WorkoutPage } from '@/pages/WorkoutPage';
 import { FirstLaunchAuth } from '@/components/FirstLaunchAuth';
 import { ReferralPrompt } from '@/components/ReferralPrompt';
-import { OnboardingFlow } from '@/components/OnboardingFlow';
 import { PRCelebrationModal } from '@/components/PRCelebrationModal';
 import { useProgramStore } from '@/store/programStore';
 import { useNexusStore } from '@/store/nexusStore';
@@ -28,6 +21,17 @@ import {
   scheduleWorkoutReminders,
   WORKOUT_ACTION_START,
 } from '@/utils/notifications';
+
+// v1.17 (limecore#13): every page a launch does not open on is its own chunk,
+// loaded the first time it is visited. Today (the index route) and the
+// first-launch auth screen stay in the entry chunk.
+const ProgramPage = lazy(() => import('@/pages/ProgramPage').then((m) => ({ default: m.ProgramPage })));
+const ProgressPage = lazy(() => import('@/pages/ProgressPage').then((m) => ({ default: m.ProgressPage })));
+const BodyMetricsPage = lazy(() => import('@/pages/BodyMetricsPage').then((m) => ({ default: m.BodyMetricsPage })));
+const ProfilePage = lazy(() => import('@/pages/ProfilePage').then((m) => ({ default: m.ProfilePage })));
+const LibraryPage = lazy(() => import('@/pages/LibraryPage').then((m) => ({ default: m.LibraryPage })));
+const WorkoutPage = lazy(() => import('@/pages/WorkoutPage').then((m) => ({ default: m.WorkoutPage })));
+const OnboardingFlow = lazy(() => import('@/components/OnboardingFlow').then((m) => ({ default: m.OnboardingFlow })));
 
 /**
  * Subscribes to action-button taps on workout reminders and routes the user
@@ -232,33 +236,40 @@ export default function App() {
   // user (no sessions logged). Skipping or finishing sets the persisted flag.
   if (!onboarded && sessionCount === 0 && onboardChecked) {
     return (
-      <OnboardingFlow
-        onDone={() => {
-          setOnboarded(); // belt-and-suspenders; the flow already persists it
-          void markOnboardedCloud();
-          setOnboardedState(true);
-        }}
-      />
+      <Suspense fallback={null}>
+        <OnboardingFlow
+          onDone={() => {
+            setOnboarded(); // belt-and-suspenders; the flow already persists it
+            void markOnboardedCloud();
+            setOnboardedState(true);
+          }}
+        />
+      </Suspense>
     );
   }
 
   return (
     <BrowserRouter>
       <NotificationActionBridge />
-      <Routes>
-        {/* Fullscreen workout view — outside Layout so the bottom nav is hidden */}
-        <Route path="/workout/:logId" element={<WorkoutPage />} />
+      {/* Pages are lazy chunks (limecore#13). This boundary covers the
+          fullscreen workout view; Layout has its own around <Outlet /> so the
+          bottom nav stays put while a page loads. */}
+      <Suspense fallback={null}>
+        <Routes>
+          {/* Fullscreen workout view — outside Layout so the bottom nav is hidden */}
+          <Route path="/workout/:logId" element={<WorkoutPage />} />
 
-        <Route element={<Layout />}>
-          <Route index element={<Navigate to="/today" replace />} />
-          <Route path="/today" element={<TodayPage />} />
-          <Route path="/program" element={<ProgramPage />} />
-          <Route path="/library" element={<LibraryPage />} />
-          <Route path="/progress" element={<ProgressPage />} />
-          <Route path="/body" element={<BodyMetricsPage />} />
-          <Route path="/profile" element={<ProfilePage />} />
-        </Route>
-      </Routes>
+          <Route element={<Layout />}>
+            <Route index element={<Navigate to="/today" replace />} />
+            <Route path="/today" element={<TodayPage />} />
+            <Route path="/program" element={<ProgramPage />} />
+            <Route path="/library" element={<LibraryPage />} />
+            <Route path="/progress" element={<ProgressPage />} />
+            <Route path="/body" element={<BodyMetricsPage />} />
+            <Route path="/profile" element={<ProfilePage />} />
+          </Route>
+        </Routes>
+      </Suspense>
       {/* v1.6 — global PR celebration; mounted outside Routes so it survives
           the post-finish navigate('/today'). */}
       <PRCelebrationModal />
