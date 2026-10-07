@@ -9,6 +9,7 @@
     "check:ime": "node scripts/check-ime.mjs",
     "check:bundle-size": "node scripts/check-bundle-size.mjs",
     "check:secrets": "node scripts/check-secrets.mjs --all",
+    "check:assets": "node scripts/check-assets.mjs",
     "build": "tsc && vite build",
     "test": "vitest run",
     "test:watch": "vitest",
