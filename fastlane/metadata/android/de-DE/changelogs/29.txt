@@ -1,0 +1,3 @@
+Schneller und leichter.
+
+LimeLog startet schneller: Sprachen und Ansichten werden erst geladen, wenn du sie brauchst, und die App ist kleiner. Die Scheiben-Tastatur gibt es jetzt in jedem Theme: Tippe neben „Satz hinzufügen“ auf die Schaltfläche, um die Stange zu beladen. Deine Login-E-Mail änderst du in der Sync-Karte.

@@ -595,6 +595,12 @@
   color: var(--accent);
   border-color: var(--accent-border);
 }
+/* Add set, and "Load the bar" beside it on barbell work (limelog#41). */
+.ex-section__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+}
 
 /* ── Finalize ────────────────────────────────────────────── */
 .workout-finalize {

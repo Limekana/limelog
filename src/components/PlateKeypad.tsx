@@ -42,12 +42,15 @@ interface Props {
   /** Starting total INCLUDING the bar, in `unit`. */
   initial: number | null;
   unit: Unit;
+  /** limelog#41: the loaded-bar drawing is Cast Iron's. Every other theme
+   *  gets the same keypad with the total as a plain number. */
+  drawBar: boolean;
   /** Called with the new total in `unit`, bar included. */
   onDone: (total: number) => void;
   onClose: () => void;
 }
 
-export function PlateKeypad({ initial, unit, onDone, onClose }: Props) {
+export function PlateKeypad({ initial, unit, drawBar, onDone, onClose }: Props) {
   const { t } = useTranslation();
   const bar = BAR_WEIGHT[unit];
   const inventory = PLATE_INVENTORY[unit];
@@ -86,7 +89,14 @@ export function PlateKeypad({ initial, unit, onDone, onClose }: Props) {
 
         {/* The bay IS the readout. It carries the total as real text and an
             aria-label, so this is not a picture standing in for a number. */}
-        <PlateBar total={total} unit={unit} size="lg" />
+        {drawBar ? (
+          <PlateBar total={total} unit={unit} size="lg" />
+        ) : (
+          <div className="plate-keypad__readout">
+            <span className="plate-keypad__readout-total">{total}</span>
+            <span className="plate-keypad__readout-unit">{unit.toUpperCase()}</span>
+          </div>
+        )}
 
         {seedLost > 0 && stack.length > 0 && (
           <div className="plate-keypad__note">
@@ -133,5 +143,3 @@ export function PlateKeypad({ initial, unit, onDone, onClose }: Props) {
     </div>
   );
 }
-
-export default PlateKeypad;

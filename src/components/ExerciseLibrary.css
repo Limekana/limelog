@@ -157,10 +157,6 @@
 
 .ex-lib__item:hover { border-color: var(--accent-dim, var(--accent)); }
 
-.ex-lib__item--in-store {
-  opacity: 0.6;
-}
-
 .ex-lib__item-left {
   display: flex;
   flex-direction: column;
@@ -202,11 +198,6 @@
 .ex-lib__item-add:hover:not(:disabled) {
   background: var(--accent);
   color: #fff;
-}
-
-.ex-lib__item-add--done {
-  color: var(--text-3);
-  cursor: default;
 }
 
 .ex-lib__item-del {

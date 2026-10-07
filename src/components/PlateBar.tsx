@@ -101,5 +101,3 @@ export function PlateBar({
     </div>
   );
 }
-
-export default PlateBar;

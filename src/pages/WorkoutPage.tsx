@@ -19,7 +19,7 @@ import { convertLoad, usesBarbell } from '@/utils/plateMath';
 import { useThemeStore } from '@/store/themeStore';
 import { SwapExerciseSheet } from '@/components/SwapExerciseSheet';
 import { effectiveExerciseId } from '@/lib/exerciseSwap';
-import { ChevronLeft, Plus, Trash2, X, Flag, Play, Timer, ArrowLeftRight } from 'lucide-react';
+import { ChevronLeft, Plus, Trash2, X, Flag, Play, Timer, ArrowLeftRight, Disc } from 'lucide-react';
 import './WorkoutPage.css';
 
 const DEFAULT_REST_SECONDS = 90;
@@ -544,6 +544,12 @@ function ExerciseSection({
   // screen, one thing it changes. Nothing to open when there is no open set.
   const [keypadOpen, setKeypadOpen] = useState(false);
   const canStack = showBay && !!nextSet;
+  // limelog#41 (owner, option C): the keypad is an input method, so it is
+  // free in every theme. It gets its own button, "Load the bar", beside Add
+  // set, for any barbell exercise with an open set, including one with no
+  // weight yet (the bay needs a weight to draw). The drawing itself stays Cast
+  // Iron: in other themes the keypad shows the total as a number instead.
+  const canLoad = !restricted && usesBarbell(equipment) && !!nextSet;
 
   // limelog#42 (B2): DONE on an empty field logs the target shown in it; with
   // no target to take, DONE is refused and the reps field is flagged instead.
@@ -632,8 +638,9 @@ function ExerciseSection({
 
       {keypadOpen && nextSet && (
         <PlateKeypad
-          initial={convertLoad(nextWeightKg as number, 'kg', unit)}
+          initial={nextWeightKg != null && nextWeightKg > 0 ? convertLoad(nextWeightKg, 'kg', unit) : null}
           unit={unit}
+          drawBar={castIron}
           onClose={() => setKeypadOpen(false)}
           // The keypad works in the DISPLAYED unit and the set stores kg, so
           // the answer is converted back on the way in. `convertLoad` snaps to
@@ -716,10 +723,18 @@ function ExerciseSection({
             </div>
           ))}
 
-          <button className="ex-section__add" onClick={addSet}>
-            <Plus size={14} />
-            <span>{t('log.addSet')}</span>
-          </button>
+          <div className="ex-section__actions">
+            <button className="ex-section__add" onClick={addSet}>
+              <Plus size={14} />
+              <span>{t('log.addSet')}</span>
+            </button>
+            {canLoad && (
+              <button type="button" className="ex-section__add" onClick={() => setKeypadOpen(true)}>
+                <Disc size={14} aria-hidden="true" />
+                <span>{t('log.plateKeypad')}</span>
+              </button>
+            )}
+          </div>
         </div>
       )}
     </section>
