@@ -25,6 +25,7 @@ const REDIRECT = 'https://limecore.dev/confirmed?flow=email-change';
 export function ChangeEmail({ userEmail }: { userEmail: string }) {
   const { t } = useTranslation();
   const [usesPassword, setUsesPassword] = useState(false);
+  const [viaGoogle, setViaGoogle] = useState(false);
   const [pending, setPending] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [value, setValue] = useState('');
@@ -39,13 +40,19 @@ export function ChangeEmail({ userEmail }: { userEmail: string }) {
         const u = data.user;
         const providers = (u.app_metadata?.providers as string[] | undefined) ?? [u.app_metadata?.provider];
         setUsesPassword(!u.is_anonymous && providers.includes('email'));
+        setViaGoogle(!u.is_anonymous && providers.includes('google'));
         setPending(u.new_email ?? null);
       })
       .catch(() => {});
     return () => { live = false; };
   }, [userEmail]);
 
-  if (!usesPassword) return null;
+  // A Google account's address comes from Google, so there is nothing to
+  // change here. Say so rather than leave a gap where the control would be:
+  // the owner went looking for it on a Google account (2026-10-06).
+  if (!usesPassword) {
+    return viaGoogle ? <p className="nexus-card__meta">{t('sync.changeEmailGoogle')}</p> : null;
+  }
 
   const send = async () => {
     const next = value.trim().toLowerCase();

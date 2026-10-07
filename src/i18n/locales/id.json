@@ -500,6 +500,7 @@
     "changeEmailRateLimit": "Terlalu banyak email baru saja dikirim. Coba lagi nanti.",
     "changeEmailFailed": "Tautan tidak bisa dikirim. Periksa koneksi Anda lalu coba lagi.",
     "changeEmailInvalid": "Itu sepertinya bukan alamat email.",
+    "changeEmailGoogle": "Anda masuk dengan Google, jadi email Anda adalah alamat Google Anda.",
     "signOut": "Keluar",
     "autoPush": "Kirim otomatis saat selesai",
     "retryNow": "Coba lagi sekarang",

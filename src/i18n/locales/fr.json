@@ -516,6 +516,7 @@
     "changeEmailRateLimit": "Trop d’e-mails viennent d’être envoyés. Réessayez plus tard.",
     "changeEmailFailed": "Impossible d’envoyer les liens. Vérifiez votre connexion et réessayez.",
     "changeEmailInvalid": "Cela ne ressemble pas à une adresse e-mail.",
+    "changeEmailGoogle": "Vous vous connectez avec Google, donc votre e-mail est votre adresse Google.",
     "signOut": "Se déconnecter",
     "autoPush": "Envoi auto à la fin",
     "retryNow": "Réessayer",

@@ -505,6 +505,7 @@
     "changeEmailRateLimit": "刚才发送的邮件太多。请稍后再试。",
     "changeEmailFailed": "无法发送链接。请检查网络连接后重试。",
     "changeEmailInvalid": "这看起来不像邮箱地址。",
+    "changeEmailGoogle": "你使用 Google 登录，因此你的邮箱就是你的 Google 地址。",
     "signOut": "退出登录",
     "autoPush": "结束时自动上传",
     "retryNow": "立即重试",
