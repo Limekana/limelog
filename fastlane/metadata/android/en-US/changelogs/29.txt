@@ -1,0 +1,3 @@
+Faster and lighter.
+
+LimeLog starts faster: languages and screens load only when you need them, and the app is smaller. The plate keypad is now free in every theme: tap "Load the bar" next to Add set to stack plates on a barbell lift. You can change your login email from the Sync card.

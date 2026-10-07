@@ -1,0 +1,3 @@
+Lebih cepat dan ringan.
+
+LimeLog kini dibuka lebih cepat: bahasa dan layar dimuat hanya saat dibutuhkan, dan aplikasinya lebih kecil. Papan tombol pelat kini gratis di semua tema: ketuk tombol di samping Tambah set untuk memuat barbel. Anda bisa mengganti email login dari kartu Sinkronisasi.

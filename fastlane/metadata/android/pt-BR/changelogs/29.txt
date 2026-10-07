@@ -1,0 +1,3 @@
+Mais rápido e mais leve.
+
+O LimeLog abre mais rápido: idiomas e telas carregam só quando você precisa, e o app ficou menor. O teclado de anilhas agora é grátis em todos os temas: toque no botão ao lado de Adicionar série para carregar a barra. Você pode trocar o e-mail de login no cartão de Sincronização.
