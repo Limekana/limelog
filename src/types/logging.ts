@@ -72,14 +72,6 @@ export type CardioActivity =
   | BuiltinTrainingActivity
   | (string & Record<never, never>);
 
-/** Whether a value is one of the built-in training activities. Membership, the
- *  same mechanism `activityTakesDistance` uses — a custom string entered by a
- *  future client is not training, which is the safe way to be wrong: it lands
- *  in the group whose stats already tolerate anything. */
-export function activityIsTraining(activity: CardioActivity | undefined): boolean {
-  return !!activity && (TRAINING_ACTIVITIES as readonly string[]).includes(activity);
-}
-
 /** Activities where a distance reading is meaningful. A basketball game has a
  *  duration but no sensible distance, so the field is hidden rather than shown
  *  as an empty box the user has to wonder about. Written in v1.9 with
