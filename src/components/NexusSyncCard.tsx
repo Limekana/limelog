@@ -6,6 +6,9 @@ import { inheritFromNexus } from '@/lib/suiteSso';
 import { Button, Card, Badge } from '@/components/ui';
 import { Cloud, CloudOff } from 'lucide-react';
 import { ChangeEmail } from '@/components/ChangeEmail';
+import { useConfirm } from '@/components/confirmContext';
+import { useLogStore } from '@/store/logStore';
+import { listPhotos } from '@/lib/progressPhotos';
 import './NexusSyncCard.css';
 
 // Inline plugin handle for the "is NCC session available?" probe. We can't
@@ -31,6 +34,7 @@ export function NexusSyncCard() {
     signUp,
     signInWithGoogle,
     signOut,
+    signOutPending,
     setSyncEnabled,
     retryPending,
   } = useNexusStore();
@@ -41,6 +45,29 @@ export function NexusSyncCard() {
   const [localError, setLocalError] = useState<string | null>(null);
   const [retryStatus, setRetryStatus] = useState<string | null>(null);
   const [nexusAvailable, setNexusAvailable] = useState(false);
+  const confirm = useConfirm();
+
+  // v1.18.1 (LimeLog#66): sign-out wipes this device's workouts, body
+  // measurements and progress photos (shared-device privacy). Photos are never
+  // uploaded, and with sync off nothing is, so one tap could delete what
+  // exists nowhere else. Say what will be lost, and ask.
+  async function handleSignOut() {
+    const parts = [t('sync.signOutConfirm')];
+    // Queued changes are counted whatever the sync setting: body metrics are
+    // queued with sync off too. Workouts are not queued while it is off.
+    if (pendingCount > 0) parts.push(t('sync.signOutUnsynced', { count: pendingCount }));
+    if (!syncEnabled && useLogStore.getState().sessionLogs.length > 0) parts.push(t('sync.signOutSyncOff'));
+    const photos = listPhotos().length;
+    if (photos > 0) parts.push(t('sync.signOutPhotos', { count: photos }));
+    if (!(await confirm({ message: parts.join(' '), confirmLabel: t('sync.signOut') }))) return;
+    try {
+      await signOut();
+    } catch {
+      // signOut does not throw for a server it cannot reach (it signs out
+      // here instead); anything else is unexpected and must not escape the
+      // click handler.
+    }
+  }
 
   // v1.4 — probe NCC's SessionContentProvider on mount. Silent on failure:
   // if NCC isn't installed or signing certs don't match, the affordance
@@ -196,8 +223,8 @@ export function NexusSyncCard() {
           <Button
             size="sm"
             variant="ghost"
-            onClick={() => void signOut()}
-            disabled={loading}
+            onClick={() => void handleSignOut()}
+            disabled={loading || signOutPending}
             className="nexus-card__signout"
           >
             {t('sync.signOut')}
@@ -213,7 +240,7 @@ export function NexusSyncCard() {
                 size="md"
                 fullWidth
                 onClick={handleNexus}
-                disabled={loading}
+                disabled={loading || signOutPending}
                 className="nexus-card__nexus"
               >
                 <span className="nexus-card__nexus-glyph" aria-hidden="true">◈</span>
@@ -231,7 +258,7 @@ export function NexusSyncCard() {
             size="md"
             fullWidth
             onClick={handleGoogle}
-            disabled={loading}
+            disabled={loading || signOutPending}
             className="nexus-card__google"
           >
             {t('auth.google')}
@@ -268,7 +295,7 @@ export function NexusSyncCard() {
           )}
 
           <div className="nexus-card__actions">
-            <Button type="submit" variant="primary" size="sm" disabled={loading}>
+            <Button type="submit" variant="primary" size="sm" disabled={loading || signOutPending}>
               {loading ? '…' : mode === 'signin' ? t('auth.signIn') : t('auth.createAccount')}
             </Button>
             <button
